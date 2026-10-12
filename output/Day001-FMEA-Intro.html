@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 001：FMEA 的目的与说明（基础入门）</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .header {
+            padding: 30px;
+            background: rgba(118, 75, 162, 0.05);
+            border-bottom: 1px solid #edf2f7;
+            text-align: center;
+        }
+        .breadcrumb {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0 0 10px 0;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #4a5568;
+            margin: 0;
+        }
+        .knowledge {
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+        .knowledge h3 {
+            margin-top: 0;
+            color: #2d3748;
+            font-size: 20px;
+            border-left: 4px solid #667eea;
+            padding-left: 12px;
+        }
+        .highlight, .highlight-green, .highlight-blue {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: #fffbeb;
+            border-left: 4px solid #f6e05e;
+        }
+        .highlight-green {
+            background-color: #e6fffa;
+            border-left: 4px solid #38b2ac;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+        }
+        .quiz-section {
+            padding: 30px;
+        }
+        .quiz-section h3 {
+            margin-top: 0;
+            color: #2d3748;
+            font-size: 20px;
+            border-left: 4px solid #48bb78;
+            padding-left: 12px;
+            margin-bottom: 25px;
+        }
+        .question {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .question:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .question-num {
+            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .question-type {
+            display: inline-block;
+            background: #eebefa;
+            color: #553c9a;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 8px;
+            margin-bottom: 10px;
+        }
+        .question-type.multi {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            position: relative;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        .option:hover {
+            background-color: #f7fafc;
+        }
+        .option input {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        .option label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 15px;
+            color: #4a5568;
+        }
+        .option-badge {
+            margin-left: 10px;
+            font-size: 18px;
+            display: none;
+        }
+        /* States */
+        .option.correct {
+            background-color: #f0fff4;
+            border-color: #68d391;
+        }
+        .option.correct label { color: #22543d; font-weight: 600; }
+        .option.error {
+            background-color: #fff5f5;
+            border-color: #fc8181;
+        }
+        .option.error label { color: #742a2a; }
+        .option.user-error {
+            background-color: #fffaf0;
+            border-color: #f6ad55;
+        }
+        
+        .option-feedback {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+            background-color: #f8f9fa;
+            border-left: 3px solid #cbd5e0;
+        }
+        .action-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .btn-reset {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        .btn-reset:hover {
+            background: #e2e8f0;
+        }
+        .score-board {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #38b2ac;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <!-- 1. 头部 -->
+        <div class="header">
+            <div class="breadcrumb">FMEA 学习打卡</div>
+            <h1 class="title">Day 001：FMEA 的目的与说明（基础入门）</h1>
+            <p class="subtitle">什么是 FMEA？它能帮我们管住哪些风险？</p>
+        </div>
+
+        <!-- 2. 知识点区 -->
+        <div class="knowledge">
+            <h3>📖 今日核心知识</h3>
+            
+            <div class="highlight">
+                <strong>概念提示：FMEA 是什么？</strong><br>
+                FMEA（失效模式与影响分析）是一套面向团队的系统的、定性分析方法，其主要目的是：评估产品/过程中失效的潜在技术风险，分析失效的起因和影响，记录预防和探测措施，并针对降低风险的措施提出建议。
+            </div>
+
+            <div class="highlight-blue">
+                <strong>边界说明：FMEA 的局限性</strong><br>
+                制造商考虑的风险类型很多，包括技术风险、财务风险、时间风险和战略风险。<br>
+                <strong>划重点：</strong>FMEA <strong>仅用于分析技术风险</strong>，从而减少失效、提高产品和过程的安全性。它不用来分析项目能不能按时完成，或者项目有没有利润。
+            </div>
+
+            <div class="highlight-green">
+                <strong>传音应用场景</strong><br>
+                当我们研发一款新手机（如在引入新的快充方案时），FMEA 可以用来分析“快充模块过热导致主板烧毁”这样的<strong>技术风险</strong>。但如果讨论“这个快充方案会不会超出整机 BOM 成本”或者“开发周期会不会导致项目延期”，这属于财务和时间风险，<strong>不在 FMEA 的范围内</strong>。
+            </div>
+            
+            <div class="highlight">
+                <strong>FMEA 的商业目标</strong><br>
+                除了识别风险，FMEA 还能：提高汽车/电子产品的质量与可靠性，降低保修成本，提高顾客满意度，证明风险分析以应对法律责任，以及在公司内部建立经验教训知识库。
+            </div>
+        </div>
+
+        <!-- 3. 练习题区 -->
+        <div class="quiz-section">
+            <h3>📝 巩固练习</h3>
+            
+            <form id="quizForm">
+                
+                <!-- Q1 -->
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">FMEA 是一种什么性质的分析方法？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. 面向个人的定量分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 面向团队的财务分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. 面向团队的系统的定性分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在产品开发过程中，哪一种风险是 FMEA 专门用来分析的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 时间风险（进度延期）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 技术风险（失效模式与影响）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 财务风险（超出BOM成本预算）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 战略风险（市场定位偏差）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">FMEA 想要达成的目的包括哪些？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 评估产品/过程中失效的潜在技术风险</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 计算新产品的市场投资回报率</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 记录预防和探测措施</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 针对降低风险的措施提出建议</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="question" data-correct="B,C,D">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">实施 FMEA 能够带来的商业收益（目标）包含以下哪些？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 直接决定产品的最终销售价格</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 降低保修和商誉成本</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 减少开发过程中的后期变更</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 证明产品和过程风险分析，从而为承担法律责任做好准备</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在传音的研发会议上，项目经理说：“我们需要用 FMEA 来分析一下，如果这个供应商交货延期，会对我们上市计划产生什么影响。”这种说法是否正确？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 正确，交货延期属于 FMEA 分析的一部分。</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 错误，交货延期属于时间/供应链风险，FMEA 仅用于分析技术风险。</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-btns">
+                    <button type="button" class="btn btn-submit" onclick="checkAnswers()">提交答案查看解析</button>
+                    <button type="button" class="btn btn-reset" onclick="resetQuiz()">重新答题</button>
+                </div>
+                
+                <div class="score-board" id="scoreBoard"></div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const explanations = {
+        'q1': {
+            'A': '❌ 错误。FMEA 是团队协作完成的，不是单兵作战；且它是定性分析方法。',
+            'B': '❌ 错误。FMEA 分析的是技术风险，而非财务。',
+            'C': '✅ 正确！FMEA 是一套面向团队的系统的、定性分析方法。'
+        },
+        'q2': {
+            'A': '❌ 错误。时间风险不在本手册 FMEA 范围内。',
+            'B': '✅ 正确！FMEA 仅用于分析技术风险，从而减少失效。',
+            'C': '❌ 错误。财务风险不在本手册 FMEA 范围内。',
+            'D': '❌ 错误。战略风险不在本手册 FMEA 范围内。'
+        },
+        'q3': {
+            'A': '✅ 正确。这正是 FMEA 的核心目的之一。',
+            'B': '❌ 错误。计算投资回报率属于财务和战略层面的工作。',
+            'C': '✅ 正确。FMEA 必须记录已采取或计划采取的防范与探测手段。',
+            'D': '✅ 正确。识别风险后，最终目的是给出降低风险的建议措施。'
+        },
+        'q4': {
+            'A': '❌ 错误。FMEA 不能直接决定定价。',
+            'B': '✅ 正确。提前规避技术风险能极大减少售后的退换货。',
+            'C': '✅ 正确。将问题扼杀在设计阶段，避免后期的高昂变更成本。',
+            'D': '✅ 正确。详实的 FMEA 报告是证明我们尽到质量义务的关键证据。'
+        },
+        'q5': {
+            'A': '❌ 错误。交货延期不是产品设计或制造过程中的技术失效模式。',
+            'B': '✅ 正确！供应链交期属于“时间风险”，不在 FMEA（专门应对技术风险）的评估范畴内。'
+        }
+    };
+
+    function checkAnswers() {
+        let score = 0;
+        const total = 5;
+        const questions = document.querySelectorAll('.question');
+        
+        questions.forEach((q, index) => {
+            const qId = 'q' + (index + 1);
+            const correctAnswers = q.dataset.correct.split(',');
+            const type = q.querySelector('.question-type').classList.contains('multi') ? 'checkbox' : 'radio';
+            const inputs = q.querySelectorAll(`input[type="${type}"]`);
+            
+            let userAnswers = [];
+            inputs.forEach(input => {
+                if(input.checked) {
+                    userAnswers.push(input.value);
+                }
+            });
+
+            const isCorrect = 
+                userAnswers.length === correctAnswers.length && 
+                userAnswers.every(val => correctAnswers.includes(val));
+
+            if (isCorrect) score++;
+
+            // UI 更新
+            inputs.forEach(input => {
+                const optDiv = input.closest('.option');
+                const badge = optDiv.querySelector('.option-badge');
+                const feedback = optDiv.querySelector('.option-feedback');
+                
+                // 重置状态
+                optDiv.className = 'option';
+                feedback.style.display = 'block';
+                badge.style.display = 'inline-block';
+                
+                const val = input.value;
+                feedback.innerHTML = explanations[qId][val] || '';
+
+                if (correctAnswers.includes(val)) {
+                    optDiv.classList.add('correct');
+                    badge.innerHTML = '✅';
+                    if (userAnswers.includes(val)) {
+                        feedback.style.color = '#22543d';
+                    }
+                } else if (userAnswers.includes(val)) {
+                    optDiv.classList.add('user-error');
+                    badge.innerHTML = '❌';
+                    feedback.style.color = '#9c4221';
+                }
+                
+                // 禁用输入
+                input.disabled = true;
+            });
+        });
+
+        // 保存进度到 localStorage
+        localStorage.setItem('fmea-day001', 'completed');
+        
+        const sb = document.getElementById('scoreBoard');
+        sb.style.display = 'block';
+        sb.innerHTML = `本次得分：${score} / ${total}`;
+        if (score === total) {
+            sb.style.color = '#38b2ac';
+            sb.innerHTML += ' 🎯 满分通过！';
+        } else {
+            sb.style.color = '#dd6b20';
+            sb.innerHTML += ' 💪 继续加油！';
+        }
+    }
+
+    function resetQuiz() {
+        const questions = document.querySelectorAll('.question');
+        questions.forEach(q => {
+            const inputs = q.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.checked = false;
+                input.disabled = false;
+                const optDiv = input.closest('.option');
+                optDiv.className = 'option';
+                optDiv.querySelector('.option-badge').style.display = 'none';
+                optDiv.querySelector('.option-feedback').style.display = 'none';
+            });
+        });
+        document.getElementById('scoreBoard').style.display = 'none';
+    }
+
+    // 检查历史状态
+    window.onload = function() {
+        if (localStorage.getItem('fmea-day001') === 'completed') {
+            // 可选：提示用户已完成过
+        }
+    };
+</script>
+</body>
+</html>

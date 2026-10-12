@@ -143,6 +143,7 @@
             flex-direction: column;
             gap: 10px;
         }
+        
         .option {
             position: relative;
             border: 1px solid #e2e8f0;
@@ -152,7 +153,9 @@
             transition: all 0.2s;
             display: flex;
             align-items: center;
+            flex-wrap: wrap; /* NEW: allow children to wrap */
         }
+
         .option:hover {
             background-color: #f7fafc;
         }

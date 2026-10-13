@@ -6,232 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Day 001：FMEA 的目的与说明（基础入门）</title>
     <style>
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            color: #333;
-        }
-        .container {
-            width: 100%;
-            max-width: 800px;
-        }
-        .card {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .header {
-            padding: 30px;
-            background: rgba(118, 75, 162, 0.05);
-            border-bottom: 1px solid #edf2f7;
-            text-align: center;
-        }
-        .breadcrumb {
-            font-size: 14px;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
-        .title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #2d3748;
-            margin: 0 0 10px 0;
-        }
-        .subtitle {
-            font-size: 16px;
-            color: #4a5568;
-            margin: 0;
-        }
-        .knowledge {
-            padding: 30px;
-            background-color: #f8f9fa;
-        }
-        .knowledge h3 {
-            margin-top: 0;
-            color: #2d3748;
-            font-size: 20px;
-            border-left: 4px solid #667eea;
-            padding-left: 12px;
-        }
-        .highlight, .highlight-green, .highlight-blue {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        .highlight {
-            background-color: #fffbeb;
-            border-left: 4px solid #f6e05e;
-        }
-        .highlight-green {
-            background-color: #e6fffa;
-            border-left: 4px solid #38b2ac;
-        }
-        .highlight-blue {
-            background-color: #ebf8ff;
-            border-left: 4px solid #4299e1;
-        }
-        .quiz-section {
-            padding: 30px;
-        }
-        .quiz-section h3 {
-            margin-top: 0;
-            color: #2d3748;
-            font-size: 20px;
-            border-left: 4px solid #48bb78;
-            padding-left: 12px;
-            margin-bottom: 25px;
-        }
-        .question {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-        .question:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .question-num {
-            display: inline-block;
-            background: #edf2f7;
-            color: #4a5568;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .question-type {
-            display: inline-block;
-            background: #eebefa;
-            color: #553c9a;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-left: 8px;
-            margin-bottom: 10px;
-        }
-        .question-type.multi {
-            background: #bee3f8;
-            color: #2b6cb0;
-        }
-        .question-text {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .option {
-            position: relative;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 12px 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap; /* Fix: Allow feedback box to wrap to next line */
-        }
-        .option:hover {
-            background-color: #f7fafc;
-        }
-        .option input {
-            margin-right: 12px;
-            cursor: pointer;
-        }
-        .option label {
-            flex: 1;
-            cursor: pointer;
-            font-size: 15px;
-            color: #4a5568;
-        }
-        .option-badge {
-            margin-left: 10px;
-            font-size: 18px;
-            display: none;
-        }
-        /* States */
-        .option.correct {
-            background-color: #f0fff4;
-            border-color: #68d391;
-        }
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: #333; }
+        .container { width: 100%; max-width: 800px; }
+        .card { background-color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; margin-bottom: 20px; }
+        .header { padding: 30px; background: rgba(118, 75, 162, 0.05); border-bottom: 1px solid #edf2f7; text-align: center; }
+        .breadcrumb { font-size: 14px; color: #6c757d; margin-bottom: 10px; }
+        .title { font-size: 28px; font-weight: 700; color: #2d3748; margin: 0 0 10px 0; }
+        .subtitle { font-size: 16px; color: #4a5568; margin: 0; }
+        .review-section { margin: 0; padding: 20px 30px; background-color: #ebf8ff; border-bottom: 1px solid #e2e8f0; }
+        .review-section ul { margin: 10px 0 0 0; padding-left: 20px; color: #2b6cb0; font-size: 15px; line-height: 1.6; }
+        .knowledge { padding: 30px; background-color: #f8f9fa; }
+        .knowledge h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #667eea; padding-left: 12px; margin-bottom: 20px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.6; }
+        .highlight { background-color: #fffbeb; border-left: 4px solid #f6e05e; }
+        .highlight-green { background-color: #e6fffa; border-left: 4px solid #38b2ac; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #fc8181; }
+        .source-ref { background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin: 0 30px 30px 30px; padding: 15px; border-radius: 8px; }
+        .quiz-section { padding: 30px; }
+        .quiz-section h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #48bb78; padding-left: 12px; margin-bottom: 25px; }
+        .question { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .question-num { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #eebefa; color: #553c9a; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-left: 8px; margin-bottom: 10px; }
+        .question-type.multi { background: #bee3f8; color: #2b6cb0; }
+        .question-text { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; flex-wrap: wrap; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 12px; cursor: pointer; }
+        .option label { flex: 1; cursor: pointer; font-size: 15px; color: #4a5568; }
+        .option-badge { margin-left: 10px; font-size: 18px; display: none; }
+        .option.correct { background-color: #f0fff4; border-color: #68d391; }
         .option.correct label { color: #22543d; font-weight: 600; }
-        .option.error {
-            background-color: #fff5f5;
-            border-color: #fc8181;
-        }
+        .option.error { background-color: #fff5f5; border-color: #fc8181; }
         .option.error label { color: #742a2a; }
-        .option.user-error {
-            background-color: #fffaf0;
-            border-color: #f6ad55;
-        }
-        
-        .option-feedback {
-            width: 100%;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            display: none;
-            background-color: #f8f9fa;
-            border-left: 3px solid #cbd5e0;
-        }
-        .action-btns {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-submit {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3);
-        }
-        .btn-submit:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        .btn-reset {
-            background: #edf2f7;
-            color: #4a5568;
-        }
-        .btn-reset:hover {
-            background: #e2e8f0;
-        }
-        .score-board {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: #38b2ac;
-            margin-top: 20px;
-            display: none;
-        }
+        .option.user-error { background-color: #fffaf0; border-color: #f6ad55; }
+        .option-feedback { width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px; display: none; background-color: #f8f9fa; border-left: 3px solid #cbd5e0; }
+        .action-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3); }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+        .btn-reset:hover { background: #e2e8f0; }
+        .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
     </style>
 </head>
 <body>
@@ -271,10 +89,9 @@
             </div>
         </div>
 
-        
-            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
-                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.1 节（原版手册第 13 - 14 页）。
-            </div>
+        <div class="source-ref">
+            <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.1 节（原版手册第 13 - 14 页）。
+        </div>
 
         <!-- 3. 练习题区 -->
         <div class="quiz-section">
@@ -282,7 +99,6 @@
             
             <form id="quizForm">
                 
-                <!-- Q1 -->
                 <div class="question" data-correct="C">
                     <span class="question-num">第 1 题</span>
                     <span class="question-type">单选</span>
@@ -309,7 +125,6 @@
                     </div>
                 </div>
 
-                <!-- Q2 -->
                 <div class="question" data-correct="B">
                     <span class="question-num">第 2 题</span>
                     <span class="question-type">单选</span>
@@ -342,7 +157,6 @@
                     </div>
                 </div>
 
-                <!-- Q3 -->
                 <div class="question" data-correct="A,C,D">
                     <span class="question-num">第 3 题</span>
                     <span class="question-type multi">多选</span>
@@ -375,7 +189,6 @@
                     </div>
                 </div>
 
-                <!-- Q4 -->
                 <div class="question" data-correct="B,C,D">
                     <span class="question-num">第 4 题</span>
                     <span class="question-type multi">多选</span>
@@ -408,7 +221,6 @@
                     </div>
                 </div>
 
-                <!-- Q5 -->
                 <div class="question" data-correct="B">
                     <span class="question-num">第 5 题</span>
                     <span class="question-type">单选</span>
@@ -443,113 +255,56 @@
 
 <script>
     const explanations = {
-        'q1': {
-            'A': '❌ 错误。FMEA 是团队协作完成的，不是单兵作战；且它是定性分析方法。',
-            'B': '❌ 错误。FMEA 分析的是技术风险，而非财务。',
-            'C': '✅ 正确！FMEA 是一套面向团队的系统的、定性分析方法。'
-        },
-        'q2': {
-            'A': '❌ 错误。时间风险不在本手册 FMEA 范围内。',
-            'B': '✅ 正确！FMEA 仅用于分析技术风险，从而减少失效。',
-            'C': '❌ 错误。财务风险不在本手册 FMEA 范围内。',
-            'D': '❌ 错误。战略风险不在本手册 FMEA 范围内。'
-        },
-        'q3': {
-            'A': '✅ 正确。这正是 FMEA 的核心目的之一。',
-            'B': '❌ 错误。计算投资回报率属于财务和战略层面的工作。',
-            'C': '✅ 正确。FMEA 必须记录已采取或计划采取的防范与探测手段。',
-            'D': '✅ 正确。识别风险后，最终目的是给出降低风险的建议措施。'
-        },
-        'q4': {
-            'A': '❌ 错误。FMEA 不能直接决定定价。',
-            'B': '✅ 正确。提前规避技术风险能极大减少售后的退换货。',
-            'C': '✅ 正确。将问题扼杀在设计阶段，避免后期的高昂变更成本。',
-            'D': '✅ 正确。详实的 FMEA 报告是证明我们尽到质量义务的关键证据。'
-        },
-        'q5': {
-            'A': '❌ 错误。交货延期不是产品设计或制造过程中的技术失效模式。',
-            'B': '✅ 正确！供应链交期属于“时间风险”，不在 FMEA（专门应对技术风险）的评估范畴内。'
-        }
+        'q1': { 'A': '❌ 错误。FMEA 是团队协作完成的，不是单兵作战；且它是定性分析方法。', 'B': '❌ 错误。FMEA 分析的是技术风险，而非财务。', 'C': '✅ 正确！FMEA 是一套面向团队的系统的、定性分析方法。' },
+        'q2': { 'A': '❌ 错误。时间风险不在本手册 FMEA 范围内。', 'B': '✅ 正确！FMEA 仅用于分析技术风险，从而减少失效。', 'C': '❌ 错误。财务风险不在本手册 FMEA 范围内。', 'D': '❌ 错误。战略风险不在本手册 FMEA 范围内。' },
+        'q3': { 'A': '✅ 正确。这正是 FMEA 的核心目的之一。', 'B': '❌ 错误。计算投资回报率属于财务和战略层面的工作。', 'C': '✅ 正确。FMEA 必须记录已采取或计划采取的防范与探测手段。', 'D': '✅ 正确。识别风险后，最终目的是给出降低风险的建议措施。' },
+        'q4': { 'A': '❌ 错误。FMEA 不能直接决定定价。', 'B': '✅ 正确。提前规避技术风险能极大减少售后的退换货。', 'C': '✅ 正确。将问题扼杀在设计阶段，避免后期的高昂变更成本。', 'D': '✅ 正确。详实的 FMEA 报告是证明我们尽到质量义务的关键证据。' },
+        'q5': { 'A': '❌ 错误。交货延期不是产品设计或制造过程中的技术失效模式。', 'B': '✅ 正确！供应链交期属于“时间风险”，不在 FMEA（专门应对技术风险）的评估范畴内。' }
     };
 
     function checkAnswers() {
-        let score = 0;
-        const total = 5;
-        const questions = document.querySelectorAll('.question');
-        
-        questions.forEach((q, index) => {
-            const qId = 'q' + (index + 1);
-            const correctAnswers = q.dataset.correct.split(',');
+        let score = 0; const total = 5;
+        document.querySelectorAll('.question').forEach((q, i) => {
+            const qId = 'q' + (i + 1);
+            const corrects = q.dataset.correct.split(',');
             const type = q.querySelector('.question-type').classList.contains('multi') ? 'checkbox' : 'radio';
             const inputs = q.querySelectorAll(`input[type="${type}"]`);
-            
-            let userAnswers = [];
-            inputs.forEach(input => {
-                if(input.checked) {
-                    userAnswers.push(input.value);
-                }
-            });
-
-            const isCorrect = 
-                userAnswers.length === correctAnswers.length && 
-                userAnswers.every(val => correctAnswers.includes(val));
-
+            let userAns = [];
+            inputs.forEach(inp => { if(inp.checked) userAns.push(inp.value); });
+            const isCorrect = userAns.length === corrects.length && userAns.every(v => corrects.includes(v));
             if (isCorrect) score++;
 
-            // UI 更新
-            inputs.forEach(input => {
-                const optDiv = input.closest('.option');
+            inputs.forEach(inp => {
+                const optDiv = inp.closest('.option');
                 const badge = optDiv.querySelector('.option-badge');
                 const feedback = optDiv.querySelector('.option-feedback');
-                
-                // 重置状态
                 optDiv.className = 'option';
                 feedback.style.display = 'block';
                 badge.style.display = 'inline-block';
-                
-                const val = input.value;
+                const val = inp.value;
                 feedback.innerHTML = explanations[qId][val] || '';
 
-                if (correctAnswers.includes(val)) {
-                    optDiv.classList.add('correct');
-                    badge.innerHTML = '✅';
-                    if (userAnswers.includes(val)) {
-                        feedback.style.color = '#22543d';
-                    }
-                } else if (userAnswers.includes(val)) {
-                    optDiv.classList.add('user-error');
-                    badge.innerHTML = '❌';
-                    feedback.style.color = '#9c4221';
+                if (corrects.includes(val)) {
+                    optDiv.classList.add('correct'); badge.innerHTML = '✅';
+                    if (userAns.includes(val)) feedback.style.color = '#22543d';
+                } else if (userAns.includes(val)) {
+                    optDiv.classList.add('user-error'); badge.innerHTML = '❌'; feedback.style.color = '#9c4221';
                 }
-                
-                // 禁用输入
-                input.disabled = true;
+                inp.disabled = true;
             });
         });
-
-        // 保存进度到 localStorage
         localStorage.setItem('fmea-day001', 'completed');
-        
         const sb = document.getElementById('scoreBoard');
         sb.style.display = 'block';
-        sb.innerHTML = `本次得分：${score} / ${total}`;
-        if (score === total) {
-            sb.style.color = '#38b2ac';
-            sb.innerHTML += ' 🎯 满分通过！';
-        } else {
-            sb.style.color = '#dd6b20';
-            sb.innerHTML += ' 💪 继续加油！';
-        }
+        sb.innerHTML = `本次得分：${score} / ${total}` + (score === total ? ' 🎯 满分通过！' : ' 💪 继续加油！');
+        sb.style.color = score === total ? '#38b2ac' : '#dd6b20';
     }
 
     function resetQuiz() {
-        const questions = document.querySelectorAll('.question');
-        questions.forEach(q => {
-            const inputs = q.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.checked = false;
-                input.disabled = false;
-                const optDiv = input.closest('.option');
+        document.querySelectorAll('.question').forEach(q => {
+            q.querySelectorAll('input').forEach(inp => {
+                inp.checked = false; inp.disabled = false;
+                const optDiv = inp.closest('.option');
                 optDiv.className = 'option';
                 optDiv.querySelector('.option-badge').style.display = 'none';
                 optDiv.querySelector('.option-feedback').style.display = 'none';
@@ -557,13 +312,6 @@
         });
         document.getElementById('scoreBoard').style.display = 'none';
     }
-
-    // 检查历史状态
-    window.onload = function() {
-        if (localStorage.getItem('fmea-day001') === 'completed') {
-            // 可选：提示用户已完成过
-        }
-    };
 </script>
 </body>
 </html>

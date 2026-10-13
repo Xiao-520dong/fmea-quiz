@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 020：附件 A: FMEA 表格示例 & 附件 B: 表格说明</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: #333; }
+        .container { width: 100%; max-width: 800px; }
+        .card { background-color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; margin-bottom: 20px; }
+        .header { padding: 30px; background: rgba(118, 75, 162, 0.05); border-bottom: 1px solid #edf2f7; text-align: center; }
+        .breadcrumb { font-size: 14px; color: #6c757d; margin-bottom: 10px; }
+        .title { font-size: 28px; font-weight: 700; color: #2d3748; margin: 0 0 10px 0; }
+        .subtitle { font-size: 16px; color: #4a5568; margin: 0; }
+        .review-section { margin: 0; padding: 20px 30px; background-color: #ebf8ff; border-bottom: 1px solid #e2e8f0; }
+        .review-section ul { margin: 10px 0 0 0; padding-left: 20px; color: #2b6cb0; font-size: 15px; line-height: 1.6; }
+        .knowledge { padding: 30px; background-color: #f8f9fa; }
+        .knowledge h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #667eea; padding-left: 12px; margin-bottom: 20px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.6; }
+        .highlight { background-color: #fffbeb; border-left: 4px solid #f6e05e; }
+        .highlight-green { background-color: #e6fffa; border-left: 4px solid #38b2ac; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #fc8181; }
+        .source-ref { background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin: 0 30px 30px 30px; padding: 15px; border-radius: 8px; }
+        .quiz-section { padding: 30px; }
+        .quiz-section h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #48bb78; padding-left: 12px; margin-bottom: 25px; }
+        .question { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .question-num { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #eebefa; color: #553c9a; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-left: 8px; margin-bottom: 10px; }
+        .question-type.multi { background: #bee3f8; color: #2b6cb0; }
+        .question-text { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; flex-wrap: wrap; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 12px; cursor: pointer; }
+        .option label { flex: 1; cursor: pointer; font-size: 15px; color: #4a5568; }
+        .option-badge { margin-left: 10px; font-size: 18px; display: none; }
+        .option.correct { background-color: #f0fff4; border-color: #68d391; }
+        .option.correct label { color: #22543d; font-weight: 600; }
+        .option.error { background-color: #fff5f5; border-color: #fc8181; }
+        .option.error label { color: #742a2a; }
+        .option.user-error { background-color: #fffaf0; border-color: #f6ad55; }
+        .option-feedback { width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px; display: none; background-color: #f8f9fa; border-left: 3px solid #cbd5e0; }
+        .action-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3); }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+        .btn-reset:hover { background: #e2e8f0; }
+        .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <div class="breadcrumb">FMEA 学习打卡</div>
+                <h1 class="title">Day 020：附件 A: FMEA 表格示例 & 附件 B: 表格说明</h1>
+                <p class="subtitle">全面了解标准表格、备选表格及软件视图的各列内容要求</p>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>第七步：结果文件化，强调了内部/外部沟通及管理评审的要求。</li>
+                    <li>不同类型 FMEA (DFMEA, PFMEA, FMEA-MSR) 最终都需要输出结构化的报告。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+                <h3>📖 今日核心知识</h3>
+                
+                <div class="highlight">
+                    <strong>标准表格与备选表格</strong><br>
+                    AIAG & VDA FMEA 手册提供了多种表格样式以适应不同组织的习惯与软件工具。例如，DFMEA 提供了标准表格 A 和备选表格 B；PFMEA 提供了标准表格 C 以及备选表格 D、E、F、G。<br>
+                    核心差异在于对结构分析和功能分析展示列数的合并或拆分（如：将“过程项目”和“过程项目功能”合并在一列显示）。
+                </div>
+
+                <div class="highlight-blue">
+                    <strong>步骤填写的“提示”说明</strong><br>
+                    附件 B 提供了每一列填写的具体提示：<br>
+                    • <b>结构分析（步骤二）</b>：要求指明上一级别、关注要素、下一级别。<br>
+                    • <b>功能分析（步骤三）</b>：需对应结构级别描述其功能及预期要求。<br>
+                    • <b>失效分析（步骤四）</b>：根据功能推导出失效影响(FE)、失效模式(FM)和失效起因(FC)。
+                </div>
+
+                <div class="highlight-green">
+                    <strong>传音应用场景</strong><br>
+                    在我们的内部管理系统或 Excel 模板中，可能会根据手册的备选表格进行微调，比如将失效分析部分的三列（影响、模式、起因）按照特定逻辑排序。使用专业 FMEA 软件时，通常不需要被表格格式束缚，因为软件会自动构建“结构-功能-失效”的网络关联视图。
+                </div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 A 和 附件 B（原版手册第 154-185 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section">
+                <h3>📝 巩固练习</h3>
+                <form id="quizForm">
+                    <div class="question" data-correct="B">
+                        <span class="question-num">第 1 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">AIAG & VDA 手册中，DFMEA 推荐的标准表格被称为？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1a" value="A">
+                                <label for="q1a">A. 表格 C</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1b" value="B">
+                                <label for="q1b">B. 表格 A</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1c" value="C">
+                                <label for="q1c">C. 表格 H</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="C">
+                        <span class="question-num">第 2 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">在 PFMEA 的备选表格中，为何有时会将多个内容放在同一列中（例如：过程项目和其功能）？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2a" value="A">
+                                <label for="q2a">A. 为了节省打印纸张</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2b" value="B">
+                                <label for="q2b">B. 因为有些步骤不重要可以合并</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2c" value="C">
+                                <label for="q2c">C. 提供不同信息展示选项，兼容过往表格格式习惯，避免所有行过度冗长</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="B">
+                        <span class="question-num">第 3 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">附件 B 的表格说明中，步骤四（失效分析）要求将“关注要素”的反面定义为？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3a" value="A">
+                                <label for="q3a">A. 失效影响 (FE)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3b" value="B">
+                                <label for="q3b">B. 失效模式 (FM)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3c" value="C">
+                                <label for="q3c">C. 失效起因 (FC)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A,C">
+                        <span class="question-num">第 4 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">关于 FMEA 专用软件视图（软件视图），以下描述正确的是？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4a" value="A">
+                                <label for="q4a">A. 可以直观建立结构与功能之间的树状/网状联系</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4b" value="B">
+                                <label for="q4b">B. 必须强制导成与 Excel 完全一致的二维长表格形式</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4c" value="C">
+                                <label for="q4c">C. 能通过链接失效链（起因-模式-影响）展示失效风险传递</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4d" value="D">
+                                <label for="q4d">D. 软件视图不再需要步骤一的准备工作</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A,B,C">
+                        <span class="question-num">第 5 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">根据附件 B 对步骤五“风险分析”表格的提示，当前控制（当前预防/探测措施）必须包含哪些状态？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5a" value="A">
+                                <label for="q5a">A. 初始状态：过去经过验证的控制</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5b" value="B">
+                                <label for="q5b">B. 初始状态：将要采用的控制</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5c" value="C">
+                                <label for="q5c">C. 对应评出 O (频度) 和 D (探测度) 的初始分数</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5d" value="D">
+                                <label for="q5d">D. 尚未决策的附加预防措施</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-btns">
+                        <button type="button" class="btn btn-submit" onclick="checkAnswers()">提交答案</button>
+                        <button type="button" class="btn btn-reset" onclick="resetQuiz()">重新练习</button>
+                    </div>
+                    <div id="scoreBoard" class="score-board"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: "表格 A 为 DFMEA 标准表格。表格 C 为 PFMEA 标准表格。",
+            q2: "将上一级功能与关注要素放在一行、或使用其他排版，主要是为了适应不同的展示偏好和避免某些分析行过于长宽不便阅读。",
+            q3: "关注要素对应的描述其预期功能的反面，就是失效模式（FM）。",
+            q4: "FMEA 软件的优势在于建立结构、功能、失效的三层网状或树状链接（失效链），不受限于二维表格格式。",
+            q5: "表格五中，“当前”控制指已有验证的或计划基线中确认要使用的控制；而选项D是属于步骤六“优化”环节中的附加建议措施。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach(q => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qId = q.querySelector('input').name;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => selected.push(input.value));
+                
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'error', 'user-error');
+                    opt.querySelector('.option-badge').style.display = 'none';
+                    opt.querySelector('.option-feedback').style.display = 'none';
+                });
+
+                let isCorrect = false;
+                if (isMulti) {
+                    isCorrect = (selected.length === correctAns.length) && 
+                              selected.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selected.length === 1 && selected[0] === correctAns[0];
+                }
+
+                if (isCorrect) score += 20;
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const badge = opt.querySelector('.option-badge');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        badge.innerHTML = '✅';
+                        badge.style.display = 'inline';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('user-error');
+                        badge.innerHTML = '❌';
+                        badge.style.display = 'inline';
+                    }
+                });
+
+                const feedback = q.querySelector('.options').lastElementChild.querySelector('.option-feedback') || q.querySelector('.options').lastElementChild.appendChild(document.createElement('div'));
+                feedback.className = 'option-feedback';
+                feedback.innerHTML = `<strong>💡 解析：</strong>${explanations[qId]}`;
+                feedback.style.display = 'block';
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.innerHTML = `总分：${score} / 100 分`;
+            scoreBoard.style.display = 'block';
+            scoreBoard.style.color = score === 100 ? '#38b2ac' : '#d69e2e';
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'error', 'user-error');
+                const badge = opt.querySelector('.option-badge');
+                if(badge) badge.style.display = 'none';
+            });
+            document.querySelectorAll('.option-feedback').forEach(fb => fb.style.display = 'none');
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

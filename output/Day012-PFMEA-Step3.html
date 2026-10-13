@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 012：PFMEA 步骤三：功能分析</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-green {
+            background-color: #c6f6d5;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            padding: 2px 6px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #718096;
+        }
+        .question-text {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #f7fafc;
+        }
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        .option.missed {
+            background: #feebc8;
+            border-color: #ed8936;
+        }
+        .option-feedback {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+            display: none;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        #result-display {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2>Day 012：PFMEA 步骤三：功能分析</h2>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>结构分析（步骤二）将过程分解为过程项、过程步骤、过程工作要素三个级别。</li>
+                    <li>必须先完成结构分析并确保没有遗漏，才能开始进行功能分析。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>📝 功能的定义与描述</strong><br>
+                功能分析旨在确保产品/过程的预期功能得到妥善分配。<br>
+                功能的描述必须清晰准确，推荐格式为：<strong>行为动词 + 名词</strong>，表示可测量的过程功能（现在时态）。例如：钻孔、涂胶、焊接支架。
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🔍 功能与失效的对应关系</strong><br>
+                在PFMEA中，“正面”的功能与其“反面”的失效有着严格的对应关系：
+                <ul>
+                    <li><strong>过程项的功能</strong> 对应 <strong>失效影响</strong>（如：装配组件失败导致的影响）。</li>
+                    <li><strong>过程步骤的功能</strong> 对应 <strong>失效模式</strong>（如：压入轴承失败的模式）。</li>
+                    <li><strong>过程工作要素的功能</strong> 对应 <strong>失效起因</strong>（如：手动获取轴承动作失误导致起因）。</li>
+                </ul>
+                逻辑关系中，向右问“如何实现？”，向左问“为什么执行？”。
+            </div>
+
+            <div class="highlight-green">
+                <strong>💡 区分“产品特性”与“过程特性”</strong><br>
+                要求分为两类：<br>
+                <strong>产品特性（要求）：</strong>可测量或判断的最终产品属性（如：轴的直径、材料要求、间隙）。<br>
+                <strong>过程特性：</strong>为实现产品特性而施加的过程控制参数（如：压装的压力、设定的温度、速度），它们在制造过程中被测量和控制。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第 3 章 3.3 节（原版手册第 74-77 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <h3 style="margin-top: 40px;">📝 随堂练习</h3>
+            <div id="quiz-container">
+                
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">以下哪一项是手册推荐的过程“功能”描述格式？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. 形容词 + 名词（例如：快速的钻孔）</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. 行为动词 + 名词（例如：钻孔、涂胶、焊接支架）</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. 名词 + 状态（例如：支架焊接完成）</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. 动词 + 副词（例如：用力地压入）</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在PFMEA的逻辑关系中，“过程工作要素”的功能如果未能实现，其“反面”对应的是什么？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. 失效影响</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. 失效模式</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. 失效起因</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. 失效严重度</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于产品特性与过程特性，以下表述正确的是：</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 轴的直径属于产品特性，而压入轴承的机器压力属于过程特性。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 过程特性的不满足直接等同于失效影响。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 零件表面清洁度属于过程特性。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. 产品特性只包括顾客的口头要求，不包括法律要求。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">功能的正面描述与其反面的失效有着严格的对应关系，以下对应正确的有哪些？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q4" id="q4a" value="A"><label for="q4a">A. 过程项的功能 <--> 失效影响</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4b" value="B"><label for="q4b">B. 过程步骤的功能 <--> 失效模式</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4c" value="C"><label for="q4c">C. 过程工作要素的功能 <--> 失效起因</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4d" value="D"><label for="q4d">D. 过程操作人员的功能 <--> 失效影响</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在探讨功能和结构的逻辑连接时，常使用“为什么（Why）”和“如何（How）”的问题。以下哪些说法是正确的？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q5" id="q5a" value="A"><label for="q5a">A. 问“如何实现？”是从过程工作要素推导到过程项（从左到右）。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5b" value="B"><label for="q5b">B. 问“如何实现？”是从过程项推导到过程工作要素（从右到左）。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5c" value="C"><label for="q5c">C. 问“为什么执行？”是从过程工作要素推导到过程项（从左到右）。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5d" value="D"><label for="q5d">D. 问“为什么执行？”是从过程项推导到过程步骤（从右到左）。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" onclick="resetQuiz()" style="background: #718096; margin-left: 10px;">重新测试</button>
+            </div>
+            <div id="result-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: {
+                A: "不推荐使用形容词作为主要描述方式。",
+                B: "✅ 正确。手册建议使用“行为动词+名词”的现在时态来清晰描述功能。",
+                C: "这是状态描述，不是动作。",
+                D: "副词往往难以准确测量。"
+            },
+            q2: {
+                A: "失效影响对应的是最高层级（过程项）的功能。",
+                B: "失效模式对应的是中间层级（过程步骤）的功能。",
+                C: "✅ 正确。过程工作要素（4M）的功能反面就是导致失效发生的直接原因（失效起因）。",
+                D: "严重度是一个评分结果，不是功能的反面。"
+            },
+            q3: {
+                A: "✅ 正确。轴直径是产品本身具有的物理属性，而压力是制造该产品时施加的过程控制参数。",
+                B: "过程特性的不满足通常是失效起因，而不是最终影响。",
+                C: "零件清洁度是要求产品达到的状态，属于产品特性或内部要求。",
+                D: "法律要求（如无铅材料、排放标准）也是关键的产品特性来源。"
+            },
+            q4: {
+                A: "✅ 正确。最高级对应的反面是最终影响。",
+                B: "✅ 正确。本工站的功能反面是本工站发生的失效模式。",
+                C: "✅ 正确。工作要素动作的失误是失效起因。",
+                D: "操作人员属于过程工作要素，其失误对应的是失效起因，而非最终的失效影响。"
+            },
+            q5: {
+                A: "如何实现是从高层往底层拆解的（右到左）。",
+                B: "✅ 正确。“如何实现？”是从过程项拆解到具体步骤，再到工作要素（右到左）。",
+                C: "✅ 正确。“为什么执行该要素？”是为了完成上级步骤的功能（左到右）。",
+                D: "为什么执行是向上追溯意义的过程（左到右）。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                const correctAns = q.getAttribute('data-correct').split(',');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'missed');
+                    const input = opt.querySelector('input');
+                    const val = input.value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else {
+                        feedback.style.display = 'none';
+                    }
+                });
+
+                const isCorrect = isMulti ? 
+                    (selected.length === correctAns.length && selected.every(v => correctAns.includes(v))) :
+                    (selected.length === 1 && selected[0] === correctAns[0]);
+
+                if (isCorrect) score++;
+            });
+
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `得分：${score} / ${total}`;
+            resultDiv.style.color = score === total ? '#48bb78' : '#ed8936';
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect', 'missed');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-display').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 018：FMEA-MSR 步骤五：风险分析</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #2d3748; text-align: center; margin-bottom: 5px; }
+        .subtitle { color: #718096; text-align: center; font-size: 14px; margin-bottom: 30px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .highlight { background-color: #fefcbf; border-left: 4px solid #ecc94b; }
+        .highlight-green { background-color: #c6f6d5; border-left: 4px solid #48bb78; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fed7d7; border-left: 4px solid #f56565; }
+        .question { margin-bottom: 25px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; }
+        .question-num { display: inline-block; background: #4a5568; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #ecc94b; color: #744210; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; margin-left: 5px; }
+        .question-type.multi { background: #48bb78; color: white; }
+        .question-text { font-size: 16px; font-weight: 500; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .option:hover { background: #f7fafc; }
+        .option input { margin-right: 10px; }
+        .option.correct { background: #c6f6d5; border-color: #48bb78; }
+        .option.wrong { background: #fed7d7; border-color: #f56565; }
+        .option.user-wrong { background: #feebc8; border-color: #dd6b20; }
+        .option-badge { position: absolute; right: 15px; top: 12px; font-weight: bold; }
+        .option-feedback { margin-top: 8px; font-size: 13px; color: #4a5568; display: none; padding-top: 8px; border-top: 1px dashed #cbd5e0; }
+        .option.show-feedback .option-feedback { display: block; }
+        .submit-btn { background: #4a5568; color: white; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.3s; }
+        .submit-btn:hover { background: #2d3748; }
+        .result-panel { display: none; text-align: center; padding: 20px; background: #ebf8ff; border-radius: 8px; margin-top: 20px; border: 1px solid #90cdf4; }
+        .score { font-size: 24px; font-weight: bold; color: #2b6cb0; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Day 018：FMEA-MSR 步骤五：风险分析</h1>
+            <div class="subtitle">AIAG & VDA FMEA 学习打卡</div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue">
+                <strong>🔄 温故知新：上期核心回顾 (Day 017 MSR 功能与失效)</strong>
+                <ul>
+                    <li><strong>诊断与响应：</strong>MSR重点关注系统对失效的内部探测功能和自动响应功能。</li>
+                    <li><strong>减缓的影响：</strong>当系统监控成功并及时响应，原本的灾难性后果会被降级为“安全状态”或“减缓的失效影响”。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>💡 核心概念：S、F、M 评级逻辑</strong><br>
+                FMEA-MSR不使用传统的(S, O, D)，而是使用 <strong>S(严重度)、F(频率)、M(监视)</strong>。<br>
+                <strong>严重度(S)：</strong>同DFMEA，表示失效后果有多严重。<br>
+                <strong>频率(F)：</strong>在产品生命周期内，在顾客操作条件下发生该失效起因的可能性。通常依据现场质保数据(ppm)估算。<br>
+                <strong>监视(M)：</strong>系统探测故障并切换到安全状态的能力。M=10代表没有监控或监控无效，M=1代表百分百能拦截并响应。
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🛡️ 监视的三种情况与影响减缓</strong><br>
+                1. <strong>无监视：</strong> M=10，承受初始的(最严重的)严重度(S)。<br>
+                2. <strong>部分有效监视：</strong> 绝大部分被拦下，少部分漏网。M评级体现拦截率，最终S仍取最严重的那个漏网后果。<br>
+                3. <strong>可靠的监视：</strong> M=1，百分百拦下，系统切入安全模式。此时，严重的S被减缓了，评估AP时使用“减缓的失效影响”的严重度打分。
+            </div>
+
+            <div class="highlight-green">
+                <strong>📱 传音应用场景：电池充放电的F和M</strong><br>
+                在传音电池管理系统设计中：<br>
+                <strong>频率(F)</strong>：评估电芯内部微短路在用户3年使用期内发生的概率(ppm级)，F分可能为2或3。<br>
+                <strong>监视(M)</strong>：系统持续监测电压跳水，如果有可靠算法在几秒内切断输出，则M得分很低（能力强），避免了起火(S=10)，变成仅关机(减缓的S=5)，极大降低了AP风险等级。
+            </div>
+
+            <div class="highlight-red">
+                <strong>⚠️ 常见误区：把F当成了制造过程的频度O</strong><br>
+                制造DFMEA的O看的是设计缺陷产生的可能性，PFMEA的O看的是产线出错率。而MSR的F(频率)，特指<strong>车辆/设备在使用寿命期间客户实际使用时</strong>故障发生的频率(现场失效率)。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA手册》第4章 4.5 节（原版手册第 119-130 页）。
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-top: 0; font-size: 18px;">📝 随堂练习</h2>
+            <div id="quiz-container">
+                <!-- Question 1 -->
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在FMEA-MSR的风险分析中，评估风险的三个维度分别缩写为？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. S, O, D (严重度，频度，探测度)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. S, F, M (严重度，频率，监视)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. S, O, M (严重度，频度，监视)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. S, F, D (严重度，频率，探测度)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">FMEA-MSR 中的“频率 (F)” 指的是什么？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 生产流水线上一天内组装不良的次数</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 系统发出诊断监测信号的工作频率（赫兹）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 在给定运行情况下，车辆/设备预期使用寿命内发生该失效起因的频率（现场发生率）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 顾客按下电源开关的频率</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">当一个电气系统的故障监视和响应非常可靠（M=1，百分百能拦截危险）时，团队在计算措施优先级(AP)时，其严重度(S)应该使用哪个数值？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 继续使用发生危险时最严重的初始后果(例如车毁人亡S=10)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 自动降为1分，因为被拦截了</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 使用安全模式/降级运行所带来的“减缓的失效影响”对应的严重度得分</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 严重度与此无关，由频率(F)决定一切</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">MSR中的“监视(M)”评级，是对系统在顾客操作期间哪几种能力的综合度量？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 传感器发现异常的探测能力</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 在工厂生产阶段的AOI自动光学检测拦截率</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 逻辑单元在容错时间内启动安全机制的响应能力</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 改变物理行为（如切断电流）以阻止危险的反应能力</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question" data-correct="A,B,D">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">团队在为MSR的“频率(F)”进行打分评级时，可以参考以下哪些依据？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 类似产品在现场的退货和保修数据库</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 供应商提供的元器件失效率数据(如 ppm/年 或 FIT)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. 工厂内的员工操作失误统计</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. 设计FMEA对系统失效概率的评估结果</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="submit-btn" onclick="checkAnswers()">提交答案 🚀</button>
+                
+                <div class="result-panel" id="result-panel">
+                    <div class="score" id="score-text"></div>
+                    <p id="encouragement-text"></p>
+                    <button class="submit-btn" style="background: #4299e1; margin-top: 15px;" onclick="resetQuiz()">再测一次 🔄</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            "q1": {
+                "A": "❌ 错误。这是DFMEA和PFMEA的标准指标。",
+                "B": "✅ 正确！FMEA-MSR的三个维度是严重度(Severity)，频率(Frequency)，监视(Monitoring)。",
+                "C": "❌ 错误。O是发生频度，在MSR里改叫F。",
+                "D": "❌ 错误。探测度D在MSR里变成了面向客户端使用的监视M。"
+            },
+            "q2": {
+                "A": "❌ 错误。这是制造过程不良，属于PFMEA。",
+                "B": "❌ 错误。不是电学频率参数。",
+                "C": "✅ 正确！F是指在客户实际使用生命周期中该元件失效的频率/发生率。",
+                "D": "❌ 错误。"
+            },
+            "q3": {
+                "A": "❌ 错误。只有当系统部分漏网或没有监视时，才用最严重的后果。",
+                "B": "❌ 错误。降级运行也会有后果（比如功能丧失导致用户抱怨），不可能降为1。",
+                "C": "✅ 正确！如果百分百可靠拦截，原本危险的后果就被替换成了减缓的后果，此时S按减缓后的后果打分。",
+                "D": "❌ 错误。"
+            },
+            "q4": {
+                "A": "✅ 正确！包含传感器诊断能力。",
+                "B": "❌ 错误。工厂拦截属于PFMEA探测度(D)，MSR只评估客户端使用中的自动监视。",
+                "C": "✅ 正确！必须在容错时间内响应才算有效监视。",
+                "D": "✅ 正确！响应动作能否切实执行也是综合评价的一部分。"
+            },
+            "q5": {
+                "A": "✅ 正确！现场保修数据是最真实的发生频率反映。",
+                "B": "✅ 正确！元器件基础失效率是评估的基石。",
+                "C": "❌ 错误。员工装配失误是PFMEA的事情，MSR假设生产是良品，讨论的是使用过程中的电子损耗和失效。",
+                "D": "✅ 正确！DFMEA的评估结论通常是MSR的起点。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            let total = 5;
+            let allAnswered = true;
+
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                if (selected.length === 0) {
+                    allAnswered = false;
+                }
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    const badge = opt.querySelector('.option-badge');
+                    
+                    opt.classList.remove('correct', 'wrong', 'user-wrong', 'show-feedback');
+                    badge.textContent = '';
+                    
+                    if (explanations[qId] && explanations[qId][val]) {
+                        feedback.textContent = explanations[qId][val].replace(/^[✅❌🟠]\s*/, '');
+                    }
+
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        badge.textContent = '✅ 正确选项';
+                        if (selected.includes(val)) {
+                            feedback.innerHTML = '<span style="color:#48bb78;font-weight:bold;">✅ 选择正确：</span>' + feedback.textContent;
+                        } else {
+                            feedback.innerHTML = '<span style="color:#48bb78;font-weight:bold;">💡 错过正确答案：</span>' + feedback.textContent;
+                        }
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('user-wrong');
+                        badge.textContent = '❌ 您的选择';
+                        feedback.innerHTML = '<span style="color:#e53e3e;font-weight:bold;">❌ 误区提示：</span>' + feedback.textContent;
+                    }
+                    
+                    opt.classList.add('show-feedback');
+                });
+
+                if (selected.sort().join(',') === correctAns.sort().join(',')) {
+                    score++;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('请回答所有题目后再提交哦！');
+                return;
+            }
+
+            document.querySelector('.submit-btn').style.display = 'none';
+            const resultPanel = document.getElementById('result-panel');
+            resultPanel.style.display = 'block';
+            
+            document.getElementById('score-text').textContent = `🎯 你的得分：${score} / ${total}`;
+            
+            let encText = '';
+            if (score === total) encText = '太棒了！你已经完全掌握了MSR的S/F/M核心逻辑！🏆';
+            else if (score >= 3) encText = '表现不错！再区分一下PFMEA和MSR的评级指标就完美了！💪';
+            else encText = '这个章节理论有点深，再回顾一下课件中的例子吧！📚';
+            
+            document.getElementById('encouragement-text').textContent = encText;
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input:checked').forEach(input => {
+                input.checked = false;
+            });
+            
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'wrong', 'user-wrong', 'show-feedback');
+                opt.querySelector('.option-badge').textContent = '';
+            });
+            
+            document.querySelector('.submit-btn').style.display = 'block';
+            document.getElementById('result-panel').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

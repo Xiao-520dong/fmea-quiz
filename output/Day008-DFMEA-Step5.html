@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 008：DFMEA 步骤五：风险分析</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-green {
+            background-color: #c6f6d5;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            padding: 2px 6px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #718096;
+        }
+        .question-text {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #f7fafc;
+        }
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        .option.missed {
+            background: #feebc8;
+            border-color: #ed8936;
+        }
+        .option-feedback {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+            display: none;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        #result-display {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2>Day 008：DFMEA 步骤五：风险分析</h2>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>失效链分析包括三个层面：失效影响(FE)、失效模式(FM)、失效起因(FC)。</li>
+                    <li>失效模式可能源自功能的丧失、退化、间歇、非预期、超范围或延迟等。</li>
+                    <li>分析应考虑从整车/系统级别逐层级联至组件级别，上一级别的失效起因往往是下一级别的失效模式。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>📝 风险分析的目的与控制类型</strong><br>
+                设计风险分析的目的是通过评估严重度(S)、频度(O)和探测度(D)来估计风险，并对需采取的措施进行优先排序(AP)。<br>
+                它依赖于两类控制措施：
+                <ul>
+                    <li><strong>当前预防控制 (PC)：</strong> 用于减轻导致失效模式的潜在起因，为确定频度(O)评级提供基础。例如：防错设计、模拟分析、遵守EMC指令。</li>
+                    <li><strong>当前探测控制 (DC)：</strong> 在项目交付生产前探测失效起因或失效模式是否存在。例如：功能检查、爆裂测试、耐久性测试。</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🔍 严重度(S)、频度(O)与探测度(D)的评估</strong><br>
+                <ul>
+                    <li><strong>严重度 (S)：</strong> 评估失效影响的严重程度（1-10分制）。它是独立确定的，不考虑频度或探测度。通常由顾客或最终用户的影响来决定。</li>
+                    <li><strong>频度 (O)：</strong> 评估预防控制的有效性。根据过往经验、创新程度和预防控制能力来评估失效起因发生的频率（1-10分制）。</li>
+                    <li><strong>探测度 (D)：</strong> 评估探测控制的有效性。在交付生产前，探测方法能够可靠地发现失效起因或模式的能力（1-10分制）。</li>
+                </ul>
+            </div>
+
+            <div class="highlight-green">
+                <strong>💡 措施优先级 (AP) 取代 RPN</strong><br>
+                新版FMEA使用 <strong>措施优先级 (Action Priority, AP)</strong> 代替传统的 RPN (风险顺序数)。<br>
+                AP 将风险处理措施分为高(H)、中(M)、低(L)三个优先级。其逻辑首先看重严重度(S)，其次频度(O)，最后探测度(D)。RPN因对S、O、D赋予相同权重，容易导致团队无法准确决定优先处理哪些风险。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第 2 章 2.5 节（原版手册第 43-59 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <h3 style="margin-top: 40px;">📝 随堂练习</h3>
+            <div id="quiz-container">
+                
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在 DFMEA 步骤五风险分析中，关于预防控制 (PC) 的作用，以下描述正确的是：</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. 用于探测产品交付前是否存在失效模式。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. 用于减轻导致失效的潜在起因，为评估频度(O)提供基础。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. 主要用来降低失效的严重度(S)评级。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. 是一种在产品量产后执行的质量检测手段。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">下列关于严重度(S)评级的说法，哪项是正确的？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. 严重度评级受到频度和探测度的影响。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. 实施有效的探测测试可以降低严重度等级。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. 严重度是在不考虑频度和探测度的情况下，针对失效模式的最严重失效影响确定的。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. 严重度是由产品的创新程度决定的。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">为什么新版 FMEA 手册推荐使用措施优先级 (AP) 而不推荐使用 RPN (风险顺序数)？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 因为 RPN 的计算太复杂。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 因为 AP 表允许组织自定义新的评分标准，而 RPN 不行。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 因为 RPN 只能用于过程 FMEA，不能用于设计 FMEA。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. RPN 对严重度、频度和探测度的权重相等，可能对不同的组合产生相同分数，不利于团队确定优先级。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">以下哪些选项属于当前探测控制 (DC) 的示例？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q4" id="q4a" value="A"><label for="q4a">A. 耐久性测试</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4b" value="B"><label for="q4b">B. 爆裂压力测试</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4c" value="C"><label for="q4c">C. 基于模拟的公差计算</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4d" value="D"><label for="q4d">D. 防错法设计（如几何防呆）</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">评估频度 (O) 时，团队应当考虑以下哪些因素？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q5" id="q5a" value="A"><label for="q5a">A. 类似组件或系统的现场使用经验</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5b" value="B"><label for="q5b">B. 失效影响对车辆操作安全的影响程度</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5c" value="C"><label for="q5c">C. 新设计的创新程度和应用变化</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5d" value="D"><label for="q5d">D. 预防控制是否到位以及其有效性</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" onclick="resetQuiz()" style="background: #718096; margin-left: 10px;">重新测试</button>
+            </div>
+            <div id="result-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: {
+                A: "这是探测控制的作用。",
+                B: "✅ 正确。预防控制(PC)旨在减轻导致失效模式的起因，是确定频度评级的基础。",
+                C: "严重度是不受预防控制影响的。",
+                D: "预防控制是在设计阶段实施的规范、计算等。"
+            },
+            q2: {
+                A: "严重度是不考虑频度和探测度确定的。",
+                B: "探测测试不改变严重度。",
+                C: "✅ 正确。严重度仅针对失效后果的严重程度进行评级。",
+                D: "创新程度影响频度(O)的评级，不直接决定严重度。"
+            },
+            q3: {
+                A: "不是因为计算复杂。",
+                B: "AP表并不提倡随意修改自定义标准。",
+                C: "RPN在设计和过程FMEA中都曾被使用。",
+                D: "✅ 正确。RPN(SxOxD)因为权重相同，容易导致不同风险组合得分相近，无法指导资源分配。AP法按S>O>D逻辑排序，更符合风险管理目的。"
+            },
+            q4: {
+                A: "✅ 正确。在生产前进行的物理测试属于探测控制。",
+                B: "✅ 正确。爆裂测试是明确的探测控制手段。",
+                C: "公差计算属于设计阶段的预防控制。",
+                D: "防呆设计是为了防止失效发生，属于预防控制。"
+            },
+            q5: {
+                A: "✅ 正确。过往的经验是评估频度的重要参考。",
+                B: "这属于严重度(S)评估的考虑范畴。",
+                C: "✅ 正确。新技术和设计的改变会影响频度等级。",
+                D: "✅ 正确。对频度评级时，必须考虑当前预防控制的有效性。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                const correctAns = q.getAttribute('data-correct').split(',');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'missed');
+                    const input = opt.querySelector('input');
+                    const val = input.value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else {
+                        feedback.style.display = 'none';
+                    }
+                });
+
+                const isCorrect = isMulti ? 
+                    (selected.length === correctAns.length && selected.every(v => correctAns.includes(v))) :
+                    (selected.length === 1 && selected[0] === correctAns[0]);
+
+                if (isCorrect) score++;
+            });
+
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `得分：${score} / ${total}`;
+            resultDiv.style.color = score === total ? '#48bb78' : '#ed8936';
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect', 'missed');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-display').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

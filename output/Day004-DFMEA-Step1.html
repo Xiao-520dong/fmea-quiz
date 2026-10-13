@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 001：FMEA 的目的与说明（基础入门）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: #333; }
+        .container { width: 100%; max-width: 800px; }
+        .card { background-color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; margin-bottom: 20px; }
+        .header { padding: 30px; background: rgba(118, 75, 162, 0.05); border-bottom: 1px solid #edf2f7; text-align: center; }
+        .breadcrumb { font-size: 14px; color: #6c757d; margin-bottom: 10px; }
+        .title { font-size: 28px; font-weight: 700; color: #2d3748; margin: 0 0 10px 0; }
+        .subtitle { font-size: 16px; color: #4a5568; margin: 0; }
+        .review-section { margin: 0; padding: 20px 30px; background-color: #ebf8ff; border-bottom: 1px solid #e2e8f0; }
+        .review-section ul { margin: 10px 0 0 0; padding-left: 20px; color: #2b6cb0; font-size: 15px; line-height: 1.6; }
+        .knowledge { padding: 30px; background-color: #f8f9fa; }
+        .knowledge h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #667eea; padding-left: 12px; margin-bottom: 20px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.6; }
+        .highlight { background-color: #fffbeb; border-left: 4px solid #f6e05e; }
+        .highlight-green { background-color: #e6fffa; border-left: 4px solid #38b2ac; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #fc8181; }
+        .source-ref { background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin: 0 30px 30px 30px; padding: 15px; border-radius: 8px; }
+        .quiz-section { padding: 30px; }
+        .quiz-section h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #48bb78; padding-left: 12px; margin-bottom: 25px; }
+        .question { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .question-num { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #eebefa; color: #553c9a; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-left: 8px; margin-bottom: 10px; }
+        .question-type.multi { background: #bee3f8; color: #2b6cb0; }
+        .question-text { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; flex-wrap: wrap; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 12px; cursor: pointer; }
+        .option label { flex: 1; cursor: pointer; font-size: 15px; color: #4a5568; }
+        .option-badge { margin-left: 10px; font-size: 18px; display: none; }
+        .option.correct { background-color: #f0fff4; border-color: #68d391; }
+        .option.correct label { color: #22543d; font-weight: 600; }
+        .option.error { background-color: #fff5f5; border-color: #fc8181; }
+        .option.error label { color: #742a2a; }
+        .option.user-error { background-color: #fffaf0; border-color: #f6ad55; }
+        .option-feedback { width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px; display: none; background-color: #f8f9fa; border-left: 3px solid #cbd5e0; }
+        .action-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3); }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+        .btn-reset:hover { background: #e2e8f0; }
+        .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <!-- 1. 头部 -->
+        <div class="header">
+            <div class="breadcrumb">FMEA 学习打卡</div>
+            <h1 class="title">Day 001：FMEA 的目的与说明（基础入门）</h1>
+            <p class="subtitle">什么是 FMEA？它能帮我们管住哪些风险？</p>
+        </div>
+
+        
+<div class="knowledge">
+    <h3>📌 1. FMEA 七步法框架</h3>
+    <div class="highlight">
+        FMEA 提供了标准化的“七步法”作为任务框架：
+        <ol>
+            <li><strong>步骤一：规划和准备 (Planning and Preparation)</strong></li>
+            <li>步骤二：结构分析 (Structure Analysis)</li>
+            <li>步骤三：功能分析 (Function Analysis)</li>
+            <li>步骤四：失效分析 (Failure Analysis)</li>
+            <li>步骤五：风险分析 (Risk Analysis)</li>
+            <li>步骤六：优化 (Optimization)</li>
+            <li>步骤七：结果文件化 (Results Documentation)</li>
+        </ol>
+        无论使用专用软件还是电子表格，这七步的过程都是一样的。
+    </div>
+
+    <h3>📌 2. DFMEA 步骤一的核心目标</h3>
+    <div class="highlight-blue">
+        DFMEA“规划和准备”步骤的主要目标包括：
+        <ul>
+            <li><strong>项目确定：</strong>明确了解需要评估的内容。</li>
+            <li><strong>项目计划：</strong>应用 5T 方法（目的、时间安排、团队、任务、工具）。</li>
+            <li><strong>分析边界：</strong>确定分析中<strong>包括什么</strong>和<strong>不包括什么</strong>（两者同样重要）。</li>
+            <li><strong>识别基准：</strong>利用以往的经验确认基准 FMEA（如基础 FMEA、家族 FMEA）。</li>
+            <li><strong>为结构分析奠定基础：</strong>为步骤二做准备。</li>
+        </ul>
+    </div>
+
+    <h3>📌 3. 界定分析边界与考虑因素</h3>
+    <div class="highlight">
+        在界定 DFMEA 范围时，团队需要考虑以下输入信息：
+        <ul>
+            <li>法律要求、技术要求、顾客期望</li>
+            <li>系统方块图/边界图、BOM（物料清单）</li>
+            <li>质量/可靠性历史（内部、现场失效、保修等）</li>
+            <li>技术新颖性/创新程度、设计复杂性</li>
+            <li>目录和标准零件的范围</li>
+        </ul>
+    </div>
+
+    <h3>📌 4. 基准 DFMEA (基础 / 家族 FMEA)</h3>
+    <div class="highlight-green">
+        在传音的实际项目中，我们很少从零开始写 FMEA。
+        <br>
+        <strong>基础 DFMEA / 系列 DFMEA：</strong>包含共同或一致产品边界和相关功能。对于新产品，只需将特定组件和新增功能添加到已有的家族 FMEA 中。这极大地提高了效率和质量。如果没有基准，团队才需要开发全新的 DFMEA。
+    </div>
+</div>
+<div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+    <strong>📚 内容来源：</strong>AIAG & VDA FMEA 手册第 1 章 1.6 节 & 第 2 章 2.1 节（原版手册第 27-31 页）。
+</div>
+
+        <div class="knowledge">
+            <h3>📖 今日核心知识</h3>
+            
+            <div class="highlight">
+                <strong>概念提示：FMEA 是什么？</strong><br>
+                FMEA（失效模式与影响分析）是一套面向团队的系统的、定性分析方法，其主要目的是：评估产品/过程中失效的潜在技术风险，分析失效的起因和影响，记录预防和探测措施，并针对降低风险的措施提出建议。
+            </div>
+
+            <div class="highlight-blue">
+                <strong>边界说明：FMEA 的局限性</strong><br>
+                制造商考虑的风险类型很多，包括技术风险、财务风险、时间风险和战略风险。<br>
+                <strong>划重点：</strong>FMEA <strong>仅用于分析技术风险</strong>，从而减少失效、提高产品和过程的安全性。它不用来分析项目能不能按时完成，或者项目有没有利润。
+            </div>
+
+            <div class="highlight-green">
+                <strong>传音应用场景</strong><br>
+                当我们研发一款新手机（如在引入新的快充方案时），FMEA 可以用来分析“快充模块过热导致主板烧毁”这样的<strong>技术风险</strong>。但如果讨论“这个快充方案会不会超出整机 BOM 成本”或者“开发周期会不会导致项目延期”，这属于财务和时间风险，<strong>不在 FMEA 的范围内</strong>。<br><br><div style="text-align:center; margin: 20px 0;"><img src="../assets/day001-risk-types.jpg" alt="风险类型" style="max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1);"><p style="font-size:13px; color:#718096; margin-top: 8px;">图 1.1-1 风险类型 (来源：FMEA 手册)</p></div>
+            </div>
+            
+            <div class="highlight">
+                <strong>FMEA 的商业目标</strong><br>
+                除了识别风险，FMEA 还能：提高汽车/电子产品的质量与可靠性，降低保修成本，提高顾客满意度，证明风险分析以应对法律责任，以及在公司内部建立经验教训知识库。
+            </div>
+        </div>
+
+        <div class="source-ref">
+            <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.1 节（原版手册第 13 - 14 页）。
+        </div>
+
+        
+<div class="quiz-section">
+    <h3>📝 课后测验</h3>
+    
+    <div class="question" data-correct="B">
+        <span class="question-num">第 1 题</span>
+        <span class="question-type">单选</span>
+        <div class="question-text">新版 FMEA 手册引入了标准的流程框架，这个框架被称为：</div>
+        <div class="options">
+            <div class="option">
+                <input type="radio" name="q1" id="q1a" value="A">
+                <label for="q1a">A. 五步法 (5 Steps)</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q1" id="q1b" value="B">
+                <label for="q1b">B. 七步法 (7 Steps)</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q1" id="q1c" value="C">
+                <label for="q1c">C. 八步法 (8D)</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question" data-correct="C">
+        <span class="question-num">第 2 题</span>
+        <span class="question-type">单选</span>
+        <div class="question-text">在 DFMEA 的“规划和准备”阶段，关于分析边界的确定，以下哪种说法是正确的？</div>
+        <div class="options">
+            <div class="option">
+                <input type="radio" name="q2" id="q2a" value="A">
+                <label for="q2a">A. 只需要列出分析中“包括什么”，不需要关注“不包括什么”</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q2" id="q2b" value="B">
+                <label for="q2b">B. 边界一旦确定，只能由最高管理者更改</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q2" id="q2c" value="C">
+                <label for="q2c">C. 确定分析中“不包括什么”与“包括什么”同样重要</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question" data-correct="A">
+        <span class="question-num">第 3 题</span>
+        <span class="question-type">单选</span>
+        <div class="question-text">当公司开发同一产品系列的新产品时，最高效的做法是：</div>
+        <div class="options">
+            <div class="option">
+                <input type="radio" name="q3" id="q3a" value="A">
+                <label for="q3a">A. 在现有的基础/系列 DFMEA 上添加新产品的特定组件和功能</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q3" id="q3b" value="B">
+                <label for="q3b">B. 每次都从零开始重新制作一个完整的 DFMEA</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="radio" name="q3" id="q3c" value="C">
+                <label for="q3c">C. 直接复制以前的报告并修改标题即可，无需重新评估</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question" data-correct="A,B,C,D">
+        <span class="question-num">第 4 题</span>
+        <span class="question-type multi">多选</span>
+        <div class="question-text">在界定 DFMEA 范围和边界时，团队可以参考以下哪些信息来源？（多选）</div>
+        <div class="options">
+            <div class="option">
+                <input type="checkbox" name="q4" id="q4a" value="A">
+                <label for="q4a">A. 法律要求和技术规范</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q4" id="q4b" value="B">
+                <label for="q4b">B. 系统的方块图 / 边界图</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q4" id="q4c" value="C">
+                <label for="q4c">C. 物料清单 (BOM)</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q4" id="q4d" value="D">
+                <label for="q4d">D. 类似产品以往的质量历史（客诉、保修等）</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question" data-correct="A,B,C">
+        <span class="question-num">第 5 题</span>
+        <span class="question-type multi">多选</span>
+        <div class="question-text">以下哪些是 DFMEA 步骤一（规划和准备）的主要目标？（多选）</div>
+        <div class="options">
+            <div class="option">
+                <input type="checkbox" name="q5" id="q5a" value="A">
+                <label for="q5a">A. 确定项目计划（包含 5T）</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q5" id="q5b" value="B">
+                <label for="q5b">B. 界定分析边界（包括什么/不包括什么）</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q5" id="q5c" value="C">
+                <label for="q5c">C. 确定基准 DFMEA 以供参考</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+            <div class="option">
+                <input type="checkbox" name="q5" id="q5d" value="D">
+                <label for="q5d">D. 确定产品的具体失效模式并评分</label>
+                <span class="option-badge"></span>
+                <div class="option-feedback"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="quiz-section">
+            <h3>📝 巩固练习</h3>
+            
+            <form id="quizForm">
+                
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">FMEA 是一种什么性质的分析方法？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. 面向个人的定量分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 面向团队的财务分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. 面向团队的系统的定性分析方法</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在产品开发过程中，哪一种风险是 FMEA 专门用来分析的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 时间风险（进度延期）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 技术风险（失效模式与影响）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 财务风险（超出BOM成本预算）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 战略风险（市场定位偏差）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">FMEA 想要达成的目的包括哪些？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 评估产品/过程中失效的潜在技术风险</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 计算新产品的市场投资回报率</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 记录预防和探测措施</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 针对降低风险的措施提出建议</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C,D">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">实施 FMEA 能够带来的商业收益（目标）包含以下哪些？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 直接决定产品的最终销售价格</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 降低保修和商誉成本</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 减少开发过程中的后期变更</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 证明产品和过程风险分析，从而为承担法律责任做好准备</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在传音的研发会议上，项目经理说：“我们需要用 FMEA 来分析一下，如果这个供应商交货延期，会对我们上市计划产生什么影响。”这种说法是否正确？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 正确，交货延期属于 FMEA 分析的一部分。</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 错误，交货延期属于时间/供应链风险，FMEA 仅用于分析技术风险。</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-btns">
+                    <button type="button" class="btn btn-submit" onclick="checkAnswers()">提交答案查看解析</button>
+                    <button type="button" class="btn btn-reset" onclick="resetQuiz()">重新答题</button>
+                </div>
+                
+                <div class="score-board" id="scoreBoard"></div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const explanations = {
+        'q1': { 'A': '❌ 错误。', 'B': '✅ 正确。新版手册统一采用了七步法。', 'C': '❌ 错误。' },
+        'q2': { 'A': '❌ 错误。', 'B': '❌ 错误。', 'C': '✅ 正确。明确“不包括什么”能有效防止分析范围蔓延，确保团队聚焦重点。' },
+        'q3': { 'A': '✅ 正确。基于基础或家族 DFMEA 进行增量更新是行业最佳实践。', 'B': '❌ 错误。从零开始效率低下且容易遗漏历史教训。', 'C': '❌ 错误。必须对新产品的变更部分进行全面评估，不能直接复制。' },
+        'q4': { 'A': '✅ 正确。', 'B': '✅ 正确。', 'C': '✅ 正确。', 'D': '✅ 正确。这些输入都有助于准确界定 FMEA 的边界和重点。' },
+        'q5': { 'A': '✅ 正确。', 'B': '✅ 正确。', 'C': '✅ 正确。', 'D': '❌ 错误。失效模式和评分是在步骤四和步骤五进行的，步骤一只是规划和准备。' }
+    };
+
+    function checkAnswers() {
+        let score = 0; const total = 5;
+        document.querySelectorAll('.question').forEach((q, i) => {
+            const qId = 'q' + (i + 1);
+            const corrects = q.dataset.correct.split(',');
+            const type = q.querySelector('.question-type').classList.contains('multi') ? 'checkbox' : 'radio';
+            const inputs = q.querySelectorAll(`input[type="${type}"]`);
+            let userAns = [];
+            inputs.forEach(inp => { if(inp.checked) userAns.push(inp.value); });
+            const isCorrect = userAns.length === corrects.length && userAns.every(v => corrects.includes(v));
+            if (isCorrect) score++;
+
+            inputs.forEach(inp => {
+                const optDiv = inp.closest('.option');
+                const badge = optDiv.querySelector('.option-badge');
+                const feedback = optDiv.querySelector('.option-feedback');
+                optDiv.className = 'option';
+                feedback.style.display = 'block';
+                badge.style.display = 'inline-block';
+                const val = inp.value;
+                feedback.innerHTML = explanations[qId][val] || '';
+
+                if (corrects.includes(val)) {
+                    optDiv.classList.add('correct'); badge.innerHTML = '✅';
+                    if (userAns.includes(val)) feedback.style.color = '#22543d';
+                } else if (userAns.includes(val)) {
+                    optDiv.classList.add('user-error'); badge.innerHTML = '❌'; feedback.style.color = '#9c4221';
+                }
+                inp.disabled = true;
+            });
+        });
+        localStorage.setItem('fmea-day001', 'completed');
+        const sb = document.getElementById('scoreBoard');
+        sb.style.display = 'block';
+        sb.innerHTML = `本次得分：${score} / ${total}` + (score === total ? ' 🎯 满分通过！' : ' 💪 继续加油！');
+        sb.style.color = score === total ? '#38b2ac' : '#dd6b20';
+    }
+
+    function resetQuiz() {
+        document.querySelectorAll('.question').forEach(q => {
+            q.querySelectorAll('input').forEach(inp => {
+                inp.checked = false; inp.disabled = false;
+                const optDiv = inp.closest('.option');
+                optDiv.className = 'option';
+                optDiv.querySelector('.option-badge').style.display = 'none';
+                optDiv.querySelector('.option-feedback').style.display = 'none';
+            });
+        });
+        document.getElementById('scoreBoard').style.display = 'none';
+    }
+</script>
+</body>
+</html>

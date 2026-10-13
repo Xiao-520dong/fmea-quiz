@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 011：PFMEA 步骤二：结构分析</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-green {
+            background-color: #c6f6d5;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            padding: 2px 6px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #718096;
+        }
+        .question-text {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #f7fafc;
+        }
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        .option.missed {
+            background: #feebc8;
+            border-color: #ed8936;
+        }
+        .option-feedback {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+            display: none;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        #result-display {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2>Day 011：PFMEA 步骤二：结构分析</h2>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>PFMEA 步骤一（规划与准备）的核心是确定分析边界（包含什么和不包含什么）。</li>
+                    <li>借助基础 PFMEA 或类似产品 PFMEA 可以快速启动新项目的分析。</li>
+                    <li>利用 BOM、法律/技术要求、过程流程等输入，把资源集中在风险优先级最高的过程上。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>📝 过程结构分析的目的</strong><br>
+                过程结构分析旨在确定制造系统，并将其分解为<strong>过程项、过程步骤和过程工作要素</strong>三个层级。<br>
+                它的核心目标是：将分析范围可视化（通过过程流程图或结构树）、明确工站/工位细节，并为后续的功能分析和失效分析打下基础。<strong>在结构分析结束前，不得开始功能分析。</strong>
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🔍 结构分析的三个层级</strong><br>
+                <ul>
+                    <li><strong>1. 过程项（Process Item）：</strong> 结构树或过程流程图的最高级别，代表分析范围的最终成果（例如：电机装配线）。</li>
+                    <li><strong>2. 过程步骤（Process Step）：</strong> 分析的焦点，通常指具体的制造工站或工位（例如：[OP30] 烧结轴承压装过程）。</li>
+                    <li><strong>3. 过程工作要素（Process Work Element）：</strong> 最低级别，影响过程步骤潜在原因的类别。通常使用 4M 类别（人员、设备、材料、环境）或石川法（如 6M 包括方法和测量）来分类。</li>
+                </ul>
+            </div>
+
+            <div class="highlight-green">
+                <strong>💡 可视化工具的作用</strong><br>
+                <strong>过程流程图</strong>展示了生产过程中从进料、加工、检验、运输到存储的实际物理流程。<br>
+                <strong>结构树</strong>按层次排列系统要素，展示了它们之间的依赖关系。如果结构分析中遗漏了某个过程要素，后续的功能和失效分析也必然会遗漏它。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第 3 章 3.2 节（原版手册第 69-73 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <h3 style="margin-top: 40px;">📝 随堂练习</h3>
+            <div id="quiz-container">
+                
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">PFMEA 的结构分析要求将制造系统分解为哪三个层级？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. 过程功能、过程要求、过程失效</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. 过程项、过程步骤、过程工作要素</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. 严重度、频度、探测度</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. 人员、设备、材料</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在结构分析中，“[OP30] 烧结轴承压装过程”通常属于哪一个层级？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. 过程项</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. 过程工作要素</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. 过程步骤</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. 过程失效模式</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于结构分析和功能分析的先后顺序，以下哪项陈述是正确的？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 必须先完成功能分析，才能知道怎么建立结构树。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 结构分析和功能分析应当同时并行进行。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 没有严格的先后顺序，由团队组长决定。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. 在结构分析结束前不得开始进行功能分析。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">过程工作要素通常采用 4M 或 6M 等类别进行分类（石川法），以下哪些属于经典的 4M 类别？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q4" id="q4a" value="A"><label for="q4a">A. 人员 (Man)</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4b" value="B"><label for="q4b">B. 设备 (Machine)</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4c" value="C"><label for="q4c">C. 材料 (Material)</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4d" value="D"><label for="q4d">D. 市场 (Market)</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C,D">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">过程流程图在 PFMEA 步骤二中的作用包括：（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q5" id="q5a" value="A"><label for="q5a">A. 直接计算出工艺的报废率</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5b" value="B"><label for="q5b">B. 展示实际存在的过程物理流程</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5c" value="C"><label for="q5c">C. 作为构建结构分析的输入工具</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5d" value="D"><label for="q5d">D. 帮助确定过程步骤和子步骤的顺序与边界</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" onclick="resetQuiz()" style="background: #718096; margin-left: 10px;">重新测试</button>
+            </div>
+            <div id="result-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: {
+                A: "这是分析的内容，不是结构层级。",
+                B: "✅ 正确。手册明确将结构分析分解为过程项、过程步骤、过程工作要素三个级别。",
+                C: "这是风险分析阶段的评分指标。",
+                D: "这属于“过程工作要素”的具体分类（4M）。"
+            },
+            q2: {
+                A: "过程项通常是最高级别的产出，如“电机装配线”。",
+                B: "工作要素指设备、人员等具体原因类别。",
+                C: "✅ 正确。具体的制造工站或操作动作被称为过程步骤。",
+                D: "这是步骤四失效分析的内容。"
+            },
+            q3: {
+                A: "功能是依附于结构的，没有结构无法分析功能。",
+                B: "并行会导致逻辑混乱和遗漏。",
+                C: "七步法有明确的先后逻辑限制。",
+                D: "✅ 正确。手册明确要求“在结构分析结束前不得开始进行功能分析”。"
+            },
+            q4: {
+                A: "✅ 正确。操作人员是影响过程的关键要素。",
+                B: "✅ 正确。设备与工装是导致失效的常见来源。",
+                C: "✅ 正确。间接材料等也是4M的组成部分。",
+                D: "市场不属于影响制造过程工艺变异的 4M（或 6M）类别。"
+            },
+            q5: {
+                A: "流程图不负责计算具体的生产指标或报废率。",
+                B: "✅ 正确。它可视化了从进料到出货的实际流程路线。",
+                C: "✅ 正确。流程图是建立结构树的重要前置输入。",
+                D: "✅ 正确。它可以帮助清晰地识别出所有的过程步骤及其相互关系。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                const correctAns = q.getAttribute('data-correct').split(',');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'missed');
+                    const input = opt.querySelector('input');
+                    const val = input.value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else {
+                        feedback.style.display = 'none';
+                    }
+                });
+
+                const isCorrect = isMulti ? 
+                    (selected.length === correctAns.length && selected.every(v => correctAns.includes(v))) :
+                    (selected.length === 1 && selected[0] === correctAns[0]);
+
+                if (isCorrect) score++;
+            });
+
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `得分：${score} / ${total}`;
+            resultDiv.style.color = score === total ? '#48bb78' : '#ed8936';
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect', 'missed');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-display').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 024：附件 C - 措施优先级 (AP) 表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: #333; }
+        .container { width: 100%; max-width: 800px; }
+        .card { background-color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; margin-bottom: 20px; }
+        .header { padding: 30px; background: rgba(118, 75, 162, 0.05); border-bottom: 1px solid #edf2f7; text-align: center; }
+        .breadcrumb { font-size: 14px; color: #6c757d; margin-bottom: 10px; }
+        .title { font-size: 28px; font-weight: 700; color: #2d3748; margin: 0 0 10px 0; }
+        .subtitle { font-size: 16px; color: #4a5568; margin: 0; }
+        .review-section { margin: 0; padding: 20px 30px; background-color: #ebf8ff; border-bottom: 1px solid #e2e8f0; }
+        .review-section ul { margin: 10px 0 0 0; padding-left: 20px; color: #2b6cb0; font-size: 15px; line-height: 1.6; }
+        .knowledge { padding: 30px; background-color: #f8f9fa; }
+        .knowledge h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #667eea; padding-left: 12px; margin-bottom: 20px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.6; }
+        .highlight { background-color: #fffbeb; border-left: 4px solid #f6e05e; }
+        .highlight-green { background-color: #e6fffa; border-left: 4px solid #38b2ac; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #fc8181; }
+        .source-ref { background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin: 0 30px 30px 30px; padding: 15px; border-radius: 8px; }
+        .quiz-section { padding: 30px; }
+        .quiz-section h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #48bb78; padding-left: 12px; margin-bottom: 25px; }
+        .question { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .question-num { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #eebefa; color: #553c9a; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-left: 8px; margin-bottom: 10px; }
+        .question-type.multi { background: #bee3f8; color: #2b6cb0; }
+        .question-text { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; flex-wrap: wrap; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 12px; cursor: pointer; }
+        .option label { flex: 1; cursor: pointer; font-size: 15px; color: #4a5568; }
+        .option-badge { margin-left: 10px; font-size: 18px; display: none; }
+        .option.correct { background-color: #f0fff4; border-color: #68d391; }
+        .option.correct label { color: #22543d; font-weight: 600; }
+        .option.error { background-color: #fff5f5; border-color: #fc8181; }
+        .option.error label { color: #742a2a; }
+        .option.user-error { background-color: #fffaf0; border-color: #f6ad55; }
+        .option-feedback { width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px; display: none; background-color: #f8f9fa; border-left: 3px solid #cbd5e0; }
+        .action-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3); }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+        .btn-reset:hover { background: #e2e8f0; }
+        .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <div class="breadcrumb">FMEA 学习打卡</div>
+                <h1 class="title">Day 024：附件 C - 措施优先级 (AP) 表</h1>
+                <p class="subtitle">告别单一的 RPN，引入基于逻辑梯度的行动排序机制</p>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>探测度(D) 评估的是验证/探测手段的成熟度、时机与能力。</li>
+                    <li>完全自动化的上游探测给分最低（强）；滞后的、依赖纯人工的分数高（弱）。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+                <h3>📖 今日核心知识</h3>
+                
+                <div class="highlight">
+                    <strong>从 RPN 到 AP</strong><br>
+                    过去的风险顺序数 RPN 是单纯的数学乘积（S × O × D）。缺点是 9×2×2 和 3×4×3 结果相同，掩盖了高严重度的首要性。<br>
+                    新版使用<strong>措施优先级 (Action Priority, AP)</strong>取代 RPN。AP 不是一个绝对的数字风险评估量，而是基于<strong>严重度优先、其次是频度、最后是探测度</strong>的内在逻辑对措施排出的行动优先级。
+                </div>
+
+                <div class="highlight-blue">
+                    <strong>AP 查表法</strong><br>
+                    通过查手册中的 AP 表，三个维度 S, O, D 的交集直接映射为 H(High)、M(Medium)、L(Low) 三级：<br>
+                    • <strong>H（高）：</strong>团队必须确定改进措施。<br>
+                    • <strong>M（中）：</strong>团队应当确定改进措施；如果管理层决定不采取，需记录理由。<br>
+                    • <strong>L（低）：</strong>团队可以确定改进措施，但不强制。
+                </div>
+
+                <div class="highlight-green">
+                    <strong>传音应用场景</strong><br>
+                    当一个项目 FMEA 评审时，项目经理不应该再问“你的 RPN 超过了100，赶紧降下来”。而是直接筛选出所有的“AP = H”的行，要求研发/工程团队给出实质性的设计更改或工艺防错；对于“AP = M”的行，需要进行平衡考量。
+                </div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C，措施优先级表（原版手册第 206-214 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section">
+                <h3>📝 巩固练习</h3>
+                <form id="quizForm">
+                    <div class="question" data-correct="C">
+                        <span class="question-num">第 1 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">新版 FMEA 手册中引入了措施优先级 (AP)，它取代了过去的什么指标？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1a" value="A">
+                                <label for="q1a">A. 特殊特性符号 (SC)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1b" value="B">
+                                <label for="q1b">B. 故障树分析法 (FTA)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1c" value="C">
+                                <label for="q1c">C. 风险顺序数 (RPN)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="B">
+                        <span class="question-num">第 2 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">AP 的逻辑基础是赋予哪个评估维度最高的权重？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2a" value="A">
+                                <label for="q2a">A. 探测度 (D)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2b" value="B">
+                                <label for="q2b">B. 严重度 (S)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2c" value="C">
+                                <label for="q2c">C. 频度 (O)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A">
+                        <span class="question-num">第 3 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">当通过查表得出的措施优先级为“H”（高）时，这代表团队应该如何处理？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3a" value="A">
+                                <label for="q3a">A. 团队必须确定并采取预防或探测措施的改进，或记录当前控制为什么已足够的依据。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3b" value="B">
+                                <label for="q3b">B. 团队可以选择不采取措施，只要项目总成本受限即可。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3c" value="C">
+                                <label for="q3c">C. 必须停掉整个产线，不再生产。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A,C">
+                        <span class="question-num">第 4 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">为什么业界要放弃 RPN 而采用 AP 表？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4a" value="A">
+                                <label for="q4a">A. RPN 乘积计算会导致不同的 S, O, D 组合得到相同的数值，掩盖了严重度高的问题。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4b" value="B">
+                                <label for="q4b">B. RPN 需要非常复杂的微积分计算，工程师算不出来。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4c" value="C">
+                                <label for="q4c">C. 盲目追求“RPN 低于 100”导致过度做表面文章而不是真的降风险。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4d" value="D">
+                                <label for="q4d">D. AP 把所有低分数的风险都强制消除。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="B,C,D">
+                        <span class="question-num">第 5 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">关于 AP 等级的高(H)、中(M)、低(L)，以下说法哪些是正确的？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5a" value="A">
+                                <label for="q5a">A. H 表示风险极高，无论代价如何都必须使风险降到0。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5b" value="B">
+                                <label for="q5b">B. M (中) 意味着团队应当确定改进措施，但不强制执行，由公司决定。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5c" value="C">
+                                <label for="q5c">C. L (低) 意味着当前的措施优先级较低，可以由团队自行决定是否改进。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5d" value="D">
+                                <label for="q5d">D. 即使 AP 是 L，如果公司或客户有特别质量要求，依然可以提出改善动作。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-btns">
+                        <button type="button" class="btn btn-submit" onclick="checkAnswers()">提交答案</button>
+                        <button type="button" class="btn btn-reset" onclick="resetQuiz()">重新练习</button>
+                    </div>
+                    <div id="scoreBoard" class="score-board"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: "新版手册推荐使用 AP (措施优先级) 来替代以往直接相乘的 RPN。",
+            q2: "AP 逻辑表中，首要权重给到 S (严重度)，其次是 O (频度)，最后看 D (探测度)。",
+            q3: "H 代表必须采取措施或至少要在 FMEA 中详细记录现行控制能够充分防护的正当理由，管理层通常要求看到改进。",
+            q4: "RPN只是简单乘法，掩盖了单一高权重带来的真实系统危险；且常常导致虚假的达标运动（随意改数字凑 RPN < 100）。",
+            q5: "AP 代表的是处理这件事情的优先顺序，而不是纯风险值大小。L (低) 表示目前状态可接受，资源可以向 H 的条目倾斜，但有余力当然也可持续改进。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach(q => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qId = q.querySelector('input').name;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => selected.push(input.value));
+                
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'error', 'user-error');
+                    opt.querySelector('.option-badge').style.display = 'none';
+                    opt.querySelector('.option-feedback').style.display = 'none';
+                });
+
+                let isCorrect = false;
+                if (isMulti) {
+                    isCorrect = (selected.length === correctAns.length) && 
+                              selected.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selected.length === 1 && selected[0] === correctAns[0];
+                }
+
+                if (isCorrect) score += 20;
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const badge = opt.querySelector('.option-badge');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        badge.innerHTML = '✅';
+                        badge.style.display = 'inline';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('user-error');
+                        badge.innerHTML = '❌';
+                        badge.style.display = 'inline';
+                    }
+                });
+
+                const feedback = q.querySelector('.options').lastElementChild.querySelector('.option-feedback') || q.querySelector('.options').lastElementChild.appendChild(document.createElement('div'));
+                feedback.className = 'option-feedback';
+                feedback.innerHTML = `<strong>💡 解析：</strong>${explanations[qId]}`;
+                feedback.style.display = 'block';
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.innerHTML = `总分：${score} / 100 分`;
+            scoreBoard.style.display = 'block';
+            scoreBoard.style.color = score === 100 ? '#38b2ac' : '#d69e2e';
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'error', 'user-error');
+                const badge = opt.querySelector('.option-badge');
+                if(badge) badge.style.display = 'none';
+            });
+            document.querySelectorAll('.option-feedback').forEach(fb => fb.style.display = 'none');
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

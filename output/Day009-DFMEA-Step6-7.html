@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 009：DFMEA 步骤六&七：优化与结果文件化</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-green {
+            background-color: #c6f6d5;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            padding: 2px 6px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #718096;
+        }
+        .question-text {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #f7fafc;
+        }
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        .option.missed {
+            background: #feebc8;
+            border-color: #ed8936;
+        }
+        .option-feedback {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+            display: none;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        #result-display {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2>Day 009：DFMEA 步骤六&七：优化与结果文件化</h2>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>严重度(S)评估最严重的失效影响，频度(O)评估预防控制下起因发生的频率，探测度(D)评估探测控制发现问题的能力。</li>
+                    <li>预防控制(PC)用于防止问题发生，探测控制(DC)用于在交付前发现问题。</li>
+                    <li>使用措施优先级(AP)代替风险顺序数(RPN)来决定采取措施的优先级，AP逻辑为：严重度 > 频度 > 探测度。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>📝 步骤六：设计优化 (Optimization)</strong><br>
+                设计优化的目的是确定减轻风险的措施，并评估其有效性。最有效的优化顺序是：
+                <ol>
+                    <li>修改设计以消除或减少<strong>失效影响 (FE)</strong>，从而降低严重度(S)。</li>
+                    <li>修改设计以降低<strong>失效起因 (FC)</strong>的频度(O)。</li>
+                    <li>提高<strong>探测 (D)</strong>失效起因或失效模式的能力。</li>
+                </ol>
+                如果团队决定不需要采取额外措施，必须在备注中写明“无需进一步措施”以闭环。
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🔄 措施状态的管理与确认</strong><br>
+                每一个措施都必须有<strong>负责人</strong>和<strong>目标完成日期</strong>。建议的状态包括：
+                <ul>
+                    <li><strong>尚未确定 / 尚未执行：</strong> 措施已提出但未实施。</li>
+                    <li><strong>已完成：</strong> 措施已执行，其有效性已被证明和记录，并完成了新的频度和探测度评估。</li>
+                    <li><strong>不执行：</strong> 因技术或资源限制决定不执行措施。如果选择不执行，风险将进入产品设计阶段，因此必须有书面记录关闭该决定。</li>
+                </ul>
+                措施完成后，必须重新评估频度和探测度值。
+            </div>
+
+            <div class="highlight-green">
+                <strong>📄 步骤七：结果文件化 (Results Documentation)</strong><br>
+                结果文件化的目的是针对 FMEA 活动的结果进行总结和交流。报告是对管理层、顾客或供应商沟通的基础，它包含：<br>
+                1. 项目的目标、范围和参与团队。<br>
+                2. 高风险失效的总结（基于S/O/D评级和AP）。<br>
+                3. 已采取或计划中用以解决高风险失效的措施（含状态）。<br>
+                4. 承诺在批量生产期间评审DFMEA，并将经验教训反馈到“基础DFMEA”中。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第 2 章 2.6 及 2.7 节（原版手册第 72-77 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <h3 style="margin-top: 40px;">📝 随堂练习</h3>
+            <div id="quiz-container">
+                
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在进行设计优化（步骤六）时，团队降低风险的最优先策略应该是什么？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. 增加产品下线前的抽样检验频率。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. 引入更先进的探测手段来提高探测度(D)。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. 修改设计以消除或减少失效影响(FE)，从而降低严重度。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. 降低失效起因(FC)的频度(O)而不用管失效影响。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于优化措施的“已完成”状态，以下说法正确的是：</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. 只要确定了责任人和目标日期，状态就可以标记为已完成。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. 如果决定不执行某项措施，则它也被视为已完成。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. 措施在实施当天即可立即关闭并标记为已完成，无需重新评估评级。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. 措施已经被执行，其有效性已被证明和记录，并完成了最终的风险评估，才能标记为已完成。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">如果 FMEA 团队在评审风险分析后认为不需要采取任何额外措施，应该怎么做？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 直接结束 FMEA 文件，留空优化步骤。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 在备注部分明确写上“无需进一步措施”来表示风险分析完成。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 删除该风险项所在的行，因为它不需要改进。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. 将该项风险的严重度、频度、探测度全部降为 1 分。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">步骤七“结果文件化”中，FMEA 报告通常应该包含以下哪些内容？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q4" id="q4a" value="A"><label for="q4a">A. 对高风险失效的总结及S/O/D评级表和AP方法。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4b" value="B"><label for="q4b">B. 针对高风险采取的或计划中的降低风险措施的总结。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4c" value="C"><label for="q4c">C. FMEA项目的范围、目标及团队成员名单。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4d" value="D"><label for="q4d">D. 供应商的详细采购成本清单。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在分配和执行优化措施时，关于责任的要求，以下哪些是正确的？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q5" id="q5a" value="A"><label for="q5a">A. 目标完成日期可以无限期推迟，无需设置明确时间。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5b" value="B"><label for="q5b">B. 每个措施都应该有明确的负责人和目标完成日期。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5c" value="C"><label for="q5c">C. 负责人应确保措施的状态保持更新，并对实施情况负责。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5d" value="D"><label for="q5d">D. 措施的验证只能由 FMEA 团队的组长来完成。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" onclick="resetQuiz()" style="background: #718096; margin-left: 10px;">重新测试</button>
+            </div>
+            <div id="result-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: {
+                A: "检验属于探测手段，不如修改设计根除问题有效。",
+                B: "提高探测能力是排在最后的方法。",
+                C: "✅ 正确。优化的最有效顺序首选是：修改设计以消除或减少失效影响(FE)。",
+                D: "降低频度是第二优先项，排在消除影响之后。"
+            },
+            q2: {
+                A: "那只是制定了计划，尚未执行。",
+                B: "不执行的状态是“不执行”，代表风险被接受。",
+                C: "实施后必须验证有效性并重新评估。",
+                D: "✅ 正确。只有在措施执行且有效性被验证，并重新评估后，才能标记为“已完成”。"
+            },
+            q3: {
+                A: "留空会导致风险项处于未闭环的开放状态。",
+                B: "✅ 正确。手册明确建议写上“无需进一步措施”来表示风险分析已闭环完成。",
+                C: "不可删除，FMEA 是完整的历史记录。",
+                D: "未采取实际措施不得修改原始分数。"
+            },
+            q4: {
+                A: "✅ 正确。报告需提供高风险总结以供管理层评审。",
+                B: "✅ 正确。报告需沟通降低风险的措施状态。",
+                C: "✅ 正确。项目范围和团队是报告的基础内容。",
+                D: "采购成本不属于FMEA分析及报告的范畴。"
+            },
+            q5: {
+                A: "目标完成日期应当切合实际，配合项目进度节点。",
+                B: "✅ 正确。明确责任人和日期是措施落实的基础。",
+                C: "✅ 正确。负责人需跟踪更新状态及实施有效性。",
+                D: "验证是由负责人员或指定的验证团队成员进行，不限于组长。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                const correctAns = q.getAttribute('data-correct').split(',');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'missed');
+                    const input = opt.querySelector('input');
+                    const val = input.value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else {
+                        feedback.style.display = 'none';
+                    }
+                });
+
+                const isCorrect = isMulti ? 
+                    (selected.length === correctAns.length && selected.every(v => correctAns.includes(v))) :
+                    (selected.length === 1 && selected[0] === correctAns[0]);
+
+                if (isCorrect) score++;
+            });
+
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `得分：${score} / ${total}`;
+            resultDiv.style.color = score === total ? '#48bb78' : '#ed8936';
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect', 'missed');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-display').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

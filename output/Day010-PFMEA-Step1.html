@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 010：PFMEA 步骤一：规划与准备</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #ecc94b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-green {
+            background-color: #c6f6d5;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question-num {
+            font-weight: bold;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            padding: 2px 6px;
+            background: #edf2f7;
+            border-radius: 4px;
+            color: #718096;
+        }
+        .question-text {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #f7fafc;
+        }
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        .option.missed {
+            background: #feebc8;
+            border-color: #ed8936;
+        }
+        .option-feedback {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #4a5568;
+            display: none;
+        }
+        .btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn:hover {
+            background: #4338ca;
+        }
+        #result-display {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h2>Day 010：PFMEA 步骤一：规划与准备</h2>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>DFMEA优化（步骤六）的目的是确认降低风险的必要措施，按“消除影响 > 降低频度 > 提高探测”顺序进行。</li>
+                    <li>措施状态（尚未执行、已完成、不执行等）需明确管理，完成后须重新评估S/O/D评级。</li>
+                    <li>结果文件化（步骤七）用于将FMEA的结论与管理层、顾客及供应商进行有效沟通。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="highlight">
+                <strong>📝 过程规划与准备的目的</strong><br>
+                过程规划与准备旨在描述PFMEA项目评审中<strong>包含或不包含</strong>的产品/过程。<br>
+                它使得组织能在较高水平上评审所有过程，从而将资源集中在优先级最高的过程上。分析边界中的“不包含什么”与“包含什么”同等重要。
+            </div>
+            
+            <div class="highlight-blue">
+                <strong>🔍 确定边界的输入信息</strong><br>
+                在确定 PFMEA 的边界时，团队需要借助以下信息：
+                <ul>
+                    <li>法律要求与技术要求。</li>
+                    <li>顾客期望及要求规范。</li>
+                    <li>图表（如方块图、边界图）及物料清单 (BOM)。</li>
+                    <li>以往类似产品的 FMEA 及质量功能展开 (QFD)。</li>
+                </ul>
+                工厂内的装配、制造、接收、包装、维护、检测以及返修等过程，只要会影响产品质量，都可能被纳入 PFMEA 的分析范围。
+            </div>
+
+            <div class="highlight-green">
+                <strong>💡 基准 PFMEA 的使用</strong><br>
+                为了提高效率并利用现有经验，组织应确定<strong>基准 PFMEA</strong>（基础 PFMEA 或类似产品的 PFMEA）。在此基础上，团队只需添加新项目特有的组件和功能，就能快速完成新产品的 PFMEA 准备。
+            </div>
+
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第 3 章 3.1 节（原版手册第 65-68 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <h3 style="margin-top: 40px;">📝 随堂练习</h3>
+            <div id="quiz-container">
+                
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">PFMEA 步骤一“过程规划与准备”的总体优势是什么？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">A. 可以提前计算出所有风险项的措施优先级(AP)。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">B. 取代后续的结构分析和功能分析步骤。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">C. 确定产品设计的具体公差参数。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">D. 能够将资源集中在优先级最高的过程上。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在定义 PFMEA 范围时，以下哪种说法是正确的？</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">A. 只需列出要分析的制造工序，不必说明不包含的内容。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">B. 只有制造和装配过程需要做 PFMEA，包装和储存过程不需要考虑。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">C. 在分析中，不包含的内容和包含的内容同等重要。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">D. 法律法规要求不应作为 PFMEA 边界定义的参考依据。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">基础 PFMEA 或类似产品 PFMEA 在新项目中的主要作用是：</div>
+                    <div class="options">
+                        <div class="option"><input type="radio" name="q3" id="q3a" value="A"><label for="q3a">A. 作为基准，在此基础上添加新项目特定的功能和要素来完成新的 PFMEA。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3b" value="B"><label for="q3b">B. 直接提交给顾客作为最终结果以节省时间。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3c" value="C"><label for="q3c">C. 仅仅用于记录过去的错误，不用于指导新项目。</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="radio" name="q3" id="q3d" value="D"><label for="q3d">D. 取代产品图纸和物料清单的作用。</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C,D">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">以下哪些内容有助于团队确定 PFMEA 的边界？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q4" id="q4a" value="A"><label for="q4a">A. 每个工位的每日薪资结算表</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4b" value="B"><label for="q4b">B. 法律要求和技术要求</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4c" value="C"><label for="q4c">C. 物料清单 (BOM) 与产品图纸</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q4" id="q4d" value="D"><label for="q4d">D. 顾客期望与要求规范</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在决定是否将现有 PFMEA 纳入最终范围时，可考虑以下哪些方面？（多选）</div>
+                    <div class="options">
+                        <div class="option"><input type="checkbox" name="q5" id="q5a" value="A"><label for="q5a">A. 技术的创新程度与设计的复杂性</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5b" value="B"><label for="q5b">B. 产品或过程的变更以及运行条件的变更</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5c" value="C"><label for="q5c">C. 以往的质量/可靠性历史（如零公里问题或保修索赔）</label><div class="option-feedback"></div></div>
+                        <div class="option"><input type="checkbox" name="q5" id="q5d" value="D"><label for="q5d">D. 竞争对手上季度的财务报表</label><div class="option-feedback"></div></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" onclick="resetQuiz()" style="background: #718096; margin-left: 10px;">重新测试</button>
+            </div>
+            <div id="result-display"></div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: {
+                A: "AP评估在风险分析和优化阶段进行，此时尚未开始评估。",
+                B: "准备步骤不能取代分析步骤。",
+                C: "设计公差是DFMEA阶段或设计文件定义的，不是PFMEA准备阶段的任务。",
+                D: "✅ 正确。明确评审过程后，能将精力集中在高优先级过程，避免资源浪费。"
+            },
+            q2: {
+                A: "不包含的内容同等重要，需明确界定以免越界或遗漏。",
+                B: "包装、储存、返修等均属于可能影响质量的过程，也可纳入PFMEA。",
+                C: "✅ 正确。明确“做什么”与“不做什么”对界定边界同等重要。",
+                D: "法律法规是必须纳入考虑边界的依据。"
+            },
+            q3: {
+                A: "✅ 正确。这可以大幅节省团队重新评估通用流程的时间。",
+                B: "基础PFMEA不能直接作为具体新项目的最终结果，需结合项目特性修改。",
+                C: "它是建立新项目PFMEA的基石，不仅记录过往错误。",
+                D: "不能取代BOM和图纸，而是使用它们作为输入。"
+            },
+            q4: {
+                A: "薪资报表与失效模式、质量分析无关。",
+                B: "✅ 正确。法规和技术标准界定了边界要求。",
+                C: "✅ 正确。BOM和图纸明确了产品和过程涉及的具体对象。",
+                D: "✅ 正确。满足顾客期待是FMEA的核心目标之一。"
+            },
+            q5: {
+                A: "✅ 正确。创新程度和复杂性是评估新风险的关键因素。",
+                B: "✅ 正确。任何变更都可能带来新的失效模式。",
+                C: "✅ 正确。过往的客诉和质量历史是重要的失效参考来源。",
+                D: "财务报表对技术风险评估无直接帮助。"
+            }
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            
+            document.querySelectorAll('.question').forEach((q, index) => {
+                const qId = 'q' + (index + 1);
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                const correctAns = q.getAttribute('data-correct').split(',');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => {
+                    selected.push(input.value);
+                });
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect', 'missed');
+                    const input = opt.querySelector('input');
+                    const val = input.value;
+                    const feedback = opt.querySelector('.option-feedback');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('incorrect');
+                        feedback.innerHTML = explanations[qId][val];
+                        feedback.style.display = 'block';
+                    } else {
+                        feedback.style.display = 'none';
+                    }
+                });
+
+                const isCorrect = isMulti ? 
+                    (selected.length === correctAns.length && selected.every(v => correctAns.includes(v))) :
+                    (selected.length === 1 && selected[0] === correctAns[0]);
+
+                if (isCorrect) score++;
+            });
+
+            const resultDiv = document.getElementById('result-display');
+            resultDiv.innerHTML = `得分：${score} / ${total}`;
+            resultDiv.style.color = score === total ? '#48bb78' : '#ed8936';
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'incorrect', 'missed');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-display').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

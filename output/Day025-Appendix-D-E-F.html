@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 025：附件 D/E/F - 拓展应用与变更点总结</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; color: #333; }
+        .container { width: 100%; max-width: 800px; }
+        .card { background-color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); overflow: hidden; margin-bottom: 20px; }
+        .header { padding: 30px; background: rgba(118, 75, 162, 0.05); border-bottom: 1px solid #edf2f7; text-align: center; }
+        .breadcrumb { font-size: 14px; color: #6c757d; margin-bottom: 10px; }
+        .title { font-size: 28px; font-weight: 700; color: #2d3748; margin: 0 0 10px 0; }
+        .subtitle { font-size: 16px; color: #4a5568; margin: 0; }
+        .review-section { margin: 0; padding: 20px 30px; background-color: #ebf8ff; border-bottom: 1px solid #e2e8f0; }
+        .review-section ul { margin: 10px 0 0 0; padding-left: 20px; color: #2b6cb0; font-size: 15px; line-height: 1.6; }
+        .knowledge { padding: 30px; background-color: #f8f9fa; }
+        .knowledge h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #667eea; padding-left: 12px; margin-bottom: 20px; }
+        .highlight, .highlight-green, .highlight-blue, .highlight-red { padding: 15px; border-radius: 8px; margin-bottom: 15px; line-height: 1.6; }
+        .highlight { background-color: #fffbeb; border-left: 4px solid #f6e05e; }
+        .highlight-green { background-color: #e6fffa; border-left: 4px solid #38b2ac; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #4299e1; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #fc8181; }
+        .source-ref { background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin: 0 30px 30px 30px; padding: 15px; border-radius: 8px; }
+        .quiz-section { padding: 30px; }
+        .quiz-section h3 { margin-top: 0; color: #2d3748; font-size: 20px; border-left: 4px solid #48bb78; padding-left: 12px; margin-bottom: 25px; }
+        .question { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .question:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .question-num { display: inline-block; background: #edf2f7; color: #4a5568; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+        .question-type { display: inline-block; background: #eebefa; color: #553c9a; padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-left: 8px; margin-bottom: 10px; }
+        .question-type.multi { background: #bee3f8; color: #2b6cb0; }
+        .question-text { font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { position: relative; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; flex-wrap: wrap; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 12px; cursor: pointer; }
+        .option label { flex: 1; cursor: pointer; font-size: 15px; color: #4a5568; }
+        .option-badge { margin-left: 10px; font-size: 18px; display: none; }
+        .option.correct { background-color: #f0fff4; border-color: #68d391; }
+        .option.correct label { color: #22543d; font-weight: 600; }
+        .option.error { background-color: #fff5f5; border-color: #fc8181; }
+        .option.error label { color: #742a2a; }
+        .option.user-error { background-color: #fffaf0; border-color: #f6ad55; }
+        .option-feedback { width: 100%; margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 14px; display: none; background-color: #f8f9fa; border-left: 3px solid #cbd5e0; }
+        .action-btns { display: flex; gap: 15px; margin-top: 30px; }
+        .btn { flex: 1; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 10px rgba(118, 75, 162, 0.3); }
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #edf2f7; color: #4a5568; }
+        .btn-reset:hover { background: #e2e8f0; }
+        .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <div class="breadcrumb">FMEA 学习打卡</div>
+                <h1 class="title">Day 025：附件 D/E/F - 拓展应用与变更点总结</h1>
+                <p class="subtitle">理解特殊特性、功能安全、软件与设备 FMEA 的延伸，以及新旧版的过渡</p>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>AP (Action Priority) 措施优先级取代了 RPN，通过逻辑表直接划定 H/M/L 的控制策略。</li>
+                    <li>它解决了单纯数值相乘带来的“重分值轻严重度”的误区。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+                <h3>📖 今日核心知识</h3>
+                
+                <div class="highlight">
+                    <strong>特殊特性的定位</strong><br>
+                    直接导致产品功能在安全、配合、组装、性能或法规等方面失效的特性，称为特殊特性。在 DFMEA 中，“分类”列被“筛选器代码”替换，因为 DFMEA 中不需要显示确切的制造特殊特性符号，但可作为下游(PFMEA)选出特殊特性的输入来源。
+                </div>
+
+                <div class="highlight-blue">
+                    <strong>FMEA 与功能安全 (ISO 26262)</strong><br>
+                    FMEA-MSR（监视及系统响应补充 FMEA）专门用来分析诊断系统的有效性，协助证明设计是否满足 ISO 26262 的安全目标。但两者的指标略有差异，例如 MSR 中的失效起因等同于 ISO 的故障，失效模式等同于“错误”。
+                </div>
+
+                <div class="highlight-green">
+                    <strong>软件与设备 FMEA 的边界</strong><br>
+                    “软件 FMEA”术语容易误导，我们检验的其实是<strong>由软件实现的功能</strong>，通常落在 DFMEA 框架内。<br>
+                    “设备 FMEA”是针对机械制造商而言的，通常先有类似 PFMEA 的分析，如果以机器作为研究客体，应遵循设计或过程 FMEA 的核心七步规则。
+                </div>
+                
+                <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                    <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 D、E 和 F（原版手册第 214-237 页）。
+                </div>
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section">
+                <h3>📝 巩固练习</h3>
+                <form id="quizForm">
+                    <div class="question" data-correct="B">
+                        <span class="question-num">第 1 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">在新版手册中，关于 DFMEA 表格里的特殊特性，发生了什么变更？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1a" value="A">
+                                <label for="q1a">A. 增加了“顾客特指符号”强制列</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1b" value="B">
+                                <label for="q1b">B. 删除了特殊特性展示列，替换为“筛选器代码”，因为 DFMEA 的角色是输出提示给后续，而不是直接定义过程制造特性</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q1" id="q1c" value="C">
+                                <label for="q1c">C. DFMEA 开始包揽所有的装配防错特性标注</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="C">
+                        <span class="question-num">第 2 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">在考虑 FMEA 与功能安全 (ISO 26262) 的关联时，手册新增了哪种辅助分析方法？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2a" value="A">
+                                <label for="q2a">A. FTA (故障树)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2b" value="B">
+                                <label for="q2b">B. STPA (系统理论过程分析)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q2" id="q2c" value="C">
+                                <label for="q2c">C. FMEA-MSR (监视及系统响应补充 FMEA)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A">
+                        <span class="question-num">第 3 题</span>
+                        <span class="question-type">单选</span>
+                        <div class="question-text">关于“软件 FMEA”，手册给出的核心建议是？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3a" value="A">
+                                <label for="q3a">A. “软件FMEA”术语有误导性，实际分析的是由软件实现的功能及其影响，属 DFMEA 范畴</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3b" value="B">
+                                <label for="q3b">B. 应该专门建立一套独特的十步法用于软件代码审查</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="radio" name="q3" id="q3c" value="C">
+                                <label for="q3c">C. 软件不可能损坏，无需做 FMEA 分析</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A,B,C">
+                        <span class="question-num">第 4 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">AIAG 第四版变更为 AIAG & VDA 版，主要的重大方法论变更包含？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4a" value="A">
+                                <label for="q4a">A. 从填表式思维转向“七步法”逻辑过程</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4b" value="B">
+                                <label for="q4b">B. 使用措施优先级 (AP) 替代风险顺序数 (RPN)</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4c" value="C">
+                                <label for="q4c">C. 强调了结构树和故障网的上下级关联分析（关注要素、上一级、下一级）</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q4" id="q4d" value="D">
+                                <label for="q4d">D. 删除了所有的探测控制措施要求</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-correct="A,B,D">
+                        <span class="question-num">第 5 题</span>
+                        <span class="question-type multi">多选</span>
+                        <div class="question-text">以下关于特殊特性的说法，正确的有？</div>
+                        <div class="options">
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5a" value="A">
+                                <label for="q5a">A. 特殊特性直接影响安全性、法规合规或装配功能。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5b" value="B">
+                                <label for="q5b">B. PFMEA 中保留了特殊特性的标注列，便于管控制造过程。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5c" value="C">
+                                <label for="q5c">C. 只有客户指定的符号才叫特殊特性，公司内部不能定义。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                            <div class="option">
+                                <input type="checkbox" name="q5" id="q5d" value="D">
+                                <label for="q5d">D. 确定特殊特性的目的是减少报废、产品召回，实施重点过程控制。</label>
+                                <span class="option-badge"></span>
+                                <div class="option-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-btns">
+                        <button type="button" class="btn btn-submit" onclick="checkAnswers()">提交答案</button>
+                        <button type="button" class="btn btn-reset" onclick="resetQuiz()">重新练习</button>
+                    </div>
+                    <div id="scoreBoard" class="score-board"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            q1: "新版 DFMEA 用“筛选器代码”列取代了原有的分类列，因为设计输出的是要求，PFMEA 才是最终落地特殊特性管控符号的地方。",
+            q2: "新增了 FMEA-MSR（监视及系统响应的补充 FMEA）来专门对应 ISO 26262 涉及诊断、安全响应的分析。",
+            q3: "手册明确说明，脱离硬件/系统环境单看代码的“软件 FMEA”有误导性，本质上是在做系统/模块“功能层面”的失效分析。",
+            q4: "七步法、AP 表替代 RPN、强制进行上/本/下一级别的结构网路关联，是新版最大的方法论革新。控制措施不仅没删，还要求注明“是否基于证据”。",
+            q5: "特殊特性可由客户指定，也可由组织内部基于设计风险(DFMEA的输入)自行定义，以强化关键节点的监控。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach(q => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qId = q.querySelector('input').name;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selected = [];
+                q.querySelectorAll('input:checked').forEach(input => selected.push(input.value));
+                
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'error', 'user-error');
+                    opt.querySelector('.option-badge').style.display = 'none';
+                    opt.querySelector('.option-feedback').style.display = 'none';
+                });
+
+                let isCorrect = false;
+                if (isMulti) {
+                    isCorrect = (selected.length === correctAns.length) && 
+                              selected.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selected.length === 1 && selected[0] === correctAns[0];
+                }
+
+                if (isCorrect) score += 20;
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const badge = opt.querySelector('.option-badge');
+                    
+                    if (correctAns.includes(val)) {
+                        opt.classList.add('correct');
+                        badge.innerHTML = '✅';
+                        badge.style.display = 'inline';
+                    } else if (selected.includes(val)) {
+                        opt.classList.add('user-error');
+                        badge.innerHTML = '❌';
+                        badge.style.display = 'inline';
+                    }
+                });
+
+                const feedback = q.querySelector('.options').lastElementChild.querySelector('.option-feedback') || q.querySelector('.options').lastElementChild.appendChild(document.createElement('div'));
+                feedback.className = 'option-feedback';
+                feedback.innerHTML = `<strong>💡 解析：</strong>${explanations[qId]}`;
+                feedback.style.display = 'block';
+            });
+
+            const scoreBoard = document.getElementById('scoreBoard');
+            scoreBoard.innerHTML = `总分：${score} / 100 分`;
+            scoreBoard.style.display = 'block';
+            scoreBoard.style.color = score === 100 ? '#38b2ac' : '#d69e2e';
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'error', 'user-error');
+                const badge = opt.querySelector('.option-badge');
+                if(badge) badge.style.display = 'none';
+            });
+            document.querySelectorAll('.option-feedback').forEach(fb => fb.style.display = 'none');
+            document.getElementById('scoreBoard').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

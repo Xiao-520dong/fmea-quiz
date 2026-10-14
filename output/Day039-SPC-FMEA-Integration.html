@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 039：SPC 统计过程控制与 FMEA</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 039：SPC 统计过程控制与 FMEA</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>MSA的作用：</strong>确认测量系统的可靠性。若MSA不过关，FMEA中的低D评分就是自欺欺人。</li>
+<li><strong>探测依据：</strong>有效的探测控制(DC)必须建立在合格的MSA基础之上。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是统计过程控制 (SPC)？</strong><br>
+SPC 是利用统计学方法（如控制图）实时监控过程的波动。它的核心理念是：“在产品即将产生不合格的趋势（特殊原因变差）时，提前发出警报，从而在真正发生不良之前进行调整”。
+</div>
+<div class="highlight-blue">
+<strong>2. SPC 在 PFMEA 中的角色 (是 PC 还是 DC？)</strong><br>
+- <strong>作为预防控制 (PC)：</strong>如果 SPC 控制图用于实时监控机器参数（如炉温），并在趋势偏离但尚未超差时报警拦截，阻止了不良的发生，它起到预防作用。<br>
+- <strong>作为探测控制 (DC)：</strong>如果 SPC 仅用于事后画控制图分析尺寸，发现已经生产出废品，此时它只能算是一种抽样探测控制。
+</div>
+<div class="highlight-green">
+<strong>3. FMEA 驱动 SPC 的应用</strong><br>
+只有在 PFMEA 中被识别为 <strong>特殊特性（严重度 S 较高，对变差敏感）</strong> 的过程特性或产品特性，才最需要运用 SPC 进行重点监控。好钢要用在刀刃上。
+</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">SPC (控制图) 最理想的使用状态是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 产品全部报废后用来写报告</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 过程参数出现异常趋势但尚未超差时提供预警，指导提前调整</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 用来代替所有的全检工序</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 仅仅是为了应付审核</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>SPC的核心是“防患于未然”，通过识别特殊原因的趋势来提前干预，避免产生不合格品。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">在控制计划 (CP) 中，如果要应用 SPC，最应该针对哪类特性？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 所有的尺寸参数</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 包装箱的颜色</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. PFMEA 中识别出的关键/特殊特性</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 员工的心情</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>全面实施SPC成本极高，因此主要聚焦在PFMEA识别出的高风险特殊特性上，好钢用在刀刃上。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">当操作员发现 SPC 控制图上出现了“连续7个点单调上升”的异常趋势，但所有产品仍在公差范围内。根据 PFMEA 和 CP，他应该？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 认为还在公差内，继续生产</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 触发反应计划，停机、排查原因（失效起因），并调整设备</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 擦掉几个点重新画</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 把公差放大</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>单调上升是典型的不稳定信号（特殊原因变差），虽然还在公差内，但很快就会出界。此时必须按反应计划采取行动。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">关于 PFMEA 与 SPC，以下说法正确的是？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. SPC 实时预警能有效降低失效起因引发不良的频度 (O)</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. PFMEA 决定了 SPC 用在何处</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 只要画了 SPC 控制图，产品就不会有不良</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 事后补画的 SPC 不具备预防控制 (PC) 的能力</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>SPC 是一项强有力的监控工具，受FMEA指引，事后画图无预防价值。但画图不等于零缺陷，还需要坚决的反应行动。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">如果 PFMEA 中对某个关键尺寸标注了采用 SPC 管控，那么在现场应该看到什么？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 现场有对应工位的控制图（纸质或电子系统）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 员工有定时测量并打点的动作（或设备自动采集）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 控制图上有明确的上下控制限 (UCL/LCL)</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 所有的点都在一条直线上</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>现场必须有实物或系统，要有采集动作和控制限。真实过程必然存在普通原因波动，点不可能都在一条直线上。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

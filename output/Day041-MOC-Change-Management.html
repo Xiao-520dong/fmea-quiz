@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 041：变更管理 (MOC) 与 FMEA 动态更新</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 041：变更管理 (MOC) 与 FMEA 动态更新</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>SQE审查：</strong>审核供应商必须检查其PFMEA与CP，确保源头风险受控。</li>
+<li><strong>预防优于探测：</strong>推动供应商做好源头防错，远胜于主机厂自己花大成本进行IQC全检。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是变更管理 (MOC)?</strong><br>
+MOC (Management of Change) 旨在规范和控制生产过程中的各种变更（如人、机、料、法、环的改变），防止由于盲目变更引发意想不到的质量灾难。
+</div>
+<div class="highlight-blue">
+<strong>2. 任何变更，必先评估风险</strong><br>
+在实施工程变更 (ECN)、更换替代物料、调整工艺参数、搬迁设备或更换供应商之前，必须重新审视或更新原有的 PFMEA。问自己：“这个变更是否引入了新的失效起因 (FC)？现有的预防和探测控制还兜得住吗？”
+</div>
+<div class="highlight-green">
+<strong>3. FMEA 与 MOC 流程的绑定</strong><br>
+优秀的质量体系会将 FMEA 强制嵌入 MOC 审批流程。没有经过 FMEA 风险评估和批准的变更，坚决不能在线上投入使用。很多严重客诉正是因为“私自调了参数”或“悄悄换了料”而酿成的。
+</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">工厂计划将某种胶水的固化时间从 10 分钟缩短到 5 分钟以提高产能。实施前最关键的质量步骤是？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 领导同意就可以立刻改</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 启动 MOC 流程，更新 PFMEA 评估“固化时间不足”带来的风险，并验证控制措施是否需要强化</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 告诉操作工悄悄改，别告诉质量部</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 随便改，出了事再说</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>工艺参数的变更必须经过正规的风险评估，确认新的失效模式或起因，并制定控制策略后才能实施。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">为什么很多重大的质量事故都与“未经评估的变更”有关？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 因为变更总是坏的</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 因为原有控制体系是针对老工艺建立的，新变更引入了“未知的变差”，导致防线被击穿</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 因为操作员喜欢按新方法做</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 因为检验员看不见新物料</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>变更打破了原有的平衡。原有PFMEA中的控制措施对新变更可能完全失效，从而引发系统性灾难。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">以下哪种情况不需要更新 PFMEA？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 导入了一台全新的自动化组装设备</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 客户对产品的防水性能提出了更高的公差要求</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 生产线新调来一名经过标准上岗培训的同岗员工</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 将螺丝供应商从 A 换成了从未合作过的 B</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>同岗位的正常标准人员轮替属于日常运营，通常不需要每次更新FMEA。但设备、要求和供应链的变更必须评估风险。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">变更管理 (MOC) 流程中，跨职能团队(CFT)在评审 FMEA 时需要关注哪些方面？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 变更是否会产生新的失效模式？</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 现有的预防控制 (PC) 对于新环境是否依然有效？</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 是否需要增加新的探测控制 (DC) 手段？</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 变更带来的成本节约是否值得承担新的风险？</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>所有选项都是风险与收益评估的重要环节。变更评估需要全方位权衡技术风险和商业价值。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">确保 FMEA 能够随变更动态更新的最佳机制是什么？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 将 FMEA 评审设置为 ERP/PLM 系统中工程变更(ECN)的强制前置卡点</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 依靠某个工程师极高的自觉性</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 在变更实施后的首件检验和试生产阶段，利用逆向 FMEA 验证变更效果</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 等到年底审核时再集中补写</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>通过系统化流程（卡点）和现场验证（逆向FMEA）是保障动态更新的可靠机制。依靠个人自觉或年底补写是无效的。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

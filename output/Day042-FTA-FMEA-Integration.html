@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 042：故障树分析 (FTA) 与 FMEA</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 042：故障树分析 (FTA) 与 FMEA</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>MOC与风险：</strong>变更打破了原有平衡。未经FMEA评估的盲目变更是质量灾难的根源。</li>
+<li><strong>流程卡点：</strong>FMEA评估必须作为工程变更(ECN)的强制审批前置条件。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是故障树分析 (Fault Tree Analysis, FTA)？</strong><br>
+FTA 是一种<strong>自顶向下</strong>的演绎逻辑分析法。它先定义一个顶层的不良事件（如：手机黑屏），然后像树枝一样向下层层剖析，用“与门(AND)”、“或门(OR)”找出导致该事件的所有可能原因组合。
+</div>
+<div class="highlight-blue">
+<strong>2. FTA 与 FMEA 的区别与互补</strong><br>
+- <strong>FMEA (事前预防)：</strong>自底向上，从单个零件或工步的失效起因出发，推导它会造成什么影响（后果）。<br>
+- <strong>FTA (事后寻根/复杂系统剖析)：</strong>自顶向下，从发生了的严重后果出发，层层寻找是哪些底层的失误“组合”导致了该后果。<br>
+当解决复杂的 8D 客诉时，常先用 FTA 找出真实的根本原因组合，然后再将这些新发现的起因补充到 FMEA 库中进行预防固化。
+</div>
+<div class="highlight-green">
+<strong>3. 系统思维</strong><br>
+单一的组件失效往往不会导致灾难，通常是“多个失效起因同时发生（与门）”才会穿透防线。结合 FTA 的逻辑，可以在 FMEA 中更精准地部署多重防错机制（冗余设计）。
+</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">关于故障树分析 (FTA) 和 FMEA 的分析方向，以下哪项描述正确？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. FTA 是自底向上，FMEA 是自底向上</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. FTA 是自顶向下，FMEA 是自底向上</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 两者都是从影响找原因</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 两者都是从原因找影响</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>FTA是从结果(Top Event)往下找原因组合；FMEA通常是从要素异常(起因/模式)往上推后果。两者方向相反，形成互补。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">面对一起复杂的整机客诉（原因不明，涉及软硬件多个模块），最适合的排查切入工具是？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 直接修改 FMEA 的 S 分数</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 采用 FTA 以客诉现象为顶事件，层层向下演绎可能的原因分支</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 抽签决定原因</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 重写控制计划</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>对于复杂、原因不明的既定故障，FTA 是寻找根因组合最强大的逻辑工具。找到根因后，再用 FMEA 固化。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">FTA 中的“与门 (AND)”逻辑意味着什么？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 只要发生一个起因，就会导致上层故障</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 必须底层的多个起因同时发生，才会导致上层故障</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 两个原因互斥，不可能发生</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 无关紧要的逻辑</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>与门(AND)表示条件必须全部满足，故障才会向上穿透。这通常意味着系统中存在冗余或双重保护。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">将 FTA 与 FMEA 结合使用，能够带来哪些好处？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. FTA 找出的“隐藏根因”，填补了原有 FMEA 团队想象不到的盲点</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 可以彻底废除 FMEA 表格</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 在 8D 分析阶段使用 FTA 快速定位，在预防固化阶段使用 FMEA 防止再发</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 帮助识别复杂系统中多个小故障叠加产生大灾难的逻辑链条</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>FTA强大的逻辑演绎能力能找出复杂因果链，是对FMEA极好的补充，二者结合是复杂问题解决的黄金搭档。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">在设计防错装置时，如果参考了 FTA 的“与门”逻辑，通常会采用什么样的控制策略？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 建立单一的薄弱检查点</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 增加参数互锁，例如“温度达标”且“压力达标”才允许启动</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 设置冗余系统（双重确认），单点失效不会导致缺陷流出</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 撤销所有的探测控制</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>利用“与门”逻辑，我们可以刻意制造“必须同时满足多个安全条件”的冗余防线，极大地提升系统的鲁棒性。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,C,D"}, "5": {"correct": "B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 032：常见误区③：严重度(S)的主观降分</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 032：常见误区③：严重度(S)的主观降分</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>预防(PC)：</strong>防止原因发生（如防错夹具、互锁），降低频度(O)。</li>
+<li><strong>探测(DC)：</strong>发现已存在的不良（如各种检验、CCD、测试），降低探测度(D)。两者绝不可混淆。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 痛点：为了降低 AP，强行降低严重度 (S)</strong><br>
+在 FMEA 评审中常发现，为了让最终措施优先级(AP)不出现“高(H)”，工程师主观把 S 分数从 9 改为 7，或者从 8 改为 5。理由是：“我们加了全检工序，绝对不会流到客户那里，所以后果没那么严重了”。
+</div>
+<div class="highlight-blue">
+<strong>2. 为什么这是错的？</strong><br>
+严重度 (S) 评估的是<strong>失效影响 (FE)</strong> 发生时的绝对后果。不管你的检验有多严、你的防错有多牛，只要这种不良流到了客户手里会导致“刹车失灵”或“手机爆炸”，S 分数就永远是 10 或 9。<br>
+增加检验，只能降低<strong>探测度(D)</strong>；增加防错，只能降低<strong>频度(O)</strong>。<strong>过程控制（检验/防错）绝不能改变严重度 (S)！</strong>
+</div>
+<div class="highlight-green">
+<strong>3. 严重度如何才能降低？</strong><br>
+降低 S 分数的唯一途径是<strong>改变系统或产品设计（设计变更）</strong>。例如：将原本锋利的金属边缘倒角，即使工人不慎碰到，后果也从“严重割伤(S=8)”变成了“轻微划痕(S=4)”。此时才可合理降低 S 评分。
+</div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">如果在 PFMEA 中，某个问题的失效后果是“引发火灾，危及操作员生命”，严重度评分为10。工程师在工位旁边增加了 3 个灭火器和自动喷淋系统。该失效后果的严重度(S)能降到多少？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 降到 5</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 降到 1</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 仍然是 10</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 降到 8</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>无论增加了多少应对措施，只要发生火灾危及生命的“后果”本质没变，S 分数就不会改变。自动喷淋系统是减缓措施，不是从源头消除起火隐患的设计变更。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">什么手段可以有效降低 PFMEA 中的严重度 (S) 评分？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 将抽检改为 100% 自动全检</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 通过更改产品设计，消除或减轻该失效模式对系统的影响</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 增加双人复核环节</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 隐瞒不良记录</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>严重度(S)只能通过产品设计变更来降低，过程控制（检验、人员复核）只能改变 D 或 O。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">某失效会导致客户产品直接断电死机，S评分为8。为了不让 AP 等级显示为“高(H)”，工程师决定把 S 改成 5。这种做法属于？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 聪明的变通</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 严重的主观降分违规，掩盖真实的客诉风险</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 符合 FMEA 规范的优化</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 能够节约成本</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>为了好看的数据而篡改评分，违背了FMEA识别并正视风险的初衷，是质量管理中的大忌。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">关于 S、O、D 的独立性，以下说法正确的是？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 增加防错装置，会降低 O</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 增加自动化检测，会降低 D</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 增加检测设备，会同时降低 S、O、D</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 三个指标独立评估，过程控制手段不改变 S</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>S评估后果，O评估发生率(受PC影响)，D评估探测率(受DC影响)。三者互相独立，不要把一种措施的功劳跨界乱算。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">当一个失效的严重度 S=9 且无法通过设计变更降低时，为了将最终的 AP 降为中(M)或低(L)，团队应该把精力集中在？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 和领导吵架要求降 S 分</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 极力开发高可靠性的预防控制(PC)，把频度(O)降到最低</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 部署最先进的防呆或探测系统，把探测度(D)降到极低</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 放弃该项目</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>当 S 无法降低时，必须通过卓越的预防(PC)和探测(DC)手段，将 O 和 D 压到最低，从而把整体风险置于受控范围内。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,D"}, "5": {"correct": "B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 019：FMEA-MSR 步骤一至三：基础准备与功能分析</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Day 019：FMEA-MSR 步骤一至三：基础准备与功能分析</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+<li><strong>PFMEA 步骤六：</strong>确定降低风险的必要措施，按“消除影响 > 降频度 > 提探测度”顺序进行优化。</li>
+<li><strong>PFMEA 步骤七：</strong>结果文件化，将风险分析结果、高危风险及应对状态编制成报告进行沟通。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+<div class="highlight">
+<strong>1. 什么是 FMEA-MSR？</strong><br>
+FMEA-MSR (监视及系统响应的补充 FMEA) 关注顾客操作条件下可能出现的潜在失效起因。它评估诊断监视系统探测故障并做出自动响应（如降级、警告）以避免或限制失效影响的能力。
+</div>
+<div class="highlight-blue">
+<strong>2. FMEA-MSR 评估的风险要素：</strong><br>
+<ul>
+    <li><strong>S (严重度)：</strong>伤害的严重程度、不合规或功能丧失。</li>
+    <li><strong>F (频率)：</strong>在运行情况下估计的失效起因发生频率（替代了传统FMEA中的O）。</li>
+    <li><strong>M (监视)：</strong>通过诊断探测和自动响应避免或限制失效影响的技术可能性。</li>
+</ul>
+</div>
+<div class="highlight-green">
+<strong>3. 步骤一至三核心内容</strong><br>
+<strong>步骤一 (规划和准备)：</strong>确定项目和边界。MSR 通常用于包含传感器、逻辑控制单元(ECU)和执行器的复杂机电系统。<br>
+<strong>步骤二 (结构分析)：</strong>建立结构树，可能包含硬件和软件要素。若无传感器/执行器，则使用接口要素代替。<br>
+<strong>步骤三 (功能分析)：</strong>在 MSR 中，失效探测（如传感器诊断、合理性检查）和失效响应（如提供默认值、切换到跛行模式）被视为系统自身的重要功能。
+</div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》监视及系统响应补充FMEA 步骤一至三（第120-128页）
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section">
+                <h2 style="color: #2d3748; font-size: 20px; margin-bottom: 20px;">📝 随堂测验</h2>
+<div class="question" data-correct="B">
+    <span class="question-num">第 1 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">FMEA-MSR 中的 "M" 代表什么？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q1" id="q1a" value="A">
+            <label for="q1a">A. Maintainability (可维护性)</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1b" value="B">
+            <label for="q1b">B. Monitoring (监视)</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1c" value="C">
+            <label for="q1c">C. Measurement (测量)</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1d" value="D">
+            <label for="q1d">D. Mitigation (减轻)</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="B">
+    <span class="question-num">第 2 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">在 FMEA-MSR 中，M 评级主要评估什么？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q2" id="q2a" value="A">
+            <label for="q2a">A. 预防失效发生的能力</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2b" value="B">
+            <label for="q2b">B. 顾客操作中故障探测性能的效果及系统响应的可靠性</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2c" value="C">
+            <label for="q2c">C. 生产测试过程中的缺陷探测能力</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2d" value="D">
+            <label for="q2d">D. 产品的机械耐久强度</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="B,C">
+    <span class="question-num">第 3 题</span>
+    <span class="question-type multi">多选</span>
+    <div class="question-text">哪些系统通常属于监视及系统响应补充 FMEA (FMEA-MSR) 的范围？</div>
+    <div class="options">
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3a" value="A">
+            <label for="q3a">A. 简单的纯机械结构</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3b" value="B">
+            <label for="q3b">B. 包含传感器、控制单元和执行器的机电系统</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3c" value="C">
+            <label for="q3c">C. 具有诊断和监视功能的系统</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3d" value="D">
+            <label for="q3d">D. 纯外观件</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="A,B,C">
+    <span class="question-num">第 4 题</span>
+    <span class="question-type multi">多选</span>
+    <div class="question-text">FMEA-MSR 步骤三功能分析中，针对失效响应的功能可能包括？</div>
+    <div class="options">
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4a" value="A">
+            <label for="q4a">A. 提供默认值</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4b" value="B">
+            <label for="q4b">B. 切换到跛行模式(降级运行)</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4c" value="C">
+            <label for="q4c">C. 显示警告</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4d" value="D">
+            <label for="q4d">D. 自动彻底修复硬件物理损坏</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="B">
+    <span class="question-num">第 5 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">FMEA-MSR 与 DFMEA 的关系是什么？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q5" id="q5a" value="A">
+            <label for="q5a">A. 它们是完全冲突和对立的</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5b" value="B">
+            <label for="q5b">B. FMEA-MSR 可以作为 DFMEA 的一部分，从顾客操作方面进行补充分析</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5c" value="C">
+            <label for="q5c">C. FMEA-MSR 旨在完全替代 DFMEA</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5d" value="D">
+            <label for="q5d">D. DFMEA 中的探测与 FMEA-MSR 中的监视是完全相同的概念</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+                <button class="btn" id="submitBtn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" id="retryBtn" onclick="resetQuiz()" style="display: none; background: #718096;">再测一次</button>
+                
+                <div class="result-box" id="resultBox">
+                    <div class="score" id="scoreText"></div>
+                    <div id="feedbackText" style="color: #4a5568; margin-bottom: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const explanations = {
+            q1: 'M代表 Monitoring (监视)，表示通过诊断探测和自动响应避免或限制失效影响的技术可能性。',
+            q2: 'FMEA-MSR 中的监视(M)评估了顾客操作(最终用户)中故障探测性能的效果以及系统响应的可靠性，而DFMEA中的探测(D)主要针对开发确认过程。',
+            q3: 'FMEA-MSR 用于检验具备运行期间故障监视和响应机制的系统，通常是由传感器、执行器和逻辑处理单元构成的复杂机电系统。',
+            q4: '失效响应的功能包括提供默认值、切换到跛行模式、关闭功能、显示警告等。它不能物理修复硬件损坏。',
+            q5: 'FMEA-MSR 的分析可以作为设计FMEA的一部分，从顾客操作方面进行补充分析；DFMEA的探测关注开发测试，MSR的监视关注现场顾客操作时的诊断和响应。'
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            let total = 5;
+            let allAnswered = true;
+
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((q, index) => {
+                const qId = index + 1;
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const inputs = q.querySelectorAll('input:checked');
+                const userAns = Array.from(inputs).map(input => input.value);
+                
+                if (userAns.length === 0) {
+                    allAnswered = false;
+                }
+
+                // Reset styles
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.className = 'option';
+                    opt.querySelector('.option-badge').textContent = '';
+                });
+
+                let isCorrect = false;
+                const isMulti = q.querySelector('.question-type.multi') !== null;
+
+                if (isMulti) {
+                    isCorrect = userAns.length > 0 && 
+                               userAns.length === correctAns.length && 
+                               userAns.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = userAns.length > 0 && userAns[0] === correctAns[0];
+                }
+
+                if (isCorrect) {
+                    score++;
+                }
+
+                // Apply styles based on answers
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const isSelected = userAns.includes(val);
+                    const isActuallyCorrect = correctAns.includes(val);
+
+                    if (isActuallyCorrect) {
+                        opt.classList.add('correct');
+                        opt.querySelector('.option-badge').textContent = '✓ 正确答案';
+                    } else if (isSelected && !isActuallyCorrect) {
+                        opt.classList.add('user-wrong');
+                        opt.querySelector('.option-badge').textContent = '✗ 你的选择';
+                    }
+                });
+
+                // Show explanation
+                const expDiv = q.querySelector('.explanation');
+                if (expDiv) {
+                    expDiv.innerHTML = '<strong>💡 解析：</strong>' + explanations['q' + qId];
+                    expDiv.style.display = 'block';
+                }
+            });
+
+            if (!allAnswered) {
+                alert('请回答完所有问题后再提交！');
+                return;
+            }
+
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('retryBtn').style.display = 'block';
+            
+            const resultBox = document.getElementById('resultBox');
+            resultBox.classList.add('show');
+            
+            const scoreText = document.getElementById('scoreText');
+            const feedbackText = document.getElementById('feedbackText');
+            
+            const percentage = Math.round((score / total) * 100);
+            scoreText.textContent = '得分：' + score + ' / ' + total + ' (' + percentage + '%)';
+            
+            if (percentage === 100) {
+                resultBox.style.backgroundColor = '#f0fff4';
+                feedbackText.textContent = '🎉 太棒了！你已经完全掌握了本节内容！';
+            } else if (percentage >= 60) {
+                resultBox.style.backgroundColor = '#fffaf0';
+                feedbackText.textContent = '👍 不错！复习一下错题会更好哦。';
+            } else {
+                resultBox.style.backgroundColor = '#fff5f5';
+                feedbackText.textContent = '💪 还需要再巩固一下，看看解析吧！';
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.className = 'option';
+                opt.querySelector('.option-badge').textContent = '';
+            });
+            document.querySelectorAll('.explanation').forEach(exp => exp.style.display = 'none');
+            
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('retryBtn').style.display = 'none';
+            document.getElementById('resultBox').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

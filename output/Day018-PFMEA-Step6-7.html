@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 018：PFMEA 步骤六与七：优化与文件化</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Day 018：PFMEA 步骤六与七：优化与文件化</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+<li><strong>风险分析评估（步骤五）：</strong>使用S（严重度）、O（频度）、D（探测度）进行风险量化，确定AP（措施优先级）。</li>
+<li><strong>预防与探测控制：</strong>明确当前预防控制(PC)与探测控制(DC)的有效性，为步骤六的优化提供基准。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+<div class="highlight">
+<strong>1. 过程 FMEA 步骤六：优化</strong><br>
+旨在确定降低风险的措施并评估这些措施的有效性，最终目的是将生产和交付不合格产品的风险降至最低。如果团队评估每一项的措施优先级，并接受风险水平或记录措施关闭，FMEA 工作才算完成。若决定不采取措施，在“备注”栏中填写“无需采取进一步措施”。
+</div>
+<div class="highlight-blue">
+<strong>优化的最有效顺序：</strong><br>
+① 消除或减轻失效影响（FE）的过程变更。<br>
+② 降低失效起因（FC）频度（O）的过程变更。<br>
+③ 提高探测（D）失效起因（FC）或失效模式（FM）的能力。
+</div>
+<div class="highlight">
+<strong>2. 措施的状态分类</strong><br>
+<ul>
+    <li><strong>尚未确定：</strong>没有确定的措施。</li>
+    <li><strong>尚未决策 / 尚未执行：</strong>措施已确定但未决策或未执行。</li>
+    <li><strong>已完成：</strong>措施已被执行，有效性被证明和记录，并进行了最终评估。</li>
+    <li><strong>不执行：</strong>实践和技术限制超出当前能力，分配此状态（风险被转移到产品中）。</li>
+</ul>
+</div>
+<div class="highlight-green">
+<strong>3. 过程 FMEA 步骤七：结果文件化</strong><br>
+将FMEA活动的结果进行总结和交流。例如传音制造过程优化后，可将报告用于内部（管理层）或外部（客户、供应商）沟通，证明风险已降低至可接受水平。报告中应包含高风险失效总结及S/O/D评级表和AP结果。
+</div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》过程FMEA 步骤六与步骤七（第116-120页）
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section">
+                <h2 style="color: #2d3748; font-size: 20px; margin-bottom: 20px;">📝 随堂测验</h2>
+<div class="question" data-correct="B">
+    <span class="question-num">第 1 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">PFMEA 优化的最有效顺序是什么？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q1" id="q1a" value="A">
+            <label for="q1a">A. 提高探测度 -> 降低频度 -> 消除影响</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1b" value="B">
+            <label for="q1b">B. 消除影响 -> 降低频度 -> 提高探测度</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1c" value="C">
+            <label for="q1c">C. 降低频度 -> 消除影响 -> 提高探测度</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q1" id="q1d" value="D">
+            <label for="q1d">D. 消除影响 -> 提高探测度 -> 降低频度</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="C">
+    <span class="question-num">第 2 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">下列关于“不执行”措施状态的说法，正确的是？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q2" id="q2a" value="A">
+            <label for="q2a">A. 意味着该失效模式没有风险</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2b" value="B">
+            <label for="q2b">B. 意味着措施优先级会自动降低</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2c" value="C">
+            <label for="q2c">C. 如果实践和技术限制超出当前能力，可能分配“不执行”状态</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q2" id="q2d" value="D">
+            <label for="q2d">D. 意味着顾客接受了该风险</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="A,B,D">
+    <span class="question-num">第 3 题</span>
+    <span class="question-type multi">多选</span>
+    <div class="question-text">PFMEA步骤七“结果文件化”的主要目标包括哪些？</div>
+    <div class="options">
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3a" value="A">
+            <label for="q3a">A. 记录风险分析和风险降低到的可接受水平</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3b" value="B">
+            <label for="q3b">B. 在组织内部，及与客户或供应商沟通降低风险的措施</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3c" value="C">
+            <label for="q3c">C. 消除所有的失效起因</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q3" id="q3d" value="D">
+            <label for="q3d">D. 对结果和分析结论进行沟通</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="A,B,D">
+    <span class="question-num">第 4 题</span>
+    <span class="question-type multi">多选</span>
+    <div class="question-text">FMEA 报告中至少应包含哪些高风险总结内容？</div>
+    <div class="options">
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4a" value="A">
+            <label for="q4a">A. 团队确定的高风险失效总结</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4b" value="B">
+            <label for="q4b">B. 具体的S/O/D评级表和措施优先排序方法</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4c" value="C">
+            <label for="q4c">C. 所有零件的具体图纸尺寸</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="checkbox" name="q4" id="q4d" value="D">
+            <label for="q4d">D. 解决高风险失效的已采取或计划中措施的状态总结</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+<div class="question" data-correct="A">
+    <span class="question-num">第 5 题</span>
+    <span class="question-type">单选</span>
+    <div class="question-text">若团队决定不需要采取进一步措施，在PFMEA表中应该怎么做？</div>
+    <div class="options">
+        <div class="option">
+            <input type="radio" name="q5" id="q5a" value="A">
+            <label for="q5a">A. 在“备注”栏中填写“无需采取进一步措施”</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5b" value="B">
+            <label for="q5b">B. 直接留空即可</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5c" value="C">
+            <label for="q5c">C. 删除该行</label>
+            <span class="option-badge"></span>
+        </div>
+        <div class="option">
+            <input type="radio" name="q5" id="q5d" value="D">
+            <label for="q5d">D. 将S、O、D均改为1</label>
+            <span class="option-badge"></span>
+        </div>
+    </div>
+    <div class="explanation"></div>
+</div>
+                <button class="btn" id="submitBtn" onclick="checkAnswers()">提交答案</button>
+                <button class="btn" id="retryBtn" onclick="resetQuiz()" style="display: none; background: #718096;">再测一次</button>
+                
+                <div class="result-box" id="resultBox">
+                    <div class="score" id="scoreText"></div>
+                    <div id="feedbackText" style="color: #4a5568; margin-bottom: 20px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const explanations = {
+            q1: '手册明确指出优化的最有效顺序：1.消除或减轻失效影响；2.降低失效起因频度；3.提高探测失效起因或失效模式的能力。',
+            q2: '手册说明：当决定不执行某项措施时，会分配“不执行”状态。这通常发生在实践和技术限制超出当前能力的情况下。如果不采取措施，措施优先级不会降低，风险会转移到产品中。',
+            q3: '结果文件化的目标是总结、记录、沟通分析结论和采取的措施，以及证明风险已降至可接受水平，而不是在这一步去“消除所有失效起因”。',
+            q4: 'FMEA报告应包含团队确定的高风险失效总结、评级表和措施优先排序方法、以及针对高风险的已采取/计划中措施的状态。',
+            q5: '若团队决定不需要采取进一步措施，则应在“备注”栏中填写“无需采取进一步措施”，以表明风险分析已经完成。'
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            let total = 5;
+            let allAnswered = true;
+
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((q, index) => {
+                const qId = index + 1;
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const inputs = q.querySelectorAll('input:checked');
+                const userAns = Array.from(inputs).map(input => input.value);
+                
+                if (userAns.length === 0) {
+                    allAnswered = false;
+                }
+
+                // Reset styles
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.className = 'option';
+                    opt.querySelector('.option-badge').textContent = '';
+                });
+
+                let isCorrect = false;
+                const isMulti = q.querySelector('.question-type.multi') !== null;
+
+                if (isMulti) {
+                    isCorrect = userAns.length > 0 && 
+                               userAns.length === correctAns.length && 
+                               userAns.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = userAns.length > 0 && userAns[0] === correctAns[0];
+                }
+
+                if (isCorrect) {
+                    score++;
+                }
+
+                // Apply styles based on answers
+                q.querySelectorAll('.option').forEach(opt => {
+                    const val = opt.querySelector('input').value;
+                    const isSelected = userAns.includes(val);
+                    const isActuallyCorrect = correctAns.includes(val);
+
+                    if (isActuallyCorrect) {
+                        opt.classList.add('correct');
+                        opt.querySelector('.option-badge').textContent = '✓ 正确答案';
+                    } else if (isSelected && !isActuallyCorrect) {
+                        opt.classList.add('user-wrong');
+                        opt.querySelector('.option-badge').textContent = '✗ 你的选择';
+                    }
+                });
+
+                // Show explanation
+                const expDiv = q.querySelector('.explanation');
+                if (expDiv) {
+                    expDiv.innerHTML = '<strong>💡 解析：</strong>' + explanations['q' + qId];
+                    expDiv.style.display = 'block';
+                }
+            });
+
+            if (!allAnswered) {
+                alert('请回答完所有问题后再提交！');
+                return;
+            }
+
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('retryBtn').style.display = 'block';
+            
+            const resultBox = document.getElementById('resultBox');
+            resultBox.classList.add('show');
+            
+            const scoreText = document.getElementById('scoreText');
+            const feedbackText = document.getElementById('feedbackText');
+            
+            const percentage = Math.round((score / total) * 100);
+            scoreText.textContent = '得分：' + score + ' / ' + total + ' (' + percentage + '%)';
+            
+            if (percentage === 100) {
+                resultBox.style.backgroundColor = '#f0fff4';
+                feedbackText.textContent = '🎉 太棒了！你已经完全掌握了本节内容！';
+            } else if (percentage >= 60) {
+                resultBox.style.backgroundColor = '#fffaf0';
+                feedbackText.textContent = '👍 不错！复习一下错题会更好哦。';
+            } else {
+                resultBox.style.backgroundColor = '#fff5f5';
+                feedbackText.textContent = '💪 还需要再巩固一下，看看解析吧！';
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.className = 'option';
+                opt.querySelector('.option-badge').textContent = '';
+            });
+            document.querySelectorAll('.explanation').forEach(exp => exp.style.display = 'none');
+            
+            document.getElementById('submitBtn').style.display = 'block';
+            document.getElementById('retryBtn').style.display = 'none';
+            document.getElementById('resultBox').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 004：DFMEA 步骤二：结构分析与边界图</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .knowledge {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-green {
+            background-color: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-red {
+            background-color: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .question-num {
+            font-weight: 700;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .question-type.multi {
+            background-color: #feebc8;
+            color: #c05621;
+        }
+        .question-text {
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f7fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background-color: #edf2f7;
+        }
+        .option input {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        .option label {
+            cursor: pointer;
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+        .option-feedback {
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            width: 100%;
+        }
+        .correct-answer {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+        .wrong-answer {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+        .missed-answer {
+            background-color: #feebc8 !important;
+            border-color: #ed8936 !important;
+        }
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .submit-btn {
+            background-color: #4299e1;
+            color: white;
+        }
+        .submit-btn:hover {
+            background-color: #3182ce;
+        }
+        .reset-btn {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+        .reset-btn:hover {
+            background-color: #cbd5e0;
+        }
+        #result-area {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 700;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <h1>Day 004：DFMEA 步骤二：结构分析与边界图</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>FMEA 项目规划应遵循 "5T" 原则（目的、时间、团队、任务、工具）。</li>
+                    <li>DFMEA 需在早期启动，确定明确的分析边界，并组建跨职能团队。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+                <h3>核心知识点提取</h3>
+                <div class="highlight">
+                    <strong>1. 结构分析的目的：</strong>
+                    DFMEA 结构分析是将设计识别和分解为系统、子系统、组件和零件，使分析范围可视化，并识别设计接口、相互作用和间隙。这为后续的“功能分析”奠定基础。
+                </div>
+                
+                <div class="highlight-blue">
+                    <strong>2. 定义两类主要顾客：</strong>
+                    <ul>
+                        <li><strong>最终用户：</strong>使用该产品的个人（了解他们有助于定义功能和失效影响）。</li>
+                        <li><strong>装配和制造作业：</strong>下游制造/总装作业（处理好产品与其装配过程之间的接口至关重要）。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <strong>3. 系统结构可视化工具：方块图/边界图</strong>
+                    边界图不仅包含系统组件（在团队控制范围内的），还包含了与外部环境、人员、相邻系统的接口。边界图定义了分析范围，明确了哪些是我们要分析的，哪些是外部的影响因素。
+                </div>
+
+                <div class="highlight-green">
+                    <strong>4. 接口的五种主要类型：</strong>
+                    在传音的硬件设计中，接口无处不在：
+                    <ul>
+                        <li><strong>P (物理连接):</strong> 如手机外壳的卡扣、螺丝。</li>
+                        <li><strong>M (材料交换):</strong> 散热材料、防水胶。</li>
+                        <li><strong>E (能量传递):</strong> 电池发热、无线充电传能。</li>
+                        <li><strong>I (数据/信息交换):</strong> 屏幕排线信号、传感器数据。</li>
+                        <li><strong>人-机:</strong> 触摸屏操作、按键。</li>
+                    </ul>
+                    另外，还需考虑<strong>物理间隙</strong>（静态/动态）。
+                </div>
+
+                <div class="highlight">
+                    <strong>5. 结构树与表格填写：</strong>
+                    结构树按层级排列。在 DFMEA 表格中，结构分析通常分为三列：
+                    1. <strong>上一较高级别:</strong> 最高集成层级（如：车窗升降电机）。
+                    2. <strong>关注要素:</strong> 正在分析的核心对象，失效链的主题（如：换向系统）。
+                    3. <strong>下一较低级别或特性类型:</strong> 组成该关注要素的零件（如：电刷盒基座）。
+                </div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第2章 2.1.5 - 2.2.4 节（原版手册第 31-38 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section" id="quiz-container">
+                <h3>📝 课后练习</h3>
+                
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">DFMEA 结构分析的主要目的是什么？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. 评估失效发生的频度（O）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 将设计分解为系统、子系统和组件，识别系统要素和接口</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. 直接列出所有可能的产品缺陷</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. 确定供应商的零部件价格</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C,D,E">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">接口分析中描述的主要接口类型包括哪些？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 物理连接 (Physical connection)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 财务交换 (Financial exchange)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 能量传递 (Energy transfer)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 数据/信息交换 (Data exchange)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q2" id="q2e" value="E">
+                            <label for="q2e">E. 材料交换 (Material exchange)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在制作边界图时，关于边界虚线的设定，以下哪项是正确的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 边界线内应该包含世界上所有的相关系统</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 最终用户必须放在边界线内部</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 只有团队设计或控制的零件才放在边界内，外部影响系统放在边界外</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 边界图只是为了好看，边界线内外放什么没有区别</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在 DFMEA 结构分析的表格填写中，处于最中间列的“关注要素”指的是什么？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 最高集成层级的系统</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 最底层的单个螺丝钉</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 顾客的最终反馈</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 当前正在分析的核心对象，它是考虑失效链的主题项目</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">FMEA 分析中通常需要考虑的顾客主要包括：</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 最终用户（使用产品的个人）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 装配和制造作业（如整机总装线）</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. 公司的财务总监</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. 广告代理公司</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-btns">
+                    <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+                    <button class="reset-btn" onclick="resetQuiz()">重新测试</button>
+                </div>
+                <div id="result-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            1: "根据手册 2.2.1 节，设计结构分析的目的是将设计识别和分解为系统、子系统、组件和零件，以实现分析范围可视化，并识别接口，为功能分析奠定基础。",
+            2: "根据手册 2.2.4.2 节，主要接口类型有五种：物理连接、材料交换、能量传递、数据交换以及人-机接口。没有财务交换。",
+            3: "根据手册 2.2.4.1 节步骤 e，只有团队设计或控制的零件才放在边界内。外部系统/环境等与系统交互的要素应作为外部接口，画在边界外。",
+            4: "根据手册 2.2.4.3 节表格示例，结构分析分为：1. 上一较高级别；2. 关注要素（受关注的要素，也是考虑失效链的主题项目）；3. 下一较低级别。",
+            5: "根据手册 2.2.3 节，FMEA 中有两种主要顾客需要考虑：最终用户和装配/制造作业。这有助于准确识别功能和失效影响。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const questions = document.querySelectorAll('.question');
+            const total = questions.length;
+
+            questions.forEach((q, index) => {
+                const qNum = index + 1;
+                const correctAns = q.dataset.correct.split(',');
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                // 获取用户选择
+                const inputs = q.querySelectorAll(`input[name="q${qNum}"]`);
+                const userSelected = [];
+                inputs.forEach(input => {
+                    if (input.checked) userSelected.push(input.value);
+                });
+
+                // 重置样式
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct-answer', 'wrong-answer', 'missed-answer');
+                    opt.querySelector('.option-feedback').style.display = 'none';
+                    opt.querySelector('.option-feedback').innerHTML = '';
+                });
+
+                // 判断对错 (多选需完全匹配)
+                const isCorrect = userSelected.length > 0 && 
+                                userSelected.length === correctAns.length && 
+                                userSelected.every(val => correctAns.includes(value));
+
+                if (isCorrect) score++;
+
+                // 渲染结果
+                inputs.forEach(input => {
+                    const optDiv = input.closest('.option');
+                    const val = input.value;
+                    const isAnsCorrect = correctAns.includes(val);
+                    const isUserSelected = input.checked;
+                    const feedback = optDiv.querySelector('.option-feedback');
+
+                    if (isAnsCorrect) {
+                        optDiv.classList.add('correct-answer');
+                        if (isUserSelected) {
+                            feedback.innerHTML = `✅ 回答正确！<br><span style="color:#2f855a;font-size:13px;">${explanations[qNum]}</span>`;
+                        } else {
+                            optDiv.classList.add('missed-answer');
+                            feedback.innerHTML = `⚠️ 应该选这项。<br><span style="color:#c05621;font-size:13px;">${explanations[qNum]}</span>`;
+                        }
+                        feedback.style.display = 'block';
+                    } else if (!isAnsCorrect && isUserSelected) {
+                        optDiv.classList.add('wrong-answer');
+                        feedback.innerHTML = `❌ 错误选项。`;
+                        feedback.style.display = 'block';
+                    }
+                });
+            });
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            if (score === total) {
+                resultArea.style.backgroundColor = '#c6f6d5';
+                resultArea.style.color = '#22543d';
+                resultArea.innerHTML = `🎉 太棒了！全对！得分：${score} / ${total}`;
+            } else {
+                resultArea.style.backgroundColor = '#feebc8';
+                resultArea.style.color = '#7b341e';
+                resultArea.innerHTML = `💪 还要继续努力哦！得分：${score} / ${total}`;
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct-answer', 'wrong-answer', 'missed-answer');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-area').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

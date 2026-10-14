@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 013：PFMEA 步骤一与二：规划准备与结构分析</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 013：PFMEA 步骤一与二：规划准备与结构分析</h1>
+                <p style="color: #718096;">FMEA 核心知识精讲与自测</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>DFMEA 总结：</strong>从项目规划、边界图、功能网、失效网到风险评估(S/O/D与AP)并制定优化措施。</li>
+<li><strong>七步法延续：</strong>PFMEA与DFMEA一样，遵循“规划->结构->功能->失效->风险->优化->文件化”的七步法逻辑。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 过程 FMEA (PFMEA) 目的</strong><br>
+分析制造、装配或物流过程中可能导致产品不符合设计要求或生产效率低下的失效模式。重点关注“过程能否生产出符合设计要求的产品”。
+</div>
+<div class="highlight-blue">
+<strong>2. 步骤一：规划和准备</strong><br>
+识别要分析的过程范围，定义“5T”（目的、时间安排、团队、任务、工具）。确定哪些过程步骤需要进行 PFMEA 分析（通过过程流程图或宏观风险评估）。
+</div>
+<div class="highlight-green">
+<strong>3. 步骤二：结构分析（树状或网状）</strong><br>
+在 PFMEA 中，结构由三个层级构成：<br>
+① <strong>过程项：</strong>整个系统、子系统或零件的制造过程（如：电机装配线）。<br>
+② <strong>过程步骤：</strong>关注焦点，具体的工位或操作（如：OP10 转子压装）。<br>
+③ <strong>过程工作要素 (4M)：</strong>产生该步骤的底层要素，包括人员(Man)、机器/设备(Machine)、材料/间接材料(Material)、环境(Milieu)。
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">资料来源：《AIAG & VDA FMEA 手册》过程FMEA 步骤一与二（第77-86页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">PFMEA 结构分析中，最底层的“过程工作要素”通常包含哪些类别？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 供应商、客户、竞争对手</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 人员(Man)、机器(Machine)、材料(Material)、环境(Milieu) 等 4M 要素</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 严重度、频度、探测度</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 采购、设计、制造</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>在 PFMEA 的结构分析中，最底层是引起过程失效的根本要素，通常归纳为 4M（人、机、料、环）加上方法和测量（6M）。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">PFMEA 主要关注什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 产品设计参数是否满足客户使用要求</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 车辆碰撞时的安全性</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 制造或装配过程能否生产出符合设计要求的产品</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 产品的软件代码是否存在逻辑漏洞</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>PFMEA 的焦点是过程（Process），它假定产品设计是没问题的，重点分析制造和装配过程中的潜在失效。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 的结构树中，如果你正在分析“OP20 螺栓拧紧”这一工站，它属于哪个层级？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 过程项（上一较高级别）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 过程步骤（关注要素）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 过程工作要素（下一较低级别）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 最终用户</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>具体的工位或操作（如 OP20 螺栓拧紧）是分析的关注点，属于中间层级的“过程步骤”。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">进行 PFMEA 步骤一“规划和准备”时，通常需要哪些输入资料？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 过程流程图</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 产品BOM（物料清单）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 过去的客诉和废品记录</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 对手公司的财务报表</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>PFMEA的规划需要了解工艺流程（过程流程图）、生产什么（BOM）、以及历史经验（客诉、不良率）。财务报表无关。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">关于 4M 中的“材料(Material)”，在 PFMEA 中通常指什么？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 产品BOM中规定的直接原材料（如钢板、芯片）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 生产过程中使用的间接材料（如润滑油、切削液）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 产品的外包装</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 员工的工服</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>在PFMEA的工作要素中，材料(Material)既包括直接装配到产品上的BOM物料，也包括影响工艺的间接材料（如润滑油、清洗剂）。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

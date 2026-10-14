@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 008：【案例实战】准确定义失效模式、影响与起因</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { max-width: 800px; width: 100%; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-green { background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-blue { background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-red { background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .question { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; font-size: 12px; background: #edf2f7; color: #718096; border-radius: 4px; margin-bottom: 10px; }
+        .question-type.multi { background: #eebefa; color: #553c9a; }
+        .question-text { font-size: 16px; color: #2d3748; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 10px 15px; border: 1px solid #cbd5e0; border-radius: 6px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 10px; cursor: pointer; }
+        .option label { flex-grow: 1; cursor: pointer; margin: 0; }
+        .option.correct { background-color: #d4edda; border-color: #28a745; }
+        .option.wrong { background-color: #f8d7da; border-color: #dc3545; }
+        .option.user-wrong { background-color: #fff3cd; border-color: #ffc107; }
+        .option-feedback { display: none; font-size: 14px; margin-top: 5px; color: #4a5568; padding-left: 25px; }
+        .option.correct .option-feedback, .option.wrong .option-feedback, .option.user-wrong .option-feedback { display: block; }
+        .submit-btn, .reset-btn { width: 100%; padding: 15px; font-size: 16px; font-weight: bold; color: white; background-color: #4c51bf; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background-color 0.2s; }
+        .submit-btn:hover { background-color: #434190; }
+        .reset-btn { background-color: #718096; margin-top: 10px; }
+        .reset-btn:hover { background-color: #4a5568; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; text-align: center; border-radius: 8px; font-size: 18px; font-weight: bold; }
+        .result-panel.excellent { background-color: #d4edda; color: #155724; }
+        .result-panel.good { background-color: #fff3cd; color: #856404; }
+        .result-panel.poor { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <h1>Day 008：【案例实战】准确定义失效模式、影响与起因</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>上一期我们学习了结构分析和功能分析，建立从系统、子系统到组件的树状层级关系。</li>
+                    <li>明确了功能描述必须使用“动词+名词”的肯定句式，为本节课的失效分析打下基础。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge-section">
+                <div class="highlight">
+                    <strong>1. 失效链 (Failure Chain) 核心模型</strong><br>
+                    FMEA 中的失效分析包含三个紧密相连的方面：
+                    <ul>
+                        <li><strong>失效模式 (FM)</strong>：关注要素可能无法满足预期功能的方式（例如：电机扭矩过低）。</li>
+                        <li><strong>失效影响 (FE)</strong>：失效模式产生的后果，向上影响系统或最终用户（例如：车窗升降太慢）。</li>
+                        <li><strong>失效起因 (FC)</strong>：导致失效模式发生的原因，向下探究较低级别的要素（例如：碳刷接触部位弯曲）。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-green">
+                    <strong>2. 传音实战场景：手机组件失效描述</strong><br>
+                    失效模式应使用技术术语描述，而不是顾客抱怨的症状。且避免使用模糊词汇（如“不好”、“坏了”）。
+                    <br><br>
+                    <strong>❌ 不推荐的模糊描述：</strong> 屏幕坏了、马达不行、电池不好、按键松了。
+                    <br>
+                    <strong>✅ 推荐的专业描述：</strong> 屏幕玻璃破裂（组件破裂）、马达提供的振动过小（性能不足）、电池完全漏液（功能丧失）、按键响应延迟（功能延迟）。
+                </div>
+
+                <div class="highlight-red">
+                    <strong>3. 易错点提示：失效起因与模式的混淆</strong><br>
+                    不同层级的分析对象不同，失效的定义也会转换。<br>
+                    在多级供应链中，OEM 级别的失效起因（如供应商提供的电机扭矩不足），在供应商（一级供应商）级别就成了他们的失效模式。<br>
+                    寻找失效起因时问：“为什么这个失效模式会发生？”<br>
+                    寻找失效影响时问：“当这个失效模式发生时，会造成什么后果？”
+                </div>
+
+                <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                    <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.3.7 - 2.4 节（原版手册第 46-55 页）。
+                </div>
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section" id="quiz">
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于失效模式的描述，以下哪项是正确的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. 失效模式应该直接记录顾客抱怨的症状，例如“手机太卡”。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 失效模式来源于功能，并且应该使用技术术语来描述。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. 为了节省时间，识别出一个主要的失效模式后就可以停止分析。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. 描述失效模式时，使用“不好”、“有缺陷”是标准且充分的做法。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在构建失效链时，如果要寻找“失效起因（FC）”，团队应该问以下哪个问题？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 当失效模式出现时，会发生什么？</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 这个零件的功能是什么？</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 为什么这个失效模式会发生？</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 这个失效会导致违反什么法规？</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">潜在的失效模式类型包括但不限于以下哪些情况？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 功能丧失（如：突然失效、无法操作）</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 设计公差过大</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 功能退化（如：性能随时间损失）</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 非预期功能（如：在错误的时间或意外的方向操作）</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">关于失效影响（FE），以下说法正确的是？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 失效影响描述的是对下一级产品集成的影响（内部或外部）。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 失效影响应该说明最终用户可能注意到或体验到的情况，包括安全性影响。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 严重度的评级是基于对失效影响的评估。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 一个失效模式只能导致一个失效影响。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在整车层级分析中，顾客发现“车窗升降太慢”。在FMEA的失效链中，这最可能被定义为该层级的什么？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 失效起因 (FC)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 失效影响 (FE)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. 失效模式 (FM)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. 探测控制 (DC)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+            <div id="resultPanel" class="result-panel"></div>
+            <button class="reset-btn" onclick="resetQuiz()" style="display: none;" id="resetBtn">重新答题</button>
+
+        </div>
+    </div>
+    <script>
+        const explanations = {
+            1: "解析：根据手册 2.4.5，失效模式来源于功能，且应该用技术术语来描述，而不一定是顾客注意到的症状。同时明确指出“不好”、“有缺陷”是不充分的描述。",
+            2: "解析：根据手册 2.4.7，将失效起因与失效模式联系起来，应该问“为什么失效模式会发生？”；而问“会发生什么？”是为了寻找失效影响。",
+            3: "解析：根据手册 2.4.2，失效模式的类型包括功能丧失、功能退化、功能间歇、部分功能丧失、非预期功能等。“设计公差过大”更偏向于潜在的失效起因。",
+            4: "解析：根据手册 2.4.4，失效影响定义为失效模式产生的后果，包含对下一级集成的影响、最终用户影响和法规影响。一个失效模式可能导致多个影响。",
+            5: "解析：顾客感受到的后果（车窗升降太慢）是对最终用户产生的影响，因此属于失效影响（FE）。导致升降慢的失效模式可能是“电机扭矩不足”。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((q, index) => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qNum = index + 1;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selectedAns = [];
+                const inputs = q.querySelectorAll(`input[name="q${qNum}"]`);
+                inputs.forEach(input => {
+                    if(input.checked) selectedAns.push(input.value);
+                });
+
+                let isCorrect = false;
+                if(isMulti) {
+                    isCorrect = (selectedAns.length === correctAns.length) && 
+                              selectedAns.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selectedAns.length === 1 && correctAns.includes(selectedAns[0]);
+                }
+
+                if(isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const feedback = optionDiv.querySelector('.option-feedback') || document.createElement('div');
+                    feedback.className = 'option-feedback';
+                    
+                    if(correctAns.includes(input.value)) {
+                        optionDiv.classList.add('correct');
+                        if(input.checked || isMulti) {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong><br>${explanations[qNum]}`;
+                        } else {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong>（你漏选了此项）`;
+                        }
+                    } else if(input.checked && !correctAns.includes(input.value)) {
+                        optionDiv.classList.add('user-wrong');
+                        feedback.innerHTML = `❌ <strong>你的选择</strong><br>请检查知识点。`;
+                    }
+                    if(!optionDiv.querySelector('.option-feedback')) {
+                        optionDiv.appendChild(feedback);
+                    }
+                });
+            });
+
+            const resultPanel = document.getElementById('resultPanel');
+            resultPanel.style.display = 'block';
+            document.getElementById('resetBtn').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'none';
+
+            if(score === total) {
+                resultPanel.className = 'result-panel excellent';
+                resultPanel.innerHTML = `🎯 满分！你掌握了本期核心知识！（${score}/${total}）`;
+            } else if(score >= total * 0.6) {
+                resultPanel.className = 'result-panel good';
+                resultPanel.innerHTML = `👍 不错！继续加油！（${score}/${total}）`;
+            } else {
+                resultPanel.className = 'result-panel poor';
+                resultPanel.innerHTML = `💪 还需要多复习巩固哦！（${score}/${total}）`;
+            }
+        }
+
+        function resetQuiz() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'wrong', 'user-wrong');
+                const feedback = opt.querySelector('.option-feedback');
+                if(feedback) feedback.remove();
+                const input = opt.querySelector('input');
+                input.checked = false;
+            });
+            
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+            document.querySelector('.submit-btn').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

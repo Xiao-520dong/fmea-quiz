@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 010：DFMEA 步骤五：S、O、D 评分与行动优先级(AP)</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { max-width: 800px; width: 100%; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-green { background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-blue { background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-red { background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .question { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; font-size: 12px; background: #edf2f7; color: #718096; border-radius: 4px; margin-bottom: 10px; }
+        .question-type.multi { background: #eebefa; color: #553c9a; }
+        .question-text { font-size: 16px; color: #2d3748; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 10px 15px; border: 1px solid #cbd5e0; border-radius: 6px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 10px; cursor: pointer; }
+        .option label { flex-grow: 1; cursor: pointer; margin: 0; }
+        .option.correct { background-color: #d4edda; border-color: #28a745; }
+        .option.wrong { background-color: #f8d7da; border-color: #dc3545; }
+        .option.user-wrong { background-color: #fff3cd; border-color: #ffc107; }
+        .option-feedback { display: none; font-size: 14px; margin-top: 5px; color: #4a5568; padding-left: 25px; }
+        .option.correct .option-feedback, .option.wrong .option-feedback, .option.user-wrong .option-feedback { display: block; }
+        .submit-btn, .reset-btn { width: 100%; padding: 15px; font-size: 16px; font-weight: bold; color: white; background-color: #4c51bf; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background-color 0.2s; }
+        .submit-btn:hover { background-color: #434190; }
+        .reset-btn { background-color: #718096; margin-top: 10px; }
+        .reset-btn:hover { background-color: #4a5568; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; text-align: center; border-radius: 8px; font-size: 18px; font-weight: bold; }
+        .result-panel.excellent { background-color: #d4edda; color: #155724; }
+        .result-panel.good { background-color: #fff3cd; color: #856404; }
+        .result-panel.poor { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <h1>Day 010：DFMEA 步骤五：S、O、D 评分与行动优先级(AP)</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>上一期我们学习了风险分析的基础，区分了预防控制 (PC) 和探测控制 (DC)。</li>
+                    <li>预防控制旨在降低失效发生的概率（频度），探测控制旨在项目交付生产前发现问题（探测度）。控制描述必须具体到特定的测试或规范。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge-section">
+                <div class="highlight">
+                    <strong>1. S、O、D 评分的独立性与顺序</strong><br>
+                    评估采用 1-10 分制，10 代表最高风险。
+                    <ul>
+                        <li><strong>严重度 (S)</strong>：基于失效影响评估，不考虑频度或探测度。通常 S=9或10 涉及安全或法规违规。</li>
+                        <li><strong>频度 (O)</strong>：基于失效起因的发生频率和<strong>预防控制</strong>的有效性评估。</li>
+                        <li><strong>探测度 (D)</strong>：基于<strong>探测控制</strong>在交付生产前发现起因/模式的能力评估。探测度是在确定S和O之后独立评估的。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-green">
+                    <strong>2. 传音实战场景：摒弃 RPN，拥抱 AP</strong><br>
+                    在新版手册中，不再推荐使用 RPN（风险顺序数，S×O×D）来决定是否采取措施，因为 RPN 赋予 S、O、D 相同的权重，掩盖了高严重度的风险。<br>
+                    <strong>AP (措施优先级)</strong> 是新标准。它基于 1000 种 S、O、D 组合查表得出，分为 H（高）、M（中）、L（低）。<br>
+                    AP 的逻辑是：首先看重严重度 (S)，其次是频度 (O)，最后是探测度 (D)。对于 S=9-10 且 AP 为 H/M 的风险，建议至少由管理层评审。
+                </div>
+
+                <div class="highlight-red">
+                    <strong>3. 易错点提示：AP 不是风险的高低</strong><br>
+                    必须明确：措施优先级 (AP) 并不是对“风险高低”的评级，而是对<strong>“降低风险的措施的优先排序”</strong>。AP 为 H 表示团队“必须”确定措施改进控制；AP 为 L 表示团队“可以”确定措施改进控制，也可以保持现状。
+                </div>
+
+                <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                    <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.6 - 2.5.10 节（原版手册第 59-72 页）。
+                </div>
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section" id="quiz">
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于严重度 (S) 评级，以下说法正确的是？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. 严重度评级需要综合考虑失效影响和发生频度来确定。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 严重度评级在不考虑频度和探测度的情况下确定。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. 严重度为 10 通常代表客户会听到令人不舒服的噪音。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. 严重度评级是由探测控制的有效性决定的。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">新版 FMEA 手册为什么不推荐使用风险顺序数 (RPN) 的阈值来确定所需的措施？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 因为 RPN 的计算太复杂，容易出错。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 因为 RPN 的范围是 1-100，区分度不够。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 因为 RPN 对 S、O、D 的权重相等，不同组合产生类似的风险数，无法合理确定优先级。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 因为顾客不再关注风险排序。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C,D">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">关于措施优先级 (AP) 的逻辑与应用，以下哪些描述是正确的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. AP 重点排序依次是：首先着重于严重度 (S)，其次为频度 (O)，然后为探测度 (D)。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. AP 为“高(H)”代表该产品具有极高的质量风险，必须停止生产。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. AP 不是对高、中、低风险的优先排序，而是对降低风险的措施的优先排序。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 如果 S=9-10 且 AP 为中或高，建议至少应由管理层进行评审。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">当措施优先级 (AP) 评定为“中 (M)”时，团队应该如何应对？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 团队可以忽略，只有当 AP 为 H 时才需要采取行动。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 团队必须强制改进探测控制，直到 AP 降为 L。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 团队应确定适当的措施来改进预防/探测控制，或证明并记录当前的控制足够有效。</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 团队必须召回相关产品。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B,C,D">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在确定探测度 (D) 估计时，团队应该考虑以下哪些问题？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 失效会导致车辆违反哪些交通法规？</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 探测该起因/失效模式的测试程序是否已得到证明？</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. 探测失效需要多少样品？</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. 探测失效所需要的使用记录/工作周期是什么？</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+            <div id="resultPanel" class="result-panel"></div>
+            <button class="reset-btn" onclick="resetQuiz()" style="display: none;" id="resetBtn">重新答题</button>
+
+        </div>
+    </div>
+    <script>
+        const explanations = {
+            1: "解析：根据手册 2.5.7，严重度评级用于确定某个FMEA范围的优先级，并在不考虑频度和探测度的情况下确定。严重度为 9 或 10 通常代表影响安全或不符合法规。",
+            2: "解析：根据手册 2.5.10，RPN 对 S、O、D 的权重相等（例如 S=9, O=2, D=2 结果为 36；S=2, O=6, D=3 结果也是 36），这可能导致团队无法确定如何进行优先级排序，因此不再推荐使用。",
+            3: "解析：AP 方法首先着重于严重度，其次频度，然后探测度。AP 并不是对风险高低的排序，而是对改进措施紧迫性的排序。对于严重度 9-10 且 AP 为中高的情况，需管理层评审。AP为H不代表一定要停产，而是代表必须确定措施改进控制。",
+            4: "解析：根据 AP 表的定义，当 AP 为中(M)时，团队“应”确定适当的措施来改进控制，或者由公司自行决定，证明并记录当前的控制足够有效。",
+            5: "解析：手册 2.5.9 列出了确定探测度估计时应考虑的问题，包括最有效的测试是什么、所需周期、所需样品数、测试程序是否得到证明。选项 A 考虑的是影响和法规，属于严重度(S)评估的范畴。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((q, index) => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qNum = index + 1;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selectedAns = [];
+                const inputs = q.querySelectorAll(`input[name="q${qNum}"]`);
+                inputs.forEach(input => {
+                    if(input.checked) selectedAns.push(input.value);
+                });
+
+                let isCorrect = false;
+                if(isMulti) {
+                    isCorrect = (selectedAns.length === correctAns.length) && 
+                              selectedAns.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selectedAns.length === 1 && correctAns.includes(selectedAns[0]);
+                }
+
+                if(isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const feedback = optionDiv.querySelector('.option-feedback') || document.createElement('div');
+                    feedback.className = 'option-feedback';
+                    
+                    if(correctAns.includes(input.value)) {
+                        optionDiv.classList.add('correct');
+                        if(input.checked || isMulti) {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong><br>${explanations[qNum]}`;
+                        } else {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong>（你漏选了此项）`;
+                        }
+                    } else if(input.checked && !correctAns.includes(input.value)) {
+                        optionDiv.classList.add('user-wrong');
+                        feedback.innerHTML = `❌ <strong>你的选择</strong><br>请检查知识点。`;
+                    }
+                    if(!optionDiv.querySelector('.option-feedback')) {
+                        optionDiv.appendChild(feedback);
+                    }
+                });
+            });
+
+            const resultPanel = document.getElementById('resultPanel');
+            resultPanel.style.display = 'block';
+            document.getElementById('resetBtn').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'none';
+
+            if(score === total) {
+                resultPanel.className = 'result-panel excellent';
+                resultPanel.innerHTML = `🎯 满分！你掌握了本期核心知识！（${score}/${total}）`;
+            } else if(score >= total * 0.6) {
+                resultPanel.className = 'result-panel good';
+                resultPanel.innerHTML = `👍 不错！继续加油！（${score}/${total}）`;
+            } else {
+                resultPanel.className = 'result-panel poor';
+                resultPanel.innerHTML = `💪 还需要多复习巩固哦！（${score}/${total}）`;
+            }
+        }
+
+        function resetQuiz() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'wrong', 'user-wrong');
+                const feedback = opt.querySelector('.option-feedback');
+                if(feedback) feedback.remove();
+                const input = opt.querySelector('input');
+                input.checked = false;
+            });
+            
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+            document.querySelector('.submit-btn').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

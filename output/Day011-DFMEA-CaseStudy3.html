@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 011：【案例实战】风险综合评估与AP打分练习</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { max-width: 800px; width: 100%; }
+        .card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-green { background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-blue { background-color: #d1ecf1; border-left: 4px solid #17a2b8; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .highlight-red { background-color: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        .question { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; font-size: 12px; background: #edf2f7; color: #718096; border-radius: 4px; margin-bottom: 10px; }
+        .question-type.multi { background: #eebefa; color: #553c9a; }
+        .question-text { font-size: 16px; color: #2d3748; margin-bottom: 15px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 10px 15px; border: 1px solid #cbd5e0; border-radius: 6px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background-color: #f7fafc; }
+        .option input { margin-right: 10px; cursor: pointer; }
+        .option label { flex-grow: 1; cursor: pointer; margin: 0; }
+        .option.correct { background-color: #d4edda; border-color: #28a745; }
+        .option.wrong { background-color: #f8d7da; border-color: #dc3545; }
+        .option.user-wrong { background-color: #fff3cd; border-color: #ffc107; }
+        .option-feedback { display: none; font-size: 14px; margin-top: 5px; color: #4a5568; padding-left: 25px; }
+        .option.correct .option-feedback, .option.wrong .option-feedback, .option.user-wrong .option-feedback { display: block; }
+        .submit-btn, .reset-btn { width: 100%; padding: 15px; font-size: 16px; font-weight: bold; color: white; background-color: #4c51bf; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background-color 0.2s; }
+        .submit-btn:hover { background-color: #434190; }
+        .reset-btn { background-color: #718096; margin-top: 10px; }
+        .reset-btn:hover { background-color: #4a5568; }
+        .result-panel { display: none; margin-top: 20px; padding: 20px; text-align: center; border-radius: 8px; font-size: 18px; font-weight: bold; }
+        .result-panel.excellent { background-color: #d4edda; color: #155724; }
+        .result-panel.good { background-color: #fff3cd; color: #856404; }
+        .result-panel.poor { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <h1>Day 011：【案例实战】风险综合评估与AP打分练习</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>上期我们学习了严重度 (S)、频度 (O)、探测度 (D) 的评估标准，它们采用独立的 1-10 分制进行评级。</li>
+                    <li>了解了新版 FMEA 不推荐使用 RPN（风险顺序数），而是通过 S、O、D 组合查表得出行动优先级 (AP) 作为改进措施优先级的依据。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge-section">
+                <div class="highlight">
+                    <strong>1. 将 S、O、D 结合实际控制措施</strong><br>
+                    风险分析不仅是填数字，而是基于证据的逻辑推演：
+                    <ul>
+                        <li>如果你的“当前预防控制 (PC)”很强（如成熟的技术、完善的防错设计），那么 <strong>频度 (O)</strong> 打分就低。</li>
+                        <li>如果你的“当前探测控制 (DC)”很强（如项目交付生产前有全覆盖的硬件在环测试、耐久性测试），那么 <strong>探测度 (D)</strong> 打分就低。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-green">
+                    <strong>2. 传音实战场景：手机充电接口案例</strong><br>
+                    <strong>失效模式：</strong> 充电接口弯曲变形。<br>
+                    <strong>失效影响：</strong> 无法充电，导致手机完全无法使用（失去主要功能，S=8）。<br>
+                    <strong>失效起因：</strong> 接口设计强度不足。<br>
+                    <strong>预防控制 (PC)：</strong> 借鉴以往成熟机型的接口厚度参数（属于类似应用，有现场经验）。此时 O 可能评估为 4。<br>
+                    <strong>探测控制 (DC)：</strong> 实验室拔插插拔测试（10000次）。测试程序成熟且能有效发现设计缺陷。此时 D 可能评估为 3。<br>
+                    综合下来，S=8, O=4, D=3，通过查 AP 表可得出一个措施优先级（H、M 或 L），指导是否需要进一步增加钢板加固。
+                </div>
+
+                <div class="highlight-red">
+                    <strong>3. 易错点提示：控制措施的真实性</strong><br>
+                    打分必须基于真实、已计划或已存在的活动。不能把“可能打算做”或者“生产过程中的抽检”（产线抽检属于 PFMEA，不是 DFMEA 的探测控制）写进 DFMEA 作为降低 D 分数的依据。<br>
+                    且探测控制完成或取消，均会直接影响打分。
+                </div>
+
+                <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                    <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5 节综合案例应用（原版手册第 55-72 页）。
+                </div>
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section" id="quiz">
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在一个新手机项目中，工程师决定完全沿用上一代成功量产、零客诉的扬声器模块结构（运行条件无变化）。在这个评估中，该失效起因的频度 (O) 评级最有可能是多少？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. O = 10（极高风险）</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. O = 2 或 3（低风险，基于长期成功的现场经验和相同的应用）</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. O = 5（中等风险）</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. 只要是新项目，一律按最高风险 O=10 打分</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="D">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">关于 DFMEA 中的探测控制 (DC)，以下哪项可以直接用来降低探测度 (D) 评分？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 工厂流水线上的首件检查</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 顾客退机的保修数据分析</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 仅仅口头承诺将进行实验室测试</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 研发阶段基于明确测试规范进行的高低温老化验证测试</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,C">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">当遇到由于资源限制导致原本计划的“疲劳破坏测试（探测控制）”被取消时，这将如何影响 FMEA 评估？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 会影响该失效链的探测度 (D) 评估，因为探测能力减弱。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 严重度 (S) 评分会随之提高。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 可能会影响对频度 (O) 的估计确认。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 因为没有测试，这部分风险分析就可以被删除。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在一个失效分析的评估中，严重度 (S) 评估为 9。以下哪些说法是正确的？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 此失效可能影响到操作安全或不符合法规要求。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 若此失效的 AP 被评定为高(H) 或中(M)，建议至少应由管理层评审所采取的措施。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 严重度为 9，可以直接跳过频度和探测度的评估，直接要求重新设计。</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 严重度 (S) 是通过调整探测控制 (DC) 来降低的。</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">假设失效的发生导致“失去产品次要功能”，根据一般的严重度标准，此影响的 S 值大概在什么范围？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. S = 9 - 10</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. S = 7 - 8</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. S = 5 - 6</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. S = 2 - 4</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+            <div id="resultPanel" class="result-panel"></div>
+            <button class="reset-btn" onclick="resetQuiz()" style="display: none;" id="resetBtn">重新答题</button>
+
+        </div>
+    </div>
+    <script>
+        const explanations = {
+            1: "解析：根据频度 (O) 评级标准（表 D2），完全沿用长期成功现场经验的类似设计且工作周期/运行条件相似，意味着预防控制非常强，频度发生可能性很低，O 分数应为 2 或 3。",
+            2: "解析：DFMEA 中的探测控制 (DC) 是指在项目【交付生产前】探测设计缺陷的验证活动（如高低温老化测试）。产线抽检属于生产制造阶段 (PFMEA)；保修数据属于事后数据；口头承诺不是已经建立的有效程序。",
+            3: "解析：手册2.5.9指出，探测控制（如测试）的完成或取消，会直接影响探测度(D)的评估，并且也会影响对频度(O)的估计确认（因为频度也需要通过探测控制的结果来间接验证预防措施是否真的有效）。严重度(S)不会因为取消测试而改变。",
+            4: "解析：根据严重度表，S=9 通常涉及安全或不符合法规。手册2.5.10明确建议：对于潜在严重度为 9-10 且措施优先级(AP)为高(H)和中(M)的失效影响，至少应由管理层评审。严重度(S)只与失效后果有关，不能通过探测控制来降低。",
+            5: "解析：根据严重度标准（表 D1）：S=9/10 是安全/法规问题；S=8 是失去主要功能；S=7 是降低主要功能；S=6 是失去次要功能；S=5 是降低次要功能。因此失去次要功能通常在 5-6 的范围。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const total = 5;
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((q, index) => {
+                const correctAns = q.getAttribute('data-correct').split(',');
+                const qNum = index + 1;
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                let selectedAns = [];
+                const inputs = q.querySelectorAll(`input[name="q${qNum}"]`);
+                inputs.forEach(input => {
+                    if(input.checked) selectedAns.push(input.value);
+                });
+
+                let isCorrect = false;
+                if(isMulti) {
+                    isCorrect = (selectedAns.length === correctAns.length) && 
+                              selectedAns.every(val => correctAns.includes(val));
+                } else {
+                    isCorrect = selectedAns.length === 1 && correctAns.includes(selectedAns[0]);
+                }
+
+                if(isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const feedback = optionDiv.querySelector('.option-feedback') || document.createElement('div');
+                    feedback.className = 'option-feedback';
+                    
+                    if(correctAns.includes(input.value)) {
+                        optionDiv.classList.add('correct');
+                        if(input.checked || isMulti) {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong><br>${explanations[qNum]}`;
+                        } else {
+                            feedback.innerHTML = `✅ <strong>正确答案</strong>（你漏选了此项）`;
+                        }
+                    } else if(input.checked && !correctAns.includes(input.value)) {
+                        optionDiv.classList.add('user-wrong');
+                        feedback.innerHTML = `❌ <strong>你的选择</strong><br>请检查知识点。`;
+                    }
+                    if(!optionDiv.querySelector('.option-feedback')) {
+                        optionDiv.appendChild(feedback);
+                    }
+                });
+            });
+
+            const resultPanel = document.getElementById('resultPanel');
+            resultPanel.style.display = 'block';
+            document.getElementById('resetBtn').style.display = 'block';
+            document.querySelector('.submit-btn').style.display = 'none';
+
+            if(score === total) {
+                resultPanel.className = 'result-panel excellent';
+                resultPanel.innerHTML = `🎯 满分！你掌握了本期核心知识！（${score}/${total}）`;
+            } else if(score >= total * 0.6) {
+                resultPanel.className = 'result-panel good';
+                resultPanel.innerHTML = `👍 不错！继续加油！（${score}/${total}）`;
+            } else {
+                resultPanel.className = 'result-panel poor';
+                resultPanel.innerHTML = `💪 还需要多复习巩固哦！（${score}/${total}）`;
+            }
+        }
+
+        function resetQuiz() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'wrong', 'user-wrong');
+                const feedback = opt.querySelector('.option-feedback');
+                if(feedback) feedback.remove();
+                const input = opt.querySelector('input');
+                input.checked = false;
+            });
+            
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('resetBtn').style.display = 'none';
+            document.querySelector('.submit-btn').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 005：DFMEA 步骤三：功能分析与参数图(P图)</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2d3748;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .knowledge {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .highlight {
+            background-color: #fefcbf;
+            border-left: 4px solid #d69e2e;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-green {
+            background-color: #f0fff4;
+            border-left: 4px solid #48bb78;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-blue {
+            background-color: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .highlight-red {
+            background-color: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        .question {
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .question-num {
+            font-weight: 700;
+            color: #4a5568;
+            margin-right: 10px;
+        }
+        .question-type {
+            font-size: 12px;
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .question-type.multi {
+            background-color: #feebc8;
+            color: #c05621;
+        }
+        .question-text {
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f7fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background-color: #edf2f7;
+        }
+        .option input {
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        .option label {
+            cursor: pointer;
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+        .option-feedback {
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            width: 100%;
+        }
+        .correct-answer {
+            background-color: #c6f6d5 !important;
+            border-color: #48bb78 !important;
+        }
+        .wrong-answer {
+            background-color: #fed7d7 !important;
+            border-color: #f56565 !important;
+        }
+        .missed-answer {
+            background-color: #feebc8 !important;
+            border-color: #ed8936 !important;
+        }
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .submit-btn {
+            background-color: #4299e1;
+            color: white;
+        }
+        .submit-btn:hover {
+            background-color: #3182ce;
+        }
+        .reset-btn {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+        .reset-btn:hover {
+            background-color: #cbd5e0;
+        }
+        #result-area {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 700;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- 1. 头部 -->
+            <div class="header">
+                <h1>Day 005：DFMEA 步骤三：功能分析与参数图(P图)</h1>
+            </div>
+            
+            <!-- 1.5 上期回顾 -->
+            <div class="review-section highlight-blue" style="margin-bottom: 20px;">
+                <strong>🔄 温故知新：上期核心回顾</strong>
+                <ul>
+                    <li>步骤二（结构分析）通过结构树或边界图将设计拆解为系统、子系统和组件。</li>
+                    <li>明确界定分析范围，并识别五种主要接口：物理连接、材料交换、能量传递、数据交换以及人-机接口。</li>
+                </ul>
+            </div>
+
+            <!-- 2. 知识点区 -->
+            <div class="knowledge">
+                <h3>核心知识点提取</h3>
+                <div class="highlight">
+                    <strong>1. 功能分析的目的与描述规范：</strong>
+                    功能描述了项目/系统要素的预期用途。
+                    规范格式：<strong>“行为动词” + “名词”</strong>（使用现在时态）。
+                    示例：传输动力、包含液体、控制速度。功能分析将要求适当地分配给系统要素，并作为失效分析的基础。
+                </div>
+                
+                <div class="highlight-blue">
+                    <strong>2. 功能要求 vs 非功能性要求：</strong>
+                    <ul>
+                        <li><strong>功能性要求：</strong>判断或测量功能预期性能的标准（如：材料硬度达到多少HRC）。</li>
+                        <li><strong>非功能性要求：</strong>对设计决策自由度的限制（如：必须在 -20℃~60℃ 的温度范围内工作，或体积不能超过规定尺寸）。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <strong>3. 参数图 (P-图)：</strong>
+                    参数图用于描述单个功能在特定环境下的行为特点，聚焦于功能的实现。它帮助识别影响系统优化的关键因素。
+                </div>
+
+                <div class="highlight-green">
+                    <strong>4. P-图的五大要素解析（以手机指纹解锁为例）：</strong>
+                    <ul>
+                        <li><strong>输入(信号):</strong> 手指按压传感器。</li>
+                        <li><strong>理想输出:</strong> 快速准确解锁屏幕。</li>
+                        <li><strong>非预期输出 (转向输出):</strong> 解锁失败、发热、耗电异常。</li>
+                        <li><strong>控制因素:</strong> 我们可以设计的参数（算法灵敏度、传感器面积）。</li>
+                        <li><strong>噪音因素:</strong> 我们难以控制的外部影响（手指有汗水/灰尘、组件随时间老化、极寒天气）。</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-red">
+                    <strong>5. 功能树/网的逻辑连接：</strong>
+                    功能之间存在技术依赖关系。子功能使整体功能得以执行（布林逻辑AND关系）。
+                    <ul>
+                        <li><strong>自上而下问：</strong>“较低级别功能如何使得较高级别功能生效？”</li>
+                        <li><strong>自下而上问：</strong>“为什么需要较低级别功能？”</li>
+                    </ul>
+                    只有功能之间有关联，后续的失效模式之间才会形成失效链。
+                </div>
+            </div>
+            
+            <div class="highlight" style="background-color: #f7fafc; border-left: 4px solid #a0aec0; font-size: 14px; color: #4a5568; margin-top: 30px;">
+                <strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第2章 2.3 节（原版手册第 38-46 页）。
+            </div>
+
+            <!-- 3. 练习题区 -->
+            <div class="quiz-section" id="quiz-container">
+                <h3>📝 课后练习</h3>
+                
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 1 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在 DFMEA 功能分析中，推荐的功能描述标准短语格式是什么？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="A">
+                            <label for="q1a">A. “名词” + “形容词”</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="B">
+                            <label for="q1b">B. 描述具体的技术参数规格</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="C">
+                            <label for="q1c">C. “行为动词” + “名词” (如：传递热量、控制速度)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="D">
+                            <label for="q1d">D. 一段详细的操作说明</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="B">
+                    <span class="question-num">第 2 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">“设备必须在 -40℃ 到 +85℃ 的环境温度下正常运行”，这属于哪种类型的要求？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="A">
+                            <label for="q2a">A. 功能性要求</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="B">
+                            <label for="q2b">B. 非功能性要求</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="C">
+                            <label for="q2c">C. 接口要求</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="D">
+                            <label for="q2d">D. 法律要求</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A,B,C,E">
+                    <span class="question-num">第 3 题</span>
+                    <span class="question-type multi">多选</span>
+                    <div class="question-text">在参数图 (P-图) 中，通常包含以下哪些要素？</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3a" value="A">
+                            <label for="q3a">A. 输入 (信号)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3b" value="B">
+                            <label for="q3b">B. 预期输出</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3c" value="C">
+                            <label for="q3c">C. 噪音因素 (Noise factors)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3d" value="D">
+                            <label for="q3d">D. 生产线工人的排班表</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" name="q3" id="q3e" value="E">
+                            <label for="q3e">E. 控制因素 (Control factors)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="A">
+                    <span class="question-num">第 4 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在刹车系统的参数图中，“热量、异常噪音、振动”通常被定义为：</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="A">
+                            <label for="q4a">A. 非预期输出 (转向输出)</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="B">
+                            <label for="q4b">B. 噪音因素</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="C">
+                            <label for="q4c">C. 预期输出</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="D">
+                            <label for="q4d">D. 控制因素</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="C">
+                    <span class="question-num">第 5 题</span>
+                    <span class="question-type">单选</span>
+                    <div class="question-text">在构建功能树/网时，自上而下推导逻辑时，我们应该问的问题是：</div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="A">
+                            <label for="q5a">A. 为什么需要较低级别功能？</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="B">
+                            <label for="q5b">B. 这个功能是谁设计的？</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="C">
+                            <label for="q5c">C. 较低级别功能如何使得较高级别功能生效？</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="D">
+                            <label for="q5d">D. 这个功能会不会失效？</label>
+                            <span class="option-badge"></span>
+                            <div class="option-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-btns">
+                    <button class="submit-btn" onclick="checkAnswers()">提交答案</button>
+                    <button class="reset-btn" onclick="resetQuiz()">重新测试</button>
+                </div>
+                <div id="result-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const explanations = {
+            1: "根据手册 2.3.2 节，推荐的短语格式为：一个“行为动词”后加一个“名词”，表示可测量的功能。例如：传输动力、控制速度。",
+            2: "根据手册 2.3.3 节，非功能性要求是对设计决策自由度的限制，如温度范围。而功能性要求是判断或测量预期性能的标准。",
+            3: "根据手册 2.3.4 节，参数图由输入(信号)、控制因素、噪音因素、以及输出(预期输出和非预期输出)组成。",
+            4: "根据手册 2.3.4 节举例，对于制动系统，热量、噪音和振动属于“非预期输出”（转向输出），它们是偏离理想预期输出的故障行为或意外输出。",
+            5: "根据手册 2.3.5 节，在功能树中：自上而下问“较低级别功能如何使得较高级别功能生效？”；自下而上问“为什么需要较低级别功能？”。"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const questions = document.querySelectorAll('.question');
+            const total = questions.length;
+
+            questions.forEach((q, index) => {
+                const qNum = index + 1;
+                const correctAns = q.dataset.correct.split(',');
+                const isMulti = q.querySelector('.question-type').classList.contains('multi');
+                
+                // 获取用户选择
+                const inputs = q.querySelectorAll(`input[name="q${qNum}"]`);
+                const userSelected = [];
+                inputs.forEach(input => {
+                    if (input.checked) userSelected.push(input.value);
+                });
+
+                // 重置样式
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct-answer', 'wrong-answer', 'missed-answer');
+                    opt.querySelector('.option-feedback').style.display = 'none';
+                    opt.querySelector('.option-feedback').innerHTML = '';
+                });
+
+                // 判断对错 (多选需完全匹配)
+                const isCorrect = userSelected.length > 0 && 
+                                userSelected.length === correctAns.length && 
+                                userSelected.every(val => correctAns.includes(value));
+
+                if (isCorrect) score++;
+
+                // 渲染结果
+                inputs.forEach(input => {
+                    const optDiv = input.closest('.option');
+                    const val = input.value;
+                    const isAnsCorrect = correctAns.includes(val);
+                    const isUserSelected = input.checked;
+                    const feedback = optDiv.querySelector('.option-feedback');
+
+                    if (isAnsCorrect) {
+                        optDiv.classList.add('correct-answer');
+                        if (isUserSelected) {
+                            feedback.innerHTML = `✅ 回答正确！<br><span style="color:#2f855a;font-size:13px;">${explanations[qNum]}</span>`;
+                        } else {
+                            optDiv.classList.add('missed-answer');
+                            feedback.innerHTML = `⚠️ 应该选这项。<br><span style="color:#c05621;font-size:13px;">${explanations[qNum]}</span>`;
+                        }
+                        feedback.style.display = 'block';
+                    } else if (!isAnsCorrect && isUserSelected) {
+                        optDiv.classList.add('wrong-answer');
+                        feedback.innerHTML = `❌ 错误选项。`;
+                        feedback.style.display = 'block';
+                    }
+                });
+            });
+
+            const resultArea = document.getElementById('result-area');
+            resultArea.style.display = 'block';
+            if (score === total) {
+                resultArea.style.backgroundColor = '#c6f6d5';
+                resultArea.style.color = '#22543d';
+                resultArea.innerHTML = `🎉 太棒了！全对！得分：${score} / ${total}`;
+            } else {
+                resultArea.style.backgroundColor = '#feebc8';
+                resultArea.style.color = '#7b341e';
+                resultArea.innerHTML = `💪 还要继续努力哦！得分：${score} / ${total}`;
+            }
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input').forEach(input => input.checked = false);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct-answer', 'wrong-answer', 'missed-answer');
+                opt.querySelector('.option-feedback').style.display = 'none';
+            });
+            document.getElementById('result-area').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

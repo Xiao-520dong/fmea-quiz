@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 024：附录C - 措施优先级 (AP) 表应用</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 024：附录C - 措施优先级 (AP) 表应用</h1>
+                <p style="color: #718096;">FMEA 核心知识精讲与自测</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>探测度(D)逻辑：</strong>D的评级依据探测方法的成熟度、时机和自动化程度，人工检查D值偏高，设备防错D值偏低（更优）。</li>
+<li><strong>三大参数：</strong>S、O、D（或 MSR 的 S、F、M）是评估风险的三大基石。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 措施优先级 (AP) 是什么？</strong><br>
+措施优先级 (Action Priority, AP) 取代了传统的 RPN（风险顺序数）。它通过评估 S、O、D 的组合权重，提供了一个明确的评级：<strong>高(H)、中(M)、低(L)</strong>，用于指导降低风险措施的优先级。
+</div>
+<div class="highlight-blue">
+<strong>2. AP 评级的优先级逻辑：S > O > D</strong><br>
+在判定矩阵中，权重的考量顺序依次是：
+<ol>
+    <li>首先关注<strong>严重度(S)</strong>，S越高，风险基础越高。</li>
+    <li>其次关注<strong>频度(O)</strong>，发生概率高的失效需要优先解决。</li>
+    <li>最后关注<strong>探测度(D)</strong>。</li>
+</ol>
+因此，如果严重度高达 9-10，即使 O 和 D 都很低，AP 也很可能是高(H)或中(M)。
+</div>
+<div class="highlight-green">
+<strong>3. AP 评级(H/M/L)的应对要求</strong><br>
+<ul>
+    <li><strong>高 (H)：</strong>最高优先级。<strong>必须</strong>确定适当的措施以降低 O 或 D，如果决定不采取措施，必须有充分的理由证明当前控制足以应对（由管理层签署）。</li>
+    <li><strong>中 (M)：</strong>中等优先级。<strong>应当</strong>确定适当的措施降低风险。若不采取措施，也需要证明当前控制的合理性。</li>
+    <li><strong>低 (L)：</strong>低优先级。<strong>可以</strong>确定措施以进一步降低风险，但通常可接受当前水平。</li>
+</ul>
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">资料来源：《AIAG & VDA FMEA 手册》附录C：措施优先级 (AP) 表</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">在新的 AIAG & VDA 手册中，用于取代 RPN（风险顺序数）来排序风险降低措施优先级的指标是？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. Ppk</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. AP (措施优先级)</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. SOD 总和</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. FTTD</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>AP (Action Priority, 措施优先级) 取代了旧版的 RPN，成为判断风险改进优先顺序的核心指标。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">措施优先级 (AP) 在判断时的逻辑权重顺序是怎样的？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. D > O > S</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. O > S > D</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. S > O > D</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. S = O = D</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>AP 表的设计逻辑优先关注严重度(S)，其次是频度(O)，最后才是探测度(D)。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">当得出的 AP 为“高(H)”时，团队必须怎么做？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 可以暂时忽略，等有空再处理</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 仅记录在案，无需采取任何行动</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 必须确定适当的改进措施，或证明当前控制已足够且有管理层批准</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 将 S 的分数直接减去 2 分</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>高(H)优先级意味着必须采取改进措施降低风险，若不采取措施则需要充分证明和管理层批准。S分数不能随意更改。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">关于 AP（措施优先级），以下说法正确的是？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. AP 共有高(H)、中(M)、低(L)三个等级</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 相比 RPN 直接相乘，AP 的矩阵表更能防止高风险问题被平均数掩盖</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. AP 为“低(L)”代表完全没有风险</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. DFMEA 和 PFMEA 都适用 AP 表进行评估</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>AP有H/M/L三级；矩阵表可以避免高S低O低D时RPN过低的问题；DFMEA和PFMEA均使用AP表。L并不代表“完全无风险”，只是当前控制水平在优先级上靠后。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">如果一个失效模式的严重度(S)为 10，以下关于它的描述正确的是？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 它涉及到安全或合规风险</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 无论频度(O)和探测度(D)是多少，它的 AP 绝不可能是低(L)级（注：根据AP表逻辑）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 管理层需要特别关注此类失效模式</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 可以通过增加一道人工检验工序把 S 降到 5</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>S=10代表安全或法规合规风险，AP表中S=9或10时，最少也是M甚至H。严重度(S)只能通过改变系统设计（消除危害）来降低，无法通过增加检验(D)来降低。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "C"}, "4": {"correct": "A,B,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            // 简单的防作弊和进度记录
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

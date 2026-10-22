@@ -178,5 +178,33 @@
             localStorage.setItem(`fmea_${document.title}_score`, score);
         }
     </script>
+
+<style>
+.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
+.manual-figure-box img:hover { transform: scale(1.01); }
+#img-lightbox-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
+    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+}
+#img-lightbox-overlay img {
+    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    background: #fff;
+}
+</style>
+<div id="img-lightbox-overlay" onclick="this.style.display='none'">
+    <img id="img-lightbox-target" src="" alt="高清大图预览">
+</div>
+<script>
+document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
+    img.title = '点击查看超清大图';
+    img.addEventListener('click', () => {
+        const overlay = document.getElementById('img-lightbox-overlay');
+        const target = document.getElementById('img-lightbox-target');
+        target.src = img.src;
+        overlay.style.display = 'flex';
+    });
+});
+</script>
 </body>
 </html>

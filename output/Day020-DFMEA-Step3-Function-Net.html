@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 020：DFMEA 步骤三：功能结构树、功能网连接逻辑与跨团队协作</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,27 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义：功能网的“双向逻辑”与层级传递</strong><br>在 AIAG & VDA DFMEA 步骤三中，功能结构树自上而下逐渐详细，其核心是将“系统层级”与“物理实现机制”建立因果链路。原书明确指出了检验功能结构逻辑连贯性的两个根本问题：<br>① <strong>自上而下（How，如何实现）：</strong>“较低级别功能如何使得较高级别功能生效？”——解释了高阶功能实现的物理路径与支撑架构。<br>② <strong>自下而上（Why，为何存在）：</strong>“为什么需要较低级别功能？”——回答了底层零部件存在的目的和对上层价值的贡献。<br>在 FMEA 表格中，功能分析划分为三列：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求或特性。这三栏与步骤二的结构要素严格对应，构建了坚实的功能网络。</div><div class="highlight-blue"><strong>2. 跨团队协作机制与“失效分析的基础”</strong><br>原书第 2.3.6 与 2.3.7 节给出了两项关键工程指引：<br>① <strong>工程团队协作（系统、安全与组件）：</strong>DFMEA 不是孤岛工作。系统团队提供设计架构（避免 DFMEA 团队重复定义结构）；安全团队与客户协作明确安全目标与危险（确保失效影响的严重度 S 评级保持全项目一致）；组件团队深入底层物理特性。多团队协同能防止跨部门技术风险遗漏与评估断层。<br>② <strong>失效分析的推导法则（肯定词 → 否定词）：</strong>功能的完整定义必须采用“肯定词语”（如：在规定间隙内传递电流、提供 Z 轴限位支撑）。只有用肯定词语把预期功能定义全面，步骤四的失效分析才能推导出完整的潜在失效模式（用“否定词语”描述）。原书指出功能失效包含 7 大典型形态：功能丧失、功能退化、功能间歇、部分功能丧失、非预期功能、功能超范围、功能延迟。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机摄像头马达（VCM）功能网构建与协同</strong><br>以传音中高端机型潜望长焦/主摄 VCM 闭环马达为例构建功能网：<br>• <strong>上一较高级别功能（手机整机/影像系统）：</strong>在 0.1s 内精准驱动镜头群位移至目标焦平面，实现锐利成像（满足 DCI-P3 动态抓拍需求）。<br>• <strong>关注要素功能（VCM 马达总成）：</strong>音圈系统根据 Driver IC 输入的电流变化产生受控的洛伦兹力，驱动载体（Carrier）平稳沿 Z 轴移动。<br>• <strong>下一较低级别功能/特性（悬丝簧片 & 霍尔传感器）：</strong>簧片提供精准的机械回复力与 Z 轴导向刚度；霍尔芯片实时检测磁场位移并反馈闭环位置信号（灵敏度误差 ≤ 1%）。<br><strong>双向验证：</strong>自上而下看，为什么能精准对焦？因为簧片导向良好且霍尔实时反馈闭环位置；自下而上看，为什么霍尔要高精度测距？为了支撑 VCM 的受控位移，最终满足整机快速抓拍。同时，影像系统团队与器件硬件团队协作，对焦超时（延迟）直接关联整机拍照模糊的严重度评估。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“功能网逻辑方向”，上下级因果倒置。</strong>工程师常把上一级功能写成“由底层组件支撑”，而在自下而上提问“为什么需要这个组件”时却无法回答它对系统的具体贡献，导致功能树断链。<br>• <strong>误区二：在功能定义中使用否定或失效词汇。</strong>在步骤三中直接写“防止漏电流”、“避免发热”。<em>纠偏：</em>步骤三必须用“肯定词语”（如“提供绝缘隔离阻抗 ≥ 100MΩ”），到了步骤四再推导否定词“绝缘击穿/电阻退化”。<br>• <strong>误区三：单兵作战，缺乏系统与安全团队输入。</strong>结构工程师自己闭门写 DFMEA，脱离系统架构与安全标准，导致对整机失效影响（严重度 S）主观臆断打分过低或过高。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义：功能网的“双向逻辑”与层级传递</span></div>在 AIAG & VDA DFMEA 步骤三中，功能结构树自上而下逐渐详细，其核心是将“系统层级”与“物理实现机制”建立因果链路。原书明确指出了检验功能结构逻辑连贯性的两个根本问题：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>自上而下（How，如何实现）：</strong>“较低级别功能如何使得较高级别功能生效？”——解释了高阶功能实现的物理路径与支撑架构。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>自下而上（Why，为何存在）：</strong>“为什么需要较低级别功能？”——回答了底层零部件存在的目的和对上层价值的贡献。</div></div>
+在 FMEA 表格中，功能分析划分为三列：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求或特性。这三栏与步骤二的结构要素严格对应，构建了坚实的功能网络。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 跨团队协作机制与“失效分析的基础”</span></div>原书第 2.3.6 与 2.3.7 节给出了两项关键工程指引：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>工程团队协作（系统、安全与组件）：</strong>DFMEA 不是孤岛工作。系统团队提供设计架构（避免 DFMEA 团队重复定义结构）；安全团队与客户协作明确安全目标与危险（确保失效影响的严重度 S 评级保持全项目一致）；组件团队深入底层物理特性。多团队协同能防止跨部门技术风险遗漏与评估断层。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>失效分析的推导法则（肯定词 → 否定词）：</strong>功能的完整定义必须采用“肯定词语”（如：在规定间隙内传递电流、提供 Z 轴限位支撑）。只有用肯定词语把预期功能定义全面，步骤四的失效分析才能推导出完整的潜在失效模式（用“否定词语”描述）。原书指出功能失效包含 7 大典型形态：功能丧失、功能退化、功能间歇、部分功能丧失、非预期功能、功能超范围、功能延迟。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景：手机摄像头马达（VCM）功能网构建与协同</span></div>以传音中高端机型潜望长焦/主摄 VCM 闭环马达为例构建功能网：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>上一较高级别功能（手机整机/影像系统）：</strong>在 0.1s 内精准驱动镜头群位移至目标焦平面，实现锐利成像（满足 DCI-P3 动态抓拍需求）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>关注要素功能（VCM 马达总成）：</strong>音圈系统根据 Driver IC 输入的电流变化产生受控的洛伦兹力，驱动载体（Carrier）平稳沿 Z 轴移动。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>下一较低级别功能/特性（悬丝簧片 & 霍尔传感器）：</strong>簧片提供精准的机械回复力与 Z 轴导向刚度；霍尔芯片实时检测磁场位移并反馈闭环位置信号（灵敏度误差 ≤ 1%）。</div></div>
+<strong>双向验证：</strong>自上而下看，为什么能精准对焦？因为簧片导向良好且霍尔实时反馈闭环位置；自下而上看，为什么霍尔要高精度测距？为了支撑 VCM 的受控位移，最终满足整机快速抓拍。同时，影像系统团队与器件硬件团队协作，对焦超时（延迟）直接关联整机拍照模糊的严重度评估。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆“功能网逻辑方向”，上下级因果倒置。</strong>工程师常把上一级功能写成“由底层组件支撑”，而在自下而上提问“为什么需要这个组件”时却无法回答它对系统的具体贡献，导致功能树断链。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：在功能定义中使用否定或失效词汇。</strong>在步骤三中直接写“防止漏电流”、“避免发热”。<em>纠偏：</em>步骤三必须用“肯定词语”（如“提供绝缘隔离阻抗 ≥ 100MΩ”），到了步骤四再推导否定词“绝缘击穿/电阻退化”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：单兵作战，缺乏系统与安全团队输入。</strong>结构工程师自己闭门写 DFMEA，脱离系统架构与安全标准，导致对整机失效影响（严重度 S）主观臆断打分过低或过高。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-2-3-4.jpg?v=1792660128" alt="图 2.3-4 功能分析结构树示例（原书第 32 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.3-4 功能分析结构树示例（原书第 32 页）</p>

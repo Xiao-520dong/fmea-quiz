@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 063：FMEA-MSR 步骤五：为什么叫频率（F）而不是频度（O）？F 评级准则</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📡 第4章：FMEA-MSR 监视响应</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,36 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与本质区别：为什么叫频率（F）而非频度（O）？</strong><br>在传统 DFMEA 中，频度（Occurrence, O）评估的是失效起因在设计生命周期内由于设计缺陷或薄弱点导致的发生概率，其关注的是制造前的设计本身；而在 FMEA-MSR 中，采用的是<strong>频率（Frequency, F）</strong>概念。<br>• <strong>分析前提假设：</strong>FMEA-MSR 的最终用户操作分析，明确<strong>假设制造过程已得到充分有效的控制</strong>，以便专注于评估系统设计对于实际运行环境与用户使用行为的适用性。<br>• <strong>定义：</strong>频率评级（F）是指在车辆或系统预期使用寿命期间，相关运行操作中<strong>发生失效起因的可能性</strong>。评估估计的基准参考量级通常为一百万台（1,000,000 台）在役运行设备。<br>• <strong>评级证据支撑：</strong>频率评级不能凭空猜测，必须基于扎实的事实与数据源，并在 FMEA-MSR 表格的“频率评级理由”列中进行明确记录。证据来源包括：DFMEA/PFMEA 评估结果、现场退货与拒收产品数据、顾客投诉、售后保修数据库、元器件数据手册（Datasheet/FIT率）等。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：F 评级标准（表 MSR2）与暴露时间调整规则（表 MSR2.1）</strong><br><strong>(1) 频率（F）1-10 级评估准则：</strong><br>• <strong>F=10（极高或无法确定）：</strong>发生频率未知，或已知很高且无法接受。<br>• <strong>F=9~8（高）：</strong>F=9 为预期寿命周期内可能会出现；F=8 为使用中经常出现。<br>• <strong>F=7~6（中）：</strong>F=7 为使用中频繁出现；F=6 为略微频繁地出现。<br>• <strong>F=5~4（低）：</strong>F=5 为偶尔出现；F=4 为极少出现，但预计在使用中至少发生 10 次。<br>• <strong>F=3（非常低）：</strong>预计在孤立事例中出现，预计在使用中至少发生 1 次。<br>• <strong>F=2（极低）：</strong>在预防/探测措施及现场经验基础上预计不会出现，不能排除孤立个例，尚无绝对证据证明绝不发生。<br>• <strong>F=1（不会出现）：</strong>预期寿命内几乎完全排除发生可能，有充分技术证据表明不会出现，起因已闭环记录。<br><strong>(2) 运行工况暴露度折减机制（表 MSR2.1 补充规则）：</strong><br>如果失效起因并不总是导致关联的失效后果，必须结合<strong>暴露于该特定运行条件的时间比例</strong>对 F 评级进行降级调整：<br>• <strong>比例 &lt; 10%：</strong>F 评级可降低 <strong>1 级</strong>（例如从 F=3 降为 F=2）。<br>• <strong>比例 &lt; 1%：</strong>F 评级可降低 <strong>2 级</strong>。<br><em>注意：</em>降级调整的原因和运行场景比例必须在“频率评级的理由”列中详细记录说明。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机闪光灯高压芯片击穿与闪光拍照工况分析</strong><br>• <strong>背景场景：</strong>在传音中高端拍照机型开发中，LED 闪光灯驱动芯片在高温严苛环境下可能发生内部击穿短路（失效起因），若发生短路且处于高占空比放电状态，可能引起主板过热烧蚀。<br>• <strong>数据支撑与基准 F 评定：</strong>根据供应商 Datasheet失效率及售后返修数据统计，该芯片硬件偶发失效以 ppm/年衡量，基准预估频率评定为 <strong>F=3</strong>（极低/非常低，在百万台设备寿命期内属于孤立个案，预计至少发生 1 次）。<br>• <strong>工况暴露度折减分析：</strong>闪光灯驱动芯片只有在用户执行“高亮度拍照/补光录像”工况时，芯片才处于大电流高负荷运转。经传音大数据统计，非洲及海外用户高亮度闪光开启时间占手机全生命周期总亮屏运行时间的比例远低于 <strong>10%</strong>（甚至低于 1%）。<br>• <strong>结论落地：</strong>依据表 MSR2.1 规则，该失效起因暴露于危害工况的实际比例 &lt; 10%，评级工程师可在表格“频率评级的理由”列写明工况占比依据，将 F 评级由 <strong>F=3 调整降级为 F=2</strong>，合理且真实地反映了用户在役风险。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 F 评级与传统 DFMEA 的频度 O。</strong>把产线 SMT 焊接不良或组装失误当作 FMEA-MSR 的失效起因来评估 F。<em>正解：</em>MSR 评估的前提假设是“制造过程受控合格”，F 评价的是合格产品流入市场后在用户在役使用期内元器件/硬件老化、环境疲劳或运行软件异常等起因的暴露频率。<br>• <strong>误区二：无凭无据任意降低 F 等级。</strong>工程师为了降低 AP 等级，主观认为“用户很少这么用”就直接把 F=5 改成 F=2，但未附任何运行时间数据。<em>正解：</em>根据手册规范，调整 F 等级必须有严格的运行时间占比依据（&lt;10% 减 1 级，&lt;1% 减 2 级），并必须在表格中完整记录理由。<br>• <strong>误区三：认为只要现场数据优良就可以打 F=1。</strong><em>正解：</em>F=1 要求“有确凿证据表明失效起因绝不会出现且起因已被记录”。通常电子电气硬件随机硬件失效（如随机开路/短路）最多评到 F=2，不可随意打 F=1。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与本质区别：为什么叫频率（F）而非频度（O）？</span></div>在传统 DFMEA 中，频度（Occurrence, O）评估的是失效起因在设计生命周期内由于设计缺陷或薄弱点导致的发生概率，其关注的是制造前的设计本身；而在 FMEA-MSR 中，采用的是<strong>频率（Frequency, F）</strong>概念。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>分析前提假设：</strong>FMEA-MSR 的最终用户操作分析，明确<strong>假设制造过程已得到充分有效的控制</strong>，以便专注于评估系统设计对于实际运行环境与用户使用行为的适用性。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>定义：</strong>频率评级（F）是指在车辆或系统预期使用寿命期间，相关运行操作中<strong>发生失效起因的可能性</strong>。评估估计的基准参考量级通常为一百万台（1,000,000 台）在役运行设备。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>评级证据支撑：</strong>频率评级不能凭空猜测，必须基于扎实的事实与数据源，并在 FMEA-MSR 表格的“频率评级理由”列中进行明确记录。证据来源包括：DFMEA/PFMEA 评估结果、现场退货与拒收产品数据、顾客投诉、售后保修数据库、元器件数据手册（Datasheet/FIT率）等。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解：F 评级标准（表 MSR2）与暴露时间调整规则（表 MSR2.1）</span></div><strong>(1) 频率（F）1-10 级评估准则：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=10（极高或无法确定）：</strong>发生频率未知，或已知很高且无法接受。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=9~8（高）：</strong>F=9 为预期寿命周期内可能会出现；F=8 为使用中经常出现。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=7~6（中）：</strong>F=7 为使用中频繁出现；F=6 为略微频繁地出现。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=5~4（低）：</strong>F=5 为偶尔出现；F=4 为极少出现，但预计在使用中至少发生 10 次。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=3（非常低）：</strong>预计在孤立事例中出现，预计在使用中至少发生 1 次。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=2（极低）：</strong>在预防/探测措施及现场经验基础上预计不会出现，不能排除孤立个例，尚无绝对证据证明绝不发生。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F=1（不会出现）：</strong>预期寿命内几乎完全排除发生可能，有充分技术证据表明不会出现，起因已闭环记录。</div></div>
+<strong>(2) 运行工况暴露度折减机制（表 MSR2.1 补充规则）：</strong>
+如果失效起因并不总是导致关联的失效后果，必须结合<strong>暴露于该特定运行条件的时间比例</strong>对 F 评级进行降级调整：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>比例 &lt; 10%：</strong>F 评级可降低 <strong>1 级</strong>（例如从 F=3 降为 F=2）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>比例 &lt; 1%：</strong>F 评级可降低 <strong>2 级</strong>。</div></div>
+<em>注意：</em>降级调整的原因和运行场景比例必须在“频率评级的理由”列中详细记录说明。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景：手机闪光灯高压芯片击穿与闪光拍照工况分析</span></div>• <strong>背景场景：</strong>在传音中高端拍照机型开发中，LED 闪光灯驱动芯片在高温严苛环境下可能发生内部击穿短路（失效起因），若发生短路且处于高占空比放电状态，可能引起主板过热烧蚀。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>数据支撑与基准 F 评定：</strong>根据供应商 Datasheet失效率及售后返修数据统计，该芯片硬件偶发失效以 ppm/年衡量，基准预估频率评定为 <strong>F=3</strong>（极低/非常低，在百万台设备寿命期内属于孤立个案，预计至少发生 1 次）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>工况暴露度折减分析：</strong>闪光灯驱动芯片只有在用户执行“高亮度拍照/补光录像”工况时，芯片才处于大电流高负荷运转。经传音大数据统计，非洲及海外用户高亮度闪光开启时间占手机全生命周期总亮屏运行时间的比例远低于 <strong>10%</strong>（甚至低于 1%）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>结论落地：</strong>依据表 MSR2.1 规则，该失效起因暴露于危害工况的实际比例 &lt; 10%，评级工程师可在表格“频率评级的理由”列写明工况占比依据，将 F 评级由 <strong>F=3 调整降级为 F=2</strong>，合理且真实地反映了用户在役风险。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆 F 评级与传统 DFMEA 的频度 O。</strong>把产线 SMT 焊接不良或组装失误当作 FMEA-MSR 的失效起因来评估 F。<em>正解：</em>MSR 评估的前提假设是“制造过程受控合格”，F 评价的是合格产品流入市场后在用户在役使用期内元器件/硬件老化、环境疲劳或运行软件异常等起因的暴露频率。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：无凭无据任意降低 F 等级。</strong>工程师为了降低 AP 等级，主观认为“用户很少这么用”就直接把 F=5 改成 F=2，但未附任何运行时间数据。<em>正解：</em>根据手册规范，调整 F 等级必须有严格的运行时间占比依据（&lt;10% 减 1 级，&lt;1% 减 2 级），并必须在表格中完整记录理由。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：认为只要现场数据优良就可以打 F=1。</strong><em>正解：</em>F=1 要求“有确凿证据表明失效起因绝不会出现且起因已被记录”。通常电子电气硬件随机硬件失效（如随机开路/短路）最多评到 F=2，不可随意打 F=1。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/table-msr2.jpg?v=1792660128" alt="表 MSR2 补充 FMEA-MSR 频率 (F) 表（原书第 124 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 MSR2 补充 FMEA-MSR 频率 (F) 表（原书第 124 页）</p>

@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 082：附件 C2（二）：PFMEA 标准频度表、备选频度表与时间预测法</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📊 附件C：S/O/D与AP评分标准表</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,58 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》附件 C2.2 及 C2.3（P201-203）：<br>• <strong>PFMEA 频度（O, Occurrence）定义：</strong>是根据标准评级准则对<strong>潜在失效起因（Failure Cause, FC）</strong>进行的评级。频度是在评估时进行的<strong>预估定性评级</strong>，可能不能反映真实的频度。频度评级得分是在 FMEA 范围（正在评估的过程）内进行的<strong>相对评级数值</strong>。<br>• <strong>预防控制（PC）的核心角色：</strong>在确定最佳预估频度时，<strong>必须考虑预防控制</strong>。如果针对某一失效起因存在多个预防控制评级，可以使用<strong>最能反映控制有效性的评级</strong>。<br>• <strong>控制类型与分级递进：</strong>手册将预防控制分为三种层级：<strong>技术控制</strong>（依靠机械设备、模具/夹具设计、工具材料与寿命物理防错）、<strong>最佳实践：行为或技术控制</strong>（夹具/工装设计、校准程序、防错确认/验证、定期检修、工作说明、SPC 流程图、过程监视等）、<strong>行为控制</strong>（依靠持有或未持有证书的操作人员、技术工人、团队领导等培训/操作说明）。技术控制的防错有效性最高，纯行为控制的有效性最低。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：三大频度评估维度</strong><br>原书提供了三种 PFMEA 频度评价表，分别适用于定性评估、基于故障率的数据评估和基于时间维度的经验评估：<br><strong>(1) 表 C2.2 标准频度表（定性预测）：</strong><br>• <strong>O=10（极高）：</strong>无预防控制。<br>• <strong>O=9/8（非常高）：</strong>纯行为控制。预防控制在防止失效起因出现方面起到的作用很小。<br>• <strong>O=7/6（高）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到一定的作用。<br>• <strong>O=5/4（中）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到有效的作用。<br>• <strong>O=3/2（低/非常低）：</strong>最佳实践（行为或技术控制）。预防控制在防止失效起因出现方面起到高度/非常有效的作用。<br>• <strong>O=1（极低）：</strong>技术控制。通过预防控制（如零件形状设计、防错夹具/模具物理定位）从设计或工艺物理上避免失效起因发生，失效模式不会因该失效起因而实际发生。<br><br><strong>(2) 表 C2.3.1 备选频度表（每千件产品故障率 / 不良率）：</strong><br>• <strong>O=10：</strong>≥ 100/千（≥ 1/10）；无控制。<br>• <strong>O=9：</strong>50/千（1/20）；行为控制，作用很小。<br>• <strong>O=8：</strong>20/千（1/50）；行为控制，作用很小。<br>• <strong>O=7：</strong>10/千（1/100）；行为或技术控制，一定作用。<br>• <strong>O=6：</strong>2/千（1/500）；行为或技术控制，一定作用。<br>• <strong>O=5：</strong>0.5/千（1/2000）；行为或技术控制，有效作用。<br>• <strong>O=4：</strong>0.1/千（1/10000）；行为或技术控制，有效作用。<br>• <strong>O=3：</strong>0.01/千（1/100000）；最佳实践，非常有效。<br>• <strong>O=2：</strong>&lt; 0.001/千（1/1000000）；最佳实践，非常有效。<br>• <strong>O=1：</strong>通过物理技术控制避免失效（失效率理论为0）。<br><br><strong>(3) 表 C2.3.2 备选频度表（基于时间的失效预测值）：</strong><br>• <strong>O=10：</strong>每次（每次作业都发生）。<br>• <strong>O=9：</strong>几乎每次。<br>• <strong>O=8：</strong>每班超过一次（&gt; 1次/班）。<br>• <strong>O=7：</strong>每日超过一次（&gt; 1次/天）。<br>• <strong>O=6：</strong>每周超过一次（&gt; 1次/周）。<br>• <strong>O=5：</strong>每月超过一次（&gt; 1次/月）。<br>• <strong>O=4：</strong>每年超过一次（&gt; 1次/年）。<br>• <strong>O=3：</strong>每年一次（1次/年）。<br>• <strong>O=2：</strong>每年少于一次（&lt; 1次/年）。<br>• <strong>O=1：</strong>从未发生（技术控制完全防错）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（手机主板 SMT 印刷锡膏偏位/少锡 - 选用表 C2.3.1 不良率法）：</strong><br>失效起因：钢网开孔堵孔。若仅靠作业员每2小时目视检查钢网，属于纯行为控制，历史统计每千板故障率为 20/千，则 O 评为 8；若导入 SPI 闭环反馈 + 印刷机自动干/湿/真空擦网程序（技术控制+最佳实践），故障率降至万分之一（0.1/千），O 值可降至 4。<br>• <strong>场景 B（手机整机组装流水线人工装配螺钉 - 选用表 C2.3.2 时间预测法）：</strong><br>失效起因：装配工人漏锁螺丝或滑牙。若纯依靠员工自我复检（行为控制），产线运行统计该失效起因“每班超过一次（&gt; 1次/班）”，按表 C2.3.2 判定频度 O 为 8；若改用智能电批（带扭力达标信号反馈、螺钉计数与流水线治具放行互锁系统），属于强技术控制，漏锁失效起因降至“每年少于一次”或“从未发生”，O 值可评定为 2 或 1。<br>• <strong>场景 C（电池连接器 BTB 扣合反向/错位 - 结构防错判定 O=1）：</strong><br>失效起因：组装工位人工反向扣合 BTB。若 BTB 外壳设计有非对称防呆倒角（Poka-Yoke），物理结构上反向无法装入，该设计/夹具物理技术措施使失效起因无法物理发生，依据手册要求 O 级应直接评定为 1。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：混淆“预防控制（PC）”与“探测控制（DC）”对频度的影响。</strong><br><em>纠正：</em>频度（O）只评价<strong>失效起因（FC）</strong>发生的可能性，且<strong>只能通过预防控制（PC）来降低</strong>！生产线后端的 AOI、功能测试（FT）、出货检验（OBA）均属于探测控制（DC），它们只能降低探测度（D），绝不能用来调低频度（O）！<br>• <strong>误区 2：盲目将“有操作指导书（SOP）和培训”评为中低频度（如 O=4 或 5）。</strong><br><em>纠正：</em>手册明确将仅依靠有/无证书的操作员、SOP 归为“行为控制”。若没有硬件/软件/设备技术防错，行为控制在阻止起因方面的作用非常有限，频度评级通常在 8-9 分。<br>• <strong>误区 3：频度评为 1 的条件被随意滥用。</strong><br><em>纠正：</em>评定 O=1 的前提是<strong>技术控制完全避免了失效起因</strong>（如机械非对称防呆导致反向根本无法装配），失效模式物理上不会因该起因发生。若仍依靠传感器电气检测或报警停机（这属于探测控制），不可打 O=1。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>根据《AIAG & VDA FMEA 手册》附件 C2.2 及 C2.3（P201-203）：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>PFMEA 频度（O, Occurrence）定义：</strong>是根据标准评级准则对<strong>潜在失效起因（Failure Cause, FC）</strong>进行的评级。频度是在评估时进行的<strong>预估定性评级</strong>，可能不能反映真实的频度。频度评级得分是在 FMEA 范围（正在评估的过程）内进行的<strong>相对评级数值</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>预防控制（PC）的核心角色：</strong>在确定最佳预估频度时，<strong>必须考虑预防控制</strong>。如果针对某一失效起因存在多个预防控制评级，可以使用<strong>最能反映控制有效性的评级</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>控制类型与分级递进：</strong>手册将预防控制分为三种层级：<strong>技术控制</strong>（依靠机械设备、模具/夹具设计、工具材料与寿命物理防错）、<strong>最佳实践：行为或技术控制</strong>（夹具/工装设计、校准程序、防错确认/验证、定期检修、工作说明、SPC 流程图、过程监视等）、<strong>行为控制</strong>（依靠持有或未持有证书的操作人员、技术工人、团队领导等培训/操作说明）。技术控制的防错有效性最高，纯行为控制的有效性最低。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解：三大频度评估维度</span></div>原书提供了三种 PFMEA 频度评价表，分别适用于定性评估、基于故障率的数据评估和基于时间维度的经验评估：
+<strong>(1) 表 C2.2 标准频度表（定性预测）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=10（极高）：</strong>无预防控制。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=9/8（非常高）：</strong>纯行为控制。预防控制在防止失效起因出现方面起到的作用很小。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=7/6（高）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到一定的作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=5/4（中）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到有效的作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=3/2（低/非常低）：</strong>最佳实践（行为或技术控制）。预防控制在防止失效起因出现方面起到高度/非常有效的作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=1（极低）：</strong>技术控制。通过预防控制（如零件形状设计、防错夹具/模具物理定位）从设计或工艺物理上避免失效起因发生，失效模式不会因该失效起因而实际发生。</div></div>
+<strong>(2) 表 C2.3.1 备选频度表（每千件产品故障率 / 不良率）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=10：</strong>≥ 100/千（≥ 1/10）；无控制。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=9：</strong>50/千（1/20）；行为控制，作用很小。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=8：</strong>20/千（1/50）；行为控制，作用很小。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=7：</strong>10/千（1/100）；行为或技术控制，一定作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=6：</strong>2/千（1/500）；行为或技术控制，一定作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=5：</strong>0.5/千（1/2000）；行为或技术控制，有效作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=4：</strong>0.1/千（1/10000）；行为或技术控制，有效作用。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=3：</strong>0.01/千（1/100000）；最佳实践，非常有效。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=2：</strong>&lt; 0.001/千（1/1000000）；最佳实践，非常有效。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=1：</strong>通过物理技术控制避免失效（失效率理论为0）。</div></div>
+<strong>(3) 表 C2.3.2 备选频度表（基于时间的失效预测值）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=10：</strong>每次（每次作业都发生）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=9：</strong>几乎每次。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=8：</strong>每班超过一次（&gt; 1次/班）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=7：</strong>每日超过一次（&gt; 1次/天）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=6：</strong>每周超过一次（&gt; 1次/周）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=5：</strong>每月超过一次（&gt; 1次/月）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=4：</strong>每年超过一次（&gt; 1次/年）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=3：</strong>每年一次（1次/年）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=2：</strong>每年少于一次（&lt; 1次/年）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O=1：</strong>从未发生（技术控制完全防错）。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>• <strong>场景 A（手机主板 SMT 印刷锡膏偏位/少锡 - 选用表 C2.3.1 不良率法）：</strong>
+失效起因：钢网开孔堵孔。若仅靠作业员每2小时目视检查钢网，属于纯行为控制，历史统计每千板故障率为 20/千，则 O 评为 8；若导入 SPI 闭环反馈 + 印刷机自动干/湿/真空擦网程序（技术控制+最佳实践），故障率降至万分之一（0.1/千），O 值可降至 4。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 B（手机整机组装流水线人工装配螺钉 - 选用表 C2.3.2 时间预测法）：</strong></div></div>
+失效起因：装配工人漏锁螺丝或滑牙。若纯依靠员工自我复检（行为控制），产线运行统计该失效起因“每班超过一次（&gt; 1次/班）”，按表 C2.3.2 判定频度 O 为 8；若改用智能电批（带扭力达标信号反馈、螺钉计数与流水线治具放行互锁系统），属于强技术控制，漏锁失效起因降至“每年少于一次”或“从未发生”，O 值可评定为 2 或 1。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 C（电池连接器 BTB 扣合反向/错位 - 结构防错判定 O=1）：</strong></div></div>
+失效起因：组装工位人工反向扣合 BTB。若 BTB 外壳设计有非对称防呆倒角（Poka-Yoke），物理结构上反向无法装入，该设计/夹具物理技术措施使失效起因无法物理发生，依据手册要求 O 级应直接评定为 1。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区 1：混淆“预防控制（PC）”与“探测控制（DC）”对频度的影响。</strong>
+<em>纠正：</em>频度（O）只评价<strong>失效起因（FC）</strong>发生的可能性，且<strong>只能通过预防控制（PC）来降低</strong>！生产线后端的 AOI、功能测试（FT）、出货检验（OBA）均属于探测控制（DC），它们只能降低探测度（D），绝不能用来调低频度（O）！
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 2：盲目将“有操作指导书（SOP）和培训”评为中低频度（如 O=4 或 5）。</strong></div></div>
+<em>纠正：</em>手册明确将仅依靠有/无证书的操作员、SOP 归为“行为控制”。若没有硬件/软件/设备技术防错，行为控制在阻止起因方面的作用非常有限，频度评级通常在 8-9 分。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 3：频度评为 1 的条件被随意滥用。</strong></div></div>
+<em>纠正：</em>评定 O=1 的前提是<strong>技术控制完全避免了失效起因</strong>（如机械非对称防呆导致反向根本无法装配），失效模式物理上不会因该起因发生。若仍依靠传感器电气检测或报警停机（这属于探测控制），不可打 O=1。</div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day082-manual-p201.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C2.2 - C2.3（原书 P201-203）（PDF 第 201 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C2.2 - C2.3（原书 P201-203）（PDF 第 201 页）</p>

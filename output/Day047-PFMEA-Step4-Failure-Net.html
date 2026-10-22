@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 047：PFMEA 步骤四：电机装配线失效结构树与失效网实例</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,19 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与失效网逻辑（Failure Net / Chain）</strong><br>根据《AIAG & VDA FMEA 手册》3.4.7节，失效分析必须紧紧依托步骤三（功能分析）构建的层级逻辑导出故障链，即失效结构树/失效网（Failure Net）。<br><ul><li><strong>关注要素的相对性：</strong>在三层结构中，关注要素被称为<strong>失效模式（FM）</strong>，上一较高级别要素对应<strong>失效影响（FE）</strong>，下一级工作要素对应<strong>失效起因（FC）</strong>。一个失效现象的角色完全取决于分析的视点。</li><li><strong>逻辑关联构建的核心提问法：</strong><ul><li>构建 FM 与 FC 的关联：通过解答<strong>“为什么会出现失效模式？”（Why did the failure mode occur?）</strong>找到失效起因。</li><li>构建 FM 与 FE 的关联：通过解答<strong>“失效模式会导致什么后果？”（What happens when the failure mode occurs?）</strong>找到失效影响。</li></ul></li></ul></div><div class="highlight-blue"><strong>2. 原书电机装配线（OP30 烧结轴承压入）失效结构树与表头解析</strong><br>原书图 3.4-2 与图 3.4-3 给出了经典三层映射与表格编号规范：<br><ul><li><strong>级别 1：过程项 / FE（表头 1）——对上一较高级别要素和/或最终用户的影响：</strong><ul><li><em>您的工厂（本厂后道工序）：</em>间隙太小无法安装轴，存在潜在碰伤/损害。</li><li><em>发运至工厂（OEM/下一级客户）：</em>将电机安装至车门上需要额外插入力，存在潜在损害。</li><li><em>最终用户（车主/消费者）：</em>舒适模式关闭时间过长。</li><li><em>注：</em>电子表格用户需注意，潜在失效模式可导致多个分类失效影响，分类记录可避免相同的失效模式与起因过多重复。</li></ul></li><li><strong>级别 2：过程步骤 / FM（表头 2）——关注要素的失效模式：</strong>与产品特性直接关联。原书案例为：<strong>不能实现烧结轴承在电机壳内的轴向定位</strong>（间隙要求最大 < 0.3 mm 未达成）。</li><li><strong>级别 3：过程工作要素 / FC（表头 3）——4M 相关的失效起因：</strong>与过程特性关联。原书机器（Press Machine）案例为：<strong>设备在达到最终位置（止点）前停止运行</strong>。</li><li><strong>3.4.8 PFMEA 与 DFMEA 的关系纽带：</strong>PFMEA 关注的是过程无法实现设计特征（产品特性）。当过程失效导致不符合产品特性时，DFMEA 与 PFMEA 中的失效影响才是一致的。若属于过程特有失效或 DFMEA 未识别的影响，必须在 PFMEA 中重新定义评估，严禁纯主观假设。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机屏幕模组压合工序）</strong><br>以传音中高端机型 AMOLED 屏幕与中框点胶贴合（OP40 屏幕保压压合工位）构建失效网：<br><ul><li><strong>表头 2 - 关注要素失效模式（FM，针对过程步骤 OP40）：</strong>屏幕模组压合后平整度超差（面段差 > 0.15mm）或保压压力不足导致局部翘起（未满足产品特性）。（提问：为什么翘起？/ 会导致什么后果？）</li><li><strong>表头 3 - 工作要素失效起因（FC，针对 4M 机器与夹具）：</strong>保压机气缸下压位移传感器松动，导致压头未到达设定下死点即提前返程（机器）；治具限位槽存在残胶异物导致定位高度偏差（环境/工具）。</li><li><strong>表头 1 - 失效影响（FE，三层展开）：</strong><ul><li><em>本厂下道（您的工厂）：</em>中框保压后在整机超声气密性测试工位泄漏检测不通过（Yield loss / 返修拆屏导致盖板碎裂）。</li><li><em>海外客户/区域仓库（发运）：</em>长途海运受温湿度变化后整机发生屏幕脱胶起翘。</li><li><em>终端消费者（最终用户）：</em>手机在日常使用中整机 IP68 防尘防水失效，进水烧板；或者屏幕边缘漏光、触控漂移。</li></ul></li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：混淆因果关联，逻辑倒置。</strong>将 FE 写成 FC（例如把“整机气密测试漏气”当作压机下压不到位的起因）。<strong>纠偏：</strong>牢记“问为什么得起因，问后果得影响”，自下而上遵循物理传递链条。</li><li><strong>误区 2：在 PFMEA 中生搬硬套 DFMEA 的影响。</strong>部分工程师认为 PFMEA 的 FE 必须与 DFMEA 完全一字不差。<strong>纠偏：</strong>原书 3.4.8 明确指出，只有在“过程未实现产品设计特征”时两者最终用户影响才一致；所有因制造制造过程额外引入的风险（如碰伤、本厂组装报废、工厂装配额外插入力）必须在 PFMEA 中重新识别。</li><li><strong>误区 3：FE 仅写“本厂报废”，忽视下游与最终用户。</strong>只记录本工位不良，忽略了当不良流出后对客户工厂组装（发运工厂）及终端消费者（最终用户）的多层级影响。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与失效网逻辑（Failure Net / Chain）</span></div>根据《AIAG & VDA FMEA 手册》3.4.7节，失效分析必须紧紧依托步骤三（功能分析）构建的层级逻辑导出故障链，即失效结构树/失效网（Failure Net）。
+<ul><li><strong>关注要素的相对性：</strong>在三层结构中，关注要素被称为<strong>失效模式（FM）</strong>，上一较高级别要素对应<strong>失效影响（FE）</strong>，下一级工作要素对应<strong>失效起因（FC）</strong>。一个失效现象的角色完全取决于分析的视点。</li><li><strong>逻辑关联构建的核心提问法：</strong><ul><li>构建 FM 与 FC 的关联：通过解答<strong>“为什么会出现失效模式？”（Why did the failure mode occur?）</strong>找到失效起因。</li><li>构建 FM 与 FE 的关联：通过解答<strong>“失效模式会导致什么后果？”（What happens when the failure mode occurs?）</strong>找到失效影响。</li></ul></li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 原书电机装配线（OP30 烧结轴承压入）失效结构树与表头解析</span></div>原书图 3.4-2 与图 3.4-3 给出了经典三层映射与表格编号规范：
+<ul><li><strong>级别 1：过程项 / FE（表头 1）——对上一较高级别要素和/或最终用户的影响：</strong><ul><li><em>您的工厂（本厂后道工序）：</em>间隙太小无法安装轴，存在潜在碰伤/损害。</li><li><em>发运至工厂（OEM/下一级客户）：</em>将电机安装至车门上需要额外插入力，存在潜在损害。</li><li><em>最终用户（车主/消费者）：</em>舒适模式关闭时间过长。</li><li><em>注：</em>电子表格用户需注意，潜在失效模式可导致多个分类失效影响，分类记录可避免相同的失效模式与起因过多重复。</li></ul></li><li><strong>级别 2：过程步骤 / FM（表头 2）——关注要素的失效模式：</strong>与产品特性直接关联。原书案例为：<strong>不能实现烧结轴承在电机壳内的轴向定位</strong>（间隙要求最大 < 0.3 mm 未达成）。</li><li><strong>级别 3：过程工作要素 / FC（表头 3）——4M 相关的失效起因：</strong>与过程特性关联。原书机器（Press Machine）案例为：<strong>设备在达到最终位置（止点）前停止运行</strong>。</li><li><strong>3.4.8 PFMEA 与 DFMEA 的关系纽带：</strong>PFMEA 关注的是过程无法实现设计特征（产品特性）。当过程失效导致不符合产品特性时，DFMEA 与 PFMEA 中的失效影响才是一致的。若属于过程特有失效或 DFMEA 未识别的影响，必须在 PFMEA 中重新定义评估，严禁纯主观假设。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景（手机屏幕模组压合工序）</span></div>以传音中高端机型 AMOLED 屏幕与中框点胶贴合（OP40 屏幕保压压合工位）构建失效网：
+<ul><li><strong>表头 2 - 关注要素失效模式（FM，针对过程步骤 OP40）：</strong>屏幕模组压合后平整度超差（面段差 > 0.15mm）或保压压力不足导致局部翘起（未满足产品特性）。（提问：为什么翘起？/ 会导致什么后果？）</li><li><strong>表头 3 - 工作要素失效起因（FC，针对 4M 机器与夹具）：</strong>保压机气缸下压位移传感器松动，导致压头未到达设定下死点即提前返程（机器）；治具限位槽存在残胶异物导致定位高度偏差（环境/工具）。</li><li><strong>表头 1 - 失效影响（FE，三层展开）：</strong><ul><li><em>本厂下道（您的工厂）：</em>中框保压后在整机超声气密性测试工位泄漏检测不通过（Yield loss / 返修拆屏导致盖板碎裂）。</li><li><em>海外客户/区域仓库（发运）：</em>长途海运受温湿度变化后整机发生屏幕脱胶起翘。</li><li><em>终端消费者（最终用户）：</em>手机在日常使用中整机 IP68 防尘防水失效，进水烧板；或者屏幕边缘漏光、触控漂移。</li></ul></li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区 1：混淆因果关联，逻辑倒置。</strong>将 FE 写成 FC（例如把“整机气密测试漏气”当作压机下压不到位的起因）。<strong>纠偏：</strong>牢记“问为什么得起因，问后果得影响”，自下而上遵循物理传递链条。</li><li><strong>误区 2：在 PFMEA 中生搬硬套 DFMEA 的影响。</strong>部分工程师认为 PFMEA 的 FE 必须与 DFMEA 完全一字不差。<strong>纠偏：</strong>原书 3.4.8 明确指出，只有在“过程未实现产品设计特征”时两者最终用户影响才一致；所有因制造制造过程额外引入的风险（如碰伤、本厂组装报废、工厂装配额外插入力）必须在 PFMEA 中重新识别。</li><li><strong>误区 3：FE 仅写“本厂报废”，忽视下游与最终用户。</strong>只记录本工位不良，忽略了当不良流出后对客户工厂组装（发运工厂）及终端消费者（最终用户）的多层级影响。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-3-4-2-3.jpg?v=1792660128" alt="图 3.4-2 & 3.4-3 PFMEA 失效分析结构树与表格示例（原书第 86 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.4-2 & 3.4-3 PFMEA 失效分析结构树与表格示例（原书第 86 页）</p>

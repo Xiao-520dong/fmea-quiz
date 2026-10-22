@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 033：DFMEA 步骤五：为什么废除 RPN？措施优先级（AP）核心机制</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,32 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义：为什么彻底废除 RPN 阈值？</strong><br>传统 FMEA 采用风险顺序数 RPN（Risk Priority Number = S × O × D，范围 1-1000）作为风险评估指标，但《AIAG & VDA FMEA 手册》已明确<strong>不再推荐使用 RPN 阈值，且本出版物已完全删除 RPN 和 S×O 方法</strong>。原因在于：<br>① <strong>等权重缺陷：</strong>RPN 对 S、O、D 赋予了完全相等的数学权重。例如：S=10, O=1, D=1（严重安全隐患，RPN=10）与 S=2, O=5, D=1（普通外观轻微缺陷，RPN=10）数值完全一样，导致严重安全隐患被稀释掩盖。<br>② <strong>措施优先级（Action Priority, AP）的本质：</strong>手册郑重声明：<strong>AP 不是对“高、中、低风险”的等级排序，而是对“降低风险的措施”的优先排序</strong>。其核心逻辑彻底打破了数学乘积，采用以“严重度（S）优先、频度（O）次之、探测度（D）最后”的逻辑判断表来驱动行动。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：AP 等级划分与管理层评审红线</strong><br>① <strong>AP 的三级分类与行动动词（精确定义）：</strong><br>&nbsp;&nbsp;• <strong>优先级高（H, High）：</strong>评审和措施的最高优先级。团队<strong>必须/需要（needs to）</strong>确定适当的措施来改进预防和/或探测控制；或者<strong>证明并记录</strong>为何当前的控制足够有效。<br>&nbsp;&nbsp;• <strong>优先级中（M, Medium）：</strong>评审和措施的中等优先级。团队<strong>应该（should）</strong>确定适当的措施来改进预防和/或探测控制；或由公司自行决定，证明并记录当前的控制足够有效。<br>&nbsp;&nbsp;• <strong>优先级低（L, Low）：</strong>评审和措施的低优先级。团队<strong>可以（could）</strong>确定措施来改进预防或探测控制。若无进一步措施，可在备注栏注明“无需进一步措施”。<br>② <strong>管理层评审强制红线：</strong>手册明确规定，对于潜在严重度 <strong>S 为 9-10 且措施优先级为高（H）和中（M）</strong>的失效影响，<strong>建议至少应由管理层评审（Management Review）</strong>，包括所采取的任何建议措施。<br>③ <strong>表单联动规则：</strong>AP 表与手册标准的 S、O、D 评分表严格绑定。若企业自定义修改了 S、O、D 表，则 AP 表必须重新仔细检查与校准；DFMEA 与 PFMEA 采用相同的 AP 表（FMEA-MSR 则不同）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机锂电池热失控风险的 AP 落地</strong><br>在传音智能手机开发中，针对“快充主板过压导致锂电池过充起火/爆炸”这一失效模式：<br>• <strong>失效影响严重度：</strong>对用户人身安全构成威胁，定级 S=10。<br>• <strong>设计现状分析：</strong>若研发采用了双电荷泵加硬件级独立过压切断芯片（预防控制强），失效率极低，评定起因发生率 O=2（低）；同时实验室拥有全覆盖的极限过充耐压应力自动化测试套件（探测控制强），评定探测度 D=1（非常高）。<br>• <strong>查 AP 表判定：</strong>查手册 S=9-10, O=2-3, D=1 区域，对应的 <strong>AP 为 L（低优先级）</strong>。这表明当前预防与探测设计已极其完备，研发无需盲目增加过度冗余措施，但必须在报告中详细记录当前的硬件保护及实测证据。<br>• <strong>对比场景：</strong>若测试手段不足，仅靠试产主板人工万用表点测（D=5），查表 S=10, O=2, D=5 对应的 <strong>AP 即跃升为 M（中优先级）</strong>，且由于 S=10 且 AP 为 M，<strong>该项目必须触发传音研发管理层评审</strong>，要求团队必须论证现有方案或追加自动化测试夹具。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 AP 等级与产品质量/安全合格线。</strong>把“AP=H”误认为“产品有严重缺陷不能开模/量产”。<br><em>正解：</em>AP 衡量的是“采取改善行动的紧迫性与优先度”。即便判定为 H，如果团队经工程评审证明当前控制已经达到物理/技术极限且充分受控，只需详细记录论证依据（Justification）即可，不是必须改动设计。<br>• <strong>误区二：仍然在 FMEA 模板中保留 RPN<100 等阈值过滤措施。</strong><br><em>正解：</em>新版标准严禁设定固定 RPN 门槛值（如要求所有 >100 的项必须采取措施），必须全面迁移到 AP 逻辑中。<br>• <strong>误区三：修改了企业 S/O/D 打分表，却照搬标准 AP 表。</strong><br><em>正解：</em>标准 AP 表是基于标准 1-10 分级逻辑构建的，一旦企业裁剪或变更了评级区间，必须重新映射逻辑矩阵。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义：为什么彻底废除 RPN 阈值？</span></div>传统 FMEA 采用风险顺序数 RPN（Risk Priority Number = S × O × D，范围 1-1000）作为风险评估指标，但《AIAG & VDA FMEA 手册》已明确<strong>不再推荐使用 RPN 阈值，且本出版物已完全删除 RPN 和 S×O 方法</strong>。原因在于：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>等权重缺陷：</strong>RPN 对 S、O、D 赋予了完全相等的数学权重。例如：S=10, O=1, D=1（严重安全隐患，RPN=10）与 S=2, O=5, D=1（普通外观轻微缺陷，RPN=10）数值完全一样，导致严重安全隐患被稀释掩盖。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>措施优先级（Action Priority, AP）的本质：</strong>手册郑重声明：<strong>AP 不是对“高、中、低风险”的等级排序，而是对“降低风险的措施”的优先排序</strong>。其核心逻辑彻底打破了数学乘积，采用以“严重度（S）优先、频度（O）次之、探测度（D）最后”的逻辑判断表来驱动行动。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解：AP 等级划分与管理层评审红线</span></div>① <strong>AP 的三级分类与行动动词（精确定义）：</strong>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>优先级高（H, High）：</strong>评审和措施的最高优先级。团队<strong>必须/需要（needs to）</strong>确定适当的措施来改进预防和/或探测控制；或者<strong>证明并记录</strong>为何当前的控制足够有效。</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>优先级中（M, Medium）：</strong>评审和措施的中等优先级。团队<strong>应该（should）</strong>确定适当的措施来改进预防和/或探测控制；或由公司自行决定，证明并记录当前的控制足够有效。</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>优先级低（L, Low）：</strong>评审和措施的低优先级。团队<strong>可以（could）</strong>确定措施来改进预防或探测控制。若无进一步措施，可在备注栏注明“无需进一步措施”。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>管理层评审强制红线：</strong>手册明确规定，对于潜在严重度 <strong>S 为 9-10 且措施优先级为高（H）和中（M）</strong>的失效影响，<strong>建议至少应由管理层评审（Management Review）</strong>，包括所采取的任何建议措施。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>表单联动规则：</strong>AP 表与手册标准的 S、O、D 评分表严格绑定。若企业自定义修改了 S、O、D 表，则 AP 表必须重新仔细检查与校准；DFMEA 与 PFMEA 采用相同的 AP 表（FMEA-MSR 则不同）。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景：手机锂电池热失控风险的 AP 落地</span></div>在传音智能手机开发中，针对“快充主板过压导致锂电池过充起火/爆炸”这一失效模式：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>失效影响严重度：</strong>对用户人身安全构成威胁，定级 S=10。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>设计现状分析：</strong>若研发采用了双电荷泵加硬件级独立过压切断芯片（预防控制强），失效率极低，评定起因发生率 O=2（低）；同时实验室拥有全覆盖的极限过充耐压应力自动化测试套件（探测控制强），评定探测度 D=1（非常高）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>查 AP 表判定：</strong>查手册 S=9-10, O=2-3, D=1 区域，对应的 <strong>AP 为 L（低优先级）</strong>。这表明当前预防与探测设计已极其完备，研发无需盲目增加过度冗余措施，但必须在报告中详细记录当前的硬件保护及实测证据。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>对比场景：</strong>若测试手段不足，仅靠试产主板人工万用表点测（D=5），查表 S=10, O=2, D=5 对应的 <strong>AP 即跃升为 M（中优先级）</strong>，且由于 S=10 且 AP 为 M，<strong>该项目必须触发传音研发管理层评审</strong>，要求团队必须论证现有方案或追加自动化测试夹具。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆 AP 等级与产品质量/安全合格线。</strong>把“AP=H”误认为“产品有严重缺陷不能开模/量产”。
+<em>正解：</em>AP 衡量的是“采取改善行动的紧迫性与优先度”。即便判定为 H，如果团队经工程评审证明当前控制已经达到物理/技术极限且充分受控，只需详细记录论证依据（Justification）即可，不是必须改动设计。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：仍然在 FMEA 模板中保留 RPN<100 等阈值过滤措施。</strong></div></div>
+<em>正解：</em>新版标准严禁设定固定 RPN 门槛值（如要求所有 >100 的项必须采取措施），必须全面迁移到 AP 逻辑中。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：修改了企业 S/O/D 打分表，却照搬标准 AP 表。</strong></div></div>
+<em>正解：</em>标准 AP 表是基于标准 1-10 分级逻辑构建的，一旦企业裁剪或变更了评级区间，必须重新映射逻辑矩阵。</div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day033-manual-p67.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.5.10 节（上）（PDF 第 67 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.5.10 节（上）（PDF 第 67 页）</p>

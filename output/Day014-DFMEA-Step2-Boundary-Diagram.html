@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 014：DFMEA 步骤二：方块图（边界图）构建方法与车窗案例</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,37 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与可视化价值（原书 2.2.4 & 2.2.4.1）</strong><br>系统结构的可视化有助于 DFMEA 团队直观开展结构分析，手册推荐了两种常用方法：<strong>方块图/边界图（Block/Boundary Diagram）</strong>与<strong>结构树（Structure Tree）</strong>。<br>• <strong>边界图的定义与作用：</strong>用于描述所分析系统及其与相邻系统、环境和顾客之间的接口。它以图表形式为结构化头脑风暴提供指引，表示产品组件之间的物理和逻辑关系、系统内交互以及与制造、服务、运输、人员和环境的接口，是后续参数图（P图）与 FMEA 分析的核心输入。<br>• <strong>方块图与边界图的区别：</strong>手册中两词常交替使用，但<strong>边界图更为全面</strong>，因为它明确划定了分析责任边界，并包含了外部影响（环境、相邻系统）与系统交互作用。边界图中要素之间的接口可直接作为关注要素纳入后续结构与功能分析中。</div><div class="highlight-blue"><strong>2. 边界图构建的六步法与接口四分类（PEIM法则）</strong><br>根据手册第 34-35 页规范，构建边界图的标准流程分为以下步骤：<br>• <strong>步骤 a - 描述组件和特性：</strong>统一命名零件与特性（避免别名混淆），完整呈现所有系统组件和外部接口组件。<br>• <strong>步骤 b - 调整方块以显示相互联系：</strong>使用<strong>实线</strong>表示直接物理接触；使用<strong>虚线</strong>表示间接接口（如装配间隙、热辐射或相对运动）；用<strong>箭头</strong>标识流向，完整标记能量流、信号或力传递。<br>• <strong>步骤 c - 描述连接类型（PEIM 标准分类，包含期望与不期望的）：</strong><br>&nbsp;&nbsp;- <strong>P (Physical)：</strong>物理连接（如螺栓紧固、卡扣、点胶粘接、焊接、夹紧等）；<br>&nbsp;&nbsp;- <strong>E (Energy transfer)：</strong>能量传递（如机械扭矩、电能、传热/热辐射等）；<br>&nbsp;&nbsp;- <strong>I (Information exchange)：</strong>信息传递（如传感器数据、ECU控制总线、I2C/SPI信号等）；<br>&nbsp;&nbsp;- <strong>M (Material exchange)：</strong>物料交换（如流体、水汽、废气、胶水流动等）。<br>• <strong>步骤 d - 增加接口系统与外部输入：</strong>纳入顾客/最终用户、相邻系统（虽不直接物理接触，但存在间隙、运动干涉或热辐射的系统）。<br>• <strong>步骤 e - 确定边界与控制范围：</strong><strong>核心规则——只有团队设计或控制的零件才放在边界线内！</strong>边界图中的方块比正在分析的层次低一级。对于外部由供应商或整机客户控制的零件必须标记在边界线外。<br>• <strong>步骤 f - 完善图表工程细节：</strong>明确系统/项目名称、团队成员、日期、修改版本等级，并用不同颜色或线型区分交互类型。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：摄像头模组（CCM）边界图绘制</strong><br>以传音中高端机型潜望式长焦摄像头模组（CCM）DFMEA 为例：<br>• <strong>划定设计边界：</strong>边界线<strong>内</strong>为摄像头研发团队自主定义的部件，包括模组支架、OIS/AF驱动马达、镜头组（Lens）、Sensor与FPC软板；边界线<strong>外</strong>为相邻系统与外部环境，包括手机中框（相邻结构）、主板SOC（相邻电子系统）、闪光灯/电池（发热相邻系统）、后盖玻璃盖板（结构间隙接口）以及终端组装产线工人（制造顾客）和最终用户。<br>• <strong>PEIM 接口标注：</strong><br>&nbsp;&nbsp;- <strong>P（物理连接）：</strong>FPC连接器与主板BTB插座锁合（实线）；镜头与后盖Deco保护镜片的避让间隙（虚线，间接接口）；<br>&nbsp;&nbsp;- <strong>E（能量传递）：</strong>主板PMU供电电源（2.8V/1.8V输入）；马达线圈电磁感应；主板CPU/电池工作时对马达与Sensor传导的热辐射；<br>&nbsp;&nbsp;- <strong>I（信息传递）：</strong>MIPI高速图像差分信号、I2C马达驱动总线、OIS陀螺仪同步脉冲；<br>&nbsp;&nbsp;- <strong>M（物料交换）：</strong>外部环境湿气通过点胶密封缝隙微量渗透（不期望物料交换）。<br>通过清晰界定边界图，团队能立即识别出“镜头与保护玻璃撞件”是由于虚线间接接口间隙不足导致的失效模式。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：把外围所有零件都圈进“设计边界”内部。</strong>很多工程师把手机主板、中框全部圈在摄像头模组边界内。<strong>纠正：</strong>边界内<strong>仅限本团队设计与控制的零部件</strong>；外部采购件、整机交互结构必须画在边界框外作为接口输入。<br>• <strong>误区 2：只画实线直接接触，遗漏虚线间接接口。</strong>忽略了零件间的相对运动空间、电气绝缘间隙或高热元器件对塑胶件的热辐射。<strong>纠正：</strong>凡是存在相对运动、安全间隙、热辐射或磁场耦合的交互，必须用<strong>虚线</strong>标示。<br>• <strong>误区 3：只识别“期望的接口”，忽略“非期望的接口”。</strong>例如只标注了供电与信号，忽略了振动冲击（不期望力传递）、散热串温（不期望热传递）和潮气入侵（不期望物料流动）。PEIM接口必须包含有害与寄生的非期望交互！</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与可视化价值（原书 2.2.4 & 2.2.4.1）</span></div>系统结构的可视化有助于 DFMEA 团队直观开展结构分析，手册推荐了两种常用方法：<strong>方块图/边界图（Block/Boundary Diagram）</strong>与<strong>结构树（Structure Tree）</strong>。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>边界图的定义与作用：</strong>用于描述所分析系统及其与相邻系统、环境和顾客之间的接口。它以图表形式为结构化头脑风暴提供指引，表示产品组件之间的物理和逻辑关系、系统内交互以及与制造、服务、运输、人员和环境的接口，是后续参数图（P图）与 FMEA 分析的核心输入。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>方块图与边界图的区别：</strong>手册中两词常交替使用，但<strong>边界图更为全面</strong>，因为它明确划定了分析责任边界，并包含了外部影响（环境、相邻系统）与系统交互作用。边界图中要素之间的接口可直接作为关注要素纳入后续结构与功能分析中。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 边界图构建的六步法与接口四分类（PEIM法则）</span></div>根据手册第 34-35 页规范，构建边界图的标准流程分为以下步骤：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 a - 描述组件和特性：</strong>统一命名零件与特性（避免别名混淆），完整呈现所有系统组件和外部接口组件。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 b - 调整方块以显示相互联系：</strong>使用<strong>实线</strong>表示直接物理接触；使用<strong>虚线</strong>表示间接接口（如装配间隙、热辐射或相对运动）；用<strong>箭头</strong>标识流向，完整标记能量流、信号或力传递。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 c - 描述连接类型（PEIM 标准分类，包含期望与不期望的）：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>P (Physical)：</strong>物理连接（如螺栓紧固、卡扣、点胶粘接、焊接、夹紧等）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>E (Energy transfer)：</strong>能量传递（如机械扭矩、电能、传热/热辐射等）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>I (Information exchange)：</strong>信息传递（如传感器数据、ECU控制总线、I2C/SPI信号等）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>M (Material exchange)：</strong>物料交换（如流体、水汽、废气、胶水流动等）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 d - 增加接口系统与外部输入：</strong>纳入顾客/最终用户、相邻系统（虽不直接物理接触，但存在间隙、运动干涉或热辐射的系统）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 e - 确定边界与控制范围：</strong><strong>核心规则——只有团队设计或控制的零件才放在边界线内！</strong>边界图中的方块比正在分析的层次低一级。对于外部由供应商或整机客户控制的零件必须标记在边界线外。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤 f - 完善图表工程细节：</strong>明确系统/项目名称、团队成员、日期、修改版本等级，并用不同颜色或线型区分交互类型。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景：摄像头模组（CCM）边界图绘制</span></div>以传音中高端机型潜望式长焦摄像头模组（CCM）DFMEA 为例：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>划定设计边界：</strong>边界线<strong>内</strong>为摄像头研发团队自主定义的部件，包括模组支架、OIS/AF驱动马达、镜头组（Lens）、Sensor与FPC软板；边界线<strong>外</strong>为相邻系统与外部环境，包括手机中框（相邻结构）、主板SOC（相邻电子系统）、闪光灯/电池（发热相邻系统）、后盖玻璃盖板（结构间隙接口）以及终端组装产线工人（制造顾客）和最终用户。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>PEIM 接口标注：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>P（物理连接）：</strong>FPC连接器与主板BTB插座锁合（实线）；镜头与后盖Deco保护镜片的避让间隙（虚线，间接接口）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>E（能量传递）：</strong>主板PMU供电电源（2.8V/1.8V输入）；马达线圈电磁感应；主板CPU/电池工作时对马达与Sensor传导的热辐射；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>I（信息传递）：</strong>MIPI高速图像差分信号、I2C马达驱动总线、OIS陀螺仪同步脉冲；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>M（物料交换）：</strong>外部环境湿气通过点胶密封缝隙微量渗透（不期望物料交换）。</div></div>
+通过清晰界定边界图，团队能立即识别出“镜头与保护玻璃撞件”是由于虚线间接接口间隙不足导致的失效模式。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区 1：把外围所有零件都圈进“设计边界”内部。</strong>很多工程师把手机主板、中框全部圈在摄像头模组边界内。<strong>纠正：</strong>边界内<strong>仅限本团队设计与控制的零部件</strong>；外部采购件、整机交互结构必须画在边界框外作为接口输入。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 2：只画实线直接接触，遗漏虚线间接接口。</strong>忽略了零件间的相对运动空间、电气绝缘间隙或高热元器件对塑胶件的热辐射。<strong>纠正：</strong>凡是存在相对运动、安全间隙、热辐射或磁场耦合的交互，必须用<strong>虚线</strong>标示。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 3：只识别“期望的接口”，忽略“非期望的接口”。</strong>例如只标注了供电与信号，忽略了振动冲击（不期望力传递）、散热串温（不期望热传递）和潮气入侵（不期望物料流动）。PEIM接口必须包含有害与寄生的非期望交互！</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-2-2-1.jpg?v=1792660128" alt="图 2.2-1 车窗升降系统方块图/边界图示例（原书第 23 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.2-1 车窗升降系统方块图/边界图示例（原书第 23 页）</p>

@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 012：DFMEA 步骤一：项目计划、基准确定与表头填写规范</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node active"><div class="step-dot">🎯</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,19 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>DFMEA 项目计划（2.1.3）：</strong>确定设计 FMEA 项目后，应立即制定执行计划。手册建议采用 <strong>5T 方法</strong>（InTent 目的、Timing 时间安排、Team 团队、Task 任务、Tool 工具）进行系统规划，确保 DFMEA 七步法活动无缝嵌入企业总体产品开发项目计划（如传音 IPD 流程）中，杜绝事后补做。</li><li><strong>基准 DFMEA（2.1.4）：</strong>团队应在启动时识别可重用的工程知识，主要包括：<ul><li><strong>基础 DFMEA（Foundation DFMEA）：</strong>包含跨项目共享的高阶通用知识、历史失效模式与行业共性要求的知识库。</li><li><strong>系列 DFMEA（Family DFMEA）：</strong>基础 DFMEA 的具体化衍生，专门用于包含共同或一致产品边界、相似架构和相关功能的产品族。</li></ul>若新产品属于同一系列，则将新增的项目特定组件与功能增量补充至系列 DFMEA；若无任何可用基准，团队才从零开发全新 DFMEA。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>DFMEA 表头规范要素（2.1.5）：</strong>在步骤一阶段必须完整填写表头信息，作为风险评估的基准受控记录，核心字段包括：<ol><li><strong>公司名称：</strong>负责 DFMEA 的组织名称（如传音控股/特定产品事业部）。</li><li><strong>工程地点：</strong>研发团队所在的地理位置（如深圳、上海、重庆等研发中心）。</li><li><strong>顾客名称：</strong>外部客户或内部下游品牌/产品线（如 TECNO、Infinix、itel 或运营商）。</li><li><strong>年型/项目：</strong>具体机型项目代号、应用年份或产品风格平台。</li><li><strong>项目（系统/子系统/组件）：</strong>明确本份 DFMEA 所聚焦的具体层级与对象名称。</li><li><strong>开始与修订日期：</strong>DFMEA 启动初始日期及当前版本最新修订日期。</li><li><strong>跨职能团队：</strong>明确记录参与评估的团队成员清单（包含结构、硬件、测试、工艺等）。</li><li><strong>DFMEA ID 编号与设计责任人：</strong>企业内部受控编号及该设计模块的所有者（Owner）。</li><li><strong>保密级别：</strong>专有、商业使用或保密等级标识。</li></ol></li><li><strong>承上启下关系（2.1.6）：</strong>步骤一“规划与准备”收集的技术规范、5T 计划与边界定义，直接为步骤二“结构分析”构建系统/子系统/组件的层级分解提供基础输入。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>场景一（系列基准的高效复用）：</strong>传音研发某款中端 5G 智能手机的“潜望式长焦马达模组”时，不需要从零编写 DFMEA。团队检索并调取上一代旗舰平台的 <em>Family DFMEA（音圈马达与潜望防抖系列）</em> 作为基准，仅重点识别本次针对“非洲高热高湿环境胶水老化”以及“跌落抗震结构微调”的变更点与特定组件，大幅提升评估效率与历史失效预防覆盖率。</li><li><strong>场景二（5T 与表头在 IPD 节点的落地）：</strong>在概念立项（Concept 阶段），硬件与结构系统工程师即创建 DFMEA 表头，填入项目代号、团队名单，并明确“DFMEA 开始日期”在 TR1（概念评审）之前；将“DFMEA 修订日期”与 TR2（方案评审）、TR3（工程样机评审）对齐，确保 DFMEA 成为真正的预防性设计工具而非试产归档时的“补卡表”。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：表头沦为项目结束后的“补丁”。</strong>许多工程师在项目样机甚至试产后才临时填写表头，导致“开始日期”晚于设计冻结节点，彻底违背了预防原则。<br><strong>正确做法：</strong>在步骤一启动时立即建档受控，锁定跨职能团队核心人员与 ID 编号。</li><li><strong>误区二：盲目全盘照抄或彻底另起炉灶。</strong>要么直接复制旧项目 DFMEA 一字不改（导致特定新风险遗漏），要么完全不用既有的 Foundation/Family DFMEA（导致前人踩过的坑重复踩）。<br><strong>正确做法：</strong>继承基准 DFMEA 的共性逻辑，严格在新文件中增量分析本项目的特定差异项。</li><li><strong>误区三：项目责任人错位。</strong>表头中的“设计责任人（Design Responsibility）”填成了品质工程师（QE）或 FMEA 协调员。<br><strong>正确做法：</strong>DFMEA 的绝对责任人必须是负责该模块开发的设计主管/研发工程师（RD），QE 仅承担协助与流程促进职责。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div><ul><li><strong>DFMEA 项目计划（2.1.3）：</strong>确定设计 FMEA 项目后，应立即制定执行计划。手册建议采用 <strong>5T 方法</strong>（InTent 目的、Timing 时间安排、Team 团队、Task 任务、Tool 工具）进行系统规划，确保 DFMEA 七步法活动无缝嵌入企业总体产品开发项目计划（如传音 IPD 流程）中，杜绝事后补做。</li><li><strong>基准 DFMEA（2.1.4）：</strong>团队应在启动时识别可重用的工程知识，主要包括：<ul><li><strong>基础 DFMEA（Foundation DFMEA）：</strong>包含跨项目共享的高阶通用知识、历史失效模式与行业共性要求的知识库。</li><li><strong>系列 DFMEA（Family DFMEA）：</strong>基础 DFMEA 的具体化衍生，专门用于包含共同或一致产品边界、相似架构和相关功能的产品族。</li></ul>若新产品属于同一系列，则将新增的项目特定组件与功能增量补充至系列 DFMEA；若无任何可用基准，团队才从零开发全新 DFMEA。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div><ul><li><strong>DFMEA 表头规范要素（2.1.5）：</strong>在步骤一阶段必须完整填写表头信息，作为风险评估的基准受控记录，核心字段包括：<ol><li><strong>公司名称：</strong>负责 DFMEA 的组织名称（如传音控股/特定产品事业部）。</li><li><strong>工程地点：</strong>研发团队所在的地理位置（如深圳、上海、重庆等研发中心）。</li><li><strong>顾客名称：</strong>外部客户或内部下游品牌/产品线（如 TECNO、Infinix、itel 或运营商）。</li><li><strong>年型/项目：</strong>具体机型项目代号、应用年份或产品风格平台。</li><li><strong>项目（系统/子系统/组件）：</strong>明确本份 DFMEA 所聚焦的具体层级与对象名称。</li><li><strong>开始与修订日期：</strong>DFMEA 启动初始日期及当前版本最新修订日期。</li><li><strong>跨职能团队：</strong>明确记录参与评估的团队成员清单（包含结构、硬件、测试、工艺等）。</li><li><strong>DFMEA ID 编号与设计责任人：</strong>企业内部受控编号及该设计模块的所有者（Owner）。</li><li><strong>保密级别：</strong>专有、商业使用或保密等级标识。</li></ol></li><li><strong>承上启下关系（2.1.6）：</strong>步骤一“规划与准备”收集的技术规范、5T 计划与边界定义，直接为步骤二“结构分析”构建系统/子系统/组件的层级分解提供基础输入。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div><ul><li><strong>场景一（系列基准的高效复用）：</strong>传音研发某款中端 5G 智能手机的“潜望式长焦马达模组”时，不需要从零编写 DFMEA。团队检索并调取上一代旗舰平台的 <em>Family DFMEA（音圈马达与潜望防抖系列）</em> 作为基准，仅重点识别本次针对“非洲高热高湿环境胶水老化”以及“跌落抗震结构微调”的变更点与特定组件，大幅提升评估效率与历史失效预防覆盖率。</li><li><strong>场景二（5T 与表头在 IPD 节点的落地）：</strong>在概念立项（Concept 阶段），硬件与结构系统工程师即创建 DFMEA 表头，填入项目代号、团队名单，并明确“DFMEA 开始日期”在 TR1（概念评审）之前；将“DFMEA 修订日期”与 TR2（方案评审）、TR3（工程样机评审）对齐，确保 DFMEA 成为真正的预防性设计工具而非试产归档时的“补卡表”。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：表头沦为项目结束后的“补丁”。</strong>许多工程师在项目样机甚至试产后才临时填写表头，导致“开始日期”晚于设计冻结节点，彻底违背了预防原则。
+<strong>正确做法：</strong>在步骤一启动时立即建档受控，锁定跨职能团队核心人员与 ID 编号。</li><li><strong>误区二：盲目全盘照抄或彻底另起炉灶。</strong>要么直接复制旧项目 DFMEA 一字不改（导致特定新风险遗漏），要么完全不用既有的 Foundation/Family DFMEA（导致前人踩过的坑重复踩）。
+<strong>正确做法：</strong>继承基准 DFMEA 的共性逻辑，严格在新文件中增量分析本项目的特定差异项。</li><li><strong>误区三：项目责任人错位。</strong>表头中的“设计责任人（Design Responsibility）”填成了品质工程师（QE）或 FMEA 协调员。
+<strong>正确做法：</strong>DFMEA 的绝对责任人必须是负责该模块开发的设计主管/研发工程师（RD），QE 仅承担协助与流程促进职责。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-2-1-1.jpg?v=1792660128" alt="图 2.1-1 填好的 DFMEA 表头示例（步骤一，原书第 19 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.1-1 填好的 DFMEA 表头示例（步骤一，原书第 19 页）</p>

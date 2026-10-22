@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 003：企业 FMEA 整合：高管承诺、知识保护与顾客协议</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📘 第1章：引言与5T规划</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,30 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>• <strong>企业 FMEA 整合（Enterprise Integration）：</strong>FMEA 绝非填表走过场的单点工具，而是一项跨学科活动，贯穿并影响整个产品实现过程。它是产品与过程开发的必要基石，为综合规范、测试验证计划（DVP）以及控制计划（CP）提供输入，根本目的是在源头减少设计返工与重复试错成本。<br>• <strong>高层管理者的最终承诺与责任：</strong>FMEA 需要跨部门多学科资源的持续深度投入。手册明确规定：<strong>高层管理者负责 FMEA 的全面应用，并对最终接受 FMEA 中确定的技术风险以及风险最小化措施负最终责任。</strong></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（实施四大规范与协议界定）</strong><br>实施 FMEA 时必须严格遵守以下四大规范准则：<br>① <strong>明确（Clear）：</strong>采用严格准确的技术术语界定潜在失效模式，确保工程专家能够评估起因与影响。<strong>严禁使用误导性或情绪化词语</strong>（如“危险的”、“不可容忍的”、“不负责任的差错”等），必须还原为客观物理/电气/机械现象。<br>② <strong>真实（True）：</strong>客观、真实地描述失效后果及影响，不夸大也不隐瞒（例如准确描述为：冒烟、产生异味、局部起火、触控无响应等）。<br>③ <strong>合理（Reasonable）：</strong><br>&nbsp;&nbsp;• 失效起因必须合理，<strong>不考虑不可抗力或极端外部事件</strong>（如道路落石、制造厂全厂突发断电、大地震等）。<br>&nbsp;&nbsp;• <strong>可预见的不当使用（Foreseeable Misuse）：</strong>由用户感知、认知判断偏差或操作行为失误导致的不当使用，属于必须分析的范围（通过头脑风暴、现场投诉、Use Case 识别）；<br>&nbsp;&nbsp;• <strong>蓄意破坏（Intentional Misuse）：</strong>蓄意违规操作、恶意拆解、蓄意暴力破坏等导致的失效<strong>不予考虑</strong>。<br>④ <strong>完整（Complete）：</strong>被分析的产品或过程系统要素及功能必须具备完整性。<strong>担心泄露技术诀窍（Know-How）绝不能成为 FMEA 内容残缺不全的正当理由</strong>。分析的颗粒度应根据风险严重程度决定。<br>• <strong>知识产权保护与顾客协议：</strong>DFMEA/PFMEA 在供需双方之间的知识产权共享由双方商务/法律合同管辖（不在本手册规范内）。供需双方应在项目初期就 FMEA 专用协议达成一致，包括：<strong>系统边界、输入工作文件、分析方法以及评估评分表（Rating Tables）</strong>。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（研发 DFMEA·情绪化词汇与可预见误用）：</strong>在传音新平台智能手机 Type-C 接口开发中，某工程师在失效模式中写下“恶劣设计导致接口不可容忍地断裂”，在失效起因中写“用户恶意暴力摧毁插头”。<br><em>专家纠正：</em>失效模式应明确改为“Type-C 舌片机械断裂”，起因应区分合理与蓄意——用户在暗光下角度插偏、边充边剧烈拽拉手机属于“可预见的非故意不当使用”，必须纳入起因并评估防错设计；而使用铁钳恶意撬拔插孔属于“蓄意破坏”，不予录入分析。<br>• <strong>场景 B（制造 PFMEA·厂区断电与极端事件剥离）：</strong>传音重庆/海外制造基地在编写手机 SMT 贴片及回流焊 PFMEA 时，工艺组将“工业园区高压电网断电停机导致锡膏凝固卡板”列为失效起因。<br><em>专家纠正：</em>厂区外网突发断电属于极端不可控事件，回流焊 PFMEA 应聚焦炉温曲线偏移、轨道传动卡死、氮气压力不足等设备工艺合理起因。厂区断电属于厂务应急响应预案（BCP/EHS 范畴），不可污染 PFMEA 分析表。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：带情绪写失效。</strong>在失效描述中写“操作工极不负责任漏贴绝缘胶带”或“主板发热严重引起用户极度愤怒”。<strong>纠正：</strong>PFMEA 应写“绝缘胶带未贴附”，起因写“送料器缺料传感器失效”或“操作指引无视觉防错”；影响写“主板后盖表面温度超过 48℃”。<br>• <strong>误区 2：以“商业保密”为借口隐藏高风险失效。</strong>某些模块供应商拒绝分析摄像头马达跌落断裂起因，称其为“专有内部技术机密”。<strong>纠正：</strong>手册明确指出知识产权保密不能作为 FMEA 不完整的理由，可通过脱敏参数、签署保密协议规范共享，但技术风险项与控制措施必须闭环。<br>• <strong>误区 3：认为 FMEA 签署只需要项目经理或质量经理盖章。</strong><strong>纠正：</strong>手册 1.3.2 节白纸黑字强调，<strong>高层管理者必须对技术风险的最终接受承担最终责任</strong>。当严重度高、无法彻底消除的残余风险存在时，必须升级至高管签署确认接受。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>• <strong>企业 FMEA 整合（Enterprise Integration）：</strong>FMEA 绝非填表走过场的单点工具，而是一项跨学科活动，贯穿并影响整个产品实现过程。它是产品与过程开发的必要基石，为综合规范、测试验证计划（DVP）以及控制计划（CP）提供输入，根本目的是在源头减少设计返工与重复试错成本。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>高层管理者的最终承诺与责任：</strong>FMEA 需要跨部门多学科资源的持续深度投入。手册明确规定：<strong>高层管理者负责 FMEA 的全面应用，并对最终接受 FMEA 中确定的技术风险以及风险最小化措施负最终责任。</strong></div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（实施四大规范与协议界定）</span></div>实施 FMEA 时必须严格遵守以下四大规范准则：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>明确（Clear）：</strong>采用严格准确的技术术语界定潜在失效模式，确保工程专家能够评估起因与影响。<strong>严禁使用误导性或情绪化词语</strong>（如“危险的”、“不可容忍的”、“不负责任的差错”等），必须还原为客观物理/电气/机械现象。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>真实（True）：</strong>客观、真实地描述失效后果及影响，不夸大也不隐瞒（例如准确描述为：冒烟、产生异味、局部起火、触控无响应等）。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>合理（Reasonable）：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>失效起因必须合理，<strong>不考虑不可抗力或极端外部事件</strong>（如道路落石、制造厂全厂突发断电、大地震等）。</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>可预见的不当使用（Foreseeable Misuse）：</strong>由用户感知、认知判断偏差或操作行为失误导致的不当使用，属于必须分析的范围（通过头脑风暴、现场投诉、Use Case 识别）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><strong>蓄意破坏（Intentional Misuse）：</strong>蓄意违规操作、恶意拆解、蓄意暴力破坏等导致的失效<strong>不予考虑</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div><strong>完整（Complete）：</strong>被分析的产品或过程系统要素及功能必须具备完整性。<strong>担心泄露技术诀窍（Know-How）绝不能成为 FMEA 内容残缺不全的正当理由</strong>。分析的颗粒度应根据风险严重程度决定。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>知识产权保护与顾客协议：</strong>DFMEA/PFMEA 在供需双方之间的知识产权共享由双方商务/法律合同管辖（不在本手册规范内）。供需双方应在项目初期就 FMEA 专用协议达成一致，包括：<strong>系统边界、输入工作文件、分析方法以及评估评分表（Rating Tables）</strong>。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>• <strong>场景 A（研发 DFMEA·情绪化词汇与可预见误用）：</strong>在传音新平台智能手机 Type-C 接口开发中，某工程师在失效模式中写下“恶劣设计导致接口不可容忍地断裂”，在失效起因中写“用户恶意暴力摧毁插头”。
+<em>专家纠正：</em>失效模式应明确改为“Type-C 舌片机械断裂”，起因应区分合理与蓄意——用户在暗光下角度插偏、边充边剧烈拽拉手机属于“可预见的非故意不当使用”，必须纳入起因并评估防错设计；而使用铁钳恶意撬拔插孔属于“蓄意破坏”，不予录入分析。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 B（制造 PFMEA·厂区断电与极端事件剥离）：</strong>传音重庆/海外制造基地在编写手机 SMT 贴片及回流焊 PFMEA 时，工艺组将“工业园区高压电网断电停机导致锡膏凝固卡板”列为失效起因。</div></div>
+<em>专家纠正：</em>厂区外网突发断电属于极端不可控事件，回流焊 PFMEA 应聚焦炉温曲线偏移、轨道传动卡死、氮气压力不足等设备工艺合理起因。厂区断电属于厂务应急响应预案（BCP/EHS 范畴），不可污染 PFMEA 分析表。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区 1：带情绪写失效。</strong>在失效描述中写“操作工极不负责任漏贴绝缘胶带”或“主板发热严重引起用户极度愤怒”。<strong>纠正：</strong>PFMEA 应写“绝缘胶带未贴附”，起因写“送料器缺料传感器失效”或“操作指引无视觉防错”；影响写“主板后盖表面温度超过 48℃”。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 2：以“商业保密”为借口隐藏高风险失效。</strong>某些模块供应商拒绝分析摄像头马达跌落断裂起因，称其为“专有内部技术机密”。<strong>纠正：</strong>手册明确指出知识产权保密不能作为 FMEA 不完整的理由，可通过脱敏参数、签署保密协议规范共享，但技术风险项与控制措施必须闭环。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 3：认为 FMEA 签署只需要项目经理或质量经理盖章。</strong><strong>纠正：</strong>手册 1.3.2 节白纸黑字强调，<strong>高层管理者必须对技术风险的最终接受承担最终责任</strong>。当严重度高、无法彻底消除的残余风险存在时，必须升级至高管签署确认接受。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day003-manual-p15.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第一章 1.3.1 - 1.3.4 节（PDF 第 15 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第一章 1.3.1 - 1.3.4 节（PDF 第 15 页）</p>

@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 057：FMEA-MSR 步骤一（规划和准备）：项目边界、机电系统架构与计划</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📡 第4章：FMEA-MSR 监视响应</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node active"><div class="step-dot">🎯</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,23 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与系统架构（Sensor - ECU - Actuator）</strong><br>根据《AIAG & VDA FMEA 手册》第 4.1.2 节，FMEA-MSR 的第一步是“规划和准备”，其核心使命是明确评估对象，界定分析的“包含”与“排除”边界。<br>可纳入 FMEA-MSR 范围的典型对象为<strong>机械电子系统（Mechatronic Systems）</strong>，该系统通常由至少以下三部分或其子集构成：<br><ul><li><strong>传感器（Sensor）：</strong>负责采集物理量（如温度、电流、霍尔磁场、角位移等），并将模拟或数字信号传递给控制单元。</li><li><strong>电子控制单元（ECU / Logic Processing Unit）：</strong>内置微控制器（MCU/SOC/PMIC）与嵌入式软件算法，负责对传感器信号进行合理性校验、故障诊断判定并输出控制决策。</li><li><strong>执行器（Actuator）：</strong>根据控制指令动作，执行系统功能或安全响应（如 MOSFET 开关切断、马达反转、阻抗切换、显示告警等）。</li></ul>系统间通过数据总线、电压、电流等电气物理量相互耦合，构成完整的闭环监控响应架构。</div><div class="highlight-blue"><strong>2. 边界确定的三大黄金准则与输入标准</strong><br>原书明确指出，完成系统 DFMEA 后，需通过以下<strong>三大基本提问</strong>来严格界定是否启动 FMEA-MSR：<br><ol><li><strong>法规与伤害关联性：</strong>在电气/电子/可编程电子系统上完成 DFMEA 后，是否存在可能导致<strong>人员伤害（人身安全）</strong>或<strong>法规不符合</strong>的影响？（若无严重安全/法规影响，通常无需展开 MSR）。</li><li><strong>故障可探测性：</strong>DFMEA 是否表明，导致伤害或不合规的故障起因，能够通过<strong>直接感知（硬件传感器）和/或合理性算法（软件逻辑）</strong>被系统在运行时探测到？</li><li><strong>预期系统响应定义：</strong>DFMEA 是否表明，系统对探测到的起因具备明确的预期响应机制？例如：<strong>切换到降级运行状态</strong>（包括限制功率、进入安全模式或禁用设备）、<strong>主动通知用户/驾驶员</strong>，以及<strong>将诊断故障代码（DTC/Log）写入服务存储区</strong>。</li></ol>此外，FMEA-MSR 的范围确定标准应参考：系统安全关联性、ISO 标准（如 ISO 26262 功能安全目标）、法律法规文件要求（如 UN/ECE 法规、FMVSS、OBD 车载诊断合规性等）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（百瓦大功率快充监控系统）</strong><br>在传音中高端机型的 120W/180W 极速快充系统研发中，系统架构与 MSR 边界定义完全贴合该闭环：<br><ul><li><strong>传感器（Sensor）：</strong>主板电荷泵芯片内置的温度感测单元（Internal NTC）、电池包外置测温 NTC、电流采样电阻（Current Shunt）。</li><li><strong>控制逻辑（ECU）：</strong>充电管理芯片（Charger IC）与 AP 侧充电守护算法（Thermal Daemon），实时对采样电压、电流与温度做互检校验与越限合理性判断。</li><li><strong>执行器（Actuator）：</strong>快充回路的主隔离开关（Power MOSFET）与屏幕 UI 弹窗提示模块。</li><li><strong>三大准则落地：</strong>①若电荷泵短路过温，将直接导致电池热失控起火（威胁用户人身安全）；②该短路起因可通过 NTC 温度突变梯度结合 I2C 采样电流超标算法被直接探测；③探测到异常后，算法在 50ms 内切断快充 MOSFET、降低充电功率至 5W 慢充或彻底停充，在屏幕弹出“检测到充电接口过热，已暂停充电”提示，并将 Fault Code 存入 NVRAM/AP Panic 日志中供售后分析。因此，该快充热保护链路是传音硬件工程中开展 FMEA-MSR 的绝佳标准对象。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：把纯机械结构直接拉入 FMEA-MSR。</strong><br><em>纠偏：</em>如果机械结构失效不包含传感器感知与逻辑芯片控制闭环（例如手机后盖跌落破裂），只能由传统 DFMEA 处理，不符合 MSR 的机电架构范畴。</li><li><strong>误区二：认为所有软件 Bug 都需要在 MSR 中穷举分析。</strong><br><em>纠偏：</em>FMEA-MSR 重点评估的是<strong>硬件故障在运行时的监视与安全响应机制</strong>（HW 故障发生时，SW 算法如何安全保护）。纯软件功能逻辑缺陷应在软件工程、软件质量流程或专用 SW-FMEA 中管控。</li><li><strong>误区三：项目计划与产品主计划脱节（违背 5T 原则）。</strong><br><em>纠偏：</em>手册 4.1.3 节强调使用 5T 方法（目的 Intent、时间 Timing、团队 Team、任务 Tasks、工具 Tools）。MSR 活动必须提早启动，且<strong>七步法各里程碑必须纳入传音产品开发流程（PDX/IPD）的软硬件架构锁定节点（如 EVT 评审前）</strong>，不可在售后出问题后才被动“补材料”。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与系统架构（Sensor - ECU - Actuator）</span></div>根据《AIAG & VDA FMEA 手册》第 4.1.2 节，FMEA-MSR 的第一步是“规划和准备”，其核心使命是明确评估对象，界定分析的“包含”与“排除”边界。
+可纳入 FMEA-MSR 范围的典型对象为<strong>机械电子系统（Mechatronic Systems）</strong>，该系统通常由至少以下三部分或其子集构成：
+<ul><li><strong>传感器（Sensor）：</strong>负责采集物理量（如温度、电流、霍尔磁场、角位移等），并将模拟或数字信号传递给控制单元。</li><li><strong>电子控制单元（ECU / Logic Processing Unit）：</strong>内置微控制器（MCU/SOC/PMIC）与嵌入式软件算法，负责对传感器信号进行合理性校验、故障诊断判定并输出控制决策。</li><li><strong>执行器（Actuator）：</strong>根据控制指令动作，执行系统功能或安全响应（如 MOSFET 开关切断、马达反转、阻抗切换、显示告警等）。</li></ul>系统间通过数据总线、电压、电流等电气物理量相互耦合，构成完整的闭环监控响应架构。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 边界确定的三大黄金准则与输入标准</span></div>原书明确指出，完成系统 DFMEA 后，需通过以下<strong>三大基本提问</strong>来严格界定是否启动 FMEA-MSR：
+<ol><li><strong>法规与伤害关联性：</strong>在电气/电子/可编程电子系统上完成 DFMEA 后，是否存在可能导致<strong>人员伤害（人身安全）</strong>或<strong>法规不符合</strong>的影响？（若无严重安全/法规影响，通常无需展开 MSR）。</li><li><strong>故障可探测性：</strong>DFMEA 是否表明，导致伤害或不合规的故障起因，能够通过<strong>直接感知（硬件传感器）和/或合理性算法（软件逻辑）</strong>被系统在运行时探测到？</li><li><strong>预期系统响应定义：</strong>DFMEA 是否表明，系统对探测到的起因具备明确的预期响应机制？例如：<strong>切换到降级运行状态</strong>（包括限制功率、进入安全模式或禁用设备）、<strong>主动通知用户/驾驶员</strong>，以及<strong>将诊断故障代码（DTC/Log）写入服务存储区</strong>。</li></ol>此外，FMEA-MSR 的范围确定标准应参考：系统安全关联性、ISO 标准（如 ISO 26262 功能安全目标）、法律法规文件要求（如 UN/ECE 法规、FMVSS、OBD 车载诊断合规性等）。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景（百瓦大功率快充监控系统）</span></div>在传音中高端机型的 120W/180W 极速快充系统研发中，系统架构与 MSR 边界定义完全贴合该闭环：
+<ul><li><strong>传感器（Sensor）：</strong>主板电荷泵芯片内置的温度感测单元（Internal NTC）、电池包外置测温 NTC、电流采样电阻（Current Shunt）。</li><li><strong>控制逻辑（ECU）：</strong>充电管理芯片（Charger IC）与 AP 侧充电守护算法（Thermal Daemon），实时对采样电压、电流与温度做互检校验与越限合理性判断。</li><li><strong>执行器（Actuator）：</strong>快充回路的主隔离开关（Power MOSFET）与屏幕 UI 弹窗提示模块。</li><li><strong>三大准则落地：</strong>①若电荷泵短路过温，将直接导致电池热失控起火（威胁用户人身安全）；②该短路起因可通过 NTC 温度突变梯度结合 I2C 采样电流超标算法被直接探测；③探测到异常后，算法在 50ms 内切断快充 MOSFET、降低充电功率至 5W 慢充或彻底停充，在屏幕弹出“检测到充电接口过热，已暂停充电”提示，并将 Fault Code 存入 NVRAM/AP Panic 日志中供售后分析。因此，该快充热保护链路是传音硬件工程中开展 FMEA-MSR 的绝佳标准对象。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：把纯机械结构直接拉入 FMEA-MSR。</strong>
+<em>纠偏：</em>如果机械结构失效不包含传感器感知与逻辑芯片控制闭环（例如手机后盖跌落破裂），只能由传统 DFMEA 处理，不符合 MSR 的机电架构范畴。</li><li><strong>误区二：认为所有软件 Bug 都需要在 MSR 中穷举分析。</strong>
+<em>纠偏：</em>FMEA-MSR 重点评估的是<strong>硬件故障在运行时的监视与安全响应机制</strong>（HW 故障发生时，SW 算法如何安全保护）。纯软件功能逻辑缺陷应在软件工程、软件质量流程或专用 SW-FMEA 中管控。</li><li><strong>误区三：项目计划与产品主计划脱节（违背 5T 原则）。</strong>
+<em>纠偏：</em>手册 4.1.3 节强调使用 5T 方法（目的 Intent、时间 Timing、团队 Team、任务 Tasks、工具 Tools）。MSR 活动必须提早启动，且<strong>七步法各里程碑必须纳入传音产品开发流程（PDX/IPD）的软硬件架构锁定节点（如 EVT 评审前）</strong>，不可在售后出问题后才被动“补材料”。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-4-1-1.jpg?v=1792660128" alt="图 4.1-1 电气/电子/可编程电子系统的一般方块图（原书第 112 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 4.1-1 电气/电子/可编程电子系统的一般方块图（原书第 112 页）</p>

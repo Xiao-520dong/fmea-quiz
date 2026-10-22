@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 069：FMEA-MSR 步骤七（结果文件化）：补充 FMEA-MSR 报告与交付要求</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📡 第4章：FMEA-MSR 监视响应</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📑</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,39 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义（4.7.1 结果文件化目的）</strong><br>“结果文件化”是 FMEA-MSR 七步法的终局环节，其核心目的是<strong>针对 FMEA 活动的结果进行总结和交流</strong>。主要目标包括：<br>① 沟通分析结果与最终结论；<br>② 建立并规范文件归档内容；<br>③ 记录所采取的措施，包括对实施措施的效果进行确认（验证），以及采取措施后的二次风险评估（S/F/M 与 AP 重估）；<br>④ 在组织内部以及与客户/供应商之间（如需）沟通降低风险的措施；<br>⑤ 正式记录技术风险已降低至“可接受水平”的证据。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（4.7.2 FMEA 报告内容与交付准则）</strong><br>FMEA-MSR 报告是项目里程碑交付的关键物料，手册明确规定了报告的边界与六大核心内容：<br><strong>(1) 关键定位与 IP 保护原则：</strong><br>• <strong>不可替代性：</strong>报告是团队向管理层、客户及供应商汇报的总结，<strong>当管理层、客户或供应商要求时，该报告绝不能取代对 FMEA-MSR 详细工作表（细节）的审查</strong>。<br>• <strong>知识产权（IP）保护：</strong>报告格式与深浅度由各方商定，在满足利益相关方要求的同时，必须确保分析的核心技术细节与知识产权由编制公司保留。<br><strong>(2) FMEA 报告应包含的 6 项核心内容（A-F）：</strong><br>• <strong>A. 初始目标对比（5T 回顾）：</strong>相较于 1.5 节项目计划，说明最终执行状态（FMEA 目的、时间安排、团队成员、任务范围、工具与方法）。<br>• <strong>B. 分析范围与新增内容总结：</strong>界定本次 MSR 分析的边界，明确哪些是新开发的硬件/软件诊断功能。<br>• <strong>C. 功能开发总结：</strong>说明系统正常功能与安全监视/容错响应逻辑是如何开发实现的。<br>• <strong>D. 高风险失效与评估总结：</strong>至少对团队识别的高风险失效进行汇总，附带具体的 S/F/M 评级表和措施优先级（AP）判定逻辑。<br>• <strong>E. 措施实施状态总结：</strong>针对高风险失效已采取的预防/监视措施及计划中措施的推进状态与效果确认。<br>• <strong>F. 三项持续改进与闭环承诺：</strong><br>&nbsp;&nbsp;a. <em>未决措施承诺：</em>对尚未完全关闭的措施明确责任人、验证计划与关闭截止日期；<br>&nbsp;&nbsp;b. <em>量产维护承诺：</em>承诺在批量生产期间，因设计变更、客诉质量问题等触发评审和修订（参考 1.4 节案例 3 修订机制）；<br>&nbsp;&nbsp;c. <em>经验沉淀承诺：</em>承诺将项目实战中“出差错的地方”和避坑教训回填到“基础 FMEA-MSR（Foundation FMEA）”，供后续平台项目复用。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音旗舰机型的 180W 超级闪充与双电芯电池管理系统（BMS）项目中，步骤七的落地实践如下：<br>• <strong>网格化报告交付：</strong>在 DVT（设计验证测试）转 PVT（生产验证测试）评审会上，系统安全工程师出具《BMS 监视与安全响应 FMEA-MSR 总结报告》。报告中清晰对比了 Kick-off 阶段的 5T 规划与实测进度，向产品线总裁及质量委员会展示所有高 AP 项（如充电 IC 过温失效、过压采样 ADC 单粒子翻转）已全部清零。<br>• <strong>内外部沟通与知识产权保护：</strong>在向海外大客户或核心运营商演示设备符合全球电池安全标准时，出具该摘要报告与 S/F/M 降级证明；涉及传音底层独家控温算法与驱动寄存器私有配置的 FMEA 表格细节，则在保密协议框架下按需受控审查，实现 IP 保护与透明度平衡。<br>• <strong>量产维护与基础库闭环：</strong>项目团队在报告第 F 项郑重签字承诺：量产爬坡后若出现客诉或产线充电告警，严格触发 FMEA-MSR 版本迭代；同时将本次新增的“电芯阻抗异常动态微温升诊断机制”同步回填至传音《手机硬件电源系统基础 FMEA-MSR 数据库》。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把总结报告等同于 FMEA 工作表。</strong>部分工程师以为写完一张简报或把 FMEA 导出 PDF 就算完成，或者反过来认为有了总结报告客户就无权看细节。手册明确指出：报告不能取代细节审查，关键时刻仍需穿透至 7 步法表格逐行评审。<br>• <strong>误区二：只汇报“已成功的措施”，掩盖未完成项。</strong>报告的核心价值之一是识别剩余风险。遗漏承诺清单（如未完成闭环的时间表、量产维护计划），属于严重违规报告。<br>• <strong>误区三：项目结项即 FMEA 封印。</strong>缺乏向“基础 FMEA-MSR”回流的动作，导致下一个平台项目犯同样的软硬件诊断盲区错误，违背了 AIAG & VDA 建立“企业知识库”的核心宗旨。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义（4.7.1 结果文件化目的）</span></div>“结果文件化”是 FMEA-MSR 七步法的终局环节，其核心目的是<strong>针对 FMEA 活动的结果进行总结和交流</strong>。主要目标包括：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div>沟通分析结果与最终结论；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div>建立并规范文件归档内容；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div>记录所采取的措施，包括对实施措施的效果进行确认（验证），以及采取措施后的二次风险评估（S/F/M 与 AP 重估）；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div>在组织内部以及与客户/供应商之间（如需）沟通降低风险的措施；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑤</span><div>正式记录技术风险已降低至“可接受水平”的证据。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（4.7.2 FMEA 报告内容与交付准则）</span></div>FMEA-MSR 报告是项目里程碑交付的关键物料，手册明确规定了报告的边界与六大核心内容：
+<strong>(1) 关键定位与 IP 保护原则：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>不可替代性：</strong>报告是团队向管理层、客户及供应商汇报的总结，<strong>当管理层、客户或供应商要求时，该报告绝不能取代对 FMEA-MSR 详细工作表（细节）的审查</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>知识产权（IP）保护：</strong>报告格式与深浅度由各方商定，在满足利益相关方要求的同时，必须确保分析的核心技术细节与知识产权由编制公司保留。</div></div>
+<strong>(2) FMEA 报告应包含的 6 项核心内容（A-F）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>A. 初始目标对比（5T 回顾）：</strong>相较于 1.5 节项目计划，说明最终执行状态（FMEA 目的、时间安排、团队成员、任务范围、工具与方法）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>B. 分析范围与新增内容总结：</strong>界定本次 MSR 分析的边界，明确哪些是新开发的硬件/软件诊断功能。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>C. 功能开发总结：</strong>说明系统正常功能与安全监视/容错响应逻辑是如何开发实现的。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>D. 高风险失效与评估总结：</strong>至少对团队识别的高风险失效进行汇总，附带具体的 S/F/M 评级表和措施优先级（AP）判定逻辑。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>E. 措施实施状态总结：</strong>针对高风险失效已采取的预防/监视措施及计划中措施的推进状态与效果确认。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>F. 三项持续改进与闭环承诺：</strong></div></div>
+&nbsp;&nbsp;a. <em>未决措施承诺：</em>对尚未完全关闭的措施明确责任人、验证计划与关闭截止日期；
+&nbsp;&nbsp;b. <em>量产维护承诺：</em>承诺在批量生产期间，因设计变更、客诉质量问题等触发评审和修订（参考 1.4 节案例 3 修订机制）；
+&nbsp;&nbsp;c. <em>经验沉淀承诺：</em>承诺将项目实战中“出差错的地方”和避坑教训回填到“基础 FMEA-MSR（Foundation FMEA）”，供后续平台项目复用。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音旗舰机型的 180W 超级闪充与双电芯电池管理系统（BMS）项目中，步骤七的落地实践如下：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>网格化报告交付：</strong>在 DVT（设计验证测试）转 PVT（生产验证测试）评审会上，系统安全工程师出具《BMS 监视与安全响应 FMEA-MSR 总结报告》。报告中清晰对比了 Kick-off 阶段的 5T 规划与实测进度，向产品线总裁及质量委员会展示所有高 AP 项（如充电 IC 过温失效、过压采样 ADC 单粒子翻转）已全部清零。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>内外部沟通与知识产权保护：</strong>在向海外大客户或核心运营商演示设备符合全球电池安全标准时，出具该摘要报告与 S/F/M 降级证明；涉及传音底层独家控温算法与驱动寄存器私有配置的 FMEA 表格细节，则在保密协议框架下按需受控审查，实现 IP 保护与透明度平衡。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>量产维护与基础库闭环：</strong>项目团队在报告第 F 项郑重签字承诺：量产爬坡后若出现客诉或产线充电告警，严格触发 FMEA-MSR 版本迭代；同时将本次新增的“电芯阻抗异常动态微温升诊断机制”同步回填至传音《手机硬件电源系统基础 FMEA-MSR 数据库》。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：把总结报告等同于 FMEA 工作表。</strong>部分工程师以为写完一张简报或把 FMEA 导出 PDF 就算完成，或者反过来认为有了总结报告客户就无权看细节。手册明确指出：报告不能取代细节审查，关键时刻仍需穿透至 7 步法表格逐行评审。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：只汇报“已成功的措施”，掩盖未完成项。</strong>报告的核心价值之一是识别剩余风险。遗漏承诺清单（如未完成闭环的时间表、量产维护计划），属于严重违规报告。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：项目结项即 FMEA 封印。</strong>缺乏向“基础 FMEA-MSR”回流的动作，导致下一个平台项目犯同样的软硬件诊断盲区错误，违背了 AIAG & VDA 建立“企业知识库”的核心宗旨。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day069-manual-p150.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第四章 4.7.1 - 4.7.2 节（PDF 第 150 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第四章 4.7.1 - 4.7.2 节（PDF 第 150 页）</p>

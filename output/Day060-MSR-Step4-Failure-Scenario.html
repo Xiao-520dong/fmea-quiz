@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 060：FMEA-MSR 步骤四（失效分析）：失效场景逻辑（有/无系统响应对比）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📡 第4章：FMEA-MSR 监视响应</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚡</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,16 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>FMEA-MSR 失效分析目的（4.4.1 节）：</strong>在相关操作场景下，说明导致最终影响的完整事件链（失效起因 → 监视 → 系统响应 → 减轻的失效影响）。通过参数图或失效网建立产品失效链，作为表格记录和风险分析的基础，并促进客户与供应商之间的协作。</li><li><strong>失效场景定义（4.4.2 节）：</strong>由特定操作条件与事件序列组成的系统状态演进过程。起点为确定的失效起因，终点为最终的失效影响。分析核心聚焦于具有诊断能力的组件（ECU/MCU）。</li><li><strong>故障处理时间间隔（Fault Handling Time Interval, FHTI）：</strong>在安全机制未激活或失效的前提下，从故障发生到危险事件或不合规失效影响产生之间的最大允许时间跨度。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与三大失效场景对比拆解</strong><br>根据系统是否具备诊断能力及安全机制响应，手册将失效场景划分为三种典型路径：<ul><li><strong>场景 (1) —— 无危险事件（S = 1~9，无安全机制或未触发）：</strong>故障出现 → 产生故障行为（失效模式） → 经过一定时间演变为最终影响。此影响不会造成人身危险，但可能导致功能丧失、客户抱怨或法规不合规（如通信丢失、显示异常）。</li><li><strong>场景 (2) —— 危险事件（S = 10，安全机制未激活/不存在）：</strong>故障出现 → 发生故障行为 → 超过故障处理时间间隔（FHTI） → 直接引发危害人身安全的危险事件（如电池热失控、电机失控夹伤）。在此场景中，FHTI 评估是安全设计的硬约束。</li><li><strong>场景 (3) —— 减轻/减缓影响（含监视与系统响应）：</strong>故障出现 → 发生故障行为 → <strong>在 FHTI 内完成故障探测与系统响应（系统响应时间 = 探测时间 + 过渡时间 ≤ FHTI）</strong> → 系统进入安全状态或降级模式 → 避免危险事件，最终影响仅为功能的损失或退化（严重度降低，M 评价生效）。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以智能手机 68W 超快充热保护为例）</strong><br>在传音中高端机型快充架构中，PMIC/电荷泵具备硬件与固件联合监视能力：<ul><li><strong>失效起因（FC）：</strong>主板 USB 接口 NTC 热敏电阻焊点受跌落应力虚焊，输出异常悬空高阻抗信号。</li><li><strong>无系统响应场景（场景 2 风险）：</strong>若充电管理芯片未设计开路检测与超时机制，大电流持续灌入，电芯温度突破极限引发起火/热失控（S = 10 危险事件），该过程跨越的时间即为系统热击穿时间窗口。</li><li><strong>有系统响应场景（场景 3 缓解）：</strong>系统定义 FHTI 为 1.5 秒。PMIC 内部看门狗与 ADC 诊断机制在 200ms 内探测到 NTC 阻值突变（探测时间），并在 300ms 内强行拉低 PWM 驱动、断开快充路径并回退至 5V/500mA 安全供电（过渡时间）。系统总响应时间 500ms &lt; 1.5s，成功将危险降级为“弹出充电异常提示，仅维持慢充”（S 降低，功能降级但无危险）。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 DFMEA 探测度与 MSR 监视响应：</strong>工程师常将产线 EOL 测试或研发测试当作 MSR 响应。<em>纠正：</em>FMEA-MSR 的失效分析完全立足于“终端客户使用过程中的在线实时诊断与响应”，非制造/测试端手段。</li><li><strong>误区二：忽略“系统响应时间 ≤ 故障处理时间间隔”这一前提：</strong>以为只要写了“系统切入保护”就必然能减轻严重度。<em>纠正：</em>如果软件滤波或硬件关断过渡时间超过了物理破坏的 FHTI 窗口，危险事件依然会先一步爆发，降级逻辑无效。</li><li><strong>误区三：认为场景 (3) 可以消除所有失效影响：</strong><em>纠正：</em>场景 (3) 的结果是“减缓的失效影响”，通常伴随功能的退化、降级或安全停机，必须如实记录降级后的影响并评估严重度。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div><ul><li><strong>FMEA-MSR 失效分析目的（4.4.1 节）：</strong>在相关操作场景下，说明导致最终影响的完整事件链（失效起因 → 监视 → 系统响应 → 减轻的失效影响）。通过参数图或失效网建立产品失效链，作为表格记录和风险分析的基础，并促进客户与供应商之间的协作。</li><li><strong>失效场景定义（4.4.2 节）：</strong>由特定操作条件与事件序列组成的系统状态演进过程。起点为确定的失效起因，终点为最终的失效影响。分析核心聚焦于具有诊断能力的组件（ECU/MCU）。</li><li><strong>故障处理时间间隔（Fault Handling Time Interval, FHTI）：</strong>在安全机制未激活或失效的前提下，从故障发生到危险事件或不合规失效影响产生之间的最大允许时间跨度。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与三大失效场景对比拆解</span></div>根据系统是否具备诊断能力及安全机制响应，手册将失效场景划分为三种典型路径：<ul><li><strong>场景 (1) —— 无危险事件（S = 1~9，无安全机制或未触发）：</strong>故障出现 → 产生故障行为（失效模式） → 经过一定时间演变为最终影响。此影响不会造成人身危险，但可能导致功能丧失、客户抱怨或法规不合规（如通信丢失、显示异常）。</li><li><strong>场景 (2) —— 危险事件（S = 10，安全机制未激活/不存在）：</strong>故障出现 → 发生故障行为 → 超过故障处理时间间隔（FHTI） → 直接引发危害人身安全的危险事件（如电池热失控、电机失控夹伤）。在此场景中，FHTI 评估是安全设计的硬约束。</li><li><strong>场景 (3) —— 减轻/减缓影响（含监视与系统响应）：</strong>故障出现 → 发生故障行为 → <strong>在 FHTI 内完成故障探测与系统响应（系统响应时间 = 探测时间 + 过渡时间 ≤ FHTI）</strong> → 系统进入安全状态或降级模式 → 避免危险事件，最终影响仅为功能的损失或退化（严重度降低，M 评价生效）。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景（以智能手机 68W 超快充热保护为例）</span></div>在传音中高端机型快充架构中，PMIC/电荷泵具备硬件与固件联合监视能力：<ul><li><strong>失效起因（FC）：</strong>主板 USB 接口 NTC 热敏电阻焊点受跌落应力虚焊，输出异常悬空高阻抗信号。</li><li><strong>无系统响应场景（场景 2 风险）：</strong>若充电管理芯片未设计开路检测与超时机制，大电流持续灌入，电芯温度突破极限引发起火/热失控（S = 10 危险事件），该过程跨越的时间即为系统热击穿时间窗口。</li><li><strong>有系统响应场景（场景 3 缓解）：</strong>系统定义 FHTI 为 1.5 秒。PMIC 内部看门狗与 ADC 诊断机制在 200ms 内探测到 NTC 阻值突变（探测时间），并在 300ms 内强行拉低 PWM 驱动、断开快充路径并回退至 5V/500mA 安全供电（过渡时间）。系统总响应时间 500ms &lt; 1.5s，成功将危险降级为“弹出充电异常提示，仅维持慢充”（S 降低，功能降级但无危险）。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆 DFMEA 探测度与 MSR 监视响应：</strong>工程师常将产线 EOL 测试或研发测试当作 MSR 响应。<em>纠正：</em>FMEA-MSR 的失效分析完全立足于“终端客户使用过程中的在线实时诊断与响应”，非制造/测试端手段。</li><li><strong>误区二：忽略“系统响应时间 ≤ 故障处理时间间隔”这一前提：</strong>以为只要写了“系统切入保护”就必然能减轻严重度。<em>纠正：</em>如果软件滤波或硬件关断过渡时间超过了物理破坏的 FHTI 窗口，危险事件依然会先一步爆发，降级逻辑无效。</li><li><strong>误区三：认为场景 (3) 可以消除所有失效影响：</strong><em>纠正：</em>场景 (3) 的结果是“减缓的失效影响”，通常伴随功能的退化、降级或安全停机，必须如实记录降级后的影响并评估严重度。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚡ 理论失效链（FE ← FM ← FC）三维推导图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box" style="border-color:#f56565; background:#fff5f5;"><span class="fb-icon">💥</span><div class="fb-title">1. 失效影响 (FE)</div><div class="fb-desc">上一级系统/本厂/下游厂/最终用户感知的后果 → 决定严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#ed8936; background:#fffaf0;"><span class="fb-icon">⚠️</span><div class="fb-title">2. 失效模式 (FM)</div><div class="fb-desc">关注要素未满足预期功能/产品特性的表现（丢失/退化/间歇/非预期）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔍</span><div class="fb-title">3. 失效起因 (FC)</div><div class="fb-desc">下一级特性设计不足或 4M 过程变差根因 → 决定频度(O/F)</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-4-4-1-2.jpg?v=1792660128" alt="图 4.4-1 理论失效链模型 & 图 4.4-2 失效场景(1)无危险事件（原书第 117 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 4.4-1 理论失效链模型 & 图 4.4-2 失效场景(1)无危险事件（原书第 117 页）</p>

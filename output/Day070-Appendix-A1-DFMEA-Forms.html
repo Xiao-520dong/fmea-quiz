@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 070：附件 A1：标准 DFMEA 表格布局（视图 A/B）结构深度解析</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📋 附件A&B：标准表格与填表提示</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,44 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>在《AIAG & VDA FMEA 手册》附件 A1 中，官方首次统合了美系（AIAG 第四版）与德系（VDA 4）的表达形式，正式规范了设计 FMEA（DFMEA）的落地交付模板。附件 A1 提供了三种主要展现样式：<br>• <strong>表格 A（标准 DFMEA 表格 / 表格示例 A）：</strong>完整映射新版七步法逻辑的基准表格。在步骤二（结构分析）和步骤三（功能分析）中，每一行均完整列出“1. 上一较高级别”、“2. 关注要素”、“3. 下一较低级别”及其对应的功能与要求。该表适合逻辑推导、培训教学及完整展现失效网链路。<br>• <strong>表格 B（备选 DFMEA 表格 / 表格示例 B）：</strong>为减少重复文字录入优化的工程表格。其特征是：“上一较高级别”和“上一较高级别以及功能和要求”仅在同一组别的首行中显示一次，不再在所有分支行中重复显示，视觉更聚焦于关注要素与较低级别的细分，提升大批量失效链的阅读效率。<br>• <strong>视图 A（DFMEA 软件视图）：</strong>专为专业 FMEA 数据库软件（如 APIS IQ-FMEA、PLM 内置 FMEA 模块）设计的紧凑型界面。它将步骤五（风险分析）与步骤六（优化）进行了合并紧凑排版，支持在底层数据库中自动关联父子层级并以树状或紧凑网格导出。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（七步法在表单中的映射）</strong><br>无论选择表格 A、表格 B 还是软件视图 A，表头与列结构必须完整覆盖七步法要素：<br>• <strong>步骤一：规划和准备（表头区）</strong><br>包含企业名称、工厂地点、客户名称、车型年/平台、项目名称、DFMEA 开始日期、DFMEA 修订日期、跨功能团队成员、DFMEA ID 编号、设计职责人、保密级别等基础控制信息。<br>• <strong>步骤二：结构分析（3 列划分）</strong><br>列1：1. 上一较高级别（系统/整机级）；列2：2. 关注要素（子系统/部件级）；列3：3. 下一较低级别（组件/零件级/特征）。<br>• <strong>步骤三：功能分析（3 列对齐）</strong><br>对应步骤二的三级结构，严格展开：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求。<br>• <strong>步骤四：失效分析（失效链对齐）</strong><br>列1：失效影响（FE）——对应上一较高级别或最终用户；包含严重度（S）；<br>列2：失效模式（FM）——对应关注要素；包含特殊特性分级栏（用于标识 SC/CC/安全合规特性）；<br>列3：失效起因（FC）——对应下一较低级别的设计缺陷。<br>• <strong>步骤五：风险分析（当前状态评估）</strong><br>分为当前预防措施（PC）与频度数（O）、当前探测措施（DC）与探测度数（D），最后依据 S、O、D 查表得出措施优先级（AP: H/M/L）。新版彻底取消 RPN 计算列。<br>• <strong>步骤六：优化（闭环管理）</strong><br>包含预防措施建议、探测措施建议、负责人姓名、目标完成日期、状态（草案/实施中/已完成/已放弃）、实际完成日期，以及优化后重新评估的 S、O、D、AP 和最终备注。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机整机及关键模组应用）</strong><br>以传音某款中高端机型的“折叠屏铰链组件（Hinge Module）”设计 FMEA 为例对比选择：<br>• <strong>采用表格 A 评审（跨部门概念对齐）：</strong><br>在方案定义初期与整机架构部评审时，采用表格 A。整机级（上一较高级别：手机整机闭合平整性）与功能要求在每一条铰链子部件失效（如转轴凸轮磨损、扭簧疲劳）行中均完整打印，使结构、材料、测试团队直观理解为什么微小的零件几何公差超差会直接导致“整机闭合漏光”或“开合手感卡顿”，便于新工程师理清逻辑关系。<br>• <strong>采用表格 B 归档（PLM 导出与交付）：</strong><br>进入详细设计阶段（DVT/PVT），当转轴涉及 30+ 个细分零件、上百条失效起因（FC）时，切换为表格 B。将“上一较高级别：智能手机整机”及其功能要求合并单元格仅置于块首行，大幅缩减导出文档页数，聚焦于铰链各冲压件、MIM 零件的材料屈服强度与磨损分析。<br>• <strong>特殊特性（Filter Code / Class）标注规范：</strong><br>在失效分析步骤四的专用列中，传音规范要求：若该失效模式涉及跌落电池起火安全风险，标注传音安全特殊特性“CC”；若涉及屏幕折痕平整度等核心体验，标注重要特性“SC”，确保后端直接传递至 PFMEA 步骤四与图纸管控。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆表格 A 与表格 B 的适用边界，强制要求必须用某一种</strong><br>手册明确指出表格 A 为标准辅助表，表格 B 为备选工程表。部分评审员机械地认为“表格 B 存在合并单元格导致父级未填满算漏项”，实为对标准的误解。表格 B 仅在首行保留较高级别信息，是手册完全认可的标准呈现格式。<br>• <strong>误区二：在表头或风险分析列中依然保留 RPN 列</strong><br>AIAG & VDA 七步法表格无论哪种视图，均废除了风险顺序数（RPN），统一采用措施优先级（AP）。禁止在正式交付的标准表格中自定义“RPN”列或强行使用 RPN>100 作为改进行动阈值。<br>• <strong>误区三：忽略表头变更控制与保密级别字段</strong><br>许多项目直接套用旧 Excel，漏填“DFMEA ID 编号”、“保密级别”以及跨功能团队角色信息。在体系审核中，表头属于“步骤一：规划和准备”的直接证据，信息不全将直接导致步骤一不符合。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>在《AIAG & VDA FMEA 手册》附件 A1 中，官方首次统合了美系（AIAG 第四版）与德系（VDA 4）的表达形式，正式规范了设计 FMEA（DFMEA）的落地交付模板。附件 A1 提供了三种主要展现样式：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>表格 A（标准 DFMEA 表格 / 表格示例 A）：</strong>完整映射新版七步法逻辑的基准表格。在步骤二（结构分析）和步骤三（功能分析）中，每一行均完整列出“1. 上一较高级别”、“2. 关注要素”、“3. 下一较低级别”及其对应的功能与要求。该表适合逻辑推导、培训教学及完整展现失效网链路。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>表格 B（备选 DFMEA 表格 / 表格示例 B）：</strong>为减少重复文字录入优化的工程表格。其特征是：“上一较高级别”和“上一较高级别以及功能和要求”仅在同一组别的首行中显示一次，不再在所有分支行中重复显示，视觉更聚焦于关注要素与较低级别的细分，提升大批量失效链的阅读效率。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>视图 A（DFMEA 软件视图）：</strong>专为专业 FMEA 数据库软件（如 APIS IQ-FMEA、PLM 内置 FMEA 模块）设计的紧凑型界面。它将步骤五（风险分析）与步骤六（优化）进行了合并紧凑排版，支持在底层数据库中自动关联父子层级并以树状或紧凑网格导出。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（七步法在表单中的映射）</span></div>无论选择表格 A、表格 B 还是软件视图 A，表头与列结构必须完整覆盖七步法要素：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤一：规划和准备（表头区）</strong></div></div>
+包含企业名称、工厂地点、客户名称、车型年/平台、项目名称、DFMEA 开始日期、DFMEA 修订日期、跨功能团队成员、DFMEA ID 编号、设计职责人、保密级别等基础控制信息。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤二：结构分析（3 列划分）</strong></div></div>
+列1：1. 上一较高级别（系统/整机级）；列2：2. 关注要素（子系统/部件级）；列3：3. 下一较低级别（组件/零件级/特征）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤三：功能分析（3 列对齐）</strong></div></div>
+对应步骤二的三级结构，严格展开：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤四：失效分析（失效链对齐）</strong></div></div>
+列1：失效影响（FE）——对应上一较高级别或最终用户；包含严重度（S）；
+列2：失效模式（FM）——对应关注要素；包含特殊特性分级栏（用于标识 SC/CC/安全合规特性）；
+列3：失效起因（FC）——对应下一较低级别的设计缺陷。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤五：风险分析（当前状态评估）</strong></div></div>
+分为当前预防措施（PC）与频度数（O）、当前探测措施（DC）与探测度数（D），最后依据 S、O、D 查表得出措施优先级（AP: H/M/L）。新版彻底取消 RPN 计算列。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>步骤六：优化（闭环管理）</strong></div></div>
+包含预防措施建议、探测措施建议、负责人姓名、目标完成日期、状态（草案/实施中/已完成/已放弃）、实际完成日期，以及优化后重新评估的 S、O、D、AP 和最终备注。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景（手机整机及关键模组应用）</span></div>以传音某款中高端机型的“折叠屏铰链组件（Hinge Module）”设计 FMEA 为例对比选择：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>采用表格 A 评审（跨部门概念对齐）：</strong></div></div>
+在方案定义初期与整机架构部评审时，采用表格 A。整机级（上一较高级别：手机整机闭合平整性）与功能要求在每一条铰链子部件失效（如转轴凸轮磨损、扭簧疲劳）行中均完整打印，使结构、材料、测试团队直观理解为什么微小的零件几何公差超差会直接导致“整机闭合漏光”或“开合手感卡顿”，便于新工程师理清逻辑关系。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>采用表格 B 归档（PLM 导出与交付）：</strong></div></div>
+进入详细设计阶段（DVT/PVT），当转轴涉及 30+ 个细分零件、上百条失效起因（FC）时，切换为表格 B。将“上一较高级别：智能手机整机”及其功能要求合并单元格仅置于块首行，大幅缩减导出文档页数，聚焦于铰链各冲压件、MIM 零件的材料屈服强度与磨损分析。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>特殊特性（Filter Code / Class）标注规范：</strong></div></div>
+在失效分析步骤四的专用列中，传音规范要求：若该失效模式涉及跌落电池起火安全风险，标注传音安全特殊特性“CC”；若涉及屏幕折痕平整度等核心体验，标注重要特性“SC”，确保后端直接传递至 PFMEA 步骤四与图纸管控。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆表格 A 与表格 B 的适用边界，强制要求必须用某一种</strong>
+手册明确指出表格 A 为标准辅助表，表格 B 为备选工程表。部分评审员机械地认为“表格 B 存在合并单元格导致父级未填满算漏项”，实为对标准的误解。表格 B 仅在首行保留较高级别信息，是手册完全认可的标准呈现格式。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：在表头或风险分析列中依然保留 RPN 列</strong></div></div>
+AIAG & VDA 七步法表格无论哪种视图，均废除了风险顺序数（RPN），统一采用措施优先级（AP）。禁止在正式交付的标准表格中自定义“RPN”列或强行使用 RPN>100 作为改进行动阈值。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：忽略表头变更控制与保密级别字段</strong></div></div>
+许多项目直接套用旧 Excel，漏填“DFMEA ID 编号”、“保密级别”以及跨功能团队角色信息。在体系审核中，表头属于“步骤一：规划和准备”的直接证据，信息不全将直接导致步骤一不符合。</div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day070-manual-p152.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 A1（原书 P152-158）（PDF 第 152 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 A1（原书 P152-158）（PDF 第 152 页）</p>

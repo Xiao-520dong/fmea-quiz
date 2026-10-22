@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 023：DFMEA 步骤四：准确定义失效影响（FE）与失效模式（FM）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚡</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,31 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义（FE 与 FM）</strong><br><strong>(1) 失效影响（Failure Effect, FE）：</strong>定义为失效模式产生的后果。FE 详细描述了失效对三个维度的影响：①下一级产品集成的影响（内部或外部，如模块装配、下一级组件配合）；②对操作整机/整车的最终用户的影响（外部，如用户感知、舒适性、功能丧失）；③对适用的政府规章的影响（法规，如安全准入、电磁兼容、环保认证）。失效影响是严重度（S）评分的唯一依据。<br><strong>(2) 失效模式（Failure Mode, FM）：</strong>定义为一个项目可能无法满足或交付预期功能的方式。FM 来源于步骤三（功能分析）所定义的功能。FM 必须使用技术术语来描述，而不是顾客注意到的症状。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（原书标准与推荐描述）</strong><br><strong>(1) DFMEA 基本前提假设：</strong>在编制 DFMEA 时，默认假设设计将按照设计目的进行制造和组装（即假设产线制造是合格的）。若历史数据显示制造过程中存在不可避免的固有工艺波动/缺陷，团队可自行决定是否将其纳入例外处理。<br><strong>(2) 未知最终用户影响时的替代规则：</strong>对于标准件、目录零件（Catalog Parts）、现货成品（COTS）或 Tier 3 级基础元器件，分析团队可能不清楚其最终整机或整车用途。此时，应按照该零件的规格和功能定义其失效影响（FE）。由负责系统集成的上层团队负责确保其在整机特定场景下的正确应用。<br><strong>(3) FM 描述的规范性（原书正反例对比）：</strong><br>• <strong>组件级 FM：</strong>不推荐仅写孤立的动词/物理现象，推荐带有清晰主体与具体物理状态的技术描述。例如：不推荐写“破裂、变形、断裂、松脱、氧化、黏贴”，推荐写“组件破裂、组件变形、组件断裂、零件松脱、零件氧化、组件黏贴”。<br>• <strong>系统级 FM：</strong>原书列举了典型系统级技术失效，如：“无信号／间歇信号”、“提供太多的压力／信号／电压”、“提供的压力／信号／电压不足”、“不能承受负载／温度／震动”、“结构支撑不足／损失”等。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>(1) 智能手机整机与模块失效链映射：</strong><br>• <em>关注要素（Focus Element）：</em>Type-C 接口连接器。<br>• <em>失效模式（FM）：</em>引脚（Pin针）间绝缘击穿 / 接触阻抗超出规格（技术术语，不可直接写‘手机无法充电’）。<br>• <em>失效影响（FE - 最终用户）：</em>手机无法快充，甚至整机无法开机；严重时接口烧蚀冒烟（涉及法规与安全）。<br>• <em>失效影响（FE - 内部集成/制造）：</em>整机功能测试治具报错，主板组装工位测试良率下降。<br><strong>(2) 目录零件（如标准贴片电阻/电容）分析：</strong>传音硬件工程师分析通用 0201 贴片去耦电容时，若未知其具体搭载在某款特定手机的哪个子电路，FE 应定义为“输出端纹波电压超标（>50mV）”等规格层面的影响，而不是生搬硬套整机影响；整机系统集成负责人则需评审其在射频或基带主芯片供电网络中的安全性。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><strong>误区 1：用顾客感知的症状代替技术失效模式（FM）。</strong><br>• <em>错误做法：</em>FM 填写为“用户听不到声音”、“拍照模糊”。<br>• <em>正确做法：</em>这些是最终用户的“失效影响（FE）”。对应的 FM 应当是技术语言，如受话器（Receiver）的 FM 为“音圈阻抗断路”或“膜片位移受限”；摄像模组的 FM 为“马达驱动行程受限”或“透镜组轴向对准偏差”。<br><strong>误区 2：在 DFMEA 中过度纠缠制造工艺缺陷。</strong><br>• <em>错误做法：</em>在 DFMEA 的 FM 中大篇幅定义“贴片偏位”、“虚焊”、“点胶过量”。<br>• <em>正确做法：</em>DFMEA 假设制造合格。上述属于 PFMEA 的研究范围，除非该设计具备极高的工艺敏感性且历史数据证明制造过程存在不可克服的公差积累。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义（FE 与 FM）</span></div><strong>(1) 失效影响（Failure Effect, FE）：</strong>定义为失效模式产生的后果。FE 详细描述了失效对三个维度的影响：①下一级产品集成的影响（内部或外部，如模块装配、下一级组件配合）；②对操作整机/整车的最终用户的影响（外部，如用户感知、舒适性、功能丧失）；③对适用的政府规章的影响（法规，如安全准入、电磁兼容、环保认证）。失效影响是严重度（S）评分的唯一依据。
+<strong>(2) 失效模式（Failure Mode, FM）：</strong>定义为一个项目可能无法满足或交付预期功能的方式。FM 来源于步骤三（功能分析）所定义的功能。FM 必须使用技术术语来描述，而不是顾客注意到的症状。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（原书标准与推荐描述）</span></div><strong>(1) DFMEA 基本前提假设：</strong>在编制 DFMEA 时，默认假设设计将按照设计目的进行制造和组装（即假设产线制造是合格的）。若历史数据显示制造过程中存在不可避免的固有工艺波动/缺陷，团队可自行决定是否将其纳入例外处理。
+<strong>(2) 未知最终用户影响时的替代规则：</strong>对于标准件、目录零件（Catalog Parts）、现货成品（COTS）或 Tier 3 级基础元器件，分析团队可能不清楚其最终整机或整车用途。此时，应按照该零件的规格和功能定义其失效影响（FE）。由负责系统集成的上层团队负责确保其在整机特定场景下的正确应用。
+<strong>(3) FM 描述的规范性（原书正反例对比）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>组件级 FM：</strong>不推荐仅写孤立的动词/物理现象，推荐带有清晰主体与具体物理状态的技术描述。例如：不推荐写“破裂、变形、断裂、松脱、氧化、黏贴”，推荐写“组件破裂、组件变形、组件断裂、零件松脱、零件氧化、组件黏贴”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>系统级 FM：</strong>原书列举了典型系统级技术失效，如：“无信号／间歇信号”、“提供太多的压力／信号／电压”、“提供的压力／信号／电压不足”、“不能承受负载／温度／震动”、“结构支撑不足／损失”等。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div><strong>(1) 智能手机整机与模块失效链映射：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>关注要素（Focus Element）：</em>Type-C 接口连接器。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>失效模式（FM）：</em>引脚（Pin针）间绝缘击穿 / 接触阻抗超出规格（技术术语，不可直接写‘手机无法充电’）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>失效影响（FE - 最终用户）：</em>手机无法快充，甚至整机无法开机；严重时接口烧蚀冒烟（涉及法规与安全）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>失效影响（FE - 内部集成/制造）：</em>整机功能测试治具报错，主板组装工位测试良率下降。</div></div>
+<strong>(2) 目录零件（如标准贴片电阻/电容）分析：</strong>传音硬件工程师分析通用 0201 贴片去耦电容时，若未知其具体搭载在某款特定手机的哪个子电路，FE 应定义为“输出端纹波电压超标（>50mV）”等规格层面的影响，而不是生搬硬套整机影响；整机系统集成负责人则需评审其在射频或基带主芯片供电网络中的安全性。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><strong>误区 1：用顾客感知的症状代替技术失效模式（FM）。</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>错误做法：</em>FM 填写为“用户听不到声音”、“拍照模糊”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>正确做法：</em>这些是最终用户的“失效影响（FE）”。对应的 FM 应当是技术语言，如受话器（Receiver）的 FM 为“音圈阻抗断路”或“膜片位移受限”；摄像模组的 FM 为“马达驱动行程受限”或“透镜组轴向对准偏差”。</div></div>
+<strong>误区 2：在 DFMEA 中过度纠缠制造工艺缺陷。</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>错误做法：</em>在 DFMEA 的 FM 中大篇幅定义“贴片偏位”、“虚焊”、“点胶过量”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>正确做法：</em>DFMEA 假设制造合格。上述属于 PFMEA 的研究范围，除非该设计具备极高的工艺敏感性且历史数据证明制造过程存在不可克服的公差积累。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚡ 理论失效链（FE ← FM ← FC）三维推导图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box" style="border-color:#f56565; background:#fff5f5;"><span class="fb-icon">💥</span><div class="fb-title">1. 失效影响 (FE)</div><div class="fb-desc">上一级系统/本厂/下游厂/最终用户感知的后果 → 决定严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#ed8936; background:#fffaf0;"><span class="fb-icon">⚠️</span><div class="fb-title">2. 失效模式 (FM)</div><div class="fb-desc">关注要素未满足预期功能/产品特性的表现（丢失/退化/间歇/非预期）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔍</span><div class="fb-title">3. 失效起因 (FC)</div><div class="fb-desc">下一级特性设计不足或 4M 过程变差根因 → 决定频度(O/F)</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day023-manual-p49.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.4.4 - 2.4.5 节（PDF 第 49 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.4.4 - 2.4.5 节（PDF 第 49 页）</p>

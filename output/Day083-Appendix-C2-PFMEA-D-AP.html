@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 083：附件 C2（三）：PFMEA 探测度（表P3）与过程 AP 优先级查表</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📊 附件C：S/O/D与AP评分标准表</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,12 +160,19 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>PFMEA 探测度（D）的定义与评级基础：</strong>用于过程设计验证的潜在探测度（D）是对当前过程控制（探测控制）能力的评价。手册明确规定，探测度评级必须综合考量两大核心维度：<strong>“探测方法成熟度”</strong>（成熟有效 vs 未经实践证明/边际接受）与<strong>“探测机会”</strong>（探测的是失效起因还是失效模式；是在工位内、下游拦截还是仅靠审核/目检）。</li><li><strong>过程措施优先级（AP，Action Priority）：</strong>AP 不是简单的乘积（RPN），而是基于严重度（S）、频度（O）和探测度（D）的逻辑矩阵组合。其首要逻辑是<strong>严重度优先（S-First）</strong>，其次评估发生频度（O），最后考量探测能力（D），旨在科学驱动工程资源向高风险问题倾斜。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（表 C2.4 与 表 C2.5）</strong><br><ul><li><strong>PFMEA 探测度分级精细拆解（表 C2.4）：</strong><ul><li><strong>D=10（非常低）：</strong>尚未建立或有已知的测试/检验方法；根本无法探测到失效模式。</li><li><strong>D=9（非常低）：</strong>不可能探测到失效模式，仅通过任意或不定时的审核，极难探测到。</li><li><strong>D=8 vs D=7（低，成熟度不足）：</strong>测试/检验方法<strong>尚未经过实践证明</strong>有效可靠（工厂缺乏经验，GRR 接近边际值）。其中 <strong>D=8</strong> 为人工检验（视/触/听觉，计数/计量）；<strong>D=7</strong> 为以设备为基础的检验（光学、蜂鸣器半自动化方式）或 CMM 三坐标测量设备。</li><li><strong>D=6 vs D=5（中，成熟度良好）：</strong>方法<strong>已经过实践证明</strong>有效可靠（GRR 可接受）。其中 <strong>D=6</strong> 为人工检验/样本检查；<strong>D=5</strong> 为基于设备的半自动化检验装置或 CMM 等设备。</li><li><strong>D=4 vs D=3（高，自动化拦截失效模式）：</strong>系统经过实践证明有效可靠。<strong>D=4</strong> 属于以设备为基础的自动化探测，在<strong>下游工位</strong>探测到失效模式并阻止进一步加工，或自动放行至不良品卸载区并严密监控；<strong>D=3</strong> 属于以设备为基础的自动化探测，在<strong>本工位上（In-Station）</strong>探测到失效模式并阻止进一步加工或受控卸载。</li><li><strong>D=2（高，探测起因实现防错）：</strong>探测方法成熟可靠；以设备为基础的探测方法，能够<strong>探测失效起因并避免出现失效模式（差异零件）</strong>。</li><li><strong>D=1（非常高）：</strong>根据产品/过程设计<strong>物理上不可能实际出现失效模式</strong>（硬防错），或探测方法经实践验证<strong>总是</strong>能够探测到失效模式或起因。</li></ul></li><li><strong>PFMEA 措施优先级查表逻辑（表 C2.5）：</strong><ul><li><strong>当 S=9~10 时：</strong>若 O=8~10 或 O=6~7，无论 D 是多少（1~10），AP <strong>全为 H</strong>；若 O=4~5，D=2~10 均为 H，仅当 D=1 时才为 M；若 O=2~3，D=7~10 为 H，D=5~6 为 M，D=1~4 为 L；若 O=1，无论 D 为何值均为 L。</li><li><strong>当 S=7~8 时：</strong>若 O=8~10，AP <strong>全为 H</strong>；若 O=6~7，D=2~10 为 H，仅 D=1 为 M；若 O=4~5，D=7~10 为 H，D=1~6 为 M；若 O=2~3，D=5~10 为 M，D=1~4 为 L；若 O=1 均为 L。</li><li><strong>当 S=4~6 时：</strong>若 O=8~10，D=7~10 为 H，D=5~6 为 H，D=1~4 为 M；若 O=6~7，D=2~10 为 M，D=1 为 L；若 O=4~5，D=7~10 为 M，D=1~6 为 L；若 O=1~3 均为 L。</li><li><strong>当 S=2~3 时：</strong>仅在 O=8~10 且 D=5~10 时 AP 为 M，其余全为 L。</li><li><strong>当 S=1 时：</strong>无觉察影响，无论 O 和 D 为何值，AP <strong>一律为 L</strong>。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>D=2 典型应用（探测起因，防患于未然）：</strong>在传音主板螺丝紧固工位，采用带扭矩-角度双重监控的智能伺服电批。电批在旋转过程中实时侦测螺牙咬合角度与扭力上升曲线，一旦发现“螺纹滑丝/扭力未达预设角速度”这一<strong>失效起因</strong>，设备立即反转停机并报警锁止夹具，<strong>直接防止浮钉/滑牙这一失效模式发生</strong>，此控制评定为 <strong>D=2</strong>。</li><li><strong>D=3 vs D=4 典型应用（本工位阻断 vs 下游拦截）：</strong>在 SMT 贴片工序中，贴片机自带的高速光学相机在吸嘴贴装前完成飞拍识别，元件极性反或缺件直接在<strong>本贴片工位停机抛料</strong>，判定为 <strong>D=3</strong>；若贴片完成后，经由下游的 3D-AOI 炉前检测机识别出偏位，并通过 MES 轨道联动将板卡分流推入不良品暂存仓，判定为 <strong>D=4</strong>。</li><li><strong>D=5 vs D=6 典型应用（设备半自动 vs 人工目检）：</strong>在手机中框 CNC 加工后，品保人员使用已通过 GRR 认证的三坐标测量机（CMM）对结构件关键尺寸进行抽样测量判定为 <strong>D=5</strong>；而在组装末端，由熟练检验员依据限度样本目视检查电池盖外观刮伤/色差，判定为 <strong>D=6</strong>。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 D=2 与 D=3 的控制本质。</strong>工程师常把“炉后 3D-AOI 检出虚焊”评为 D=2。错误！AOI 检测到的是焊点空洞/虚焊这一<strong>“失效模式”</strong>，而不良品已经产生；D=2 必须探测的是<strong>“失效起因”</strong>（例如回流焊温区热电偶实时监控温度漂移超限立即停线，从而杜绝虚焊产生）。检测出产品不良只能评 D=3 或 D=4。</li><li><strong>误区二：无视方法成熟度直接定级。</strong>引入全新视觉 AI 外观检测机，虽然标榜“自动化”，但产线尚处于试产期，GRR 数据不稳定甚至未经验证，工程师直接评 D=3/4。正确做法：新设备未验证时只能评 <strong>D=7</strong>，待量产验证稳定且测量重复性良好后方可晋级为 D=3 或 D=4。</li><li><strong>误区三：认为只要严重度 S=9~10，AP 就必然是 H。</strong>根据表 C2.5，当 S=10 但起因频度极低（O=1）时，AP 会直接判定为 <strong>L</strong>；当 O=2~3 且具备成熟的本工位自动化防错/探测（D=1~4）时，AP 同样为 <strong>L</strong>。这证明新版标准高度认可前期的预防与自动化防错成果。</li></ul>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div><ul><li><strong>PFMEA 探测度（D）的定义与评级基础：</strong>用于过程设计验证的潜在探测度（D）是对当前过程控制（探测控制）能力的评价。手册明确规定，探测度评级必须综合考量两大核心维度：<strong>“探测方法成熟度”</strong>（成熟有效 vs 未经实践证明/边际接受）与<strong>“探测机会”</strong>（探测的是失效起因还是失效模式；是在工位内、下游拦截还是仅靠审核/目检）。</li><li><strong>过程措施优先级（AP，Action Priority）：</strong>AP 不是简单的乘积（RPN），而是基于严重度（S）、频度（O）和探测度（D）的逻辑矩阵组合。其首要逻辑是<strong>严重度优先（S-First）</strong>，其次评估发生频度（O），最后考量探测能力（D），旨在科学驱动工程资源向高风险问题倾斜。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（表 C2.4 与 表 C2.5）</span></div><ul><li><strong>PFMEA 探测度分级精细拆解（表 C2.4）：</strong><ul><li><strong>D=10（非常低）：</strong>尚未建立或有已知的测试/检验方法；根本无法探测到失效模式。</li><li><strong>D=9（非常低）：</strong>不可能探测到失效模式，仅通过任意或不定时的审核，极难探测到。</li><li><strong>D=8 vs D=7（低，成熟度不足）：</strong>测试/检验方法<strong>尚未经过实践证明</strong>有效可靠（工厂缺乏经验，GRR 接近边际值）。其中 <strong>D=8</strong> 为人工检验（视/触/听觉，计数/计量）；<strong>D=7</strong> 为以设备为基础的检验（光学、蜂鸣器半自动化方式）或 CMM 三坐标测量设备。</li><li><strong>D=6 vs D=5（中，成熟度良好）：</strong>方法<strong>已经过实践证明</strong>有效可靠（GRR 可接受）。其中 <strong>D=6</strong> 为人工检验/样本检查；<strong>D=5</strong> 为基于设备的半自动化检验装置或 CMM 等设备。</li><li><strong>D=4 vs D=3（高，自动化拦截失效模式）：</strong>系统经过实践证明有效可靠。<strong>D=4</strong> 属于以设备为基础的自动化探测，在<strong>下游工位</strong>探测到失效模式并阻止进一步加工，或自动放行至不良品卸载区并严密监控；<strong>D=3</strong> 属于以设备为基础的自动化探测，在<strong>本工位上（In-Station）</strong>探测到失效模式并阻止进一步加工或受控卸载。</li><li><strong>D=2（高，探测起因实现防错）：</strong>探测方法成熟可靠；以设备为基础的探测方法，能够<strong>探测失效起因并避免出现失效模式（差异零件）</strong>。</li><li><strong>D=1（非常高）：</strong>根据产品/过程设计<strong>物理上不可能实际出现失效模式</strong>（硬防错），或探测方法经实践验证<strong>总是</strong>能够探测到失效模式或起因。</li></ul></li><li><strong>PFMEA 措施优先级查表逻辑（表 C2.5）：</strong><ul><li><strong>当 S=9~10 时：</strong>若 O=8~10 或 O=6~7，无论 D 是多少（1~10），AP <strong>全为 H</strong>；若 O=4~5，D=2~10 均为 H，仅当 D=1 时才为 M；若 O=2~3，D=7~10 为 H，D=5~6 为 M，D=1~4 为 L；若 O=1，无论 D 为何值均为 L。</li><li><strong>当 S=7~8 时：</strong>若 O=8~10，AP <strong>全为 H</strong>；若 O=6~7，D=2~10 为 H，仅 D=1 为 M；若 O=4~5，D=7~10 为 H，D=1~6 为 M；若 O=2~3，D=5~10 为 M，D=1~4 为 L；若 O=1 均为 L。</li><li><strong>当 S=4~6 时：</strong>若 O=8~10，D=7~10 为 H，D=5~6 为 H，D=1~4 为 M；若 O=6~7，D=2~10 为 M，D=1 为 L；若 O=4~5，D=7~10 为 M，D=1~6 为 L；若 O=1~3 均为 L。</li><li><strong>当 S=2~3 时：</strong>仅在 O=8~10 且 D=5~10 时 AP 为 M，其余全为 L。</li><li><strong>当 S=1 时：</strong>无觉察影响，无论 O 和 D 为何值，AP <strong>一律为 L</strong>。</li></ul></li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div><ul><li><strong>D=2 典型应用（探测起因，防患于未然）：</strong>在传音主板螺丝紧固工位，采用带扭矩-角度双重监控的智能伺服电批。电批在旋转过程中实时侦测螺牙咬合角度与扭力上升曲线，一旦发现“螺纹滑丝/扭力未达预设角速度”这一<strong>失效起因</strong>，设备立即反转停机并报警锁止夹具，<strong>直接防止浮钉/滑牙这一失效模式发生</strong>，此控制评定为 <strong>D=2</strong>。</li><li><strong>D=3 vs D=4 典型应用（本工位阻断 vs 下游拦截）：</strong>在 SMT 贴片工序中，贴片机自带的高速光学相机在吸嘴贴装前完成飞拍识别，元件极性反或缺件直接在<strong>本贴片工位停机抛料</strong>，判定为 <strong>D=3</strong>；若贴片完成后，经由下游的 3D-AOI 炉前检测机识别出偏位，并通过 MES 轨道联动将板卡分流推入不良品暂存仓，判定为 <strong>D=4</strong>。</li><li><strong>D=5 vs D=6 典型应用（设备半自动 vs 人工目检）：</strong>在手机中框 CNC 加工后，品保人员使用已通过 GRR 认证的三坐标测量机（CMM）对结构件关键尺寸进行抽样测量判定为 <strong>D=5</strong>；而在组装末端，由熟练检验员依据限度样本目视检查电池盖外观刮伤/色差，判定为 <strong>D=6</strong>。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆 D=2 与 D=3 的控制本质。</strong>工程师常把“炉后 3D-AOI 检出虚焊”评为 D=2。错误！AOI 检测到的是焊点空洞/虚焊这一<strong>“失效模式”</strong>，而不良品已经产生；D=2 必须探测的是<strong>“失效起因”</strong>（例如回流焊温区热电偶实时监控温度漂移超限立即停线，从而杜绝虚焊产生）。检测出产品不良只能评 D=3 或 D=4。</li><li><strong>误区二：无视方法成熟度直接定级。</strong>引入全新视觉 AI 外观检测机，虽然标榜“自动化”，但产线尚处于试产期，GRR 数据不稳定甚至未经验证，工程师直接评 D=3/4。正确做法：新设备未验证时只能评 <strong>D=7</strong>，待量产验证稳定且测量重复性良好后方可晋级为 D=3 或 D=4。</li><li><strong>误区三：认为只要严重度 S=9~10，AP 就必然是 H。</strong>根据表 C2.5，当 S=10 但起因频度极低（O=1）时，AP 会直接判定为 <strong>L</strong>；当 O=2~3 且具备成熟的本工位自动化防错/探测（D=1~4）时，AP 同样为 <strong>L</strong>。这证明新版标准高度认可前期的预防与自动化防错成果。</li></ul>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day083-manual-p204.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C2.4 - C2.5（原书 P204-207）（PDF 第 204 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
-            <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C2.4 - C2.5（原书 P204-207）（PDF 第 204 页）</p>
-        </div></div><!-- /manual-figure-box -->
+            <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C2.4 - C2.5（原书 P204-207）（PDF 第 204 页）</p></div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C2.4 - C2.5（原书 P204-207）（PDF 第 204-207 页）</p>
                 </div>
             </div>

@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 030：DFMEA 步骤五：频度（O）评估要素与预防控制有效性考量</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,33 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 频度（O）的核心概念与评估锚点</strong><br>根据《AIAG & VDA FMEA 手册》，频度（Occurrence, O）是在设计寿命内针对<strong>潜在失效起因（FC）</strong>发生可能性的评估等级。<br>手册明确指出：<strong>频度评级不仅考虑产品经验，更核心的是考虑了对当前预防控制（PC）有效性的估计。评级的准确性直接取决于对预防控制描述的详细与准确程度。</strong>评估不是凭空猜测，而应充分调阅类似产品领域的专家意见、材料/元器件数据手册、海外售后保修数据库（Warranty Database）及可靠性工程分析数据。</div><div class="highlight-blue"><strong>2. 频度评估的 8 大引导问题与高等级（10/9/8）判定规则</strong><br>手册提供了 8 个核心问题帮助团队精准评定 O：<br>① 类似组件/子系统的过往现场使用经验如何？<br>② 是否为成熟借用件或类似于先前水平的项目？<br>③ 与先前水平相比，设计变化量有多大？<br>④ 是否为完全全新的研发项目？<br>⑤ 目标应用场景或外部运行环境有哪些改变？<br>⑥ 是否实施了可靠性工程分析来预估预期频度？<br>⑦ 预防控制是否真正到位且闭环？<br>⑧ 在产品开发过程中，设计的稳健性是否得到充分验证？<br><br><strong>DFMEA 频度高分区间（10/9/8 分）准则：</strong><br>• <strong>O = 10（极高）：</strong>在无操作经验和/或运行条件不可控制的情况下对新技术的首次应用；没有对产品进行验证/确认的经验；不存在标准且尚未确立最佳实践；<strong>预防控制不能预测使用现场绩效或根本不存在预防控制</strong>。<br>• <strong>O = 9（非常高）：</strong>在公司内首次应用具有技术创新或材料的设计；新应用或工作周期/运行条件有改变；没有对产品进行验证/确认的经验；<strong>预防控制不是针对确定特定要求的性能</strong>。<br>• <strong>O = 8（非常高）：</strong>在新应用内首次使用具备创新技术的设计产品或材料；新应用或工况改变；极少存在现有标准和最佳实践（不能直接用于该设计）；<strong>预防控制不能可靠地反映使用现场绩效</strong>。</div><div class="highlight-green"><strong>3. 传音海外研发与制造实战场景映射</strong><br>在传音智能终端面向非洲、南亚、东南亚等复杂多变的严苛环境开发时，频度打分严禁“拍脑袋”：<br>• <strong>案例（O=10 风险场景）：</strong>传音某概念机型首次采用全新形态的微型伸缩机械结构，在高温高湿且粉尘极为严重的非洲干旱与沙尘环境下属于全新应用，业内尚无成熟标准，团队若未建立针对细颗粒物侵入的专用防尘设计规范（无预防控制），频度必须定为 10 分。<br>• <strong>案例（O=9 风险场景）：</strong>国内成熟机型借用某快充芯片方案，但在针对特定海外市场的改型机中，由于当地电网波动极大、浪涌严重（运行条件发生重大改变），虽然芯片原理图借用，但设计规范中未针对该恶劣电网浪涌裕量进行预防设计（预防控制未针对特定环境要求），该失效起因的频度 O 必须定为 9 分，绝不能盲目借用国内成熟数据。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆预防控制（PC）与探测控制（DC）对频度的影响。</strong>很多工程师误认为“我们在试产时跑了跌落和可靠性测试通过了，所以 O 可以打很低”。错误！测试验证属于探测控制（DC），它影响的是探测度（D）而非频度（O）；O 的高低取决于预防控制（设计裕量、防错设计、成熟设计规范等）与设计成熟度。<br>• <strong>误区二：直接照搬借用件历史低频度，无视运行环境突变。</strong>“该天线结构在低端机表现良好，直接套用到高端防水机型，O打2分”。忽略了结构空间压缩与防水胶工艺引入对公差配合的改变，违反了手册关于“运行条件改变/变化量”的考量要求。<br>• <strong>误区三：预防控制描述极度空泛。</strong>在控制栏仅写“经验设计”、“参考规范”，无法证明该措施如何防止失效起因发生。评级的准确性取决于预防控制的精确描述（例如：“采用按压行程限制台阶，硬限位留有 0.3mm 缓冲裕量”）。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 频度（O）的核心概念与评估锚点</span></div>根据《AIAG & VDA FMEA 手册》，频度（Occurrence, O）是在设计寿命内针对<strong>潜在失效起因（FC）</strong>发生可能性的评估等级。
+手册明确指出：<strong>频度评级不仅考虑产品经验，更核心的是考虑了对当前预防控制（PC）有效性的估计。评级的准确性直接取决于对预防控制描述的详细与准确程度。</strong>评估不是凭空猜测，而应充分调阅类似产品领域的专家意见、材料/元器件数据手册、海外售后保修数据库（Warranty Database）及可靠性工程分析数据。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 频度评估的 8 大引导问题与高等级（10/9/8）判定规则</span></div>手册提供了 8 个核心问题帮助团队精准评定 O：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div>类似组件/子系统的过往现场使用经验如何？</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div>是否为成熟借用件或类似于先前水平的项目？</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div>与先前水平相比，设计变化量有多大？</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div>是否为完全全新的研发项目？</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑤</span><div>目标应用场景或外部运行环境有哪些改变？</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑥</span><div>是否实施了可靠性工程分析来预估预期频度？</div></div>
+⑦ 预防控制是否真正到位且闭环？
+⑧ 在产品开发过程中，设计的稳健性是否得到充分验证？
+<strong>DFMEA 频度高分区间（10/9/8 分）准则：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O = 10（极高）：</strong>在无操作经验和/或运行条件不可控制的情况下对新技术的首次应用；没有对产品进行验证/确认的经验；不存在标准且尚未确立最佳实践；<strong>预防控制不能预测使用现场绩效或根本不存在预防控制</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O = 9（非常高）：</strong>在公司内首次应用具有技术创新或材料的设计；新应用或工作周期/运行条件有改变；没有对产品进行验证/确认的经验；<strong>预防控制不是针对确定特定要求的性能</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>O = 8（非常高）：</strong>在新应用内首次使用具备创新技术的设计产品或材料；新应用或工况改变；极少存在现有标准和最佳实践（不能直接用于该设计）；<strong>预防控制不能可靠地反映使用现场绩效</strong>。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音海外研发与制造实战场景映射</span></div>在传音智能终端面向非洲、南亚、东南亚等复杂多变的严苛环境开发时，频度打分严禁“拍脑袋”：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>案例（O=10 风险场景）：</strong>传音某概念机型首次采用全新形态的微型伸缩机械结构，在高温高湿且粉尘极为严重的非洲干旱与沙尘环境下属于全新应用，业内尚无成熟标准，团队若未建立针对细颗粒物侵入的专用防尘设计规范（无预防控制），频度必须定为 10 分。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>案例（O=9 风险场景）：</strong>国内成熟机型借用某快充芯片方案，但在针对特定海外市场的改型机中，由于当地电网波动极大、浪涌严重（运行条件发生重大改变），虽然芯片原理图借用，但设计规范中未针对该恶劣电网浪涌裕量进行预防设计（预防控制未针对特定环境要求），该失效起因的频度 O 必须定为 9 分，绝不能盲目借用国内成熟数据。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆预防控制（PC）与探测控制（DC）对频度的影响。</strong>很多工程师误认为“我们在试产时跑了跌落和可靠性测试通过了，所以 O 可以打很低”。错误！测试验证属于探测控制（DC），它影响的是探测度（D）而非频度（O）；O 的高低取决于预防控制（设计裕量、防错设计、成熟设计规范等）与设计成熟度。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：直接照搬借用件历史低频度，无视运行环境突变。</strong>“该天线结构在低端机表现良好，直接套用到高端防水机型，O打2分”。忽略了结构空间压缩与防水胶工艺引入对公差配合的改变，违反了手册关于“运行条件改变/变化量”的考量要求。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：预防控制描述极度空泛。</strong>在控制栏仅写“经验设计”、“参考规范”，无法证明该措施如何防止失效起因发生。评级的准确性取决于预防控制的精确描述（例如：“采用按压行程限制台阶，硬限位留有 0.3mm 缓冲裕量”）。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day030-manual-p61.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.5.8 节（上）（PDF 第 61 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.5.8 节（上）（PDF 第 61 页）</p>

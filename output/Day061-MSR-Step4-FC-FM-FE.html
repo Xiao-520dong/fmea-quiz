@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 061：FMEA-MSR 步骤四：MSR 中的失效起因、失效模式与减轻后的失效影响</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📡 第4章：FMEA-MSR 监视响应</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚡</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,27 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据手册第 4.4.3 至 4.4.5 节定义：<br><ul><li><strong>失效起因（FC）：</strong>MSR 失效分析的起点，假设该故障已经发生（并非传统追溯根本工艺原因）。典型起因包括电气/电子（E/E）故障、总线通信中断、传感器漂移等，可直接引用自 DFMEA、E/E 组件失效目录或通信规范。在 MSR 中，<strong>默认假定诊断监视按预期运作</strong>（即假定监视机制本身没有设计损坏），诊断机制本身的失效（未探测、误报、响应不可靠）属于 DFMEA 范围，不作为 MSR 的失效起因。</li><li><strong>失效模式（FM）：</strong>故障（FC）所导致的直接后果。在场景(1)和(2)中，由于无监视或反应过晚，FM 与标准 DFMEA 一致（例如电机无法反转）；但在场景(3)中，因故障被捕获且触发响应，分析中引入了诊断监视和预期响应的描述，这种包含“故障+预期行为”的特殊因果链称为<strong>“混合失效链（Hybrid Failure Chain）”或“混合失效网”</strong>。</li><li><strong>失效影响（FE）：</strong>失效模式带来的上一层系统级后果。在无有效保护时表现为危险事件或法规违规（严重度高）；在有效探测与及时响应下，表现为<strong>减缓的失效影响（Mitigated Failure Effect）</strong>，即系统进入“安全状态”或“合规状态”，仅表现为功能的损失或性能退化（如退回手动模式、限制输出功率）。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 失效分析的三种场景构建规则：</strong><br><ul><li><strong>场景 (1)/(2)（传统失效链）：</strong>FC（如传感器接触不良）&rarr; FM（ECU未发出保护/反向信号）&rarr; FE（防夹失效，夹伤乘客，S=9~10）。</li><li><strong>场景 (3)（混合失效网）：</strong>FC（传感器接触不良，信号丢失）&rarr; <strong>预期行为/模式（ECU探测到信号丢失并抑制危险动作）</strong>&rarr; <strong>预期行为/减缓影响（舒适自动关闭禁用，降级至仅支持微动/手动控制，避免夹伤危险）</strong>。</li></ul><strong>(2) 诊断机制本身失效的边界划分：</strong><br>MSR 中假定监视机制有效但可能存在能力范围（Coverage）。若要分析“诊断未探测到”、“误探测报假警”或“诊断执行响应变差”，团队应将其放在 <strong>DFMEA 表格</strong>中通过预防/探测控制（如诊断算法可靠性仿真、注入测试）进行评估，而非在 MSR 中将其作为起因层层递归。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及多场景智能穿戴设备中的典型对应：<br><ul><li><strong>快充过温保护（场景2 vs 场景3）：</strong><br><em>FC（失效起因）：</em>电池保护板 NTC 热敏电阻焊点受外力微裂，导致阻值异常漂移。<br><em>若无 MSR 响应（场景2）：</em>PMIC 继续输出 120W 超大电流 &rarr; 电池热失控起火（FE：S=9/10 危险事件）。<br><em>MSR 混合失效链（场景3）：</em>ECU/PMIC 探测到 NTC ADC 数据异常超出动态窗口（预期监视模式）&rarr; 固件主动握手下发指令将充电降级至 5V/1A 安全电流或断开充电回路，并在屏幕弹窗“检测到充电异常”（减缓后的 FE：功能退化/慢充，无安全危险，S由10大幅降低）。</li><li><strong>折叠屏角度霍尔传感器异常：</strong><br>霍尔元件信号中断（FC）&rarr; 系统监测到角度总线超时（FM/预期行为）&rarr; 折叠双屏联动UI暂停切换并保持主屏点亮（减缓后的 FE），防止因误判转折状态导致铰链电机过载或屏显撕裂。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：在 MSR 中把“诊断机制本身的软硬件 Bug”列为失效起因。</strong><br><em>避坑指南：</em>手册明确指出，MSR 假设诊断监视按预期设计运作。诊断代码崩溃、看门狗失灵等属于 DFMEA 的分析范围，不应在 MSR 这一层作为 FC，否则会导致分析层级无限死循环。</li><li><strong>误区二：认为场景(3)的失效模式只能写“坏的结果”。</strong><br><em>避坑指南：</em>场景(3)之所以被称为“混合失效网”，是因为其失效模式（关注要素）与失效影响（上一层）包含了<strong>系统在捕获故障后的“预期诊断与退化行为”</strong>（如“探测到丢失并切换模式”），这种正向行为恰恰构成了减轻失效影响的因果路径。</li><li><strong>误区三：忽略故障处理时间间隔（FHTI）与响应时间的对比。</strong><br><em>避坑指南：</em>即便设计了监视机制，若“探测时间 + 转换时间 + 响应执行时间”大于 FHTI，系统依然会滑向场景(2)的危险事件。因此减缓生效的前提是总响应时间严格小于 FHTI。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>根据手册第 4.4.3 至 4.4.5 节定义：
+<ul><li><strong>失效起因（FC）：</strong>MSR 失效分析的起点，假设该故障已经发生（并非传统追溯根本工艺原因）。典型起因包括电气/电子（E/E）故障、总线通信中断、传感器漂移等，可直接引用自 DFMEA、E/E 组件失效目录或通信规范。在 MSR 中，<strong>默认假定诊断监视按预期运作</strong>（即假定监视机制本身没有设计损坏），诊断机制本身的失效（未探测、误报、响应不可靠）属于 DFMEA 范围，不作为 MSR 的失效起因。</li><li><strong>失效模式（FM）：</strong>故障（FC）所导致的直接后果。在场景(1)和(2)中，由于无监视或反应过晚，FM 与标准 DFMEA 一致（例如电机无法反转）；但在场景(3)中，因故障被捕获且触发响应，分析中引入了诊断监视和预期响应的描述，这种包含“故障+预期行为”的特殊因果链称为<strong>“混合失效链（Hybrid Failure Chain）”或“混合失效网”</strong>。</li><li><strong>失效影响（FE）：</strong>失效模式带来的上一层系统级后果。在无有效保护时表现为危险事件或法规违规（严重度高）；在有效探测与及时响应下，表现为<strong>减缓的失效影响（Mitigated Failure Effect）</strong>，即系统进入“安全状态”或“合规状态”，仅表现为功能的损失或性能退化（如退回手动模式、限制输出功率）。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div><strong>(1) 失效分析的三种场景构建规则：</strong>
+<ul><li><strong>场景 (1)/(2)（传统失效链）：</strong>FC（如传感器接触不良）&rarr; FM（ECU未发出保护/反向信号）&rarr; FE（防夹失效，夹伤乘客，S=9~10）。</li><li><strong>场景 (3)（混合失效网）：</strong>FC（传感器接触不良，信号丢失）&rarr; <strong>预期行为/模式（ECU探测到信号丢失并抑制危险动作）</strong>&rarr; <strong>预期行为/减缓影响（舒适自动关闭禁用，降级至仅支持微动/手动控制，避免夹伤危险）</strong>。</li></ul><strong>(2) 诊断机制本身失效的边界划分：</strong>
+MSR 中假定监视机制有效但可能存在能力范围（Coverage）。若要分析“诊断未探测到”、“误探测报假警”或“诊断执行响应变差”，团队应将其放在 <strong>DFMEA 表格</strong>中通过预防/探测控制（如诊断算法可靠性仿真、注入测试）进行评估，而非在 MSR 中将其作为起因层层递归。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机及多场景智能穿戴设备中的典型对应：
+<ul><li><strong>快充过温保护（场景2 vs 场景3）：</strong>
+<em>FC（失效起因）：</em>电池保护板 NTC 热敏电阻焊点受外力微裂，导致阻值异常漂移。
+<em>若无 MSR 响应（场景2）：</em>PMIC 继续输出 120W 超大电流 &rarr; 电池热失控起火（FE：S=9/10 危险事件）。
+<em>MSR 混合失效链（场景3）：</em>ECU/PMIC 探测到 NTC ADC 数据异常超出动态窗口（预期监视模式）&rarr; 固件主动握手下发指令将充电降级至 5V/1A 安全电流或断开充电回路，并在屏幕弹窗“检测到充电异常”（减缓后的 FE：功能退化/慢充，无安全危险，S由10大幅降低）。</li><li><strong>折叠屏角度霍尔传感器异常：</strong>
+霍尔元件信号中断（FC）&rarr; 系统监测到角度总线超时（FM/预期行为）&rarr; 折叠双屏联动UI暂停切换并保持主屏点亮（减缓后的 FE），防止因误判转折状态导致铰链电机过载或屏显撕裂。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：在 MSR 中把“诊断机制本身的软硬件 Bug”列为失效起因。</strong>
+<em>避坑指南：</em>手册明确指出，MSR 假设诊断监视按预期设计运作。诊断代码崩溃、看门狗失灵等属于 DFMEA 的分析范围，不应在 MSR 这一层作为 FC，否则会导致分析层级无限死循环。</li><li><strong>误区二：认为场景(3)的失效模式只能写“坏的结果”。</strong>
+<em>避坑指南：</em>场景(3)之所以被称为“混合失效网”，是因为其失效模式（关注要素）与失效影响（上一层）包含了<strong>系统在捕获故障后的“预期诊断与退化行为”</strong>（如“探测到丢失并切换模式”），这种正向行为恰恰构成了减轻失效影响的因果路径。</li><li><strong>误区三：忽略故障处理时间间隔（FHTI）与响应时间的对比。</strong>
+<em>避坑指南：</em>即便设计了监视机制，若“探测时间 + 转换时间 + 响应执行时间”大于 FHTI，系统依然会滑向场景(2)的危险事件。因此减缓生效的前提是总响应时间严格小于 FHTI。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚡ 理论失效链（FE ← FM ← FC）三维推导图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box" style="border-color:#f56565; background:#fff5f5;"><span class="fb-icon">💥</span><div class="fb-title">1. 失效影响 (FE)</div><div class="fb-desc">上一级系统/本厂/下游厂/最终用户感知的后果 → 决定严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#ed8936; background:#fffaf0;"><span class="fb-icon">⚠️</span><div class="fb-title">2. 失效模式 (FM)</div><div class="fb-desc">关注要素未满足预期功能/产品特性的表现（丢失/退化/间歇/非预期）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔍</span><div class="fb-title">3. 失效起因 (FC)</div><div class="fb-desc">下一级特性设计不足或 4M 过程变差根因 → 决定频度(O/F)</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-4-4-5-8.jpg?v=1792660128" alt="图 4.4-5 ~ 4.4-8 FMEA-MSR 失效链结构、失效网与表格示例（原书第 120 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 4.4-5 ~ 4.4-8 FMEA-MSR 失效链结构、失效网与表格示例（原书第 120 页）</p>

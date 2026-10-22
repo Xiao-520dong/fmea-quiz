@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 079：附件 C1（二）：备选 DFMEA 频度表与基于时间的失效预测（表C1.3）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📊 附件C：S/O/D与AP评分标准表</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,35 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>在《AIAG & VDA FMEA 手册》附件 C1.3 中，官方提供了两种备选 DFMEA 频度（O）评估表：<br><strong>① 表 C1.3.1（带每千台车/产品故障率）：</strong>将失效起因在定性描述（产品经验与预防控制）的基础上，与量化的失效概率（千分比/百万分比）建立对标（10级≥1/10，9级=1/20，8级=1/50，7级=1/100，6级=1/500，5级=1/2000，4级=1/10000，3级=1/100000，2级=1/1000000，1级为预防消除）。<br><strong>② 表 C1.3.2（基于时间的失效预测）：</strong>适用于根据运行周期、暴露时间或动作频次评估起因发生的场景，将失效起因对标到时间频度（10级=每次，9级=几乎每次，8级=每班超过一次，7级=每日超过一次，6级=每周超过一次，5级=每月超过一次，4级=每年超过一次，3级=每年一次，2级=每年少于一次，1级=从未发生）。<br>两个表格均强调核心定义：<strong>产品经验</strong>指在公司内使用产品的历史及完成的探测结果；<strong>预防控制</strong>指设计规则、最佳实践、仿真模拟（CAE）、公差叠加等预防工具的有效性。且特别注解：<strong>频度 10、9、8、7 级可根据产品验证活动（Validation）结果实现降级。</strong></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>（1）基于故障率量化评级映射（表 C1.3.1）：</strong><br>• <strong>10级（≥100/1000 即 ≥1/10）：</strong>在任何地方对新技术的首次应用，无操作经验/运行条件不可控，无验证经验，无标准/最佳实践，预防控制无法预测或不存在。<br>• <strong>9级（50/1000 即 1/20）：</strong>公司内首次应用创新技术/材料，新应用或工况改变，无验证经验，预防控制未针对特定性能。<br>• <strong>8级（20/1000 即 1/50）：</strong>在新应用内首次使用创新技术/材料，极少有标准且不能直接套用，预防控制无法可靠反映现场绩效。<br>• <strong>7级（10/1000 即 1/100）：</strong>相似技术/材料的新型设计，标准仅符合基础要求不适用于创新点，预防控制提供有限性能指标。<br>• <strong>6级（2/1000 即 1/500）：</strong>现有技术材料且相似设计，工况有改变，有既往测试/现场经验，预防控制具部分预防能力。<br>• <strong>5级（0.5/1000 即 1/2000）：</strong>成熟技术材料，细节变化，评估了教训但未经验证，预防控制能发现缺陷并提供部分指标。<br>• <strong>4级（0.1/1000 即 1/10000）：</strong>与短期现场暴露几乎相同，符合最佳实践，预防控制很可能反映符合性。<br>• <strong>3级（0.01/1000 即 1/100000）：</strong>已知设计细微变化或成功完成测试，预防控制预测与生产一致。<br>• <strong>2级（0.001/1000 即 1/1000000）：</strong>长期现场暴露经验，极高信心。<br>• <strong>1级（通过预防控制消除）：</strong>设计上物理消除起因。<br><strong>（2）基于时间/周期的频度映射（表 C1.3.2）：</strong>从 10 级（每次触发）、9 级（几乎每次）、8 级（每班次>1次）、7 级（每日>1次）到 2 级（每年<1次），直观度量动态工作周期中的失效暴露频次。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>场景一：折叠屏铰链新型水滴铰链机构设计（应用表 C1.3.1）</strong><br>传音某旗舰折叠机首次采用自研钛合金微型水滴铰链。属于“在公司内首次应用创新结构件与材料，力学工作周期巨幅改变”，初始评估无完整验证经验，预防控制（CAE 跌落仿真）未充分对齐极低落角应力，此时起因“铰链凸轮磨损导致闭合间隙超标”在方案设计初期判定为 <strong>O=9 级（故障率对应 50/1000）</strong>。团队后续通过 20 万次弯折疲劳加速试验（产品验证活动），验证了涂层配方与公差补偿的鲁棒性，依据手册注记将频度成功降至 <strong>O=4（0.1/1000）</strong>。<br><strong>场景二：传音非洲特定高湿热市场快充接口腐蚀失效（应用表 C1.3.2）</strong><br>针对 Type-C 接口电化学腐蚀起因“汗液/盐雾渗入引脚微短路”，若按传统台车故障率难以评估，采用基于时间的预测表 C1.3.2：在高湿度沿海重度使用者场景中，若无防腐蚀镀层和隔绝胶圈，腐蚀起因几乎在每日插拔充电时均被激发，可评定为 <strong>O=7 级（每日超过一次）</strong>。在采用纳米防水镀层与端子物理间距优化（预防控制）后，腐蚀起因发生周期被延缓至 <strong>O=2 级（每年少于一次）</strong>。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆表 C1.3.1 的千分比数字与整机 PPM。</strong>手册明确表 C1.3.1 的故障率是针对<strong>具体潜在失效起因（Failure Cause）的发生概率预测</strong>，而非整机失效率或单一失效模式的综合失效率，不可直接拿售后整机维修率来套用。<br>• <strong>误区二：无视“频度 10/9/8/7 可通过验证活动降级”的官方规则。</strong>部分工程师认为频度（O）完全由预防控制（PC）决定，测试验证（探测控制 DC）不能改变频度。然而手册明确规定：对于全新技术与材料（7-10级），在产品验证（Validation）完成并证实起因被有效抑制后，频度应当且必须被重新降级评定。<br>• <strong>误区三：滥用基于时间的失效预测（表 C1.3.2）。</strong>将偶发性跌落击穿错误套用“基于时间”表。基于时间的频度表主要针对具有周期性应力暴露、机械往复磨损、环境持续侵蚀（如按键按压、滑轨滑动、热循环疲劳、电化学腐蚀）等时间/周次依赖型失效起因。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>在《AIAG & VDA FMEA 手册》附件 C1.3 中，官方提供了两种备选 DFMEA 频度（O）评估表：
+<strong>① 表 C1.3.1（带每千台车/产品故障率）：</strong>将失效起因在定性描述（产品经验与预防控制）的基础上，与量化的失效概率（千分比/百万分比）建立对标（10级≥1/10，9级=1/20，8级=1/50，7级=1/100，6级=1/500，5级=1/2000，4级=1/10000，3级=1/100000，2级=1/1000000，1级为预防消除）。
+<strong>② 表 C1.3.2（基于时间的失效预测）：</strong>适用于根据运行周期、暴露时间或动作频次评估起因发生的场景，将失效起因对标到时间频度（10级=每次，9级=几乎每次，8级=每班超过一次，7级=每日超过一次，6级=每周超过一次，5级=每月超过一次，4级=每年超过一次，3级=每年一次，2级=每年少于一次，1级=从未发生）。
+两个表格均强调核心定义：<strong>产品经验</strong>指在公司内使用产品的历史及完成的探测结果；<strong>预防控制</strong>指设计规则、最佳实践、仿真模拟（CAE）、公差叠加等预防工具的有效性。且特别注解：<strong>频度 10、9、8、7 级可根据产品验证活动（Validation）结果实现降级。</strong></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div><strong>（1）基于故障率量化评级映射（表 C1.3.1）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>10级（≥100/1000 即 ≥1/10）：</strong>在任何地方对新技术的首次应用，无操作经验/运行条件不可控，无验证经验，无标准/最佳实践，预防控制无法预测或不存在。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>9级（50/1000 即 1/20）：</strong>公司内首次应用创新技术/材料，新应用或工况改变，无验证经验，预防控制未针对特定性能。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>8级（20/1000 即 1/50）：</strong>在新应用内首次使用创新技术/材料，极少有标准且不能直接套用，预防控制无法可靠反映现场绩效。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>7级（10/1000 即 1/100）：</strong>相似技术/材料的新型设计，标准仅符合基础要求不适用于创新点，预防控制提供有限性能指标。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>6级（2/1000 即 1/500）：</strong>现有技术材料且相似设计，工况有改变，有既往测试/现场经验，预防控制具部分预防能力。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>5级（0.5/1000 即 1/2000）：</strong>成熟技术材料，细节变化，评估了教训但未经验证，预防控制能发现缺陷并提供部分指标。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>4级（0.1/1000 即 1/10000）：</strong>与短期现场暴露几乎相同，符合最佳实践，预防控制很可能反映符合性。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>3级（0.01/1000 即 1/100000）：</strong>已知设计细微变化或成功完成测试，预防控制预测与生产一致。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>2级（0.001/1000 即 1/1000000）：</strong>长期现场暴露经验，极高信心。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>1级（通过预防控制消除）：</strong>设计上物理消除起因。</div></div>
+<strong>（2）基于时间/周期的频度映射（表 C1.3.2）：</strong>从 10 级（每次触发）、9 级（几乎每次）、8 级（每班次>1次）、7 级（每日>1次）到 2 级（每年<1次），直观度量动态工作周期中的失效暴露频次。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div><strong>场景一：折叠屏铰链新型水滴铰链机构设计（应用表 C1.3.1）</strong>
+传音某旗舰折叠机首次采用自研钛合金微型水滴铰链。属于“在公司内首次应用创新结构件与材料，力学工作周期巨幅改变”，初始评估无完整验证经验，预防控制（CAE 跌落仿真）未充分对齐极低落角应力，此时起因“铰链凸轮磨损导致闭合间隙超标”在方案设计初期判定为 <strong>O=9 级（故障率对应 50/1000）</strong>。团队后续通过 20 万次弯折疲劳加速试验（产品验证活动），验证了涂层配方与公差补偿的鲁棒性，依据手册注记将频度成功降至 <strong>O=4（0.1/1000）</strong>。
+<strong>场景二：传音非洲特定高湿热市场快充接口腐蚀失效（应用表 C1.3.2）</strong>
+针对 Type-C 接口电化学腐蚀起因“汗液/盐雾渗入引脚微短路”，若按传统台车故障率难以评估，采用基于时间的预测表 C1.3.2：在高湿度沿海重度使用者场景中，若无防腐蚀镀层和隔绝胶圈，腐蚀起因几乎在每日插拔充电时均被激发，可评定为 <strong>O=7 级（每日超过一次）</strong>。在采用纳米防水镀层与端子物理间距优化（预防控制）后，腐蚀起因发生周期被延缓至 <strong>O=2 级（每年少于一次）</strong>。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆表 C1.3.1 的千分比数字与整机 PPM。</strong>手册明确表 C1.3.1 的故障率是针对<strong>具体潜在失效起因（Failure Cause）的发生概率预测</strong>，而非整机失效率或单一失效模式的综合失效率，不可直接拿售后整机维修率来套用。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：无视“频度 10/9/8/7 可通过验证活动降级”的官方规则。</strong>部分工程师认为频度（O）完全由预防控制（PC）决定，测试验证（探测控制 DC）不能改变频度。然而手册明确规定：对于全新技术与材料（7-10级），在产品验证（Validation）完成并证实起因被有效抑制后，频度应当且必须被重新降级评定。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：滥用基于时间的失效预测（表 C1.3.2）。</strong>将偶发性跌落击穿错误套用“基于时间”表。基于时间的频度表主要针对具有周期性应力暴露、机械往复磨损、环境持续侵蚀（如按键按压、滑轨滑动、热循环疲劳、电化学腐蚀）等时间/周次依赖型失效起因。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day079-manual-p189.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189 页）</p>

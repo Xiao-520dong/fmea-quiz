@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 046：PFMEA 步骤四：从 4M（人机料环）挖掘过程失效起因（FC）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚡</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,16 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与因果逻辑</strong><br><ul><li><strong>失效起因（FC，Failure Cause）：</strong>指过程失效模式出现的原因。失效模式是失效起因的直接后果。编制 PFMEA 时，应在可能范围内为每个失效模式确定制造或装配方面的潜在原因。</li><li><strong>根本目的：</strong>失效起因必须尽可能简明扼要、具体明确地列出，以便能够针对性地制定预防控制（PC）和探测控制（DC）措施。</li><li><strong>来料假设黄金准则：</strong>在编制 PFMEA 时，<strong>应默认假设来料零件/材料是正确的</strong>。只有当历史数据证明来料零件存在质量缺陷时，FMEA 团队才可以作例外处理（不能把内部制程失效随意推卸给上游来料）。</li><li><strong>逻辑提问法：</strong>通过解答<strong>“为什么会出现该失效模式？”</strong>来建立失效起因（FC）与失效模式（FM）的强因果链。</li></ul></div><div class="highlight-blue"><strong>2. 经典石川 4M 框架与激励问题引导法</strong><br>原书推荐由推进者引导团队使用“值得深思的激励问题”来揭示 4M 失效起因：<ul><li><strong>人员（Man）：</strong>涵盖安装工人、设备操作员/助理、物料员、维护技术员等。<ul><li><em>激励问题：</em>是否可能使用错误零件？是否可能漏装/没有零件？零件加载方向是否可能颠倒？零件从周转拿取到装配应用期间是否受损？是否使用了错误材料？</li></ul></li><li><strong>机器/设备（Machine）：</strong>涵盖机器人、点胶机、注塑机、检验设备、夹具、供料器等。<ul><li><em>激励问题：</em>自动化流程是否会意外中断？参数/配方数据是否可能被错误输入？机器是否可能绕过联锁自动控制在手动模式下运行？预防和探测控制是否遵循点检/校准计划？</li></ul></li><li><strong>材料（间接）（Material - Indirect）：</strong>主要指制程辅料、流体和消耗品，如清洗剂、安装润滑脂、螺纹锁固胶、机油等。<ul><li><em>激励问题：</em>间接材料是否过多、过少或漏加？是否在错误的位置涂抹/应用了材料？</li></ul></li><li><strong>环境（Milieu / Environment）：</strong>涵盖温度、湿度、灰尘/洁净度、静电（ESD）、照度、车间噪音等。<ul><li><em>激励问题：</em>工位照明是否充足导致视认不清？作业现场的微粒/零件是否被混入产品视为异物？</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音制造实战场景：手机中框点胶贴合屏总成</strong><br>以传音某机型“工位 080：中框热熔胶自动点胶”为例，过程失效模式为 <strong>FM：中框边缘热熔胶轨迹局部断胶/胶量不足（宽度 < 0.6mm）</strong>，运用 4M 挖掘其失效起因（FC）：<ul><li><strong>【机 - 设备】：</strong>点胶机气动供胶阀针阀磨损卡滞，或点胶针头局部堵塞导致出胶不畅。</li><li><strong>【料 - 间接材料】：</strong>热熔胶胶水开封后超过有效作业时限，在预热胶管内发生局部结皮/固化。</li><li><strong>【人 - 操作员】：</strong>产线员工在更换胶管后，未按作业指导书执行针头点胶高度校准（Z轴对零偏移）。</li><li><strong>【环 - 环境】：</strong>点胶防尘罩气流扰动过大或工位环境温度低于 18℃，导致出胶粘度异常剧增。</li></ul>通过精准界定上述 4M 原因，后续就能对应制定如“定期更换撞针（PC）”、“CCD 胶路视觉自动检测（DC）”等闭环控制。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>禁用无效的抽象术语：</strong>原书（第97页）明确警告，“缺陷”、“破损”、“操作失败”、“不遵守要求”、“操作不正常”、“员工粗心”等词汇<strong>无法全面描述失效起因，更无法用于制定具体的工程应对措施</strong>，PFMEA 审核中一律判定为不合格。</li><li><strong>混淆产品直接材料与间接辅料：</strong>直接零件（如屏幕、主板）默认合格；PFMEA 的“料”重点关注直接参与工艺过程但非永久零件的间接辅料（润滑油、助焊剂、清洗水、保护膜等）的状态与用量。</li><li><strong>原因流于表面没有触及工作要素物理机制：</strong>写“电批坏了”是无效的，必须细化至部件与失效机理，如“电批扭力离合器弹簧疲劳磨损，导致提前跳脱断电”。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与因果逻辑</span></div><ul><li><strong>失效起因（FC，Failure Cause）：</strong>指过程失效模式出现的原因。失效模式是失效起因的直接后果。编制 PFMEA 时，应在可能范围内为每个失效模式确定制造或装配方面的潜在原因。</li><li><strong>根本目的：</strong>失效起因必须尽可能简明扼要、具体明确地列出，以便能够针对性地制定预防控制（PC）和探测控制（DC）措施。</li><li><strong>来料假设黄金准则：</strong>在编制 PFMEA 时，<strong>应默认假设来料零件/材料是正确的</strong>。只有当历史数据证明来料零件存在质量缺陷时，FMEA 团队才可以作例外处理（不能把内部制程失效随意推卸给上游来料）。</li><li><strong>逻辑提问法：</strong>通过解答<strong>“为什么会出现该失效模式？”</strong>来建立失效起因（FC）与失效模式（FM）的强因果链。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 经典石川 4M 框架与激励问题引导法</span></div>原书推荐由推进者引导团队使用“值得深思的激励问题”来揭示 4M 失效起因：<ul><li><strong>人员（Man）：</strong>涵盖安装工人、设备操作员/助理、物料员、维护技术员等。<ul><li><em>激励问题：</em>是否可能使用错误零件？是否可能漏装/没有零件？零件加载方向是否可能颠倒？零件从周转拿取到装配应用期间是否受损？是否使用了错误材料？</li></ul></li><li><strong>机器/设备（Machine）：</strong>涵盖机器人、点胶机、注塑机、检验设备、夹具、供料器等。<ul><li><em>激励问题：</em>自动化流程是否会意外中断？参数/配方数据是否可能被错误输入？机器是否可能绕过联锁自动控制在手动模式下运行？预防和探测控制是否遵循点检/校准计划？</li></ul></li><li><strong>材料（间接）（Material - Indirect）：</strong>主要指制程辅料、流体和消耗品，如清洗剂、安装润滑脂、螺纹锁固胶、机油等。<ul><li><em>激励问题：</em>间接材料是否过多、过少或漏加？是否在错误的位置涂抹/应用了材料？</li></ul></li><li><strong>环境（Milieu / Environment）：</strong>涵盖温度、湿度、灰尘/洁净度、静电（ESD）、照度、车间噪音等。<ul><li><em>激励问题：</em>工位照明是否充足导致视认不清？作业现场的微粒/零件是否被混入产品视为异物？</li></ul></li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音制造实战场景：手机中框点胶贴合屏总成</span></div>以传音某机型“工位 080：中框热熔胶自动点胶”为例，过程失效模式为 <strong>FM：中框边缘热熔胶轨迹局部断胶/胶量不足（宽度 < 0.6mm）</strong>，运用 4M 挖掘其失效起因（FC）：<ul><li><strong>【机 - 设备】：</strong>点胶机气动供胶阀针阀磨损卡滞，或点胶针头局部堵塞导致出胶不畅。</li><li><strong>【料 - 间接材料】：</strong>热熔胶胶水开封后超过有效作业时限，在预热胶管内发生局部结皮/固化。</li><li><strong>【人 - 操作员】：</strong>产线员工在更换胶管后，未按作业指导书执行针头点胶高度校准（Z轴对零偏移）。</li><li><strong>【环 - 环境】：</strong>点胶防尘罩气流扰动过大或工位环境温度低于 18℃，导致出胶粘度异常剧增。</li></ul>通过精准界定上述 4M 原因，后续就能对应制定如“定期更换撞针（PC）”、“CCD 胶路视觉自动检测（DC）”等闭环控制。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>禁用无效的抽象术语：</strong>原书（第97页）明确警告，“缺陷”、“破损”、“操作失败”、“不遵守要求”、“操作不正常”、“员工粗心”等词汇<strong>无法全面描述失效起因，更无法用于制定具体的工程应对措施</strong>，PFMEA 审核中一律判定为不合格。</li><li><strong>混淆产品直接材料与间接辅料：</strong>直接零件（如屏幕、主板）默认合格；PFMEA 的“料”重点关注直接参与工艺过程但非永久零件的间接辅料（润滑油、助焊剂、清洗水、保护膜等）的状态与用量。</li><li><strong>原因流于表面没有触及工作要素物理机制：</strong>写“电批坏了”是无效的，必须细化至部件与失效机理，如“电批扭力离合器弹簧疲劳磨损，导致提前跳脱断电”。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚡ 理论失效链（FE ← FM ← FC）三维推导图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box" style="border-color:#f56565; background:#fff5f5;"><span class="fb-icon">💥</span><div class="fb-title">1. 失效影响 (FE)</div><div class="fb-desc">上一级系统/本厂/下游厂/最终用户感知的后果 → 决定严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#ed8936; background:#fffaf0;"><span class="fb-icon">⚠️</span><div class="fb-title">2. 失效模式 (FM)</div><div class="fb-desc">关注要素未满足预期功能/产品特性的表现（丢失/退化/间歇/非预期）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔍</span><div class="fb-title">3. 失效起因 (FC)</div><div class="fb-desc">下一级特性设计不足或 4M 过程变差根因 → 决定频度(O/F)</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day046-manual-p96.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96 页）</p>

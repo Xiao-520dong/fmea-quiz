@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 029：DFMEA 步骤五：严重度（S）评估准则与 1-10 分打分逻辑</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,43 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》第 2.5.6 与 2.5.7 节：<br>• <strong>严重度（Severity, S）的定义：</strong>严重度评级是一种度量，它关系到被评估功能的既定失效模式的<strong>最严重失效影响（Failure Effect）程度</strong>。严重度评级用于确定某个 FMEA 范围的优先级，并在<strong>完全不考虑频度（O）和探测度（D）</strong>的情况下独立确定。<br>• <strong>评估尺度：</strong>S、O、D 均采用 1-10 分制打分，其中 10 代表最高风险级别，1 代表最低影响。<br>• <strong>主观性与不可直接比较性：</strong>即使产品或过程看起来相同，将一个团队的 FMEA 评级与另一个团队的 FMEA 评级进行横向比较是不合适的。因为每个团队的具体环境、应用场景不同，其评级是独一无二的（具有主观性）。<br>• <strong>严重度的传递性：</strong>如果需要，失效影响的严重度评估应该由顾客（OEM/整机厂）转移并传递给供应商。</div><div class="highlight-blue"><strong>2. 方法步骤与表 D1 规则拆解</strong><br>严重度必须严格对照<strong>表 D1 - DFMEA 严重度（S）评估标准</strong>进行估计（表 D1 可根据特定产品扩充具体示例，团队必须就评估标准和评级体系达成一致）：<br>• <strong>10分（非常高）：</strong>影响到操作安全，威胁到驾驶员、乘客、道路使用者、行人或使用者的健康安全状况；<br>• <strong>9分（非常高）：</strong>不符合法规要求（非合规风险）；<br>• <strong>8分（高）：</strong>在预期使用寿命内，<strong>失去</strong>正常使用所必需的<strong>主要功能</strong>；<br>• <strong>7分（高）：</strong>在预期使用寿命内，<strong>降低</strong>正常使用所必需的<strong>主要功能</strong>；<br>• <strong>6分（中）：</strong><strong>失去次要功能</strong>；<br>• <strong>5分（中）：</strong><strong>降低次要功能</strong>；<br>• <strong>4分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>非常不舒服</strong>；<br>• <strong>3分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>中度的不舒服</strong>；<br>• <strong>2分（低）：</strong>外观、声音、振动、粗糙度或触感令用户<strong>略微感觉不舒服</strong>；<br>• <strong>1分（非常低）：</strong>没有可觉察到的影响（No discernible effect）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及智能穿戴产品研发中，表 D1 的打分逻辑具体映射如下：<br>• <strong>S=10（安全威胁）：</strong>锂电池起火、爆炸，充电器击穿漏电电击用户，手机背壳异常高热烫伤用户健康。<br>• <strong>S=9（合规违规）：</strong>整机 SAR（电磁辐射比吸收率）超出国标或非洲当地准入法规；CTA、CE、FCC 等合规认证强制性项不达标。<br>• <strong>S=8（失去主要功能）：</strong>手机黑屏无法开机、无法识 SIM 卡导致无法通话与上网、射频完全无网络服务。<br>• <strong>S=7（降低主要功能）：</strong>手机通话严重杂音但勉强可听、4G/5G 数据传输降速、弱网下频繁掉线。<br>• <strong>S=6（失去次要功能）：</strong>手电筒功能无法开启、指纹解锁完全失效（但仍可输密码解锁）、蓝牙无法连接耳机。<br>• <strong>S=5（降低次要功能）：</strong>指纹识别成功率低（需多次重按）、按键行程手感发硬但功能响应正常。<br>• <strong>S=4~2（感官舒适度递减）：</strong>后壳配合间隙段差引起刮手（S=4 非常不舒服）；马达振动偏弱或伴有轻微共振异响（S=3 中度不舒服）；丝印轻微色差或边缘微小毛刺（S=2 略微不舒服）。<br>• <strong>S=1：</strong>完全不影响外观与任何电气体验，用户完全无法觉察。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：严重度与频度/探测度混淆。</strong>工程师常说“这个结构开裂概率极低，所以严重度打低点”，或者“我们在产线100%全检，所以严重度定为3分”。<br><em>纠偏：</em>根据手册 2.5.7 节明确规定，严重度<strong>仅仅针对失效影响</strong>打分，<strong>绝对不可考虑频度和探测度</strong>，哪怕发生率为百万分之一，只要导致起火，严重度必须是 10。<br>• <strong>误区二：多个失效影响时取平均分。</strong>同一个失效模式若对应多个不同影响，不可取平均值。<br><em>纠偏：</em>手册明确规定，严重度评级是“被评估功能的既定失效模式的<strong>最严重失效影响程度</strong>”，必须取最高分（Worst-case）。<br>• <strong>误区三：设计措施试图降低严重度。</strong>以为增加保护电路或强化设计能让严重度从 10 降到 2。<br><em>纠偏：</em>严重度是由物理失效影响本身的危害性决定的。只有通过<strong>修改设计架构或功能定义（例如消除危害源本身）</strong>才能改变严重度，单纯增加预防或测试控制完全不能降低 S 值。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>根据《AIAG & VDA FMEA 手册》第 2.5.6 与 2.5.7 节：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>严重度（Severity, S）的定义：</strong>严重度评级是一种度量，它关系到被评估功能的既定失效模式的<strong>最严重失效影响（Failure Effect）程度</strong>。严重度评级用于确定某个 FMEA 范围的优先级，并在<strong>完全不考虑频度（O）和探测度（D）</strong>的情况下独立确定。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>评估尺度：</strong>S、O、D 均采用 1-10 分制打分，其中 10 代表最高风险级别，1 代表最低影响。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>主观性与不可直接比较性：</strong>即使产品或过程看起来相同，将一个团队的 FMEA 评级与另一个团队的 FMEA 评级进行横向比较是不合适的。因为每个团队的具体环境、应用场景不同，其评级是独一无二的（具有主观性）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>严重度的传递性：</strong>如果需要，失效影响的严重度评估应该由顾客（OEM/整机厂）转移并传递给供应商。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与表 D1 规则拆解</span></div>严重度必须严格对照<strong>表 D1 - DFMEA 严重度（S）评估标准</strong>进行估计（表 D1 可根据特定产品扩充具体示例，团队必须就评估标准和评级体系达成一致）：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>10分（非常高）：</strong>影响到操作安全，威胁到驾驶员、乘客、道路使用者、行人或使用者的健康安全状况；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>9分（非常高）：</strong>不符合法规要求（非合规风险）；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>8分（高）：</strong>在预期使用寿命内，<strong>失去</strong>正常使用所必需的<strong>主要功能</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>7分（高）：</strong>在预期使用寿命内，<strong>降低</strong>正常使用所必需的<strong>主要功能</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>6分（中）：</strong><strong>失去次要功能</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>5分（中）：</strong><strong>降低次要功能</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>4分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>非常不舒服</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>3分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>中度的不舒服</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>2分（低）：</strong>外观、声音、振动、粗糙度或触感令用户<strong>略微感觉不舒服</strong>；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>1分（非常低）：</strong>没有可觉察到的影响（No discernible effect）。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机及智能穿戴产品研发中，表 D1 的打分逻辑具体映射如下：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=10（安全威胁）：</strong>锂电池起火、爆炸，充电器击穿漏电电击用户，手机背壳异常高热烫伤用户健康。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=9（合规违规）：</strong>整机 SAR（电磁辐射比吸收率）超出国标或非洲当地准入法规；CTA、CE、FCC 等合规认证强制性项不达标。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=8（失去主要功能）：</strong>手机黑屏无法开机、无法识 SIM 卡导致无法通话与上网、射频完全无网络服务。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=7（降低主要功能）：</strong>手机通话严重杂音但勉强可听、4G/5G 数据传输降速、弱网下频繁掉线。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=6（失去次要功能）：</strong>手电筒功能无法开启、指纹解锁完全失效（但仍可输密码解锁）、蓝牙无法连接耳机。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=5（降低次要功能）：</strong>指纹识别成功率低（需多次重按）、按键行程手感发硬但功能响应正常。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=4~2（感官舒适度递减）：</strong>后壳配合间隙段差引起刮手（S=4 非常不舒服）；马达振动偏弱或伴有轻微共振异响（S=3 中度不舒服）；丝印轻微色差或边缘微小毛刺（S=2 略微不舒服）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>S=1：</strong>完全不影响外观与任何电气体验，用户完全无法觉察。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：严重度与频度/探测度混淆。</strong>工程师常说“这个结构开裂概率极低，所以严重度打低点”，或者“我们在产线100%全检，所以严重度定为3分”。
+<em>纠偏：</em>根据手册 2.5.7 节明确规定，严重度<strong>仅仅针对失效影响</strong>打分，<strong>绝对不可考虑频度和探测度</strong>，哪怕发生率为百万分之一，只要导致起火，严重度必须是 10。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：多个失效影响时取平均分。</strong>同一个失效模式若对应多个不同影响，不可取平均值。</div></div>
+<em>纠偏：</em>手册明确规定，严重度评级是“被评估功能的既定失效模式的<strong>最严重失效影响程度</strong>”，必须取最高分（Worst-case）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：设计措施试图降低严重度。</strong>以为增加保护电路或强化设计能让严重度从 10 降到 2。</div></div>
+<em>纠偏：</em>严重度是由物理失效影响本身的危害性决定的。只有通过<strong>修改设计架构或功能定义（例如消除危害源本身）</strong>才能改变严重度，单纯增加预防或测试控制完全不能降低 S 值。</div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/table-d1.jpg?v=1792660128" alt="表 D1 DFMEA 严重度 (S) 评分表（原书第 48 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 D1 DFMEA 严重度 (S) 评分表（原书第 48 页）</p>

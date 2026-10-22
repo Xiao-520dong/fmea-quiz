@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 086：附件 D1：特殊特性（Special Characteristics）在 FMEA 中的传递与标识</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">🔄 附件D~H：新旧版变更与标准导读</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,26 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与特殊特性定义（Special Characteristics）</strong><br>依据《AIAG & VDA FMEA 手册》附件 D1：<br><ul><li><strong>定义目的：</strong>特殊特性旨在提供需要<strong>特别注意过程控制</strong>的设计特性的有关信息。</li><li><strong>识别准则：</strong>凡是直接导致产品功能在<strong>安全、配合、组装、性能、产品的进一步加工或符合政府法规和行业标准</strong>方面失效的特性，均可视为特殊特性。</li><li><strong>根本目标：</strong>确定特殊特性旨在有效<strong>减少报废、返工、不合格零件和装配错误</strong>。通过规定特殊特性并确保实施有效的过程控制，最大程度降低顾客投诉、产品保修索赔和政府召回的风险。</li><li><strong>标注与闭环证据：</strong>特殊特性必须使用公司/顾客规定的缩写或特定符号（如规范符号、安全符号等）标注在产品文件（图纸/规范）、过程 FMEA（“分类/特殊特性”列）以及控制计划（Control Plan）中。组织必须对特殊特性的过程控制进行<strong>监视、记录并保留执行证据</strong>（如 SPC 统计过程控制、过程能力 Cpk/Ppk 监控）。</li></ul></div><div class="highlight-blue"><strong>2. DFMEA 与 PFMEA 中特殊特性的传递与定位差异</strong><br>新版手册明确厘清了设计与制造在特殊特性管理上的关键边界：<br><ul><li><strong>DFMEA 中的“筛选器代码”列：</strong>手册明确指出，在设计 FMEA 中，之所以使用<strong>“筛选器代码（Filter Code）”</strong>列替换原有的“分类（Classification）”列，是因为<strong>不需要在 DFMEA 中直接显示最终的特殊特性</strong>。</li><li><strong>DFMEA 的输入角色：</strong>DFMEA 是选择特殊特性的<strong>输入项之一</strong>，团队可使用“筛选器代码（可选）”列来强调何时可能需要制造过程控制来确保符合设计规范。</li><li><strong>PFMEA 中的“分类”列与制造变差敏感度：</strong>为了正确识别特殊特性，PFMEA 团队必须深入考虑<strong>制造过程中的变差如何影响产品的功能</strong>：<br>① <strong>特殊特性（对变差敏感）：</strong>特性对制造/装配变差高度敏感，变差波动会导致严重的功能失效或装配配合问题，必须施加额外过程控制（在 PFMEA“分类”列标注至关重要的、关键的、主要的、显著的等等级）。<br>② <strong>标准特性（对变差不敏感）：</strong>特性对制造/装配变差不敏感，常规作业标准与通用工序控制即可满足要求。</li><li><strong>客户符号转换机制：</strong>特殊特性可以有组织自定义名称或客户特定名称。若客户有指定符号，组织应通过“符号对照表”等机制，合规转换为组织内部统一的特殊特性管控标识。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景应用</strong><br>以传音智能手机关键组件为例拆解特殊特性在 DFMEA ➔ PFMEA ➔ 控制计划中的闭环流动：<br><ul><li><strong>场景 1：锂电池仓双面胶贴合与电芯间隙（安全/配合/性能）</strong><br>在整机结构 DFMEA 中，电芯与中框间隙（如 0.3±0.05mm）直接影响跌落膨胀安全。设计团队在 DFMEA 中通过“筛选器代码”标记为需关注过程变差。转入中试制造 PFMEA 时，工艺团队分析点胶厚度与贴装偏位（制造变差敏感），在 PFMEA“分类”列正式定性为<strong>特殊特性（CC/关键特性）</strong>，并在控制计划（CP）中明确配置高精度 CCD 视觉测量系统与 SPC 实时管控。</li><li><strong>场景 2：Type-C USB 接口端子共面度与焊接拉拔力（组装/法规/售后）</strong><br>Type-C 接口引脚共面度超差将导致虚焊，引发充电异常甚至端口过热冒烟风险。PFMEA 评估该引脚焊接变差极易引发安全与法规失效，将其标识为特殊特性。控制计划中要求每批次执行 SMT AOI 100% 自动光学检测与焊点推拉力破坏性抽检并记录，形成闭环证据链。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：在 DFMEA 中盲目打上特殊特性符号（CC/SC）。</strong><br><em>纠正：</em>新版手册明确说明，DFMEA 不需要显示最终特殊特性，其分类列已被“筛选器代码”替代。DFMEA 只用于标记哪些设计要求对过程控制有依赖，真正的特殊特性分类落实于 PFMEA 及控制计划。</li><li><strong>误区 2：将所有公差要求严格的尺寸统统归为特殊特性。</strong><br><em>纠正：</em>特殊特性评定核心看<strong>功能失效严重性及对制造变差的敏感度</strong>。若某个关键尺寸在当前制造工艺（如高精模具冲压）下天然具备极高稳定性，工艺变差对其功能不敏感，则只需按标准特性管理，避免泛滥导致产线质量检测成本激增、重心失焦。</li><li><strong>误区 3：特殊特性在 PFMEA 中打了标，但在控制计划中无闭环。</strong><br><em>纠正：</em>手册严格要求“监视、记录并获取执行特殊特性过程控制的证据”。PFMEA 识别出特殊特性后，必须 100% 传递至控制计划（CP），并明确规定控制方法（如 100% 自动检测、SPC 监控 Ppk≥1.67）及失效应急反应计划。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与特殊特性定义（Special Characteristics）</span></div>依据《AIAG & VDA FMEA 手册》附件 D1：
+<ul><li><strong>定义目的：</strong>特殊特性旨在提供需要<strong>特别注意过程控制</strong>的设计特性的有关信息。</li><li><strong>识别准则：</strong>凡是直接导致产品功能在<strong>安全、配合、组装、性能、产品的进一步加工或符合政府法规和行业标准</strong>方面失效的特性，均可视为特殊特性。</li><li><strong>根本目标：</strong>确定特殊特性旨在有效<strong>减少报废、返工、不合格零件和装配错误</strong>。通过规定特殊特性并确保实施有效的过程控制，最大程度降低顾客投诉、产品保修索赔和政府召回的风险。</li><li><strong>标注与闭环证据：</strong>特殊特性必须使用公司/顾客规定的缩写或特定符号（如规范符号、安全符号等）标注在产品文件（图纸/规范）、过程 FMEA（“分类/特殊特性”列）以及控制计划（Control Plan）中。组织必须对特殊特性的过程控制进行<strong>监视、记录并保留执行证据</strong>（如 SPC 统计过程控制、过程能力 Cpk/Ppk 监控）。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. DFMEA 与 PFMEA 中特殊特性的传递与定位差异</span></div>新版手册明确厘清了设计与制造在特殊特性管理上的关键边界：
+<ul><li><strong>DFMEA 中的“筛选器代码”列：</strong>手册明确指出，在设计 FMEA 中，之所以使用<strong>“筛选器代码（Filter Code）”</strong>列替换原有的“分类（Classification）”列，是因为<strong>不需要在 DFMEA 中直接显示最终的特殊特性</strong>。</li><li><strong>DFMEA 的输入角色：</strong>DFMEA 是选择特殊特性的<strong>输入项之一</strong>，团队可使用“筛选器代码（可选）”列来强调何时可能需要制造过程控制来确保符合设计规范。</li><li><strong>PFMEA 中的“分类”列与制造变差敏感度：</strong>为了正确识别特殊特性，PFMEA 团队必须深入考虑<strong>制造过程中的变差如何影响产品的功能</strong>：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>特殊特性（对变差敏感）：</strong>特性对制造/装配变差高度敏感，变差波动会导致严重的功能失效或装配配合问题，必须施加额外过程控制（在 PFMEA“分类”列标注至关重要的、关键的、主要的、显著的等等级）。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>标准特性（对变差不敏感）：</strong>特性对制造/装配变差不敏感，常规作业标准与通用工序控制即可满足要求。</li><li><strong>客户符号转换机制：</strong>特殊特性可以有组织自定义名称或客户特定名称。若客户有指定符号，组织应通过“符号对照表”等机制，合规转换为组织内部统一的特殊特性管控标识。</li></ul></div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景应用</span></div>以传音智能手机关键组件为例拆解特殊特性在 DFMEA ➔ PFMEA ➔ 控制计划中的闭环流动：
+<ul><li><strong>场景 1：锂电池仓双面胶贴合与电芯间隙（安全/配合/性能）</strong>
+在整机结构 DFMEA 中，电芯与中框间隙（如 0.3±0.05mm）直接影响跌落膨胀安全。设计团队在 DFMEA 中通过“筛选器代码”标记为需关注过程变差。转入中试制造 PFMEA 时，工艺团队分析点胶厚度与贴装偏位（制造变差敏感），在 PFMEA“分类”列正式定性为<strong>特殊特性（CC/关键特性）</strong>，并在控制计划（CP）中明确配置高精度 CCD 视觉测量系统与 SPC 实时管控。</li><li><strong>场景 2：Type-C USB 接口端子共面度与焊接拉拔力（组装/法规/售后）</strong>
+Type-C 接口引脚共面度超差将导致虚焊，引发充电异常甚至端口过热冒烟风险。PFMEA 评估该引脚焊接变差极易引发安全与法规失效，将其标识为特殊特性。控制计划中要求每批次执行 SMT AOI 100% 自动光学检测与焊点推拉力破坏性抽检并记录，形成闭环证据链。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区 1：在 DFMEA 中盲目打上特殊特性符号（CC/SC）。</strong>
+<em>纠正：</em>新版手册明确说明，DFMEA 不需要显示最终特殊特性，其分类列已被“筛选器代码”替代。DFMEA 只用于标记哪些设计要求对过程控制有依赖，真正的特殊特性分类落实于 PFMEA 及控制计划。</li><li><strong>误区 2：将所有公差要求严格的尺寸统统归为特殊特性。</strong>
+<em>纠正：</em>特殊特性评定核心看<strong>功能失效严重性及对制造变差的敏感度</strong>。若某个关键尺寸在当前制造工艺（如高精模具冲压）下天然具备极高稳定性，工艺变差对其功能不敏感，则只需按标准特性管理，避免泛滥导致产线质量检测成本激增、重心失焦。</li><li><strong>误区 3：特殊特性在 PFMEA 中打了标，但在控制计划中无闭环。</strong>
+<em>纠正：</em>手册严格要求“监视、记录并获取执行特殊特性过程控制的证据”。PFMEA 识别出特殊特性后，必须 100% 传递至控制计划（CP），并明确规定控制方法（如 100% 自动检测、SPC 监控 Ppk≥1.67）及失效应急反应计划。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day086-manual-p215.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 D1（原书 P215）（PDF 第 215 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 D1（原书 P215）（PDF 第 215 页）</p>

@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 021：DFMEA 步骤四（失效分析）：七类典型失效模式与 P-图关联</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚙️</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,41 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义（步骤四目的与失效本质）</strong><br>根据手册 2.4.1 与 2.4.2 节：<br>• <strong>失效分析的目的：</strong>识别失效起因（FC）、失效模式（FM）和失效影响（FE），并显示它们之间的逻辑因果关系（失效链），以便为后续的风险评估与表格记录提供基础；同时促进顾客与供应商之间的跨层级协作（尤其是失效影响层面）。<br>• <strong>失效的本质与推导来源：</strong>失效由功能推导而来。功能在步骤三中使用肯定的词语定义，而步骤四的失效则是以否定的词语描述该功能未能满足的方式。一个功能可能对应多个潜在失效，绝不能识别出一个失效后就停止思考，团队必须持续追问“还有没有其它的失效？”。<br>• <strong>失效描述的规范要求：</strong>失效描述必须具体、清晰。系统/子系统层级的失效模式描述功能的损失或退化（必要时需包含整机运行工况）；组件/零件层级的失效模式通常由“名词 + 失效描述”组成（例如“密封件扭曲”）。严禁使用“未满足”、“不好”、“有缺陷”、“坏了”等模糊空洞的词汇。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（七类典型失效模式与 P-图关联）</strong><br>原书图 2.4-1 归纳了潜在失效模式的七种典型类别，并与 P-图（参数图）中输入、噪声因素与输出的关系（图 2.4-2）紧密关联：<br>• <strong>① 功能丧失（Loss of function）：</strong>无法操作、完全不动作、突然失效（如输出直接归零）。<br>• <strong>② 功能退化（Degradation of function）：</strong>性能随时间推移逐渐损失（如随时间衰减至规格下限以下）。<br>• <strong>③ 功能间歇（Intermittent function）：</strong>操作随机开始/停止/开始（如接触不良引发的反复震荡失效）。<br>• <strong>④ 部分功能丧失（Partial loss of function）：</strong>性能损失，处于较低或无法达到完全规格的水平，但并未完全归零。<br>• <strong>⑤ 非预期功能（Unintended function）：</strong>在错误的时间操作、意外的方向执行或产生非预期的动作（例如：向左打方向盘车辆向右转；或在静止未按压时自动触发）。<br>• <strong>⑥ 功能超范围（Exceeding function）：</strong>超出可接受极限的操作（如输出功率/电压过高、行程过冲）。<br>• <strong>⑦ 功能延迟（Delayed function）：</strong>在非预期的时间间隔之后才执行操作（如响应迟滞、唤醒超时）。<br>• <strong>与 P-图的内在关联：</strong>P-图将系统视为在噪声因素（Z）与系统参数控制下的能量传递通道。错误的输入（X）或环境噪音因素（Z）会导致系统产生错误的输出（超出范围的实际 Y）或不可容忍的附带影响。DFMEA 失效分析的核心就是专注于导致错误输出的系统要素与结构缺陷。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以手机侧键与快充系统为例）</strong><br>结合传音智能手机研发场景，具体运用七类失效模式与规范描述：<br>• <strong>场景 A：侧键/电源按键组件（零件/子系统）</strong><br>  - <i>功能丧失：</i>整机彻底无法通过电源键开机/唤醒（完全无信号输出）。<br>  - <i>功能间歇：</i>电源键轻微晃动时产生抖动导通，手机频繁随机锁屏/唤醒。<br>  - <i>部分功能丧失：</i>按键行程手感偏轻，触发回弹力不足（仅达标准手感的50%）。<br>  - <i>非预期功能：</i>手机装入紧身裤口袋或处于常温静止时，按键被误触发长按关机。<br>  - <i>组件级规范描述：</i>按键锅仔片（Dome）破裂、FPC排线撕裂，避免写“按键坏了”。<br>• <strong>场景 B：传音快充系统（充电管理子系统）</strong><br>  - <i>功能退化：</i>电池快充循环200次后，充电速率线性衰减超过35%（随时间退化）。<br>  - <i>功能超范围：</i>快充协商握手异常，实际输入电流达到4.5A，超出端口设计上限（4.0A）。<br>  - <i>功能延迟：</i>插拔快充充电器后，整机延迟8秒才识别到快充协议并开始充能。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：描述模糊空洞。</strong>工程师常写“Camera功能失效”、“按键不好”、“Type-C接口缺陷”。<br>  <em>避坑指南：</em>零件级必须采用“物理实体/名词 + 失效物理状态”（如“Camera Lens表面划伤”、“Type-C端子变形退针”）；子系统级必须清晰指出功能损失的具体形态。<br>• <strong>误区 2：单功能单失效陷阱。</strong>认为一个功能只对应一个失效模式（例如将“显示屏提供显示”只列出“黑屏”）。<br>  <em>避坑指南：</em>根据原书要求，团队识别出一个失效后必须追问“还有没有其它失效？”，全面覆盖黑屏（功能丧失）、闪烁（功能间歇）、发黄老化（功能退化）、局部暗斑（部分丧失）、触控飘移（非预期/超范围）等多种模式。<br>• <strong>误区 3：忽视环境噪声（P-图）引发的失效模式。</strong>仅分析常温标准实验室工况，忽略高温、高湿、跌落振动等输入/噪声对功能输出的偏移影响。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义（步骤四目的与失效本质）</span></div>根据手册 2.4.1 与 2.4.2 节：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>失效分析的目的：</strong>识别失效起因（FC）、失效模式（FM）和失效影响（FE），并显示它们之间的逻辑因果关系（失效链），以便为后续的风险评估与表格记录提供基础；同时促进顾客与供应商之间的跨层级协作（尤其是失效影响层面）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>失效的本质与推导来源：</strong>失效由功能推导而来。功能在步骤三中使用肯定的词语定义，而步骤四的失效则是以否定的词语描述该功能未能满足的方式。一个功能可能对应多个潜在失效，绝不能识别出一个失效后就停止思考，团队必须持续追问“还有没有其它的失效？”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>失效描述的规范要求：</strong>失效描述必须具体、清晰。系统/子系统层级的失效模式描述功能的损失或退化（必要时需包含整机运行工况）；组件/零件层级的失效模式通常由“名词 + 失效描述”组成（例如“密封件扭曲”）。严禁使用“未满足”、“不好”、“有缺陷”、“坏了”等模糊空洞的词汇。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解（七类典型失效模式与 P-图关联）</span></div>原书图 2.4-1 归纳了潜在失效模式的七种典型类别，并与 P-图（参数图）中输入、噪声因素与输出的关系（图 2.4-2）紧密关联：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>① 功能丧失（Loss of function）：</strong>无法操作、完全不动作、突然失效（如输出直接归零）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>② 功能退化（Degradation of function）：</strong>性能随时间推移逐渐损失（如随时间衰减至规格下限以下）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>③ 功能间歇（Intermittent function）：</strong>操作随机开始/停止/开始（如接触不良引发的反复震荡失效）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>④ 部分功能丧失（Partial loss of function）：</strong>性能损失，处于较低或无法达到完全规格的水平，但并未完全归零。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>⑤ 非预期功能（Unintended function）：</strong>在错误的时间操作、意外的方向执行或产生非预期的动作（例如：向左打方向盘车辆向右转；或在静止未按压时自动触发）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>⑥ 功能超范围（Exceeding function）：</strong>超出可接受极限的操作（如输出功率/电压过高、行程过冲）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>⑦ 功能延迟（Delayed function）：</strong>在非预期的时间间隔之后才执行操作（如响应迟滞、唤醒超时）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>与 P-图的内在关联：</strong>P-图将系统视为在噪声因素（Z）与系统参数控制下的能量传递通道。错误的输入（X）或环境噪音因素（Z）会导致系统产生错误的输出（超出范围的实际 Y）或不可容忍的附带影响。DFMEA 失效分析的核心就是专注于导致错误输出的系统要素与结构缺陷。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景（以手机侧键与快充系统为例）</span></div>结合传音智能手机研发场景，具体运用七类失效模式与规范描述：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 A：侧键/电源按键组件（零件/子系统）</strong></div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>功能丧失：</i>整机彻底无法通过电源键开机/唤醒（完全无信号输出）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>功能间歇：</i>电源键轻微晃动时产生抖动导通，手机频繁随机锁屏/唤醒。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>部分功能丧失：</i>按键行程手感偏轻，触发回弹力不足（仅达标准手感的50%）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>非预期功能：</i>手机装入紧身裤口袋或处于常温静止时，按键被误触发长按关机。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>组件级规范描述：</i>按键锅仔片（Dome）破裂、FPC排线撕裂，避免写“按键坏了”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 B：传音快充系统（充电管理子系统）</strong></div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>功能退化：</i>电池快充循环200次后，充电速率线性衰减超过35%（随时间退化）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>功能超范围：</i>快充协商握手异常，实际输入电流达到4.5A，超出端口设计上限（4.0A）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><i>功能延迟：</i>插拔快充充电器后，整机延迟8秒才识别到快充协议并开始充能。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区 1：描述模糊空洞。</strong>工程师常写“Camera功能失效”、“按键不好”、“Type-C接口缺陷”。
+<em>避坑指南：</em>零件级必须采用“物理实体/名词 + 失效物理状态”（如“Camera Lens表面划伤”、“Type-C端子变形退针”）；子系统级必须清晰指出功能损失的具体形态。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 2：单功能单失效陷阱。</strong>认为一个功能只对应一个失效模式（例如将“显示屏提供显示”只列出“黑屏”）。</div></div>
+<em>避坑指南：</em>根据原书要求，团队识别出一个失效后必须追问“还有没有其它失效？”，全面覆盖黑屏（功能丧失）、闪烁（功能间歇）、发黄老化（功能退化）、局部暗斑（部分丧失）、触控飘移（非预期/超范围）等多种模式。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 3：忽视环境噪声（P-图）引发的失效模式。</strong>仅分析常温标准实验室工况，忽略高温、高湿、跌落振动等输入/噪声对功能输出的偏移影响。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚙️ 功能分析与参数图（P-图）核心架构图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🌩️</span><div class="fb-title">五类噪音因素 (Noise)</div><div class="fb-desc">①件间变差 ②随时间退化 ③客户使用 ④外部环境 ⑤系统交互</div></div>
+                <div class="flow-box" style="border-color:#48bb78; background:#f0fff4;"><span class="fb-icon">🔄</span><div class="fb-title">输入 → 系统功能 → 输出</div><div class="fb-desc">主动动词+可测量名词（含预期功能输出 & 非预期错误输出）</div></div>
+                <div class="flow-box"><span class="fb-icon">🎛️</span><div class="fb-title">控制因素 (Control)</div><div class="fb-desc">工程师可调的设计参数、材料规格、公差与过程工艺设定</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-2-4-1.jpg?v=1792660128" alt="图 2.4-1 失效模式的类型（原书第 35 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.4-1 失效模式的类型（原书第 35 页）</p>

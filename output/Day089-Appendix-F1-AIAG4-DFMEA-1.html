@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 089：附件 F1.1（上）：从 AIAG 第四版到新版 DFMEA 的变更点（步骤一至四）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">🔄 附件D~H：新旧版变更与标准导读</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node active"><div class="step-dot">🎯</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,52 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与总体架构变更</strong><br>新版《AIAG & VDA FMEA 手册》相较于 AIAG 第四版，最核心的结构性变更是将传统的表格填报升维为严谨的“七步法”结构化工程分析流程：<br>① <strong>先决条件与流程整合：</strong>在第四版中被列为“先决条件”的方块图/边界图（Block/Boundary Diagram），在新版中被正式吸纳为“步骤二：结构分析”的核心交付物，强化了从图纸/系统边界到结构树的逻辑连续性。<br>② <strong>特殊特性的 DFMEA 解耦：</strong>新版在 DFMEA 层面删除了原有的“特殊特性（Classification）”必选列，将其弱化/转移为可选的“筛选器代码（Filter Code）”，而将特殊特性的严格管控与符号标注保留在 PFMEA 中（详见附录 D1）。<br>③ <strong>变更授权与全生命周期管理：</strong>表格新增了“历史/变更授权”列，便于设计变更（ECN/ECO）和平台沿用时进行版本追溯；同时全面阐述了 DFMEA 与 PFMEA 的层级映射，以及“整机/顾客 — 模块/第 n 级 — 元器件/第 n+1 级”供应链协同逻辑。</div><div class="highlight-blue"><strong>2. 步骤一至四具体变更拆解</strong><br><strong>【步骤一：规划和准备】</strong><br>• <strong>5T 方法论植入：</strong>全面引入目的（In-scope/Purpose）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools），并在开案前明确基准 DFMEA（Baseline/Family FMEA）。<br>• <strong>表头关键字段大换血：</strong><br>&nbsp;&nbsp;- <em>新增：</em>公司名称、工程地点、顾客名称、项目名称、修订日期、保密级别（Confidentiality Level）。<br>&nbsp;&nbsp;- <em>删除：</em>系统/子系统/组件复选标记、关键日期（Key Date）、页码/总页数。<br>&nbsp;&nbsp;- <em>更名术语：</em>“年型/项目”变更为“年型/平台”；“FMEA 编号”变更为“DFMEA ID 编号”；“编制人”变更为“设计责任人”；“FMEA 日期（初始日期）”变更为“开始日期”；“核心团队”变更为“跨职能团队”。<br>• <em>变更目的：</em>统一通用行业术语，强化项目保密合规与数字化资产记录管理。<br><br><strong>【步骤二：结构分析】</strong><br>• <strong>三层级树状结构化：</strong>将第四版扁平的项目描述系统化扩展为三层级：上一较高级别（系统级）→ 关注要素（系统要素/子系统级）→ 下一较低级别或特性类型（组件要素级）。<br>• <strong>协同接口标准化：</strong>清晰界定了主机厂/整机研发与各级元器件供应商之间的接口职责，为步骤三功能自上而下的分配奠定载体。<br><br><strong>【步骤三：功能分析】</strong><br>• <strong>项目与要求拆解：</strong>第四版表格 A/C 将“项目/功能和要求”混在一起；新版将“项目”留在步骤一/二，在步骤三中专设对应三层结构的“功能和要求”列，完整展示“底层组件如何贡献于关注要素功能，进而满足上一级系统功能”。<br>• <strong>工程工具规范化：</strong>深度规范了参数图（P-图，P-Diagram）的输入/输出信号、控制因素与噪声因素分析法，强化了工程团队协同。<br><br><strong>【步骤四：失效分析】</strong><br>• <strong>术语重构与失效链锁定：</strong><br>&nbsp;&nbsp;- 潜在失效模式（FM）→ 明确定义为“关注要素的失效模式”；<br>&nbsp;&nbsp;- 潜在失效影响（FE）→ 明确定义为“对上一较高级别要素和/或最终用户的失效影响”；<br>&nbsp;&nbsp;- 潜在失效起因（FC）→ 明确定义为“下一较低级别要素或特性的失效起因”。<br>• <strong>表格视觉顺序重大调整：</strong>表格呈现顺序从第四版的“FM → FE → FC”调整为因果顺畅的“FE → FM → FC”。<br>• <em>【极重要工程规则】：</em>虽然表格视界顺序是 FE-FM-FC，但<strong>团队在开展电子表格分析时的思考构建顺序保持不变——依然必须首先定义关注要素的失效模式（FM），然后再由团队向左推导失效影响（FE）、向右推导失效起因（FC）</strong>！专业 FMEA 软件则支持构建失效网/失效链后灵活多视图呈现。</div><div class="highlight-green"><strong>3. 传音研发实战场景：以折叠屏手机铰链与内屏模组为例</strong><br>传音硬件研发在将老旧 DFMEA 模板切换至 AIAG & VDA 新版时，针对折叠屏铰链展开四步分析：<br>① <strong>步骤一（表头与 5T）：</strong>DFMEA ID 设为 `TY-RD-FOLD-HNG-01`，团队变更为包含结构、材料、仿真、可靠性及供应链专家的“跨职能团队”，保密级别设为“核心商业机密（Strictly Confidential）”。<br>② <strong>步骤二（三级结构建立）：</strong>上一级：整机系统（折叠屏手机）；关注要素：铰链运动子系统（Hinge Subsystem）；下一级：扭力阻尼凸轮、M1.2 紧固微螺钉、超薄液态金属支撑翼板。<br>③ <strong>步骤三（三级功能分析）：</strong><br>&nbsp;&nbsp;- 系统级：提供平整展开界面与多角度悬停交互体验；<br>&nbsp;&nbsp;- 关注要素：提供 0.8~1.2 N·m 恒定开合阻尼力矩，开合寿命 ≥ 20 万次；<br>&nbsp;&nbsp;- 组件级（阻尼凸轮）：凸轮表面耐磨镀层硬度 ≥ HV800，配合间隙公差 ±0.015mm。<br>④ <strong>步骤四（失效链推导与顺序）：</strong><br>&nbsp;&nbsp;- <em>第一步（思考起点/FM）：</em>铰链悬停阻尼力矩衰减超标（关注要素失效）；<br>&nbsp;&nbsp;- <em>第二步（向左推导/FE）：</em>用户在 45°~120° 角度无法实现立式免手持自拍与观影（最终用户影响）；<br>&nbsp;&nbsp;- <em>第三步（向右推导/FC）：</em>阻尼凸轮表面涂层在高温高湿环境下磨损撕裂，凸轮副配合过盈量丢失（较低级别组件特性失效）；<br>&nbsp;&nbsp;- <em>表格填报呈现：</em>按“FE（无法悬停自拍） | FM（阻尼力矩衰减） | FC（凸轮涂层耐磨性不足）”的顺序标准输出。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“表格呈现顺序”与“工程思考顺序”。</strong>许多工程师看到新版表格各列变成了“FE → FM → FC”，便以为要先头脑风暴失效影响。<em>纠偏：</em>必须牢记原书重要注释，思考的核心锚点始终是关注要素本身的失效模式（FM），先抓住“自身怎么坏了”，再去评判“给上位系统/用户带来什么后果（FE）”和“下位哪个零件参数偏差导致的（FC）”。<br>• <strong>误区二：在 DFMEA 中强行保留第四版的“特殊特性分类”列并死抠打标。</strong><em>纠偏：</em>新版 DFMEA 已删除分类列，代之以可选的“筛选器代码（Filter Code）”，特殊特性的锁定被严谨移交到了 PFMEA 与制造工程的控制计划中。<br>• <strong>误区三：将边界图/P-图当作 FMEA 之外的“附加作业”。</strong><em>纠偏：</em>第四版中图纸往往由结构工程师单独画完存档，FMEA 会议重新天马行空填表。新版要求图纸分析直接作为步骤二（结构分析）与步骤三（功能分析）的基石，边界图上的物理连接直接转化为三级结构树。<br>• <strong>误区四：表头信息敷衍，遗漏保密级别与平台标识。</strong><em>纠偏：</em>传音海外新机型多平台共用架构，表头必须明确“年型/平台”，且必须标注保密等级，禁止使用“核心团队/编制人”等第四版旧称谓。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与总体架构变更</span></div>新版《AIAG & VDA FMEA 手册》相较于 AIAG 第四版，最核心的结构性变更是将传统的表格填报升维为严谨的“七步法”结构化工程分析流程：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>先决条件与流程整合：</strong>在第四版中被列为“先决条件”的方块图/边界图（Block/Boundary Diagram），在新版中被正式吸纳为“步骤二：结构分析”的核心交付物，强化了从图纸/系统边界到结构树的逻辑连续性。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>特殊特性的 DFMEA 解耦：</strong>新版在 DFMEA 层面删除了原有的“特殊特性（Classification）”必选列，将其弱化/转移为可选的“筛选器代码（Filter Code）”，而将特殊特性的严格管控与符号标注保留在 PFMEA 中（详见附录 D1）。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>变更授权与全生命周期管理：</strong>表格新增了“历史/变更授权”列，便于设计变更（ECN/ECO）和平台沿用时进行版本追溯；同时全面阐述了 DFMEA 与 PFMEA 的层级映射，以及“整机/顾客 — 模块/第 n 级 — 元器件/第 n+1 级”供应链协同逻辑。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 步骤一至四具体变更拆解</span></div><strong>【步骤一：规划和准备】</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>5T 方法论植入：</strong>全面引入目的（In-scope/Purpose）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools），并在开案前明确基准 DFMEA（Baseline/Family FMEA）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>表头关键字段大换血：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>新增：</em>公司名称、工程地点、顾客名称、项目名称、修订日期、保密级别（Confidentiality Level）。</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>删除：</em>系统/子系统/组件复选标记、关键日期（Key Date）、页码/总页数。</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>更名术语：</em>“年型/项目”变更为“年型/平台”；“FMEA 编号”变更为“DFMEA ID 编号”；“编制人”变更为“设计责任人”；“FMEA 日期（初始日期）”变更为“开始日期”；“核心团队”变更为“跨职能团队”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>变更目的：</em>统一通用行业术语，强化项目保密合规与数字化资产记录管理。</div></div>
+<strong>【步骤二：结构分析】</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>三层级树状结构化：</strong>将第四版扁平的项目描述系统化扩展为三层级：上一较高级别（系统级）→ 关注要素（系统要素/子系统级）→ 下一较低级别或特性类型（组件要素级）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>协同接口标准化：</strong>清晰界定了主机厂/整机研发与各级元器件供应商之间的接口职责，为步骤三功能自上而下的分配奠定载体。</div></div>
+<strong>【步骤三：功能分析】</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>项目与要求拆解：</strong>第四版表格 A/C 将“项目/功能和要求”混在一起；新版将“项目”留在步骤一/二，在步骤三中专设对应三层结构的“功能和要求”列，完整展示“底层组件如何贡献于关注要素功能，进而满足上一级系统功能”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>工程工具规范化：</strong>深度规范了参数图（P-图，P-Diagram）的输入/输出信号、控制因素与噪声因素分析法，强化了工程团队协同。</div></div>
+<strong>【步骤四：失效分析】</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>术语重构与失效链锁定：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>潜在失效模式（FM）→ 明确定义为“关注要素的失效模式”；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>潜在失效影响（FE）→ 明确定义为“对上一较高级别要素和/或最终用户的失效影响”；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>潜在失效起因（FC）→ 明确定义为“下一较低级别要素或特性的失效起因”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>表格视觉顺序重大调整：</strong>表格呈现顺序从第四版的“FM → FE → FC”调整为因果顺畅的“FE → FM → FC”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>【极重要工程规则】：</em>虽然表格视界顺序是 FE-FM-FC，但<strong>团队在开展电子表格分析时的思考构建顺序保持不变——依然必须首先定义关注要素的失效模式（FM），然后再由团队向左推导失效影响（FE）、向右推导失效起因（FC）</strong>！专业 FMEA 软件则支持构建失效网/失效链后灵活多视图呈现。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发实战场景：以折叠屏手机铰链与内屏模组为例</span></div>传音硬件研发在将老旧 DFMEA 模板切换至 AIAG & VDA 新版时，针对折叠屏铰链展开四步分析：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>步骤一（表头与 5T）：</strong>DFMEA ID 设为 `TY-RD-FOLD-HNG-01`，团队变更为包含结构、材料、仿真、可靠性及供应链专家的“跨职能团队”，保密级别设为“核心商业机密（Strictly Confidential）”。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>步骤二（三级结构建立）：</strong>上一级：整机系统（折叠屏手机）；关注要素：铰链运动子系统（Hinge Subsystem）；下一级：扭力阻尼凸轮、M1.2 紧固微螺钉、超薄液态金属支撑翼板。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>步骤三（三级功能分析）：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>系统级：提供平整展开界面与多角度悬停交互体验；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>关注要素：提供 0.8~1.2 N·m 恒定开合阻尼力矩，开合寿命 ≥ 20 万次；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div>组件级（阻尼凸轮）：凸轮表面耐磨镀层硬度 ≥ HV800，配合间隙公差 ±0.015mm。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div><strong>步骤四（失效链推导与顺序）：</strong></div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>第一步（思考起点/FM）：</em>铰链悬停阻尼力矩衰减超标（关注要素失效）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>第二步（向左推导/FE）：</em>用户在 45°~120° 角度无法实现立式免手持自拍与观影（最终用户影响）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>第三步（向右推导/FC）：</em>阻尼凸轮表面涂层在高温高湿环境下磨损撕裂，凸轮副配合过盈量丢失（较低级别组件特性失效）；</div></div>
+<div class="sub-bullet-item"><span>🔸</span><div><em>表格填报呈现：</em>按“FE（无法悬停自拍） | FM（阻尼力矩衰减） | FC（凸轮涂层耐磨性不足）”的顺序标准输出。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆“表格呈现顺序”与“工程思考顺序”。</strong>许多工程师看到新版表格各列变成了“FE → FM → FC”，便以为要先头脑风暴失效影响。<em>纠偏：</em>必须牢记原书重要注释，思考的核心锚点始终是关注要素本身的失效模式（FM），先抓住“自身怎么坏了”，再去评判“给上位系统/用户带来什么后果（FE）”和“下位哪个零件参数偏差导致的（FC）”。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：在 DFMEA 中强行保留第四版的“特殊特性分类”列并死抠打标。</strong><em>纠偏：</em>新版 DFMEA 已删除分类列，代之以可选的“筛选器代码（Filter Code）”，特殊特性的锁定被严谨移交到了 PFMEA 与制造工程的控制计划中。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：将边界图/P-图当作 FMEA 之外的“附加作业”。</strong><em>纠偏：</em>第四版中图纸往往由结构工程师单独画完存档，FMEA 会议重新天马行空填表。新版要求图纸分析直接作为步骤二（结构分析）与步骤三（功能分析）的基石，边界图上的物理连接直接转化为三级结构树。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区四：表头信息敷衍，遗漏保密级别与平台标识。</strong><em>纠偏：</em>传音海外新机型多平台共用架构，表头必须明确“年型/平台”，且必须标注保密等级，禁止使用“核心团队/编制人”等第四版旧称谓。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day089-manual-p219.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.1（原书 P219-221）（PDF 第 219 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.1（原书 P219-221）（PDF 第 219 页）</p>

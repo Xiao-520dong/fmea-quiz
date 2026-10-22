@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 005：产品与过程 FMEA 定位及跨团队协作相关性</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📘 第1章：引言与5T规划</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,30 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与应用情形（1.4 节）</strong><br>手册明确界定了 FMEA 实施的<strong>三种基本情形</strong>：<br>• <strong>情形 1（新设计、新技术或新过程）：</strong>分析范围包括完整的设计、技术或制造过程。<br>• <strong>情形 2（现有设计或过程的新应用）：</strong>设计/过程本身未变，但在<strong>新环境、新场地、新使用概况（包括工作周期、极端工况、法规变更等）</strong>下使用，范围应重点关注新条件对现有设计或过程的影响。<br>• <strong>情形 3（对现有设计或过程的工程变更）：</strong>因新技术开发、现场客诉、召回等引发设计或过程更改，必须对 FMEA 进行审查或修订。<br><strong>生产开始后（SOP 后）修订 FMEA 的 8 项触发条件：</strong>设计或过程变更、运行条件变更、法律/法规/客户规范变更、现场质量问题（工厂经验、0公里、市场投诉）、危害分析和风险评估变更、威胁分析（网络安全等）变更、产品监视中发现问题、经验教训输入。</div><div class="highlight-blue"><strong>2. DFMEA、PFMEA 定位与跨团队协同逻辑（1.4.1 - 1.4.3 节）</strong><br>• <strong>设计 FMEA（DFMEA）：</strong>由设计责任工程师主导，在交付生产之前，基于块/边界图分析系统、子系统及组件的功能与接口关系，将潜在<strong>设计缺陷</strong>风险降至最低。<br>• <strong>过程 FMEA（PFMEA）：</strong>分析<strong>制造、装配和物流过程</strong>中的潜在失效，通过分析<strong>过程变差（Process Variation）</strong>导致的失效模式，确保生产出的产品完全符合设计意图。过程中的失效起因（如工装磨损、装配干涉）与 DFMEA 的起因本质不同。<br>• <strong>跨团队协同与严重度一致性（核心法则）：</strong><br>① <strong>严重度（S）继承原则：</strong>制造商建立协同的基石是——<strong>当产品失效对最终用户的影响相同时，DFMEA 与 PFMEA 中的严重度（Severity）评级必须保持一致</strong>！<br>② <strong>特征级联传递：</strong>如果产品失效对最终用户（整机/整车）的影响未纳入 PFMEA，两者的关联性就不成立。必须将 DFMEA 中特定失效影响对应的<strong>设计失效特征（产品特性/特殊特性 SC/CC）</strong>输入到 PFMEA 中，以便制造团队识别制造变差对其产生的影响。<br>③ <strong>供应链共识：</strong>OEM 与各层级供应商（Tier 1/2/3）需对影响及严重度评审达成共识，确保全链条风险透明。</div><div class="highlight-green"><strong>3. 传音研发与智能制造实战场景</strong><br>• <strong>情形 2 实战：</strong>传音成熟手机平台进入非洲撒哈拉以南超干旱多沙尘地区或沿海高湿热地区时，硬件架构虽沿用老方案，但属于典型的“现有设计的新应用”。DFMEA 必须重构环境分析，评估沙尘侵入受话器防尘网及汗液腐蚀 Type-C 接口的失效风险。<br>• <strong>跨团队接口协同实战（点胶密封）：</strong><br>在某防水机型开发中，结构 DFMEA 定义：“中框与后盖点胶密封失效 → 最终用户水汽浸入导致整机主板短路黑屏”，严重度评级确定为 <strong>S = 8</strong>，并输出关键产品特性“点胶线宽 0.8±0.1mm、无气泡断胶”。<br>南昌/重庆制造工程团队在编制 PFMEA 时，过程步骤“后盖自动点胶”分析失效模式“胶水断胶/气泡”，由于其导致相同的整机进水失效影响，<strong>PFMEA 中的严重度必须强制继承 S = 8</strong>，绝不能因为“产线气密机可以拦截报废”而误将严重度打为 3 或 4（产线拦截能力反映在探测度 D，不能调低严重度 S）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 DFMEA 与 PFMEA 的失效起因。</strong>在 DFMEA 的失效起因栏中填写“产线工人漏装密封圈”或“贴片温度过高”（这是过程变差，属于 PFMEA 范围）；或者在 PFMEA 中将失效起因写为“元器件耐压值设计不足”（这是设计缺陷，属于 DFMEA 范围）。<br>• <strong>误区二：PFMEA 严重度脱离最终用户孤立打分。</strong>制造工程师只关注“产线是否造成设备停机或产品报废”，随意将用户功能失效的严重度降级，切断了与 DFMEA 的血缘追溯关系。<br>• <strong>误区三：把 FMEA 当作事后合规文档。</strong>手册 1.5.2 明确指出，FMEA 是<strong>“事前行为（Before-the-event）”</strong>而非“事后记录”。开模后或试产（T0/EVT）结束后补写 FMEA，无法起到早期消除设计与制造风险的作用。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与应用情形（1.4 节）</span></div>手册明确界定了 FMEA 实施的<strong>三种基本情形</strong>：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>情形 1（新设计、新技术或新过程）：</strong>分析范围包括完整的设计、技术或制造过程。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>情形 2（现有设计或过程的新应用）：</strong>设计/过程本身未变，但在<strong>新环境、新场地、新使用概况（包括工作周期、极端工况、法规变更等）</strong>下使用，范围应重点关注新条件对现有设计或过程的影响。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>情形 3（对现有设计或过程的工程变更）：</strong>因新技术开发、现场客诉、召回等引发设计或过程更改，必须对 FMEA 进行审查或修订。</div></div>
+<strong>生产开始后（SOP 后）修订 FMEA 的 8 项触发条件：</strong>设计或过程变更、运行条件变更、法律/法规/客户规范变更、现场质量问题（工厂经验、0公里、市场投诉）、危害分析和风险评估变更、威胁分析（网络安全等）变更、产品监视中发现问题、经验教训输入。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. DFMEA、PFMEA 定位与跨团队协同逻辑（1.4.1 - 1.4.3 节）</span></div>• <strong>设计 FMEA（DFMEA）：</strong>由设计责任工程师主导，在交付生产之前，基于块/边界图分析系统、子系统及组件的功能与接口关系，将潜在<strong>设计缺陷</strong>风险降至最低。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程 FMEA（PFMEA）：</strong>分析<strong>制造、装配和物流过程</strong>中的潜在失效，通过分析<strong>过程变差（Process Variation）</strong>导致的失效模式，确保生产出的产品完全符合设计意图。过程中的失效起因（如工装磨损、装配干涉）与 DFMEA 的起因本质不同。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>跨团队协同与严重度一致性（核心法则）：</strong></div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>严重度（S）继承原则：</strong>制造商建立协同的基石是——<strong>当产品失效对最终用户的影响相同时，DFMEA 与 PFMEA 中的严重度（Severity）评级必须保持一致</strong>！</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>特征级联传递：</strong>如果产品失效对最终用户（整机/整车）的影响未纳入 PFMEA，两者的关联性就不成立。必须将 DFMEA 中特定失效影响对应的<strong>设计失效特征（产品特性/特殊特性 SC/CC）</strong>输入到 PFMEA 中，以便制造团队识别制造变差对其产生的影响。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>供应链共识：</strong>OEM 与各层级供应商（Tier 1/2/3）需对影响及严重度评审达成共识，确保全链条风险透明。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发与智能制造实战场景</span></div>• <strong>情形 2 实战：</strong>传音成熟手机平台进入非洲撒哈拉以南超干旱多沙尘地区或沿海高湿热地区时，硬件架构虽沿用老方案，但属于典型的“现有设计的新应用”。DFMEA 必须重构环境分析，评估沙尘侵入受话器防尘网及汗液腐蚀 Type-C 接口的失效风险。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>跨团队接口协同实战（点胶密封）：</strong></div></div>
+在某防水机型开发中，结构 DFMEA 定义：“中框与后盖点胶密封失效 → 最终用户水汽浸入导致整机主板短路黑屏”，严重度评级确定为 <strong>S = 8</strong>，并输出关键产品特性“点胶线宽 0.8±0.1mm、无气泡断胶”。
+南昌/重庆制造工程团队在编制 PFMEA 时，过程步骤“后盖自动点胶”分析失效模式“胶水断胶/气泡”，由于其导致相同的整机进水失效影响，<strong>PFMEA 中的严重度必须强制继承 S = 8</strong>，绝不能因为“产线气密机可以拦截报废”而误将严重度打为 3 或 4（产线拦截能力反映在探测度 D，不能调低严重度 S）。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆 DFMEA 与 PFMEA 的失效起因。</strong>在 DFMEA 的失效起因栏中填写“产线工人漏装密封圈”或“贴片温度过高”（这是过程变差，属于 PFMEA 范围）；或者在 PFMEA 中将失效起因写为“元器件耐压值设计不足”（这是设计缺陷，属于 DFMEA 范围）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：PFMEA 严重度脱离最终用户孤立打分。</strong>制造工程师只关注“产线是否造成设备停机或产品报废”，随意将用户功能失效的严重度降级，切断了与 DFMEA 的血缘追溯关系。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：把 FMEA 当作事后合规文档。</strong>手册 1.5.2 明确指出，FMEA 是<strong>“事前行为（Before-the-event）”</strong>而非“事后记录”。开模后或试产（T0/EVT）结束后补写 FMEA，无法起到早期消除设计与制造风险的作用。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-1-4-1.jpg?v=1792660128" alt="图 1.4-1 FMEA 协作（原书第 8 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 1.4-1 FMEA 协作（原书第 8 页）</p>

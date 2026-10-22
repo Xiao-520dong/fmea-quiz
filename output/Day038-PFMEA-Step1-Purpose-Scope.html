@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 038：PFMEA 步骤一（规划与准备）：目的与确定过程边界的六大维度</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node active"><div class="step-dot">🎯</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,31 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. PFMEA 步骤一（规划与准备）的核心目的与主要目标</strong><br>过程 FMEA（PFMEA）步骤一的核心目的，是<strong>描述 PFMEA 项目评审中包含或不包含的产品/过程</strong>。组织内所有制造过程理论上均可通过 PFMEA 进行分析或重新分析，本步骤使企业能够在较高水平上评审所有过程，最终决定需要优先分析哪些过程，其总体优势在于<strong>将宝贵的工程与质量资源集中在优先级最高的过程上</strong>。<br>主要目标包含五大维度：<br>① <strong>项目确定</strong>：明确顾客购买内容、是否有新要求及谁拥有设计控制权；<br>② <strong>项目计划（5T）</strong>：明确目的（InTent）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools）；<br>③ <strong>分析边界</strong>：清晰划定分析中“包含什么”和“不包含什么”（两者同等重要）；<br>④ <strong>基准 FMEA 确定</strong>：根据过往经验教训确定可沿用的基准；<br>⑤ <strong>奠定结构分析基础</strong>：为步骤二构建过程流程和物理结构提供输入。</div><div class="highlight-blue"><strong>2. 确定过程边界与分析范围的判定输入与考量因素</strong><br>原书明确指出，确定 PFMEA 边界时需依托的输入文件及考量维度：<br>• <strong>边界确定的关键输入</strong>：法律要求、技术要求、顾客期望（内/外部）、图纸/3D模型、BOM、以往类似产品 FMEA、DFM/A（可制造性/装配性设计）要求、QFD、过程方块图等。<br>• <strong>全工厂全生命周期覆盖</strong>：受 PFMEA 管辖的过程绝不仅限于产线组装，还涵盖：<strong>物料接收、零件/材料储存、厂内交付/搬运、加工制造、装配、包装、贴标、成品运输、仓储、设备维护过程、检验测量过程，以及返工和返修过程（Rework & Repair）</strong>。<br>• <strong>确定分析范围的七大考量维度</strong>：① 技术新颖性/创新程度；② 质量/可靠性历史（内部良率、0公里、现场客诉、保修索赔）；③ 设计复杂性；④ 人员和系统安全；⑤ 网络物理系统（Cyber-Physical Systems，包含网络安全）；⑥ 法律合规性；⑦ 目录和标准零件。<br>• <strong>触发 PFMEA 纳入或更新的十类典型情形</strong>：新产品/新过程、产品或过程变更、运行环境变更、法规/标准/顾客规范变更、0公里或现场保修问题、可能产生危险的过程失效、内部监视异常、人机工程（Ergonomics）问题及持续改进需求。</div><div class="highlight-green"><strong>3. 传音制造实战场景：智能手机制造全流程边界界定</strong><br>在传音海外制造工厂或国内制造基地（如重庆、宜宾）策划一款全新中高端手机的 PFMEA 时：<br>① <strong>边界界定（包含与不包含）</strong>：必须打破“PFMEA 只管主板贴片和整机组装”的传统狭隘视角。例如对于极易受静电与湿气影响的器件（如高像素摄像头模组、屏下指纹 Sensor、受潮易分层的 BGA 芯片），<strong>原材料 IQC 接收过程、恒温恒湿仓储管理、产线料车配送搬运过程</strong>必须明确纳入 PFMEA 分析边界；<br>② <strong>离线与异常过程纳管</strong>：针对产线常见的主板屏蔽盖手工补焊、显示屏贴合气泡不良后的<strong>返工/返修工位（Rework Process）</strong>，以及贴片机吸嘴保养、点胶阀定期清洗等<strong>工装设备维护过程</strong>，必须正式列入 PFMEA 边界，绝不允许作为“游离在体系外的灰色地带”；<br>③ <strong>技术创新与人机工程触发</strong>：若新机型首次导入“超薄潜望式长焦模组”或“高压点胶密封工艺”，因具备技术新颖性与装配高精度要求，必须优先立项并作为深度 PFMEA 分析范围。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：PFMEA 边界仅包含正常作业流程，排除返工和维护过程</strong>。很多工程师认为返工（Rework）是个别现象、设备维护属于设备部职责，不在 PFMEA 考虑范围内。原书明确强调：<strong>返工、返修、维护、储存、物料接收过程均对最终产品质量有重大影响，均属于 PFMEA 可考虑的分析范围</strong>。<br>• <strong>误区二：只定义“包含什么”，不定义“不包含什么”</strong>。原书强调“在分析中，不包含和包含的内容同等重要”。如果未明确边界排除项（如来料芯片的内部晶圆制造由供应商 PFMEA 管辖，本厂仅管入库存储与贴装），将导致团队在接口分析时产生职责争议或遗漏接口风险。<br>• <strong>误区三：项目范围一成不变，未根据现场质量动态触发</strong>。以为量产后 PFMEA 就可以封存。根据手册，一旦出现“0公里缺陷、现场保修索赔、人机工程安全隐患或产品/过程变更”，必须触发 PFMEA 边界重新评估与更新。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. PFMEA 步骤一（规划与准备）的核心目的与主要目标</span></div>过程 FMEA（PFMEA）步骤一的核心目的，是<strong>描述 PFMEA 项目评审中包含或不包含的产品/过程</strong>。组织内所有制造过程理论上均可通过 PFMEA 进行分析或重新分析，本步骤使企业能够在较高水平上评审所有过程，最终决定需要优先分析哪些过程，其总体优势在于<strong>将宝贵的工程与质量资源集中在优先级最高的过程上</strong>。
+主要目标包含五大维度：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>项目确定</strong>：明确顾客购买内容、是否有新要求及谁拥有设计控制权；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>项目计划（5T）</strong>：明确目的（InTent）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools）；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>分析边界</strong>：清晰划定分析中“包含什么”和“不包含什么”（两者同等重要）；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div><strong>基准 FMEA 确定</strong>：根据过往经验教训确定可沿用的基准；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑤</span><div><strong>奠定结构分析基础</strong>：为步骤二构建过程流程和物理结构提供输入。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 确定过程边界与分析范围的判定输入与考量因素</span></div>原书明确指出，确定 PFMEA 边界时需依托的输入文件及考量维度：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>边界确定的关键输入</strong>：法律要求、技术要求、顾客期望（内/外部）、图纸/3D模型、BOM、以往类似产品 FMEA、DFM/A（可制造性/装配性设计）要求、QFD、过程方块图等。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>全工厂全生命周期覆盖</strong>：受 PFMEA 管辖的过程绝不仅限于产线组装，还涵盖：<strong>物料接收、零件/材料储存、厂内交付/搬运、加工制造、装配、包装、贴标、成品运输、仓储、设备维护过程、检验测量过程，以及返工和返修过程（Rework & Repair）</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>确定分析范围的七大考量维度</strong>：① 技术新颖性/创新程度；② 质量/可靠性历史（内部良率、0公里、现场客诉、保修索赔）；③ 设计复杂性；④ 人员和系统安全；⑤ 网络物理系统（Cyber-Physical Systems，包含网络安全）；⑥ 法律合规性；⑦ 目录和标准零件。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>触发 PFMEA 纳入或更新的十类典型情形</strong>：新产品/新过程、产品或过程变更、运行环境变更、法规/标准/顾客规范变更、0公里或现场保修问题、可能产生危险的过程失效、内部监视异常、人机工程（Ergonomics）问题及持续改进需求。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音制造实战场景：智能手机制造全流程边界界定</span></div>在传音海外制造工厂或国内制造基地（如重庆、宜宾）策划一款全新中高端手机的 PFMEA 时：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>边界界定（包含与不包含）</strong>：必须打破“PFMEA 只管主板贴片和整机组装”的传统狭隘视角。例如对于极易受静电与湿气影响的器件（如高像素摄像头模组、屏下指纹 Sensor、受潮易分层的 BGA 芯片），<strong>原材料 IQC 接收过程、恒温恒湿仓储管理、产线料车配送搬运过程</strong>必须明确纳入 PFMEA 分析边界；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>离线与异常过程纳管</strong>：针对产线常见的主板屏蔽盖手工补焊、显示屏贴合气泡不良后的<strong>返工/返修工位（Rework Process）</strong>，以及贴片机吸嘴保养、点胶阀定期清洗等<strong>工装设备维护过程</strong>，必须正式列入 PFMEA 边界，绝不允许作为“游离在体系外的灰色地带”；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>技术创新与人机工程触发</strong>：若新机型首次导入“超薄潜望式长焦模组”或“高压点胶密封工艺”，因具备技术新颖性与装配高精度要求，必须优先立项并作为深度 PFMEA 分析范围。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：PFMEA 边界仅包含正常作业流程，排除返工和维护过程</strong>。很多工程师认为返工（Rework）是个别现象、设备维护属于设备部职责，不在 PFMEA 考虑范围内。原书明确强调：<strong>返工、返修、维护、储存、物料接收过程均对最终产品质量有重大影响，均属于 PFMEA 可考虑的分析范围</strong>。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：只定义“包含什么”，不定义“不包含什么”</strong>。原书强调“在分析中，不包含和包含的内容同等重要”。如果未明确边界排除项（如来料芯片的内部晶圆制造由供应商 PFMEA 管辖，本厂仅管入库存储与贴装），将导致团队在接口分析时产生职责争议或遗漏接口风险。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：项目范围一成不变，未根据现场质量动态触发</strong>。以为量产后 PFMEA 就可以封存。根据手册，一旦出现“0公里缺陷、现场保修索赔、人机工程安全隐患或产品/过程变更”，必须触发 PFMEA 边界重新评估与更新。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day038-manual-p77.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.1.1 - 3.1.2 节（上）（PDF 第 77 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.1.1 - 3.1.2 节（上）（PDF 第 77 页）</p>

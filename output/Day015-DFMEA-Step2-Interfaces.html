@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 015：DFMEA 步骤二：五种主要接口类型与接口分析</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,30 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>接口分析（Interface Analysis）用于描述系统要素之间的交互作用。在复杂系统设计中，失效往往发生在要素之间的“结合部”与“交互界面”。接口分析将方块图/边界图中展示的所有内、外部接口的关系性质（如：强/弱/无、有益/有害）及其物理类型形成结构化文件。<br>根据《AIAG & VDA FMEA 手册》，接口分析为设计 FMEA 提供了极其有价值的输入（如主要功能、接口功能，以及相邻系统与环境影响导致的潜在失效起因/机理），同时也为参数图（P图）提供了理想功能和噪音因素的输入。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br>原书明确定义了<strong>五种主要接口类型</strong>以及<strong>一种特殊接口形态</strong>：<br>① <strong>物理连接（Physical Connection）：</strong>支架、螺栓紧固、卡扣、夹紧、胶粘等硬性或柔性机械连接；<br>② <strong>材料交换（Material Exchange）：</strong>气压平衡、液压油、水、相变介质或任何流体、物料的流通与交换；<br>③ <strong>能量传递（Energy Transfer）：</strong>热量传递（传导/对流/辐射）、机械运动传递（如齿轮、铰链、连杆传动）、摩擦力传递、电磁能量感应等；<br>④ <strong>数据交换（Data Exchange）：</strong>计算机/芯片的输入或输出、线束电平、总线电信号、射频信号通信，以及网络安全（Cybersecurity）相关的信息交互；<br>⑤ <strong>人-机（Human-Machine）：</strong>人机交互界面，例如按键、触控开关、屏幕显示、声音提示/告警、机身握持手感等；<br>⑥ <strong>特殊接口形态——物理间隙（Clearance/Gap）：</strong>没有物理连接的零件之间的物理间隙，间隙可以是<strong>静态间隙</strong>（如装配避位、绝缘安全距离）或<strong>动态间隙</strong>（如运动部件摆幅避空、电池充放电膨胀余量）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及穿戴设备研发中，接口分析是预防“板级集成与整机装配失效”的核心工具：<br>• <strong>物理连接 + 物理间隙：</strong>在电池仓设计中，电池与中框采用易拉胶固定（物理连接），但四周必须保留充放电循环引起的厚度与长宽膨胀余量（动态物理间隙）。若间隙不足，会导致挤压挤爆屏幕或刺穿电芯引发起火。<br>• <strong>能量传递：</strong>高算力芯片（SoC）通过导热硅脂和均热板（VC）向铝合金中框传递热量（热能传递）。若导热界面接触热阻过大，会导致芯片过热降频卡顿。<br>• <strong>材料交换：</strong>整机具备 IP54/IP68 防水防尘等级时，听筒/喇叭出声孔与泄气孔采用 ePTFE 防水透气膜，既要保证空气内外气压平衡（材料交换），又要阻止液态水分子进入。<br>• <strong>数据交换：</strong>主板与副板之间通过柔性印制板（FPC）传递 MIPI 屏幕信号及快充电流，高频数字差分信号极易对周边的射频天线造成 EMI 电磁干扰（有害的数据/能量接口交互）。<br>• <strong>人-机接口：</strong>侧键（电源键/音量键）的行程、段落感压强曲线设计，直接决定了用户的物理按压手感与误触防范。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区1：只看“有形的零件”，忽视“无形的间隙”。</strong>许多工程师只把螺钉、胶水当接口，遗漏了“物理间隙”。案例：摄像头模组（Camera Deco）与玻璃后盖未保留公差动态干涉间隙，整机微跌落测试中直接撞击碎裂。<br>• <strong>误区2：只记录“有益的交互”，遗漏“有害的交互”。</strong>接口不仅有预期的“正常信号与动力传递”，还伴随副产物。例如：马达振动（有益）伴随着对主板晶振的机械共振冲击（有害）；大电流走线（有益）伴随着辐射 EMI 噪声干扰射频接收（有害）。接口分析必须注明性质是“有益”还是“有害”。<br>• <strong>误区3：接口分析与 P 图/功能分析割裂。</strong>接口分析不仅是划分类别，其直接输出物是步骤三（功能分析）中的接口功能定义，以及 P 图中的噪音因素（如外部传入的热量、振动等）。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>接口分析（Interface Analysis）用于描述系统要素之间的交互作用。在复杂系统设计中，失效往往发生在要素之间的“结合部”与“交互界面”。接口分析将方块图/边界图中展示的所有内、外部接口的关系性质（如：强/弱/无、有益/有害）及其物理类型形成结构化文件。
+根据《AIAG & VDA FMEA 手册》，接口分析为设计 FMEA 提供了极其有价值的输入（如主要功能、接口功能，以及相邻系统与环境影响导致的潜在失效起因/机理），同时也为参数图（P图）提供了理想功能和噪音因素的输入。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div>原书明确定义了<strong>五种主要接口类型</strong>以及<strong>一种特殊接口形态</strong>：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>物理连接（Physical Connection）：</strong>支架、螺栓紧固、卡扣、夹紧、胶粘等硬性或柔性机械连接；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>材料交换（Material Exchange）：</strong>气压平衡、液压油、水、相变介质或任何流体、物料的流通与交换；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>能量传递（Energy Transfer）：</strong>热量传递（传导/对流/辐射）、机械运动传递（如齿轮、铰链、连杆传动）、摩擦力传递、电磁能量感应等；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div><strong>数据交换（Data Exchange）：</strong>计算机/芯片的输入或输出、线束电平、总线电信号、射频信号通信，以及网络安全（Cybersecurity）相关的信息交互；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑤</span><div><strong>人-机（Human-Machine）：</strong>人机交互界面，例如按键、触控开关、屏幕显示、声音提示/告警、机身握持手感等；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑥</span><div><strong>特殊接口形态——物理间隙（Clearance/Gap）：</strong>没有物理连接的零件之间的物理间隙，间隙可以是<strong>静态间隙</strong>（如装配避位、绝缘安全距离）或<strong>动态间隙</strong>（如运动部件摆幅避空、电池充放电膨胀余量）。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机及穿戴设备研发中，接口分析是预防“板级集成与整机装配失效”的核心工具：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>物理连接 + 物理间隙：</strong>在电池仓设计中，电池与中框采用易拉胶固定（物理连接），但四周必须保留充放电循环引起的厚度与长宽膨胀余量（动态物理间隙）。若间隙不足，会导致挤压挤爆屏幕或刺穿电芯引发起火。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>能量传递：</strong>高算力芯片（SoC）通过导热硅脂和均热板（VC）向铝合金中框传递热量（热能传递）。若导热界面接触热阻过大，会导致芯片过热降频卡顿。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>材料交换：</strong>整机具备 IP54/IP68 防水防尘等级时，听筒/喇叭出声孔与泄气孔采用 ePTFE 防水透气膜，既要保证空气内外气压平衡（材料交换），又要阻止液态水分子进入。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>数据交换：</strong>主板与副板之间通过柔性印制板（FPC）传递 MIPI 屏幕信号及快充电流，高频数字差分信号极易对周边的射频天线造成 EMI 电磁干扰（有害的数据/能量接口交互）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>人-机接口：</strong>侧键（电源键/音量键）的行程、段落感压强曲线设计，直接决定了用户的物理按压手感与误触防范。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区1：只看“有形的零件”，忽视“无形的间隙”。</strong>许多工程师只把螺钉、胶水当接口，遗漏了“物理间隙”。案例：摄像头模组（Camera Deco）与玻璃后盖未保留公差动态干涉间隙，整机微跌落测试中直接撞击碎裂。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区2：只记录“有益的交互”，遗漏“有害的交互”。</strong>接口不仅有预期的“正常信号与动力传递”，还伴随副产物。例如：马达振动（有益）伴随着对主板晶振的机械共振冲击（有害）；大电流走线（有益）伴随着辐射 EMI 噪声干扰射频接收（有害）。接口分析必须注明性质是“有益”还是“有害”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区3：接口分析与 P 图/功能分析割裂。</strong>接口分析不仅是划分类别，其直接输出物是步骤三（功能分析）中的接口功能定义，以及 P 图中的噪音因素（如外部传入的热量、振动等）。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day015-manual-p35.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.2.4.2 节（PDF 第 35 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.2.4.2 节（PDF 第 35 页）</p>

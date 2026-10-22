@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 045：PFMEA 步骤四：过程失效模式（FM）三大类别与正确表述</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚡</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,33 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与基本假设（原书 3.4.5 节）</strong><br>• <strong>过程失效模式（FM）的定义：</strong>指“过程导致产品无法交付或提供预期功能的方式”。失效模式针对的是特定工序步骤（Focus Element）未满足其功能要求。<br>• <strong>关键假设 1（设计正确假设）：</strong>团队在进行 PFMEA 分析时，<strong>应假设产品的基本设计是正确的</strong>。若在评审中识别出设计缺陷（例如零件公差设计过紧导致产线无法装配），PFMEA 团队应将其反馈给产品设计团队（DFMEA 团队）协同解决，而非用过程手段无限期掩盖设计缺陷。<br>• <strong>关键假设 2（可能发生但非必然）：</strong>假设失效模式可能出现，但不一定会必然出现。<br>• <strong>表述规范：</strong>失效模式必须使用<strong>技术术语（Technical Terms）</strong>进行客观描述，严禁描述为“顾客容易察觉的现象”或症状（后者属于失效影响 FE）。<br>• <strong>完整性验证来源：</strong>以往错误案例、不合格品/废品报告、集体研讨（Brainstorming）、对标类似过程、以及分析类似组件的最终用户和后续操作的索赔案例。</div><div class="highlight-blue"><strong>2. 潜在失效模式的类别与典型表现（原书 3.4.5 节）</strong><br>原手册将潜在失效模式的类型系统划分为以下几种形态（与步骤三功能类型严格对应）：<br>• <strong>过程功能丧失 / 操作未执行：</strong>例如完全漏装零件、漏焊、漏贴辅料、跳过检测工位、标签丢失。<br>• <strong>部分功能丧失 / 操作不完整：</strong>例如连接器未完全到位（假扣合）、紧固螺钉拧入扭矩不足、点胶量不足。<br>• <strong>过程功能降低：</strong>过程能力不足导致的性能衰减。<br>• <strong>过程功能超出预期（高出太多）：</strong>例如打胶过多溢胶、压合力过大导致压损零件、孔加工过深、表面处理过度。<br>• <strong>间歇过程功能 / 操作不一致 / 运行不稳定：</strong>偶发性未压实、加热温度波动导致虚焊。<br>• <strong>非预期过程功能 / 操作错误 / 安装错误零件：</strong>例如装配错误料号的元器件、ECU 刷新时烧录错误版本软件、接收不合格零件而拒收合格零件。<br>• <strong>过程功能延迟（操作太迟）：</strong>点胶后保压延迟过长导致胶水表面结皮固化失效。<br>• <strong>原书典型失效模式清单：</strong>孔太浅/太深/缺失或偏离位置；表面脏污；表面处理过度；连接器插脚错位；连接器未完全到位；接收不合格零件/拒收合格零件/跳过检测工位；标签丢失；条形码不可读；ECU 刷新时用错软件。</div><div class="highlight-green"><strong>3. 传音研发与智能制造实战场景</strong><br>结合传音手机主板 SMT、整机组装（FA）与软件烧录环节，失效模式必须规范为工程技术术语：<br>• <strong>案例 1（软件下载工位）：</strong>若操作将测试版工程 ROM 烧录进量产机，错误描述为“手机无法激活/开机卡顿”（这是 FE），标准 FM 描述应为“<strong>软件烧录错误（刷入错误版本/配置的固件软件）</strong>”（对应非预期过程功能）。<br>• <strong>案例 2（主板 BTB 连接器扣合工位）：</strong>错误描述为“屏幕黑屏/触控失灵”（这是 FE），标准 FM 描述应为“<strong>BTB 连接器浮高 / 未完全到位</strong>”或“<strong>BTB 端子引脚错位 / 压伤变形</strong>”（对应部分功能丧失或操作错误）。<br>• <strong>案例 3（中框点胶工位）：</strong>错误描述为“屏幕漏光/后盖脱胶”（这是 FE），标准 FM 描述应为“<strong>中框密封胶点胶轨迹偏离预定路径</strong>”或“<strong>点胶量不足 / 溢胶</strong>”。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆失效模式（FM）与失效影响（FE）。</strong>把“产线停线”、“客户投诉手机不开机”、“屏幕无显示”直接写在 FM 列。<strong>正解：</strong>FM 是工序本身的物理/工程缺陷（如“FPC 连接器虚插”），FE 才是该缺陷导致的后果（“屏幕无显示”）。<br>• <strong>误区二：在 PFMEA 中擅自归咎于产品设计问题。</strong>例如“结构件卡扣间隙过小导致装配困难”直接作为制造过程不可控理由。<strong>正解：</strong>手册明确规定应假设“产品基本设计是正确的”，制造侧应专注于工艺参数与操作；若确实是公差干涉等设计问题，必须通过工程变更（ECR/ECO）与 DFMEA 团队接口闭环。<br>• <strong>误区三：用口语化或含糊词汇表述 FM。</strong>例如“员工操作不当”、“组装不良”、“机器故障”。<strong>正解：</strong>失效模式必须是清晰的物理技术状态（如“螺钉滑牙”、“螺钉浮高”、“辅料贴附偏位超出图纸公差 ±0.1mm”）。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与基本假设（原书 3.4.5 节）</span></div>• <strong>过程失效模式（FM）的定义：</strong>指“过程导致产品无法交付或提供预期功能的方式”。失效模式针对的是特定工序步骤（Focus Element）未满足其功能要求。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>关键假设 1（设计正确假设）：</strong>团队在进行 PFMEA 分析时，<strong>应假设产品的基本设计是正确的</strong>。若在评审中识别出设计缺陷（例如零件公差设计过紧导致产线无法装配），PFMEA 团队应将其反馈给产品设计团队（DFMEA 团队）协同解决，而非用过程手段无限期掩盖设计缺陷。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>关键假设 2（可能发生但非必然）：</strong>假设失效模式可能出现，但不一定会必然出现。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>表述规范：</strong>失效模式必须使用<strong>技术术语（Technical Terms）</strong>进行客观描述，严禁描述为“顾客容易察觉的现象”或症状（后者属于失效影响 FE）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>完整性验证来源：</strong>以往错误案例、不合格品/废品报告、集体研讨（Brainstorming）、对标类似过程、以及分析类似组件的最终用户和后续操作的索赔案例。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 潜在失效模式的类别与典型表现（原书 3.4.5 节）</span></div>原手册将潜在失效模式的类型系统划分为以下几种形态（与步骤三功能类型严格对应）：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程功能丧失 / 操作未执行：</strong>例如完全漏装零件、漏焊、漏贴辅料、跳过检测工位、标签丢失。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>部分功能丧失 / 操作不完整：</strong>例如连接器未完全到位（假扣合）、紧固螺钉拧入扭矩不足、点胶量不足。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程功能降低：</strong>过程能力不足导致的性能衰减。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程功能超出预期（高出太多）：</strong>例如打胶过多溢胶、压合力过大导致压损零件、孔加工过深、表面处理过度。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>间歇过程功能 / 操作不一致 / 运行不稳定：</strong>偶发性未压实、加热温度波动导致虚焊。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>非预期过程功能 / 操作错误 / 安装错误零件：</strong>例如装配错误料号的元器件、ECU 刷新时烧录错误版本软件、接收不合格零件而拒收合格零件。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程功能延迟（操作太迟）：</strong>点胶后保压延迟过长导致胶水表面结皮固化失效。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>原书典型失效模式清单：</strong>孔太浅/太深/缺失或偏离位置；表面脏污；表面处理过度；连接器插脚错位；连接器未完全到位；接收不合格零件/拒收合格零件/跳过检测工位；标签丢失；条形码不可读；ECU 刷新时用错软件。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发与智能制造实战场景</span></div>结合传音手机主板 SMT、整机组装（FA）与软件烧录环节，失效模式必须规范为工程技术术语：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>案例 1（软件下载工位）：</strong>若操作将测试版工程 ROM 烧录进量产机，错误描述为“手机无法激活/开机卡顿”（这是 FE），标准 FM 描述应为“<strong>软件烧录错误（刷入错误版本/配置的固件软件）</strong>”（对应非预期过程功能）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>案例 2（主板 BTB 连接器扣合工位）：</strong>错误描述为“屏幕黑屏/触控失灵”（这是 FE），标准 FM 描述应为“<strong>BTB 连接器浮高 / 未完全到位</strong>”或“<strong>BTB 端子引脚错位 / 压伤变形</strong>”（对应部分功能丧失或操作错误）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>案例 3（中框点胶工位）：</strong>错误描述为“屏幕漏光/后盖脱胶”（这是 FE），标准 FM 描述应为“<strong>中框密封胶点胶轨迹偏离预定路径</strong>”或“<strong>点胶量不足 / 溢胶</strong>”。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆失效模式（FM）与失效影响（FE）。</strong>把“产线停线”、“客户投诉手机不开机”、“屏幕无显示”直接写在 FM 列。<strong>正解：</strong>FM 是工序本身的物理/工程缺陷（如“FPC 连接器虚插”），FE 才是该缺陷导致的后果（“屏幕无显示”）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：在 PFMEA 中擅自归咎于产品设计问题。</strong>例如“结构件卡扣间隙过小导致装配困难”直接作为制造过程不可控理由。<strong>正解：</strong>手册明确规定应假设“产品基本设计是正确的”，制造侧应专注于工艺参数与操作；若确实是公差干涉等设计问题，必须通过工程变更（ECR/ECO）与 DFMEA 团队接口闭环。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：用口语化或含糊词汇表述 FM。</strong>例如“员工操作不当”、“组装不良”、“机器故障”。<strong>正解：</strong>失效模式必须是清晰的物理技术状态（如“螺钉滑牙”、“螺钉浮高”、“辅料贴附偏位超出图纸公差 ±0.1mm”）。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚡ 理论失效链（FE ← FM ← FC）三维推导图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box" style="border-color:#f56565; background:#fff5f5;"><span class="fb-icon">💥</span><div class="fb-title">1. 失效影响 (FE)</div><div class="fb-desc">上一级系统/本厂/下游厂/最终用户感知的后果 → 决定严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#ed8936; background:#fffaf0;"><span class="fb-icon">⚠️</span><div class="fb-title">2. 失效模式 (FM)</div><div class="fb-desc">关注要素未满足预期功能/产品特性的表现（丢失/退化/间歇/非预期）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔍</span><div class="fb-title">3. 失效起因 (FC)</div><div class="fb-desc">下一级特性设计不足或 4M 过程变差根因 → 决定频度(O/F)</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day045-manual-p95.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95 页）</p>

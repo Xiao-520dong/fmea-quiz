@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 035：DFMEA 步骤六（优化）：优化目的、改进优先顺序与责任分配</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🛠️</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,21 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与优化目的（2.6.1）</strong><br>设计优化的主要目的是确定减轻风险的措施以及评估这些措施的有效性，其本质是通过改进设计来制定降低风险和增加顾客满意度的措施。<br><ul><li><strong>主要目标：</strong>确认降低风险的必要措施；为措施实施分配职责和任务期限；实施措施并将其形成文件（含有效性确认与重新评估）；促进跨团队、管理层、顾客和供应商在潜在失效方面的协作；为改进产品要求和预防/探测控制提供基础。</li><li><strong>措施的实质属性：</strong>优化措施必须是<strong>具体、可衡量、可实现（Specific, Measurable, Achievable）</strong>的措施，而不是可能永远不会实施的潜在或口头意向。</li><li><strong>与现有控制的区别：</strong>优化措施<strong>不用于记录已经计划好的活动</strong>，因为既定活动已作为“现有预防控制（PC）”或“现有探测控制（DC）”在步骤五初始风险分析中评估过了。如果团队评估后判定无需进一步采取措施，必须在备注中明确注明<strong>“无需进一步的措施”</strong>，以示风险分析闭环。</li></ul></div><div class="highlight-blue"><strong>2. 优化的最有效顺序与变更规则（2.6.1 & 2.6.2）</strong><br>手册明确规定了优化措施制定的最有效优先级顺序：<br><ol><li><strong>第一优先：修改设计以消除或减少失效影响（FE）：</strong>从根本上消除危险或将影响降至最低（例如改变物理架构使跌落时核心器件完全不受力）。</li><li><strong>第二优先：修改设计以降低失效起因（FC）的频度（O）：</strong>通过强化设计裕量、降额设计等方式降低失效根因发生的概率（消除或降低起因）。</li><li><strong>第三优先：提高探测（D）失效起因（FC）或失效模式（FM）的能力：</strong>在设计无法变更或频度无法进一步降低时，增加更早、更有效的验证与测试手段。</li></ol><ul><li><strong>设计修改重新评估规则：</strong>在发生一般设计修改时，所有受影响的设计要素都要重新评估。</li><li><strong>概念变更的特别要求：</strong>若发生<strong>概念变更（Concept Change）</strong>，FMEA 的<strong>所有步骤都必须针对受影响的部分进行全面评审</strong>，因为初始分析是基于已失效的旧设计概念，原分析结论已不再有效。</li><li><strong>责任分配三要素：</strong>每个措施必须分配<strong>唯一负责人（Person Responsible）</strong>与切合实际的<strong>目标完成日期（Target Completion Date）</strong>。负责人负责确保措施状态更新及实施落地，完成日期必须与产品开发计划阶段锚定（如 DV 前、PV 前、SOP 前），并最终闭环记录实际完成日期。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机新平台整机跌落风险优化中的应用实践：<br><ul><li><strong>场景说明：</strong>非洲及新兴市场用户使用场景恶劣，某中端机型在 1.5 米微跌落/自由跌落测试中，主板 BGA 芯片焊点开裂导致整机黑屏死机（FE: S=8, FC: 跌落时主板受弯曲形变应力过大, O=6, DC: EVT跌落试验, D=4，AP=H）。</li><li><strong>优化顺序落地：</strong><ul><li><em>首选措施（修改设计消减 FE/降低 O）：</em>结构团队增加主板屏蔽罩局部加强筋，并在 CPU/Flash 底角点胶（Underfill），将应力集中区域变形量减少 45%，直接将失效起因频度降至 O=2。</li><li><em>次选措施（提高探测能力 D）：</em>在原有 EVT 整机跌落测试基础上，在模流/应变片仿真阶段新增瞬态冲击仿真验证（仿真应变峰值标准），提前在方案阶段探测出应力超标缺陷，将 D 提升至 2。</li><li><em>责任与进度锁定：</em>指定整机结构主任工程师 Li 为负责人，目标完成日期绑定在“TR3 模具冻结（Tooling Freeze）前”，禁止出现未指定责任人或将日常计划列为优化措施的情况。</li></ul></li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：把“已经计划好的例行测试”写进优化措施。</strong><br><em>纠正：</em>如“安排整机做 DVT 跌落测试”本身就是标准研发流程中的已计划活动，应属于步骤五的现有探测控制（DC），绝不能当作步骤六的优化措施来充数。优化措施必须是针对高/中风险额外制定的具体改进动作。</li><li><strong>误区二：遇到高风险首先想到“加强检测/加严测试标准”（本末倒置）。</strong><br><em>纠正：</em>违反了手册的优先顺序。探测控制无法消除缺陷本身，永远是最后手段；必须优先通过修改产品几何尺寸、材料、容差等物理设计来消除影响或降低发生频度。</li><li><strong>误区三：发生设计概念变更时，仅更新当前行的 S/O/D 分数。</strong><br><em>纠正：</em>手册明确规定，一旦方案发生“概念变更”（例如由冲压中框改为压铸铝一体成型中框），前序的所有步骤（结构分析、功能分析、失效分析等）必须全部重新评审，不可简单套用旧概念的分析数据。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与优化目的（2.6.1）</span></div>设计优化的主要目的是确定减轻风险的措施以及评估这些措施的有效性，其本质是通过改进设计来制定降低风险和增加顾客满意度的措施。
+<ul><li><strong>主要目标：</strong>确认降低风险的必要措施；为措施实施分配职责和任务期限；实施措施并将其形成文件（含有效性确认与重新评估）；促进跨团队、管理层、顾客和供应商在潜在失效方面的协作；为改进产品要求和预防/探测控制提供基础。</li><li><strong>措施的实质属性：</strong>优化措施必须是<strong>具体、可衡量、可实现（Specific, Measurable, Achievable）</strong>的措施，而不是可能永远不会实施的潜在或口头意向。</li><li><strong>与现有控制的区别：</strong>优化措施<strong>不用于记录已经计划好的活动</strong>，因为既定活动已作为“现有预防控制（PC）”或“现有探测控制（DC）”在步骤五初始风险分析中评估过了。如果团队评估后判定无需进一步采取措施，必须在备注中明确注明<strong>“无需进一步的措施”</strong>，以示风险分析闭环。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 优化的最有效顺序与变更规则（2.6.1 & 2.6.2）</span></div>手册明确规定了优化措施制定的最有效优先级顺序：
+<ol><li><strong>第一优先：修改设计以消除或减少失效影响（FE）：</strong>从根本上消除危险或将影响降至最低（例如改变物理架构使跌落时核心器件完全不受力）。</li><li><strong>第二优先：修改设计以降低失效起因（FC）的频度（O）：</strong>通过强化设计裕量、降额设计等方式降低失效根因发生的概率（消除或降低起因）。</li><li><strong>第三优先：提高探测（D）失效起因（FC）或失效模式（FM）的能力：</strong>在设计无法变更或频度无法进一步降低时，增加更早、更有效的验证与测试手段。</li></ol><ul><li><strong>设计修改重新评估规则：</strong>在发生一般设计修改时，所有受影响的设计要素都要重新评估。</li><li><strong>概念变更的特别要求：</strong>若发生<strong>概念变更（Concept Change）</strong>，FMEA 的<strong>所有步骤都必须针对受影响的部分进行全面评审</strong>，因为初始分析是基于已失效的旧设计概念，原分析结论已不再有效。</li><li><strong>责任分配三要素：</strong>每个措施必须分配<strong>唯一负责人（Person Responsible）</strong>与切合实际的<strong>目标完成日期（Target Completion Date）</strong>。负责人负责确保措施状态更新及实施落地，完成日期必须与产品开发计划阶段锚定（如 DV 前、PV 前、SOP 前），并最终闭环记录实际完成日期。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机新平台整机跌落风险优化中的应用实践：
+<ul><li><strong>场景说明：</strong>非洲及新兴市场用户使用场景恶劣，某中端机型在 1.5 米微跌落/自由跌落测试中，主板 BGA 芯片焊点开裂导致整机黑屏死机（FE: S=8, FC: 跌落时主板受弯曲形变应力过大, O=6, DC: EVT跌落试验, D=4，AP=H）。</li><li><strong>优化顺序落地：</strong><ul><li><em>首选措施（修改设计消减 FE/降低 O）：</em>结构团队增加主板屏蔽罩局部加强筋，并在 CPU/Flash 底角点胶（Underfill），将应力集中区域变形量减少 45%，直接将失效起因频度降至 O=2。</li><li><em>次选措施（提高探测能力 D）：</em>在原有 EVT 整机跌落测试基础上，在模流/应变片仿真阶段新增瞬态冲击仿真验证（仿真应变峰值标准），提前在方案阶段探测出应力超标缺陷，将 D 提升至 2。</li><li><em>责任与进度锁定：</em>指定整机结构主任工程师 Li 为负责人，目标完成日期绑定在“TR3 模具冻结（Tooling Freeze）前”，禁止出现未指定责任人或将日常计划列为优化措施的情况。</li></ul></li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：把“已经计划好的例行测试”写进优化措施。</strong>
+<em>纠正：</em>如“安排整机做 DVT 跌落测试”本身就是标准研发流程中的已计划活动，应属于步骤五的现有探测控制（DC），绝不能当作步骤六的优化措施来充数。优化措施必须是针对高/中风险额外制定的具体改进动作。</li><li><strong>误区二：遇到高风险首先想到“加强检测/加严测试标准”（本末倒置）。</strong>
+<em>纠正：</em>违反了手册的优先顺序。探测控制无法消除缺陷本身，永远是最后手段；必须优先通过修改产品几何尺寸、材料、容差等物理设计来消除影响或降低发生频度。</li><li><strong>误区三：发生设计概念变更时，仅更新当前行的 S/O/D 分数。</strong>
+<em>纠正：</em>手册明确规定，一旦方案发生“概念变更”（例如由冲压中框改为压铸铝一体成型中框），前序的所有步骤（结构分析、功能分析、失效分析等）必须全部重新评审，不可简单套用旧概念的分析数据。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🛠️ 优化改进优先级与五状态闭环图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🥇</span><div class="fb-title">改进优先顺序</div><div class="fb-desc">①修改设计/过程消除FE或FM → ②增强防错降低O → ③改进探测降低D</div></div>
+                <div class="flow-box" style="border-color:#48bb78; background:#f0fff4;"><span class="fb-icon">🔄</span><div class="fb-title">五种措施状态</div><div class="fb-desc">尚未确定 → 正在决策 → 正在执行 → 已完成（凭客观证据） / 不执行</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day035-manual-p72.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72 页）</p>

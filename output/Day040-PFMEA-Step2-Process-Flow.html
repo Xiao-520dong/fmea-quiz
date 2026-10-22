@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 040：PFMEA 步骤二（结构分析）：目的与过程流程图输入</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,29 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》3.2.1 节，过程结构分析（步骤二）的核心目的在于识别制造系统，并将其系统化分解为三个层级：<strong>过程项（系统/子系统/装配线）</strong>、<strong>过程步骤（工站/工位）</strong>以及<strong>过程工作要素（4M 要素：人、机、料、环等）</strong>。<br>其主要目标包括：<br>① 分析范围的可视化；<br>② 通过结构树或过程流程图明确过程层级；<br>③ 确定具体的过程步骤和子步骤；<br>④ 促进顾客与供应商工程团队之间的接口协作与职责划分；<br>⑤ 为后续的功能分析（步骤三）奠定坚实结构基础。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 过程流程图的作用与要素：</strong>过程流程图（Process Flow Diagram）是结构分析的关键输入工具。它完整映射从组件来料检验、仓库搬运、各操作工位（如装配、润滑、压装）、检验工步直至最终成品存储/发运的全过程。流程图通过标准符号（如操作○、检验◇、搬运/运输⇨、存储△等）使物理流和操作流清晰可见。<br><strong>(2) “走流程（Walk the Process）”原则：</strong>手册明确指出，过程FMEA必须反映工程师在现场“走流程”时实际存在的过程路线，而非脱离现场的理想化设想。<br><strong>(3) 严格的时序门禁规则：</strong>手册明文规定，<strong>“在结构分析（步骤二）结束前，不得开始进行功能分析（步骤三）”</strong>。必须先厘清系统与要素的结构依赖关系，才能准确定义各级功能与失效传播路径。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机制造中心（如重庆制造基地或海外组装工厂）：<br>• <strong>顶层过程项：</strong>以“智能手机整机总装线（Final Assembly Line）”作为PFMEA的最高级别过程项。<br>• <strong>过程流程图输入：</strong>梳理从SMT主板出库、扫码上线、[OP10 摄像头模组装配]、[OP20 主板装入中框]、[OP30 螺钉拧紧工位]、运输缓冲位、到[OP40 屏幕贴合压合]及整机功能FT测试与包装发运。<br>• <strong>现场走流程校验：</strong>ME（制造工程）与PQE（过程质量）必须到产线实地核对：现场中框静电去除工步、治具转运过程是否存在，确保流程图与现场实际作业（SOP）完全吻合，避免漏掉微小搬运或中间检验步骤。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：跳过结构分析直接做功能/失效分析。</strong>部分工程师在流程图尚未细化、4M要素未明确前，就凭经验直接写失效模式。手册严格规定：结构分析未结束，严禁进入功能分析。<br>• <strong>误区二：流程图只画“增值加工工位”，忽略辅助与物流环节。</strong>原书示例明确包含“组件来料检验”、“物料运输”、“存储待发运”等环节。忽略周转、压装前的润滑或临时暂存，往往导致遗漏因转运磕碰、静电击穿或物料混淆引发的过程缺陷。<br>• <strong>误区三：照搬设计图纸而非“走流程”。</strong>PFMEA是制造现场特性的镜像，脱离现场实际工装工步的流程图，会导致分析结果形同虚设。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div>根据《AIAG & VDA FMEA 手册》3.2.1 节，过程结构分析（步骤二）的核心目的在于识别制造系统，并将其系统化分解为三个层级：<strong>过程项（系统/子系统/装配线）</strong>、<strong>过程步骤（工站/工位）</strong>以及<strong>过程工作要素（4M 要素：人、机、料、环等）</strong>。
+其主要目标包括：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div>分析范围的可视化；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div>通过结构树或过程流程图明确过程层级；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div>确定具体的过程步骤和子步骤；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div>促进顾客与供应商工程团队之间的接口协作与职责划分；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">⑤</span><div>为后续的功能分析（步骤三）奠定坚实结构基础。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div><strong>(1) 过程流程图的作用与要素：</strong>过程流程图（Process Flow Diagram）是结构分析的关键输入工具。它完整映射从组件来料检验、仓库搬运、各操作工位（如装配、润滑、压装）、检验工步直至最终成品存储/发运的全过程。流程图通过标准符号（如操作○、检验◇、搬运/运输⇨、存储△等）使物理流和操作流清晰可见。
+<strong>(2) “走流程（Walk the Process）”原则：</strong>手册明确指出，过程FMEA必须反映工程师在现场“走流程”时实际存在的过程路线，而非脱离现场的理想化设想。
+<strong>(3) 严格的时序门禁规则：</strong>手册明文规定，<strong>“在结构分析（步骤二）结束前，不得开始进行功能分析（步骤三）”</strong>。必须先厘清系统与要素的结构依赖关系，才能准确定义各级功能与失效传播路径。</div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机制造中心（如重庆制造基地或海外组装工厂）：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>顶层过程项：</strong>以“智能手机整机总装线（Final Assembly Line）”作为PFMEA的最高级别过程项。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程流程图输入：</strong>梳理从SMT主板出库、扫码上线、[OP10 摄像头模组装配]、[OP20 主板装入中框]、[OP30 螺钉拧紧工位]、运输缓冲位、到[OP40 屏幕贴合压合]及整机功能FT测试与包装发运。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>现场走流程校验：</strong>ME（制造工程）与PQE（过程质量）必须到产线实地核对：现场中框静电去除工步、治具转运过程是否存在，确保流程图与现场实际作业（SOP）完全吻合，避免漏掉微小搬运或中间检验步骤。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：跳过结构分析直接做功能/失效分析。</strong>部分工程师在流程图尚未细化、4M要素未明确前，就凭经验直接写失效模式。手册严格规定：结构分析未结束，严禁进入功能分析。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：流程图只画“增值加工工位”，忽略辅助与物流环节。</strong>原书示例明确包含“组件来料检验”、“物料运输”、“存储待发运”等环节。忽略周转、压装前的润滑或临时暂存，往往导致遗漏因转运磕碰、静电击穿或物料混淆引发的过程缺陷。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：照搬设计图纸而非“走流程”。</strong>PFMEA是制造现场特性的镜像，脱离现场实际工装工步的流程图，会导致分析结果形同虚设。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-3-2-1.jpg?v=1792660128" alt="图 3.2-1 过程流程图示例（原书第 70 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.2-1 过程流程图示例（原书第 70 页）</p>

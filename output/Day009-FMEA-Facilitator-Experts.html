@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 009：协调员（推进者）能力要求与扩展团队专家职责</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📘 第1章：引言与5T规划</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,29 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定位：协调员（推进者 Facilitator）与扩展团队（Extended Team）</strong><br>根据《AIAG & VDA FMEA 手册》1.5.3.3 节定义：<br>• <strong>FMEA 推进者（Facilitator）：</strong>是 FMEA 七步法执行的管理组织者、方法论导师与跨职能沟通调解人。手册特别注明（Note）：<strong>任何具备相关能力和培训经验的团队成员都可以担任推进者</strong>，其职责核心在于流程管控、方法把关与冲突化解，而非替代工程师编写技术内容。<br>• <strong>扩展团队成员／专家（Extended Team Members / Experts）：</strong>不参与全部例行研讨，而是在特定技术环节或特殊分析议题时按需被邀请介入（由推进者或会议组织人协调）。包含设计工程师、特定技术专家、维护工程师、现场工作人员、采购、供应商等。主要负责输入专项技术资料、支持功能/失效分析及商业案例编写。</div><div class="highlight-blue"><strong>2. 方法步骤与能力职责拆解</strong><br><strong>(1) FMEA 推进者（Facilitator）的具体职责与能力模型（1.5.3.3.3）：</strong><br>• <strong>流程与时间管理：</strong>协调与组织 FMEA 工作流程，参与编制粗略时间表，发出分析阶段第一次团队会议邀请，全面管理 FMEA 7 步法的执行，负责会议的会前准备与会后总结。<br>• <strong>团队建设与标准制定：</strong>参与组建 FMEA 团队，参与拟定决策准则/评价标准，在技术主管支持下协助开发企业或产线的专属评分表示例（可选）。<br>• <strong>专业方法与软件能力：</strong>具备深厚的 FMEA 方法论能力，负责对参会人员进行 FMEA 方法赋能；具备 FMEA 专业软件文件化能力（必要时熟练操作结构树、功能网、失效网）。<br>• <strong>软技能（社交与引导）：</strong>具备高度的社交能力、团队协作精神，以及调解争议、说服引导、组织协调与清晰表达的主持人（Facilitator）能力，有效缓解技术分歧与部门冲突。<br><strong>(2) 扩展团队成员／专家的工作边界与职责（1.5.3.3.5 & 1.5.3.3）：</strong><br>• <strong>按需介入机制：</strong>仅在涉及其专业领域（如声学腔体、跌落失效仿真、贴片机工艺公差、电芯电化学安全等）时受邀出席会议。<br>• <strong>专项资料输入：</strong>提供关于特殊项目的补充数据与测试报告，输入关注产品/过程的关键技术信息。<br>• <strong>商业与改进支持：</strong>参与编写技术改进的商业案例（Business Case），协助评估纠正措施的技术与财务可行性。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（影像模组潜望长焦防抖 OIS 攻坚 - 推进者能力发挥）：</strong>在某新平台机型的超薄潜望式长焦摄像头 DFMEA 研讨中，结构工程师坚持缩小弹片间隙以保证轻薄，而光学与驱动算法工程师则认为跌落时弹片极易塑性变形导致对焦卡死。此时，FMEA 推进者迅速发挥<strong>冲突缓解与决策准则拟定能力</strong>，停止无休止的口头争论，引导团队回归第 3 步“功能网与运动公差分析”，并引入仿真专家进行应力应变推演，使技术争议在七步法结构化逻辑中达成共识。<br>• <strong>场景 B（重庆/制造基地手机主板 SMT 锡膏印刷虚焊 - 扩展团队专家介入）：</strong>在进行 SMT 印刷过程 PFMEA 时，核心工艺工程师对于 01005 超微阻容件在海外高湿环境下的空洞率成因存在认知盲区。推进者与工艺主管临时调入<strong>扩展团队成员：锡膏供应商化学专家与钢网激光微雕维护工程师</strong>。扩展专家提供了锡膏高温挥发曲线与纳米涂层钢网孔壁粗糙度关键数据，完善了失效网，并联合编写了“引入 3D-SPI 闭环控制系统”的商业回报案例（Business Case）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：把推进者（Facilitator）当成“专职记录员”或“替罪羊”。</strong>许多项目团队把推进者当成在会议上打字录入表格的文员，甚至要求推进者独立完成整份 FMEA。<strong>纠偏：</strong>手册明确规定，技术内容责任由设计/工艺主管承担；推进者的核心价值是组织流程引导、缓解冲突、保障方法合规（Method Competency）。<br>• <strong>误区 2：扩展团队“全员全勤陪坐”或“完全不叫专家”。</strong>前者导致多位资深专家耗费数十小时听无关内容，引发项目抵触；后者导致关键技术黑匣子无法攻克。<strong>纠偏：</strong>建立扩展团队的“按需召唤机制”。核心团队在步骤 1-3 梳理出特定接口盲区时，由推进者定向发出会议邀请，专家仅针对特定要素/失效链输入数据并参与论证后即可离会。<br>• <strong>误区 3：忽视推进者的软技能要求。</strong>认为只要懂表格填写的工程师就能当推进者。<strong>纠偏：</strong>手册 1.5.3.3.3 节特别强调推进者必须具备“缓解冲突、社交能力、说服调解与表达能力”。缺乏引导技巧的推进者容易导致研讨沦为部门指责或冷场流于形式。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定位：协调员（推进者 Facilitator）与扩展团队（Extended Team）</span></div>根据《AIAG & VDA FMEA 手册》1.5.3.3 节定义：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>FMEA 推进者（Facilitator）：</strong>是 FMEA 七步法执行的管理组织者、方法论导师与跨职能沟通调解人。手册特别注明（Note）：<strong>任何具备相关能力和培训经验的团队成员都可以担任推进者</strong>，其职责核心在于流程管控、方法把关与冲突化解，而非替代工程师编写技术内容。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>扩展团队成员／专家（Extended Team Members / Experts）：</strong>不参与全部例行研讨，而是在特定技术环节或特殊分析议题时按需被邀请介入（由推进者或会议组织人协调）。包含设计工程师、特定技术专家、维护工程师、现场工作人员、采购、供应商等。主要负责输入专项技术资料、支持功能/失效分析及商业案例编写。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与能力职责拆解</span></div><strong>(1) FMEA 推进者（Facilitator）的具体职责与能力模型（1.5.3.3.3）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>流程与时间管理：</strong>协调与组织 FMEA 工作流程，参与编制粗略时间表，发出分析阶段第一次团队会议邀请，全面管理 FMEA 7 步法的执行，负责会议的会前准备与会后总结。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>团队建设与标准制定：</strong>参与组建 FMEA 团队，参与拟定决策准则/评价标准，在技术主管支持下协助开发企业或产线的专属评分表示例（可选）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>专业方法与软件能力：</strong>具备深厚的 FMEA 方法论能力，负责对参会人员进行 FMEA 方法赋能；具备 FMEA 专业软件文件化能力（必要时熟练操作结构树、功能网、失效网）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>软技能（社交与引导）：</strong>具备高度的社交能力、团队协作精神，以及调解争议、说服引导、组织协调与清晰表达的主持人（Facilitator）能力，有效缓解技术分歧与部门冲突。</div></div>
+<strong>(2) 扩展团队成员／专家的工作边界与职责（1.5.3.3.5 & 1.5.3.3）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>按需介入机制：</strong>仅在涉及其专业领域（如声学腔体、跌落失效仿真、贴片机工艺公差、电芯电化学安全等）时受邀出席会议。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>专项资料输入：</strong>提供关于特殊项目的补充数据与测试报告，输入关注产品/过程的关键技术信息。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>商业与改进支持：</strong>参与编写技术改进的商业案例（Business Case），协助评估纠正措施的技术与财务可行性。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>• <strong>场景 A（影像模组潜望长焦防抖 OIS 攻坚 - 推进者能力发挥）：</strong>在某新平台机型的超薄潜望式长焦摄像头 DFMEA 研讨中，结构工程师坚持缩小弹片间隙以保证轻薄，而光学与驱动算法工程师则认为跌落时弹片极易塑性变形导致对焦卡死。此时，FMEA 推进者迅速发挥<strong>冲突缓解与决策准则拟定能力</strong>，停止无休止的口头争论，引导团队回归第 3 步“功能网与运动公差分析”，并引入仿真专家进行应力应变推演，使技术争议在七步法结构化逻辑中达成共识。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 B（重庆/制造基地手机主板 SMT 锡膏印刷虚焊 - 扩展团队专家介入）：</strong>在进行 SMT 印刷过程 PFMEA 时，核心工艺工程师对于 01005 超微阻容件在海外高湿环境下的空洞率成因存在认知盲区。推进者与工艺主管临时调入<strong>扩展团队成员：锡膏供应商化学专家与钢网激光微雕维护工程师</strong>。扩展专家提供了锡膏高温挥发曲线与纳米涂层钢网孔壁粗糙度关键数据，完善了失效网，并联合编写了“引入 3D-SPI 闭环控制系统”的商业回报案例（Business Case）。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区 1：把推进者（Facilitator）当成“专职记录员”或“替罪羊”。</strong>许多项目团队把推进者当成在会议上打字录入表格的文员，甚至要求推进者独立完成整份 FMEA。<strong>纠偏：</strong>手册明确规定，技术内容责任由设计/工艺主管承担；推进者的核心价值是组织流程引导、缓解冲突、保障方法合规（Method Competency）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 2：扩展团队“全员全勤陪坐”或“完全不叫专家”。</strong>前者导致多位资深专家耗费数十小时听无关内容，引发项目抵触；后者导致关键技术黑匣子无法攻克。<strong>纠偏：</strong>建立扩展团队的“按需召唤机制”。核心团队在步骤 1-3 梳理出特定接口盲区时，由推进者定向发出会议邀请，专家仅针对特定要素/失效链输入数据并参与论证后即可离会。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区 3：忽视推进者的软技能要求。</strong>认为只要懂表格填写的工程师就能当推进者。<strong>纠偏：</strong>手册 1.5.3.3.3 节特别强调推进者必须具备“缓解冲突、社交能力、说服调解与表达能力”。缺乏引导技巧的推进者容易导致研讨沦为部门指责或冷场流于形式。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day009-manual-p25.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第一章 1.5.3.3 节（PDF 第 25 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第一章 1.5.3.3 节（PDF 第 25 页）</p>

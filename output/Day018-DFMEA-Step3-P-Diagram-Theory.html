@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 018：DFMEA 步骤三：参数图（P-图）输入、控制与五类噪音因素</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📐 第2章：DFMEA 设计七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚙️</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,9 +160,33 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与参数图（P-图）本质</strong><br>根据手册 2.3.4 节，参数图（Parameter Diagram，简称 P-图）是针对特定理想功能构建的分析工具。由于系统或要素的实际输出（存在灰域与变差）往往偏离期望的理想线性行为，P-图的作用就是识别并系统化呈现：<strong>动态输入（含信号）、控制因素、噪音因素、非功能性要求、预期功能输出及非预期输出（转向输出/损失）</strong>。通过 P-图获得的信息直接为设计 FMEA 的功能与失效分析提供输入，同时也为 DVP&R（设计验证计划和报告）等测试计划提供明确依据。</div><div class="highlight-blue"><strong>2. P-图各大核心要素定义与五类噪音因素拆解</strong><br><ul><li><strong>输入（Input）：</strong>实现系统功能所需的信息源或能量源（您为取得期望结果而输入的内容）。</li><li><strong>功能与预期输出（Expected Output）：</strong>您希望系统获得的理想功能输出。动态系统的输出量级通常与信号因素成比例；静态系统则没有信号因素调节。</li><li><strong>控制因素（Control Factors）：</strong>设计工程师为达到期望效果<strong>可以设计、调整和控制</strong>的参数（如材料物理特性、结构尺寸、磁导率等），用于使系统对噪音更不敏感（提升产品稳健性/鲁棒性）。信号因素是控制因素的一种特殊形式（如用户调节的踏板行程、音量旋钮）。</li><li><strong>非功能性要求（Non-functional Requirements）：</strong>限制设计选择的约束条件，例如几何包络、安装接口、重量上限、材料法规等。</li><li><strong>非预期输出（Unintended Outputs）：</strong>故障行为或意外能量耗散（转向输出），例如热量、振动、电阻、电磁辐射（EMC）、机械噪音（NVH）等。</li><li><strong>五类噪音因素（Noise Factors - 妨碍获得期望输出且工程师无法直接控制或控制不切实际的参数）：</strong><br>1) <strong>产品/组件间的变化（Piece-to-piece variation）：</strong>公差积累、零件间隙变化、制造微观波动；<br>2) <strong>随时间的变化（Changes over time）：</strong>老化、磨损、电池容量衰减、疲劳退化；<br>3) <strong>顾客使用（Customer usage）：</strong>超出规范的使用、跌落摔落、高频重载使用、误操作；<br>4) <strong>外部环境（External environment）：</strong>极端温湿度、外部粉尘、强光暴晒、道路震动；<br>5) <strong>系统交互作用（System interactions）：</strong>与相邻软硬件系统的相互干扰、射频同频干扰、寄生电容电感。</li></ul></div><div class="highlight-green"><strong>3. 传音海外研发与制造实战案例：智能手机快充发热与功率调节 P-图</strong><br>以传音 Infinix/TECNO 系列手机的<strong>超快充管理系统</strong>为例：<br><ul><li><strong>输入：</strong>Type-C 充电头注入的直流电能（如 20V/5A 脉动输入）、握手协议信号；</li><li><strong>预期输出：</strong>以最大受控电流平稳为锂电池充入指定电荷量，并在 25 分钟内达到 100%；</li><li><strong>控制因素：</strong>电荷泵芯片开关频率、PCB 铜箔导热面积与层数、均热板（VC）毛细结构毛细力、热敏电阻阻值曲线算法；</li><li><strong>非功能性要求：</strong>整机厚度不得超过 8.2mm、主板占用面积 ≤ 25%、RoHS/REACH 环保要求；</li><li><strong>非预期输出：</strong>焦耳热耗损（升温）、开关纹波噪声、壳体热辐射、充电过程中的射频辐射杂散；</li><li><strong>五类噪音因素识别（非洲/海外特定工况）：</strong><br>- <em>外部环境：</em>撒哈拉以南非洲环境温度常达 42℃、高湿度沿海盐雾；<br>- <em>顾客使用：</em>边玩高负载大型游戏边进行快充、使用非标破损充电线；<br>- <em>组件间变化：</em>VC 均热板焊接平整度公差、快充 IC 导通内阻 Ron 的批次离散度；<br>- <em>随时间变化：</em>导热硅脂老化干涸、Type-C 母座插拔 5000 次后接触电阻上升；<br>- <em>系统交互：</em>快充开关噪声对 5G 天线 N78 频段的电磁干扰（EMC）。</li></ul>通过此 P-图，研发工程师在做 DFMEA 时，能迅速锁定热失效链（热敏电阻离散度 + 高温环境 $
-ightarrow$ 充电降频），并在 DVP 中补充极端环境下的充放电测试。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆“控制因素”与“外部输入/噪音”</strong><br><em>错误做法：</em>把“用户按下开机键的力”、“环境温度”写在控制因素栏中。<br><em>正确做法：</em>控制因素必须是<strong>设计团队在图纸或代码中可以显式定义并调整的参数</strong>（如按键弹片行程、锅仔片反弹力、保护阈值温度设定）。</li><li><strong>误区二：将“非预期输出”等同于“DFMEA 失效模式”</strong><br><em>错误做法：</em>直接把“手机发烫”当成功能失效草草收场。<br><em>正确做法：</em>非预期输出是伴随能量转换必然产生的物理衍生输出（如焦耳热、电磁辐射）。在 P-图中清晰列出非预期输出，是为了在失效分析中挖掘其是否会演变为“过热烫伤”、“EMC超标导致通讯中断”等失效模式。</li><li><strong>误区三：遗漏系统交互与时间老化噪音</strong><br><em>错误做法：</em>噪音因素只写环境温湿度，忽略了产品自身生命周期内的“老化（随时间变化）”及模块间的“系统交互”。必须对照手册定义的五类噪音全面排查。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与参数图（P-图）本质</span></div>根据手册 2.3.4 节，参数图（Parameter Diagram，简称 P-图）是针对特定理想功能构建的分析工具。由于系统或要素的实际输出（存在灰域与变差）往往偏离期望的理想线性行为，P-图的作用就是识别并系统化呈现：<strong>动态输入（含信号）、控制因素、噪音因素、非功能性要求、预期功能输出及非预期输出（转向输出/损失）</strong>。通过 P-图获得的信息直接为设计 FMEA 的功能与失效分析提供输入，同时也为 DVP&R（设计验证计划和报告）等测试计划提供明确依据。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. P-图各大核心要素定义与五类噪音因素拆解</span></div><ul><li><strong>输入（Input）：</strong>实现系统功能所需的信息源或能量源（您为取得期望结果而输入的内容）。</li><li><strong>功能与预期输出（Expected Output）：</strong>您希望系统获得的理想功能输出。动态系统的输出量级通常与信号因素成比例；静态系统则没有信号因素调节。</li><li><strong>控制因素（Control Factors）：</strong>设计工程师为达到期望效果<strong>可以设计、调整和控制</strong>的参数（如材料物理特性、结构尺寸、磁导率等），用于使系统对噪音更不敏感（提升产品稳健性/鲁棒性）。信号因素是控制因素的一种特殊形式（如用户调节的踏板行程、音量旋钮）。</li><li><strong>非功能性要求（Non-functional Requirements）：</strong>限制设计选择的约束条件，例如几何包络、安装接口、重量上限、材料法规等。</li><li><strong>非预期输出（Unintended Outputs）：</strong>故障行为或意外能量耗散（转向输出），例如热量、振动、电阻、电磁辐射（EMC）、机械噪音（NVH）等。</li><li><strong>五类噪音因素（Noise Factors - 妨碍获得期望输出且工程师无法直接控制或控制不切实际的参数）：</strong>
+1) <strong>产品/组件间的变化（Piece-to-piece variation）：</strong>公差积累、零件间隙变化、制造微观波动；
+2) <strong>随时间的变化（Changes over time）：</strong>老化、磨损、电池容量衰减、疲劳退化；
+3) <strong>顾客使用（Customer usage）：</strong>超出规范的使用、跌落摔落、高频重载使用、误操作；
+4) <strong>外部环境（External environment）：</strong>极端温湿度、外部粉尘、强光暴晒、道路震动；
+5) <strong>系统交互作用（System interactions）：</strong>与相邻软硬件系统的相互干扰、射频同频干扰、寄生电容电感。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音海外研发与制造实战案例：智能手机快充发热与功率调节 P-图</span></div>以传音 Infinix/TECNO 系列手机的<strong>超快充管理系统</strong>为例：
+<ul><li><strong>输入：</strong>Type-C 充电头注入的直流电能（如 20V/5A 脉动输入）、握手协议信号；</li><li><strong>预期输出：</strong>以最大受控电流平稳为锂电池充入指定电荷量，并在 25 分钟内达到 100%；</li><li><strong>控制因素：</strong>电荷泵芯片开关频率、PCB 铜箔导热面积与层数、均热板（VC）毛细结构毛细力、热敏电阻阻值曲线算法；</li><li><strong>非功能性要求：</strong>整机厚度不得超过 8.2mm、主板占用面积 ≤ 25%、RoHS/REACH 环保要求；</li><li><strong>非预期输出：</strong>焦耳热耗损（升温）、开关纹波噪声、壳体热辐射、充电过程中的射频辐射杂散；</li><li><strong>五类噪音因素识别（非洲/海外特定工况）：</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>外部环境：</em>撒哈拉以南非洲环境温度常达 42℃、高湿度沿海盐雾；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>顾客使用：</em>边玩高负载大型游戏边进行快充、使用非标破损充电线；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>组件间变化：</em>VC 均热板焊接平整度公差、快充 IC 导通内阻 Ron 的批次离散度；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>随时间变化：</em>导热硅脂老化干涸、Type-C 母座插拔 5000 次后接触电阻上升；</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>系统交互：</em>快充开关噪声对 5G 天线 N78 频段的电磁干扰（EMC）。</li></ul>通过此 P-图，研发工程师在做 DFMEA 时，能迅速锁定热失效链（热敏电阻离散度 + 高温环境 $
+ightarrow$ 充电降频），并在 DVP 中补充极端环境下的充放电测试。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆“控制因素”与“外部输入/噪音”</strong>
+<em>错误做法：</em>把“用户按下开机键的力”、“环境温度”写在控制因素栏中。
+<em>正确做法：</em>控制因素必须是<strong>设计团队在图纸或代码中可以显式定义并调整的参数</strong>（如按键弹片行程、锅仔片反弹力、保护阈值温度设定）。</li><li><strong>误区二：将“非预期输出”等同于“DFMEA 失效模式”</strong>
+<em>错误做法：</em>直接把“手机发烫”当成功能失效草草收场。
+<em>正确做法：</em>非预期输出是伴随能量转换必然产生的物理衍生输出（如焦耳热、电磁辐射）。在 P-图中清晰列出非预期输出，是为了在失效分析中挖掘其是否会演变为“过热烫伤”、“EMC超标导致通讯中断”等失效模式。</li><li><strong>误区三：遗漏系统交互与时间老化噪音</strong>
+<em>错误做法：</em>噪音因素只写环境温湿度，忽略了产品自身生命周期内的“老化（随时间变化）”及模块间的“系统交互”。必须对照手册定义的五类噪音全面排查。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚙️ 功能分析与参数图（P-图）核心架构图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🌩️</span><div class="fb-title">五类噪音因素 (Noise)</div><div class="fb-desc">①件间变差 ②随时间退化 ③客户使用 ④外部环境 ⑤系统交互</div></div>
+                <div class="flow-box" style="border-color:#48bb78; background:#f0fff4;"><span class="fb-icon">🔄</span><div class="fb-title">输入 → 系统功能 → 输出</div><div class="fb-desc">主动动词+可测量名词（含预期功能输出 & 非预期错误输出）</div></div>
+                <div class="flow-box"><span class="fb-icon">🎛️</span><div class="fb-title">控制因素 (Control)</div><div class="fb-desc">工程师可调的设计参数、材料规格、公差与过程工艺设定</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-2-3-2.jpg?v=1792660128" alt="图 2.3-2 系统行为示例（原书第 29 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.3-2 系统行为示例（原书第 29 页）</p>

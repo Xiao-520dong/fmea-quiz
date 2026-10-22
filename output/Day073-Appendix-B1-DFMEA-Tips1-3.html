@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 073：附件 B1（上）：DFMEA 步骤一至步骤三表格逐列填写提示</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">📋 附件A&B：标准表格与填表提示</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node active"><div class="step-dot">🎯</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,17 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定位：手册附件 B1 表格填写提示的作用</strong><br>《AIAG & VDA FMEA 手册》附件 B1（B1.1 - B1.7）为工程团队提供了标准 DFMEA 表格从步骤一到步骤六的逐列填写提示与标准化指引。本节聚焦于前三步骤（系统规划与准备、结构分析、功能分析）。这些提示旨在统一工程语言，消除跨职能团队在表格填充过程中的歧义，确保从项目范围定义到结构树/功能网建立的逻辑闭环。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：步骤一至步骤三逐列提示要求</strong><br><ul><li><strong>步骤一：规划与准备（表头管理信息）：</strong><ul><li><strong>公司名称：</strong>负责 DFMEA 的公司名称。</li><li><strong>工程地点：</strong>负责设计的地理位置（如传音深圳研发中心、上海研发中心）。</li><li><strong>顾客名称：</strong>顾客名称或产品系列（如智能手机、特定市场客户项目）。</li><li><strong>年型/项目：</strong>顾客应用或公司模式/类型（项目代号/机型平台）。</li><li><strong>项目：</strong>DFMEA 项目名称（系统、子系统和/或组件）。</li><li><strong>DFMEA 开始日期与修订日期：</strong>项目初次启动日期及最后一次更新维护日期。</li><li><strong>跨职能团队：</strong>所需的团队成员名单（包含结构、硬件、射频、材料、可靠性、质量等跨部门人员）。</li><li><strong>DFMEA ID 编号与设计职责：</strong>由公司确定的唯一追溯编号；明确 DFMEA 所有人的姓名。</li><li><strong>保密级别：</strong>业务分类，如商业应用、专有、保密（Proprietary/Confidential）。</li></ul></li><li><strong>步骤二：结构分析（三级物理分解）：</strong><ul><li><strong>1. 上一较高级别：</strong>子系统、系统、系统阵列或整车/整机级别。</li><li><strong>2. 关注要素：</strong>分析的核心对象，可以是子系统、组件或接口名称。</li><li><strong>3. 下一较低级别或特性类型：</strong>组件或接口名称，或直接细化到具体的<strong>特性类型</strong>，如：形状（Geometry）、材料（Material）、表面光洁度（Surface Finish）、涂层（Coating）等。</li></ul></li><li><strong>步骤三：功能分析（功能与要求映射）：</strong><ul><li><strong>1. 上一较高级别功能及要求：</strong>整车/整机、系统或子系统的功能，以及其必须满足的要求或预期输出的描述（注：手册特别标明，<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>2. 关注要素功能及要求：</strong>子系统、组件或接口的功能，以及其必须满足的要求或预期输出的描述（<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>3. 下一较低级别功能及要求或特性：</strong>组件或接口的功能或特性描述（<strong>量值为可选项，每行一个特性</strong>）。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发实战场景：手机整机与摄像头模组 DFMEA 映射</strong><br>以传音手机影像系统（Camera Module）的 DFMEA 表格填写为例：<br><ul><li><strong>步骤一（表头）：</strong>公司填“传音控股”，工程地点填“深圳留仙洞研发总部”，项目填“Phantom 旗舰潜望式长焦模组设计”，跨职能团队列明光学工程师、硬件工程师、马达驱动专家、结构可靠性工程师及供应商质量工程师（SQE）。保密级别标定为“高度保密（Confidential）”。</li><li><strong>步骤二（结构）：</strong>上一较高级别为“智能手机整机/影像子系统”；关注要素为“潜望长焦摄像头模组”；下一较低级别/特性类型为“VCM 对焦马达弹片/行程限制位”或直接分解为特性类型“弹片铍铜材质硬度、冲压折弯倒角 R 角、抗疲劳涂层”。</li><li><strong>步骤三（功能）：</strong>上一较高级别为“实现 10x 混合变焦清晰成像，跌落冲击后防抖功能正常（量值可选：跌落 1.5m 满足 MTF>0.6）”；关注要素功能为“驱动镜头群快速稳定移动，响应时间 <15ms”；下一较低级别特性为“弹片提供恢复力矩，满足屈服强度与抗疲劳要求”。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆步骤二“下一较低级别”与“特性类型”：</strong>许多工程师误以为下一较低级别只能填零部件实体名词。原书明确提示，该列可以是“组件或接口名称”，也可以直接是“<strong>特性类型</strong>（如形状、材料、表面光洁度、涂层等）”，这为底层失效原因（特性缺陷）的推导提供了直接物理落脚点。</li><li><strong>误区二：功能描述中强行堆砌公差与参数：</strong>部分工程师在功能描述中纠结是否必须填写具体公差，导致进度停滞。手册原书提示明确指出：“<strong>量值为可选项（Values are optional）</strong>，但关键原则是<strong>每行一个要求/每行一个特性</strong>”，切忌在一行中杂糅多个功能或要求。</li><li><strong>误区三：步骤一表头跨职能团队形同虚设：</strong>仅填写 DFMEA 责任工程师一人，缺少制造、材料、测试等跨部门名单。步骤一必须清晰记录核心跨职能团队成员，确保分析的视角完备性与评审有效性。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定位：手册附件 B1 表格填写提示的作用</span></div>《AIAG & VDA FMEA 手册》附件 B1（B1.1 - B1.7）为工程团队提供了标准 DFMEA 表格从步骤一到步骤六的逐列填写提示与标准化指引。本节聚焦于前三步骤（系统规划与准备、结构分析、功能分析）。这些提示旨在统一工程语言，消除跨职能团队在表格填充过程中的歧义，确保从项目范围定义到结构树/功能网建立的逻辑闭环。</div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解：步骤一至步骤三逐列提示要求</span></div><ul><li><strong>步骤一：规划与准备（表头管理信息）：</strong><ul><li><strong>公司名称：</strong>负责 DFMEA 的公司名称。</li><li><strong>工程地点：</strong>负责设计的地理位置（如传音深圳研发中心、上海研发中心）。</li><li><strong>顾客名称：</strong>顾客名称或产品系列（如智能手机、特定市场客户项目）。</li><li><strong>年型/项目：</strong>顾客应用或公司模式/类型（项目代号/机型平台）。</li><li><strong>项目：</strong>DFMEA 项目名称（系统、子系统和/或组件）。</li><li><strong>DFMEA 开始日期与修订日期：</strong>项目初次启动日期及最后一次更新维护日期。</li><li><strong>跨职能团队：</strong>所需的团队成员名单（包含结构、硬件、射频、材料、可靠性、质量等跨部门人员）。</li><li><strong>DFMEA ID 编号与设计职责：</strong>由公司确定的唯一追溯编号；明确 DFMEA 所有人的姓名。</li><li><strong>保密级别：</strong>业务分类，如商业应用、专有、保密（Proprietary/Confidential）。</li></ul></li><li><strong>步骤二：结构分析（三级物理分解）：</strong><ul><li><strong>1. 上一较高级别：</strong>子系统、系统、系统阵列或整车/整机级别。</li><li><strong>2. 关注要素：</strong>分析的核心对象，可以是子系统、组件或接口名称。</li><li><strong>3. 下一较低级别或特性类型：</strong>组件或接口名称，或直接细化到具体的<strong>特性类型</strong>，如：形状（Geometry）、材料（Material）、表面光洁度（Surface Finish）、涂层（Coating）等。</li></ul></li><li><strong>步骤三：功能分析（功能与要求映射）：</strong><ul><li><strong>1. 上一较高级别功能及要求：</strong>整车/整机、系统或子系统的功能，以及其必须满足的要求或预期输出的描述（注：手册特别标明，<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>2. 关注要素功能及要求：</strong>子系统、组件或接口的功能，以及其必须满足的要求或预期输出的描述（<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>3. 下一较低级别功能及要求或特性：</strong>组件或接口的功能或特性描述（<strong>量值为可选项，每行一个特性</strong>）。</li></ul></li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发实战场景：手机整机与摄像头模组 DFMEA 映射</span></div>以传音手机影像系统（Camera Module）的 DFMEA 表格填写为例：
+<ul><li><strong>步骤一（表头）：</strong>公司填“传音控股”，工程地点填“深圳留仙洞研发总部”，项目填“Phantom 旗舰潜望式长焦模组设计”，跨职能团队列明光学工程师、硬件工程师、马达驱动专家、结构可靠性工程师及供应商质量工程师（SQE）。保密级别标定为“高度保密（Confidential）”。</li><li><strong>步骤二（结构）：</strong>上一较高级别为“智能手机整机/影像子系统”；关注要素为“潜望长焦摄像头模组”；下一较低级别/特性类型为“VCM 对焦马达弹片/行程限制位”或直接分解为特性类型“弹片铍铜材质硬度、冲压折弯倒角 R 角、抗疲劳涂层”。</li><li><strong>步骤三（功能）：</strong>上一较高级别为“实现 10x 混合变焦清晰成像，跌落冲击后防抖功能正常（量值可选：跌落 1.5m 满足 MTF>0.6）”；关注要素功能为“驱动镜头群快速稳定移动，响应时间 <15ms”；下一较低级别特性为“弹片提供恢复力矩，满足屈服强度与抗疲劳要求”。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆步骤二“下一较低级别”与“特性类型”：</strong>许多工程师误以为下一较低级别只能填零部件实体名词。原书明确提示，该列可以是“组件或接口名称”，也可以直接是“<strong>特性类型</strong>（如形状、材料、表面光洁度、涂层等）”，这为底层失效原因（特性缺陷）的推导提供了直接物理落脚点。</li><li><strong>误区二：功能描述中强行堆砌公差与参数：</strong>部分工程师在功能描述中纠结是否必须填写具体公差，导致进度停滞。手册原书提示明确指出：“<strong>量值为可选项（Values are optional）</strong>，但关键原则是<strong>每行一个要求/每行一个特性</strong>”，切忌在一行中杂糅多个功能或要求。</li><li><strong>误区三：步骤一表头跨职能团队形同虚设：</strong>仅填写 DFMEA 责任工程师一人，缺少制造、材料、测试等跨部门名单。步骤一必须清晰记录核心跨职能团队成员，确保分析的视角完备性与评审有效性。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📌 FMEA 系统化风险管理核心逻辑图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🎯</span><div class="fb-title">5T 策划与边界</div><div class="fb-desc">明确目的(InTent)、时间(Timing)、团队(Team)、任务(Task)、工具(Tool)</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🔗</span><div class="fb-title">结构 → 功能 → 失效</div><div class="fb-desc">先建三层结构树与功能网，再反向推导 FE-FM-FC 严密失效链</div></div>
+                <div class="flow-box"><span class="fb-icon">闭</span><div class="fb-title">预防为主 & 证据闭环</div><div class="fb-desc">事前预防胜于事后探测，凭实测报告闭环并沉淀至基础/家族FMEA</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day073-manual-p169.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 B1.1 - B1.3（原书 P169-170）（PDF 第 169 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 B1.1 - B1.3（原书 P169-170）（PDF 第 169 页）</p>

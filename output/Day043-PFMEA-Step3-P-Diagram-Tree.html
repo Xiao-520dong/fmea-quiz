@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 043：PFMEA 步骤三：压入轴承 P-图、功能关系可视化与跨团队协作</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">⚙️</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,25 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>PFMEA 参数图（P-Diagram）：</strong>参数图用于界定工序的物理与能量转化关系。其输入包括产品要求与设计接口，外部干扰包含 4M 维度的过程噪声因素，核心受控部分为核心过程参数与工装控制，最终输出受影响或改变的产品特性。</li><li><strong>功能关系可视化：</strong>根据分析深度与软件工具，过程项、过程步骤与过程工作要素之间的功能交互可通过“功能网（Function Net）”、“功能树（Function Tree）”、“功能矩阵（Function Matrix）”或“功能分析表”进行直观呈现。</li><li><strong>功能层级逻辑链：</strong>在标准功能分析表中，跨层级逻辑遵循从左至右的实现路径，即通过回答<strong>“高级别功能是如何通过低级别功能实现的？”</strong>构建完整的功能传递链。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>步骤一：应用 P-图识别过程边界与参数交互</strong><br>明确受控核心过程（如压装位移、保压压力、速度）、外界噪声因素（如来料公差波动、设备热漂移、工人工装磨损）及关键输出特性（如压装后的端面间隙、孔径同心度）。</li><li><strong>步骤二：构建三级功能分析结构树/表格</strong><br>① 过程项功能：关注本厂交付总成、发运客户及终端用户的宏观功能；<br>② 过程步骤功能与产品特性：界定当前工序的核心装配目标与所创造的产品物理状态；<br>③ 过程工作要素功能与过程特性：明确具体的人员、机器、夹治具等 4M 要素具体履行的操作功能与运行参数。</li><li><strong>步骤三：跨工程团队协作（系统、安全、组件）</strong><br>PFMEA 团队不能孤岛作业，必须与系统、硬件、结构和安全团队对接，通过项目评审会议或设计交底文档，直接引用 DFMEA 中的产品功能与特性要求，确保制造过程对产品设计意图的理解完全一致。</li><li><strong>步骤四：正向功能定义奠定失效分析（步骤四）基石</strong><br>步骤三中所有功能必须严格使用“正面、肯定、规范”的词汇进行完整定义。因为步骤四中的潜在失效模式，本质上就是“正面功能无法实现或发生偏离（反面词汇描述）”。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>中框精密压装与点胶工序（如手机中框与屏幕模组组装）：</strong><br>① <strong>P-图输入与输出：</strong>产品要求为屏幕贴合后缝隙公差 ≤0.08mm 且保压后保水防尘等级达标；过程噪声为点胶针头温变粘度波动、背板平整度批次差异；核心过程参数为保压压力曲线、保压时长、保压气缸垂直度；<br>② <strong>功能树分解：</strong>高级别功能“保证屏幕模组与中框粘接密封”由当前工序功能“工位气缸在保压时间内将屏幕以额定压力均匀压入中框中”实现，而该工序功能进一步由工作要素机器功能“气缸以指定推力和行程下压”与人员功能“作业员完成屏幕精准预定位并按下双启动按钮”共同保障；<br>③ <strong>DFMEA 与 PFMEA 协同：</strong>手机结构设计团队将中框公差带及热熔胶物理剪切强度指标导入制造工程团队，确保工艺参数窗口严格覆盖结构设计安全裕量。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：功能层级推导逻辑倒置。</strong>在功能表中分析各层级关系时，混淆了“Why（为什么做）”与“How（怎么做）”的方向。正确规则：从高级别向低级别（从左到右）是问“How”（通过什么手段实现），从低级别向高级别（从右到左）是问“Why”（目的是什么）。</li><li><strong>误区二：在步骤三直接引入“不应、避免”等失效语态。</strong>部分工程师在功能分析中书写“不要压坏屏线”或“防止胶水溢出”。正确做法：功能分析必须全量采用肯定句式（如“保持屏线无压迫间隙”、“精准涂覆胶水于指定轨迹”），负面状态留待步骤四失效分析中提炼为失效模式。</li><li><strong>误区三：PFMEA 脱离 DFMEA 单独编写。</strong>制造团队在没有获取产品组件图纸公差分配、安全件清单及 DFMEA 关键产品特性的情况下闭门造车，导致过程工作要素定义的过程参数无法真正闭环设计要求。</li></ul></div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与定义</span></div><ul><li><strong>PFMEA 参数图（P-Diagram）：</strong>参数图用于界定工序的物理与能量转化关系。其输入包括产品要求与设计接口，外部干扰包含 4M 维度的过程噪声因素，核心受控部分为核心过程参数与工装控制，最终输出受影响或改变的产品特性。</li><li><strong>功能关系可视化：</strong>根据分析深度与软件工具，过程项、过程步骤与过程工作要素之间的功能交互可通过“功能网（Function Net）”、“功能树（Function Tree）”、“功能矩阵（Function Matrix）”或“功能分析表”进行直观呈现。</li><li><strong>功能层级逻辑链：</strong>在标准功能分析表中，跨层级逻辑遵循从左至右的实现路径，即通过回答<strong>“高级别功能是如何通过低级别功能实现的？”</strong>构建完整的功能传递链。</li></ul></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与规则拆解</span></div><ul><li><strong>步骤一：应用 P-图识别过程边界与参数交互</strong>
+明确受控核心过程（如压装位移、保压压力、速度）、外界噪声因素（如来料公差波动、设备热漂移、工人工装磨损）及关键输出特性（如压装后的端面间隙、孔径同心度）。</li><li><strong>步骤二：构建三级功能分析结构树/表格</strong>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div>过程项功能：关注本厂交付总成、发运客户及终端用户的宏观功能；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div>过程步骤功能与产品特性：界定当前工序的核心装配目标与所创造的产品物理状态；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div>过程工作要素功能与过程特性：明确具体的人员、机器、夹治具等 4M 要素具体履行的操作功能与运行参数。</li><li><strong>步骤三：跨工程团队协作（系统、安全、组件）</strong></div></div>
+PFMEA 团队不能孤岛作业，必须与系统、硬件、结构和安全团队对接，通过项目评审会议或设计交底文档，直接引用 DFMEA 中的产品功能与特性要求，确保制造过程对产品设计意图的理解完全一致。</li><li><strong>步骤四：正向功能定义奠定失效分析（步骤四）基石</strong>
+步骤三中所有功能必须严格使用“正面、肯定、规范”的词汇进行完整定义。因为步骤四中的潜在失效模式，本质上就是“正面功能无法实现或发生偏离（反面词汇描述）”。</li></ul></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div><ul><li><strong>中框精密压装与点胶工序（如手机中框与屏幕模组组装）：</strong>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>P-图输入与输出：</strong>产品要求为屏幕贴合后缝隙公差 ≤0.08mm 且保压后保水防尘等级达标；过程噪声为点胶针头温变粘度波动、背板平整度批次差异；核心过程参数为保压压力曲线、保压时长、保压气缸垂直度；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>功能树分解：</strong>高级别功能“保证屏幕模组与中框粘接密封”由当前工序功能“工位气缸在保压时间内将屏幕以额定压力均匀压入中框中”实现，而该工序功能进一步由工作要素机器功能“气缸以指定推力和行程下压”与人员功能“作业员完成屏幕精准预定位并按下双启动按钮”共同保障；</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>DFMEA 与 PFMEA 协同：</strong>手机结构设计团队将中框公差带及热熔胶物理剪切强度指标导入制造工程团队，确保工艺参数窗口严格覆盖结构设计安全裕量。</li></ul></div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：功能层级推导逻辑倒置。</strong>在功能表中分析各层级关系时，混淆了“Why（为什么做）”与“How（怎么做）”的方向。正确规则：从高级别向低级别（从左到右）是问“How”（通过什么手段实现），从低级别向高级别（从右到左）是问“Why”（目的是什么）。</li><li><strong>误区二：在步骤三直接引入“不应、避免”等失效语态。</strong>部分工程师在功能分析中书写“不要压坏屏线”或“防止胶水溢出”。正确做法：功能分析必须全量采用肯定句式（如“保持屏线无压迫间隙”、“精准涂覆胶水于指定轨迹”），负面状态留待步骤四失效分析中提炼为失效模式。</li><li><strong>误区三：PFMEA 脱离 DFMEA 单独编写。</strong>制造团队在没有获取产品组件图纸公差分配、安全件清单及 DFMEA 关键产品特性的情况下闭门造车，导致过程工作要素定义的过程参数无法真正闭环设计要求。</li></ul></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">⚙️ 功能分析与参数图（P-图）核心架构图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🌩️</span><div class="fb-title">五类噪音因素 (Noise)</div><div class="fb-desc">①件间变差 ②随时间退化 ③客户使用 ④外部环境 ⑤系统交互</div></div>
+                <div class="flow-box" style="border-color:#48bb78; background:#f0fff4;"><span class="fb-icon">🔄</span><div class="fb-title">输入 → 系统功能 → 输出</div><div class="fb-desc">主动动词+可测量名词（含预期功能输出 & 非预期错误输出）</div></div>
+                <div class="flow-box"><span class="fb-icon">🎛️</span><div class="fb-title">控制因素 (Control)</div><div class="fb-desc">工程师可调的设计参数、材料规格、公差与过程工艺设定</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-3-3-1.jpg?v=1792660128" alt="图 3.3-1 压入烧结轴承参数图 (P-图) 示例（原书第 77 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.3-1 压入烧结轴承参数图 (P-图) 示例（原书第 77 页）</p>

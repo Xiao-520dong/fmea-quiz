@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 041：PFMEA 步骤二：过程项、过程步骤与过程工作要素（4M）</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🧩</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,35 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 核心概念与三层结构定义</strong><br>根据新版手册第 83-85 页，PFMEA 的结构分析采用严谨的三层递进逻辑展开：<br>• <strong>过程项（Process Item）：</strong>分析范围内的<strong>最高整合级别</strong>。它可以是整条生产线、系统、子系统、装配组件或最终完成的过程名称（例如“电机装配线”、“智能手机整机总装线”）。它代表成功完成所有工序后的最终交付成果。<br>• <strong>过程步骤（Process Step）：</strong>PFMEA 分析的<strong>核心焦点（Focus Element）</strong>。指的是具体的制造工位、操作站或工序（如“[OP30] 烧结轴承压装过程”）。它不仅是结构树的中间层，更是后续推导失效链（失效模式）的关键锚点。<br>• <strong>过程工作要素（Process Work Element）：</strong>结构分析中的<strong>最低级别</strong>。指在该工步中可能影响制造质量的具体作业载体，也是后续推导“失效起因（FC）”的直接承载体。</div><div class="highlight-blue"><strong>2. 方法步骤与 4M/石川法分类规则</strong><br>手册明确指出，过程工作要素基于经典的<strong>石川法（因果分析法）</strong>进行分类，各企业可根据制造特性划分为 4M、5M 或 6M：<br>• <strong>人员（Man）：</strong>如操作员、检验员等人工执行的取放、定位、按压动作。<br>• <strong>设备（Machine）：</strong>工装夹具、贴片机、热压机、点胶机、扭矩螺丝刀等工装设备。<br>• <strong>材料（间接）（Material - indirect）：</strong><span style="color:#c00;">【重点注意】</span>原书特别注明为<strong>“间接材料”</strong>，即制造过程中辅助添加的耗材（如点胶胶水、助焊剂、润滑脂、清洗剂、导热硅脂等），而非产品本身的 BOM 主物料。<br>• <strong>环境（Environment）：</strong>洁净度等级（如千级无尘）、温湿度、静电防护（ESD）等级、车间光照等条件。<br>• <strong>其他扩展类别：</strong>手册明确指出还包括但不限于<strong>方法（Method）</strong>与<strong>测量（Measurement）</strong>。<br>• <strong>接口协作与承上启下（3.2.4 & 3.2.5 节）：</strong>过程结构可视化是 OEM、制造工厂与设备供应商进行技术协同的重要工具；同时，步骤二定义的完整性直接决定了步骤三（功能分析）的质量——<strong>若结构中遗漏了工步或工作要素，功能分析必然出现严重盲区！</strong></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机海外制造基地（如重庆、南昌及埃塞俄比亚/印度产线）的整机装配 PFMEA 中，以<strong>屏幕模组热压保压贴合</strong>为例，标准三层结构如下：<br>• <strong>1. 过程项（系统/产线）：</strong>传音智能手机整机总装线（Smart Phone Final Assembly Line）<br>• <strong>2. 过程步骤（关注要素/工位）：</strong>[OP70] 屏幕模组与中框热压保压工位（Screen Module Hot-Press Bonding Process）<br>• <strong>3. 过程工作要素（4M/石川法细化拆解）：</strong><br>　- <em>人员（Man）：</em>产线作业员（执行屏幕预对齐放置与保压治具上下料）<br>　- <em>设备（Machine）：</em>恒温四工位热压保压机、屏幕专用气动定位贴合治具<br>　- <em>材料（间接）（Material - indirect）：</em>PUR结构胶水、无水乙醇清洁擦拭巾<br>　- <em>环境（Environment）：</em>千级无尘贴合净化间、台面防静电接地系统（ESD &lt; 100V）<br>通过此精细化 4M 拆解，后续功能分析即可针对“热压机”定义压力/温度控制功能，针对“环境”定义洁净度控制要求，逻辑无缝闭环。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“直接零件”与“工作要素（间接材料）”。</strong>很多工程师常把中框、摄像头模组等产品本身物料填入工作要素列。<strong>纠偏：</strong>被装配的零部件属于设计对象与产品特性承载者，PFMEA 工作要素中的材料严格指“制造辅助/间接消耗材料”（如清洗液、胶水）。<br>• <strong>误区二：工作要素只写“设备”，遗漏“人员”与“环境”。</strong>大量产线 PFMEA 在每一工序只填一台机器，完全忽略人工操作手法与温湿度/防静电影响，导致失效起因推导极度单一。<br>• <strong>误区三：工步拆分粒度过粗。</strong>将“装配、打螺丝、测试、点胶”合并为一个工步，导致无法对准具体的 4M 过程工作要素，彻底破坏失效链传导关系。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 核心概念与三层结构定义</span></div>根据新版手册第 83-85 页，PFMEA 的结构分析采用严谨的三层递进逻辑展开：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程项（Process Item）：</strong>分析范围内的<strong>最高整合级别</strong>。它可以是整条生产线、系统、子系统、装配组件或最终完成的过程名称（例如“电机装配线”、“智能手机整机总装线”）。它代表成功完成所有工序后的最终交付成果。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程步骤（Process Step）：</strong>PFMEA 分析的<strong>核心焦点（Focus Element）</strong>。指的是具体的制造工位、操作站或工序（如“[OP30] 烧结轴承压装过程”）。它不仅是结构树的中间层，更是后续推导失效链（失效模式）的关键锚点。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程工作要素（Process Work Element）：</strong>结构分析中的<strong>最低级别</strong>。指在该工步中可能影响制造质量的具体作业载体，也是后续推导“失效起因（FC）”的直接承载体。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 方法步骤与 4M/石川法分类规则</span></div>手册明确指出，过程工作要素基于经典的<strong>石川法（因果分析法）</strong>进行分类，各企业可根据制造特性划分为 4M、5M 或 6M：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>人员（Man）：</strong>如操作员、检验员等人工执行的取放、定位、按压动作。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>设备（Machine）：</strong>工装夹具、贴片机、热压机、点胶机、扭矩螺丝刀等工装设备。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>材料（间接）（Material - indirect）：</strong><span style="color:#c00;">【重点注意】</span>原书特别注明为<strong>“间接材料”</strong>，即制造过程中辅助添加的耗材（如点胶胶水、助焊剂、润滑脂、清洗剂、导热硅脂等），而非产品本身的 BOM 主物料。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>环境（Environment）：</strong>洁净度等级（如千级无尘）、温湿度、静电防护（ESD）等级、车间光照等条件。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>其他扩展类别：</strong>手册明确指出还包括但不限于<strong>方法（Method）</strong>与<strong>测量（Measurement）</strong>。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>接口协作与承上启下（3.2.4 & 3.2.5 节）：</strong>过程结构可视化是 OEM、制造工厂与设备供应商进行技术协同的重要工具；同时，步骤二定义的完整性直接决定了步骤三（功能分析）的质量——<strong>若结构中遗漏了工步或工作要素，功能分析必然出现严重盲区！</strong></div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发/制造实战场景</span></div>在传音智能手机海外制造基地（如重庆、南昌及埃塞俄比亚/印度产线）的整机装配 PFMEA 中，以<strong>屏幕模组热压保压贴合</strong>为例，标准三层结构如下：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>1. 过程项（系统/产线）：</strong>传音智能手机整机总装线（Smart Phone Final Assembly Line）</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>2. 过程步骤（关注要素/工位）：</strong>[OP70] 屏幕模组与中框热压保压工位（Screen Module Hot-Press Bonding Process）</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>3. 过程工作要素（4M/石川法细化拆解）：</strong></div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>人员（Man）：</em>产线作业员（执行屏幕预对齐放置与保压治具上下料）</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>设备（Machine）：</em>恒温四工位热压保压机、屏幕专用气动定位贴合治具</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>材料（间接）（Material - indirect）：</em>PUR结构胶水、无水乙醇清洁擦拭巾</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>环境（Environment）：</em>千级无尘贴合净化间、台面防静电接地系统（ESD &lt; 100V）</div></div>
+通过此精细化 4M 拆解，后续功能分析即可针对“热压机”定义压力/温度控制功能，针对“环境”定义洁净度控制要求，逻辑无缝闭环。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆“直接零件”与“工作要素（间接材料）”。</strong>很多工程师常把中框、摄像头模组等产品本身物料填入工作要素列。<strong>纠偏：</strong>被装配的零部件属于设计对象与产品特性承载者，PFMEA 工作要素中的材料严格指“制造辅助/间接消耗材料”（如清洗液、胶水）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：工作要素只写“设备”，遗漏“人员”与“环境”。</strong>大量产线 PFMEA 在每一工序只填一台机器，完全忽略人工操作手法与温湿度/防静电影响，导致失效起因推导极度单一。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：工步拆分粒度过粗。</strong>将“装配、打螺丝、测试、点胶”合并为一个工步，导致无法对准具体的 4M 过程工作要素，彻底破坏失效链传导关系。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🧭 结构分析（步骤二）核心可视化图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🏢</span><div class="fb-title">1. 上一较高级别</div><div class="fb-desc">系统 / 整机总成 / 过程项（确定最高集成范围与客户接口）</div></div>
+                <div class="flow-box" style="border-color:#4299e1; background:#ebf8ff;"><span class="fb-icon">🎯</span><div class="fb-title">2. 关注要素（核心）</div><div class="fb-desc">子系统 / 模组 / 当前工站步骤（团队设计或管控边界内）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔩</span><div class="fb-title">3. 下一较低级别</div><div class="fb-desc">组件与特性 / 4M工作要素（人、机、料、环及接口PEIM）</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-3-2-2-3.jpg?v=1792660128" alt="图 3.2-2 & 3.2-3 电机装配线结构树与过程项（原书第 71 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.2-2 & 3.2-3 电机装配线结构树与过程项（原书第 71 页）</p>

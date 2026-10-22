@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 054：PFMEA 步骤六（优化）：过程优化优先级顺序、状态闭环与协作</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">⚙️ 第3章：PFMEA 过程七步法</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">🛠️</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,31 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 过程优化的主要目标与核心逻辑</strong><br>过程优化步骤旨在确定降低风险的必要措施，并将生产与交付不符合预期产品的风险降至最低。其核心要求包括：<br>• <strong>具体且可实现：</strong>措施必须是跨职能团队承诺采取的“具体、可衡量、可实现”的行动，严禁将已计划的常规作业或无法落实的假设当作措施填入。<br>• <strong>全要素闭环定义：</strong>每个措施必须明确分配具体负责人姓名、切实可行的目标完成日期（TCD，如过程验证前或 SOP 前）。<br>• <strong>闭环完成标准：</strong>只有当措施已被实际执行，其有效性已被实际验证、记录，并完成了重新评估（评定新的 S、O、D 与 AP）且被团队接受或记录关闭时，FMEA 工作才算真正完成。若评估后决定不采取措施，需在备注栏注明“无需采取进一步措施”。</div><div class="highlight-blue"><strong>2. 过程优化的有效顺序与状态管理规则</strong><br>• <strong>优化的有效顺序法则：</strong><br>1) 首选：消除或减轻失效影响（FE）的过程变更（通常涉及设计或根本工艺路线变更）；<br>2) 次选：降低失效起因（FC）发生频度（O）的过程变更（如优化工装模具参数、防错技术、自动化供料等预防控制）；<br>3) 再次选：提高探测（D）失效起因（FC）或失效模式（FM）的能力（如增加高精度 AOI、在线压力/位移传感器监控等探测控制）。<br>• <strong>过程与概念变更的影响：</strong>一旦发生过程变更，需重新评估所有受影响的过程步骤；若引入新的制造概念变更，必须重新评审 FMEA 所有七个步骤，因为初始分析的基础已不再成立。<br>• <strong>措施状态五分类：</strong>尚未确定（无明确措施）、尚未决策（已有方案正做决策文件）、尚未执行（已决策但未执行/未完成验证）、已完成（措施已执行、效果已证实并完成重评）、不执行（受限于实践与技术限制超出能力而决定不采纳，需书面接受风险并关闭）。<br>• <strong>持续改进与基线传承：</strong>PFMEA 是过程的历史记录，初始 S、O、D 评级必须始终可见或可追溯。但对基础（Foundation）或系列（Family）PFMEA，初始评级可因作为分析新起点而按需更新。</div><div class="highlight-green"><strong>3. 传音制造实战场景（以手机主板屏蔽罩微型点胶与压装为例）</strong><br>在传音智能手机 SMT 产线，主板射频屏蔽罩压装工位易出现“屏蔽罩浮高未压合到位”导致整机 RF 信号屏蔽失效（S=8, O=5, D=4, AP=H）。<br>• <strong>优化策略落地：</strong>团队按优化优先级推进：<br>1. 频度降低（预防）：将普通人工对位气缸下压，改造为带有高精度位移传感器与伺服压力曲线反馈的闭环压装工装（降低起因频度 O 从 5 降至 2）；<br>2. 探测提升：在压装后段增设 3D 激光测高仪，对浮高公差超出 0.05mm 的产品实施 100% 自动分选拦截（探测能力 D 从 4 降至 2）；<br>• <strong>状态流转过程：</strong>指定制造工程师为责任人，设定 TCD 为试产 T2 阶段前。试产验证前状态保持为“尚未执行”；试产批量采集 5000 块板验证 Cpk>1.67 且无一漏失后，提供测试报告证据，将状态更新为“已完成”，AP 成功降至 L 级。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把“既定作业或计划中的检验”当作优化措施。</strong>若某项巡检在步骤五评估前就已经写入控制计划，绝不可在优化步骤重复填写为新措施。<br>• <strong>误区二：措施执行完但未验证效果就标记为“已完成”。</strong>新措施确定后仅代表预测改善，在没有完成实物/测试验证前，状态必须维持在“尚未执行”。<br>• <strong>误区三：变更了制造概念却只改动优化列。</strong>若工装或加工方式发生概念级重构，前序的结构分析、功能分析、失效分析等全部前提均已改变，必须回溯评审整个 FMEA。<br>• <strong>误区四：直接覆盖抹去历史 S、O、D 数据。</strong>PFMEA 是全生命周期追溯的资产，初始的 S、O、D 和优化后的 S、O、D 必须并存可见，形成完整的改进过程决策记录。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 过程优化的主要目标与核心逻辑</span></div>过程优化步骤旨在确定降低风险的必要措施，并将生产与交付不符合预期产品的风险降至最低。其核心要求包括：
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>具体且可实现：</strong>措施必须是跨职能团队承诺采取的“具体、可衡量、可实现”的行动，严禁将已计划的常规作业或无法落实的假设当作措施填入。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>全要素闭环定义：</strong>每个措施必须明确分配具体负责人姓名、切实可行的目标完成日期（TCD，如过程验证前或 SOP 前）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>闭环完成标准：</strong>只有当措施已被实际执行，其有效性已被实际验证、记录，并完成了重新评估（评定新的 S、O、D 与 AP）且被团队接受或记录关闭时，FMEA 工作才算真正完成。若评估后决定不采取措施，需在备注栏注明“无需采取进一步措施”。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 过程优化的有效顺序与状态管理规则</span></div>• <strong>优化的有效顺序法则：</strong>
+1) 首选：消除或减轻失效影响（FE）的过程变更（通常涉及设计或根本工艺路线变更）；
+2) 次选：降低失效起因（FC）发生频度（O）的过程变更（如优化工装模具参数、防错技术、自动化供料等预防控制）；
+3) 再次选：提高探测（D）失效起因（FC）或失效模式（FM）的能力（如增加高精度 AOI、在线压力/位移传感器监控等探测控制）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>过程与概念变更的影响：</strong>一旦发生过程变更，需重新评估所有受影响的过程步骤；若引入新的制造概念变更，必须重新评审 FMEA 所有七个步骤，因为初始分析的基础已不再成立。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>措施状态五分类：</strong>尚未确定（无明确措施）、尚未决策（已有方案正做决策文件）、尚未执行（已决策但未执行/未完成验证）、已完成（措施已执行、效果已证实并完成重评）、不执行（受限于实践与技术限制超出能力而决定不采纳，需书面接受风险并关闭）。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>持续改进与基线传承：</strong>PFMEA 是过程的历史记录，初始 S、O、D 评级必须始终可见或可追溯。但对基础（Foundation）或系列（Family）PFMEA，初始评级可因作为分析新起点而按需更新。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音制造实战场景（以手机主板屏蔽罩微型点胶与压装为例）</span></div>在传音智能手机 SMT 产线，主板射频屏蔽罩压装工位易出现“屏蔽罩浮高未压合到位”导致整机 RF 信号屏蔽失效（S=8, O=5, D=4, AP=H）。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>优化策略落地：</strong>团队按优化优先级推进：</div></div>
+1. 频度降低（预防）：将普通人工对位气缸下压，改造为带有高精度位移传感器与伺服压力曲线反馈的闭环压装工装（降低起因频度 O 从 5 降至 2）；
+2. 探测提升：在压装后段增设 3D 激光测高仪，对浮高公差超出 0.05mm 的产品实施 100% 自动分选拦截（探测能力 D 从 4 降至 2）；
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>状态流转过程：</strong>指定制造工程师为责任人，设定 TCD 为试产 T2 阶段前。试产验证前状态保持为“尚未执行”；试产批量采集 5000 块板验证 Cpk>1.67 且无一漏失后，提供测试报告证据，将状态更新为“已完成”，AP 成功降至 L 级。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：把“既定作业或计划中的检验”当作优化措施。</strong>若某项巡检在步骤五评估前就已经写入控制计划，绝不可在优化步骤重复填写为新措施。
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：措施执行完但未验证效果就标记为“已完成”。</strong>新措施确定后仅代表预测改善，在没有完成实物/测试验证前，状态必须维持在“尚未执行”。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区三：变更了制造概念却只改动优化列。</strong>若工装或加工方式发生概念级重构，前序的结构分析、功能分析、失效分析等全部前提均已改变，必须回溯评审整个 FMEA。</div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区四：直接覆盖抹去历史 S、O、D 数据。</strong>PFMEA 是全生命周期追溯的资产，初始的 S、O、D 和优化后的 S、O、D 必须并存可见，形成完整的改进过程决策记录。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">🛠️ 优化改进优先级与五状态闭环图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🥇</span><div class="fb-title">改进优先顺序</div><div class="fb-desc">①修改设计/过程消除FE或FM → ②增强防错降低O → ③改进探测降低D</div></div>
+                <div class="flow-box" style="border-color:#48bb78; background:#f0fff4;"><span class="fb-icon">🔄</span><div class="fb-title">五种措施状态</div><div class="fb-desc">尚未确定 → 正在决策 → 正在执行 → 已完成（凭客观证据） / 不执行</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/fig-3-6-1.jpg?v=1792660128" alt="图 3.6-1 进行最新风险评估的 PFMEA 优化表格示例（原书第 107 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.6-1 进行最新风险评估的 PFMEA 优化表格示例（原书第 107 页）</p>

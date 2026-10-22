@@ -50,6 +50,100 @@
         .btn-reset { background: #edf2f7; color: #4a5568; }
         .btn-reset:hover { background: #e2e8f0; }
         .score-board { text-align: center; font-size: 24px; font-weight: 700; color: #38b2ac; margin-top: 20px; display: none; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -62,31 +156,31 @@
             <h1 class="title">Day 001：FMEA 的目的与说明（基础入门）</h1>
             <p class="subtitle">什么是 FMEA？它能帮我们管住哪些风险？</p>
         </div>
+            <div style="padding: 15px 30px 0 30px;"><div class="module-badges">
+        <span class="mod-badge primary">📘 第1章：引言与5T规划</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">5</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div></div>
 
         <!-- 2. 知识点区 -->
         <div class="knowledge">
             <h3>📖 今日核心知识</h3>
             
-            <div class="highlight">
-                <strong>概念提示：FMEA 是什么？</strong><br>
-                FMEA（失效模式与影响分析）是一套面向团队的系统的、定性分析方法，其主要目的是：评估产品/过程中失效的潜在技术风险，分析失效的起因和影响，记录预防和探测措施，并针对降低风险的措施提出建议。
-            </div>
+            <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">概念提示：FMEA 是什么？</span></div>
+                FMEA（失效模式与影响分析）是一套面向团队的系统的、定性分析方法，其主要目的是：评估产品/过程中失效的潜在技术风险，分析失效的起因和影响，记录预防和探测措施，并针对降低风险的措施提出建议。</div>
 
-            <div class="highlight-blue">
-                <strong>边界说明：FMEA 的局限性</strong><br>
-                制造商考虑的风险类型很多，包括技术风险、财务风险、时间风险和战略风险。<br>
-                <strong>划重点：</strong>FMEA <strong>仅用于分析技术风险</strong>，从而减少失效、提高产品和过程的安全性。它不用来分析项目能不能按时完成，或者项目有没有利润。
-            </div>
+            <div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">边界说明：FMEA 的局限性</span></div>
+                制造商考虑的风险类型很多，包括技术风险、财务风险、时间风险和战略风险。
+<strong>划重点：</strong>FMEA <strong>仅用于分析技术风险</strong>，从而减少失效、提高产品和过程的安全性。它不用来分析项目能不能按时完成，或者项目有没有利润。</div>
 
-            <div class="highlight-green">
-                <strong>传音应用场景</strong><br>
-                当我们研发一款新手机（如在引入新的快充方案时），FMEA 可以用来分析“快充模块过热导致主板烧毁”这样的<strong>技术风险</strong>。但如果讨论“这个快充方案会不会超出整机 BOM 成本”或者“开发周期会不会导致项目延期”，这属于财务和时间风险，<strong>不在 FMEA 的范围内</strong>。<br><br><div style="text-align:center; margin: 20px 0;"><img src="../assets/day001-risk-types.jpg?v=1792660128" alt="风险类型" style="max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1);"><p style="font-size:13px; color:#718096; margin-top: 8px;">图 1.1-1 风险类型 (来源：FMEA 手册)</p></div>
+            <div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">传音应用场景</span></div>
+                当我们研发一款新手机（如在引入新的快充方案时），FMEA 可以用来分析“快充模块过热导致主板烧毁”这样的<strong>技术风险</strong>。但如果讨论“这个快充方案会不会超出整机 BOM 成本”或者“开发周期会不会导致项目延期”，这属于财务和时间风险，<strong>不在 FMEA 的范围内</strong>。
+<div style="text-align:center; margin: 20px 0;"><img src="../assets/day001-risk-types.jpg?v=1792660128" alt="风险类型" style="max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1);"><p style="font-size:13px; color:#718096; margin-top: 8px;">图 1.1-1 风险类型 (来源：FMEA 手册)</p></div>
             </div>
             
-            <div class="highlight">
-                <strong>FMEA 的商业目标</strong><br>
-                除了识别风险，FMEA 还能：提高汽车/电子产品的质量与可靠性，降低保修成本，提高顾客满意度，证明风险分析以应对法律责任，以及在公司内部建立经验教训知识库。
-            </div>
+            <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">FMEA 的商业目标</span></div>
+                除了识别风险，FMEA 还能：提高汽车/电子产品的质量与可靠性，降低保修成本，提高顾客满意度，证明风险分析以应对法律责任，以及在公司内部建立经验教训知识库。</div>
         </div>
 
         <div class="source-ref">

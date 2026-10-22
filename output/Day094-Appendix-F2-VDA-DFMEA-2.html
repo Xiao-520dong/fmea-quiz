@@ -39,6 +39,100 @@
         .result-box.show { display: block; }
         .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
         .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    
+/* === Visual & Iconographic Enhancements === */
+.step-progress-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 24px; overflow-x: auto; gap: 6px;
+}
+.step-node {
+    display: flex; flex-direction: column; align-items: center; min-width: 68px;
+    font-size: 11px; color: #718096; position: relative; font-weight: 500;
+}
+.step-node .step-dot {
+    width: 28px; height: 28px; border-radius: 50%; background: #edf2f7;
+    color: #718096; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; border: 2px solid #cbd5e0;
+}
+.step-node.active { color: #2b6cb0; font-weight: 700; }
+.step-node.active .step-dot {
+    background: linear-gradient(135deg, #4299e1, #667eea); color: #fff;
+    border-color: #3182ce; box-shadow: 0 0 0 4px rgba(66, 153, 225, 0.2);
+}
+.step-arrow { color: #cbd5e0; font-size: 14px; font-weight: bold; }
+.module-badges {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 12px;
+}
+.mod-badge {
+    display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 600;
+    background: #edf2f7; color: #4a5568;
+}
+.mod-badge.primary { background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8; }
+.mod-badge.purple { background: #faf5ff; color: #6b46c1; border: 1px solid #e9d8fd; }
+.mod-badge.green { background: #f0fff4; color: #2f855a; border: 1px solid #c6f6d5; }
+
+.highlight, .highlight-blue, .highlight-green, .highlight-red {
+    position: relative; padding: 18px 20px !important; border-radius: 12px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03); margin: 18px 0 !important;
+}
+.card-title-bar {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    padding-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.08);
+}
+.card-icon-badge {
+    width: 32px; height: 32px; border-radius: 8px; display: inline-flex;
+    align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0;
+}
+.highlight .card-icon-badge { background: #feebc8; color: #c05621; }
+.highlight-blue .card-icon-badge { background: #bee3f8; color: #2b6cb0; }
+.highlight-green .card-icon-badge { background: #c6f6d5; color: #22543d; }
+.highlight-red .card-icon-badge { background: #fed7d7; color: #9b2c2c; }
+.card-title-text { font-size: 16px; font-weight: 700; color: #1a202c; }
+
+.bullet-item {
+    display: flex; align-items: flex-start; gap: 8px; margin: 8px 0;
+    background: rgba(255,255,255,0.65); padding: 8px 12px; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.04);
+}
+.bullet-icon {
+    flex-shrink: 0; font-size: 14px; margin-top: 2px;
+}
+.sub-bullet-item {
+    display: flex; align-items: flex-start; gap: 6px; margin: 5px 0 5px 18px;
+    padding: 5px 10px; background: rgba(255,255,255,0.85); border-radius: 6px;
+    border-left: 3px solid #63b3ed; font-size: 14.5px;
+}
+
+/* Native HD Vector Diagram Card */
+.vector-diagram-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #cbd5e0; border-radius: 12px; padding: 18px;
+    margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.vector-diagram-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #edf2f7;
+}
+.vector-diagram-title {
+    font-size: 15px; font-weight: 700; color: #2d3748; display: flex; align-items: center; gap: 8px;
+}
+.vector-badge {
+    font-size: 11px; background: #e6fffa; color: #234e52; border: 1px solid #81e6d9;
+    padding: 2px 8px; border-radius: 12px; font-weight: 600;
+}
+.flow-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px;
+}
+.flow-box {
+    background: #fff; border: 1.5px solid #bee3f8; border-radius: 10px; padding: 12px;
+    text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+.flow-box .fb-icon { font-size: 22px; margin-bottom: 6px; display: block; }
+.flow-box .fb-title { font-weight: 700; font-size: 13.5px; color: #2b6cb0; margin-bottom: 4px; }
+.flow-box .fb-desc { font-size: 12px; color: #4a5568; line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -49,6 +143,12 @@
                 <h1>Day 094：附件 F2.1（下）：VDA 第四卷与新版 DFMEA 风险分析与优化变更对比</h1>
                 <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
             </div>
+            <div class="module-badges">
+        <span class="mod-badge primary">🔄 附件D~H：新旧版变更与标准导读</span>
+        <span class="mod-badge purple">⏱️ 5分钟精读</span>
+        <span class="mod-badge green">🎯 5题闯关自测</span>
+    </div>
+            <div style="margin-top:16px;"><div class="step-progress-bar" title="AIAG & VDA FMEA 七步法全景导航"><div class="step-node"><div class="step-dot">1</div><span>规划准备</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">2</div><span>结构分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">3</div><span>功能分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">4</div><span>失效分析</span></div><div class="step-arrow">→</div><div class="step-node active"><div class="step-dot">📊</div><span>风险分析</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">6</div><span>优化改进</span></div><div class="step-arrow">→</div><div class="step-node"><div class="step-dot">7</div><span>结果文件</span></div></div></div>
             
             <div style="margin-bottom: 30px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
@@ -60,8 +160,22 @@
             <div style="margin-bottom: 40px;">
                 <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
                 <div style="line-height: 1.6; color: #4a5568;">
-                    <div class="highlight"><strong>1. 步骤五（风险分析）的核心变更</strong><br>从 VDA 第四卷过渡到 AIAG & VDA 新版手册，DFMEA 风险分析发生了四大关键变化：<br>① <strong>严重度 (S) 十分制新定义：</strong>取消了原本按“有无警告”区分 9 分和 10 分的做法，改为<strong>安全相关一律 10 分（无论有无警告），法规不合规一律 9 分</strong>；且 DFMEA、PFMEA 和 FMEA-MSR 在最终用户影响上共用同一套量表。<br>② <strong>频度 (O) 强调预防控制输入：</strong>频度评级不再脱离上下文，而是直接将“当前预防控制 (PC)”的有效性作为定性评估的核心输入。<br>③ <strong>探测度 (D) 纳入能力与时机：</strong>同时考量测试验证方法的成熟度与探测时机（在设计冻结前还是投产后）。<br>④ <strong>用措施优先级 (AP) 替代 RPN：</strong>彻底废除 RPN 乘积，DFMEA 与 PFMEA 统一使用 高(H)、中(M)、低(L) 措施优先级表。</div><div class="highlight-blue"><strong>2. 步骤六（优化）与步骤七（结果文件化）的变更</strong><br>① <strong>优化列细化与证据闭环：</strong>将原版笼统的“措施”拆分为明确的“DFMEA 预防措施”和“DFMEA 探测措施”，新增了<strong>“采取基于证据的措施”</strong>和<strong>“状态”</strong>列（尚未确定、正在决策、正在执行、已完成、不执行），强制要求基于客观验证证据才能关闭措施。<br>② <strong>新增步骤七（结果文件化）：</strong>要求输出总结 FMEA 范围与技术风险的正式报告，作为部件开发计划和项目里程碑评审的交付物。</div><div class="highlight-green"><strong>3. 传音研发实战场景</strong><br>在传音手机主板或结构件的 DFMEA 评审中，过去部分工程师习惯在措施栏写一句“优化结构设计”就直接改低 O 值。按照新版附件 F2.1 的要求，必须在“采取基于证据的措施”列填入具体的仿真报告编号或跌落测试验证报告编号，且将状态更新为“已完成”后，才能重新评估 S/O/D 和 AP 等级。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>❌ <strong>误区：</strong>认为车规或电子产品只要加了蜂鸣器/弹窗报警，安全故障的严重度就能从 10 分降到 9 分。<br>✅ <strong>正解：</strong>新版手册明确规定，<strong>无论有无警告，凡涉及安全风险一律评为 S=10</strong>，S=9 专门对应“不符合法规”。</div>
-                    <div class="manual-figure-box" style="margin: 20px 0;">
+                    <div class="highlight"><div class="card-title-bar"><span class="card-icon-badge">💡</span><span class="card-title-text">1. 步骤五（风险分析）的核心变更</span></div>从 VDA 第四卷过渡到 AIAG & VDA 新版手册，DFMEA 风险分析发生了四大关键变化：
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">①</span><div><strong>严重度 (S) 十分制新定义：</strong>取消了原本按“有无警告”区分 9 分和 10 分的做法，改为<strong>安全相关一律 10 分（无论有无警告），法规不合规一律 9 分</strong>；且 DFMEA、PFMEA 和 FMEA-MSR 在最终用户影响上共用同一套量表。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>频度 (O) 强调预防控制输入：</strong>频度评级不再脱离上下文，而是直接将“当前预防控制 (PC)”的有效性作为定性评估的核心输入。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">③</span><div><strong>探测度 (D) 纳入能力与时机：</strong>同时考量测试验证方法的成熟度与探测时机（在设计冻结前还是投产后）。</div></div>
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">④</span><div><strong>用措施优先级 (AP) 替代 RPN：</strong>彻底废除 RPN 乘积，DFMEA 与 PFMEA 统一使用 高(H)、中(M)、低(L) 措施优先级表。</div></div></div><div class="highlight-blue"><div class="card-title-bar"><span class="card-icon-badge">🧭</span><span class="card-title-text">2. 步骤六（优化）与步骤七（结果文件化）的变更</span></div>① <strong>优化列细化与证据闭环：</strong>将原版笼统的“措施”拆分为明确的“DFMEA 预防措施”和“DFMEA 探测措施”，新增了<strong>“采取基于证据的措施”</strong>和<strong>“状态”</strong>列（尚未确定、正在决策、正在执行、已完成、不执行），强制要求基于客观验证证据才能关闭措施。
+<div class="bullet-item"><span class="bullet-icon" style="color:#3182ce;font-weight:bold;">②</span><div><strong>新增步骤七（结果文件化）：</strong>要求输出总结 FMEA 范围与技术风险的正式报告，作为部件开发计划和项目里程碑评审的交付物。</div></div></div><div class="highlight-green"><div class="card-title-bar"><span class="card-icon-badge">📱</span><span class="card-title-text">3. 传音研发实战场景</span></div>在传音手机主板或结构件的 DFMEA 评审中，过去部分工程师习惯在措施栏写一句“优化结构设计”就直接改低 O 值。按照新版附件 F2.1 的要求，必须在“采取基于证据的措施”列填入具体的仿真报告编号或跌落测试验证报告编号，且将状态更新为“已完成”后，才能重新评估 S/O/D 和 AP 等级。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>❌ <strong>误区：</strong>认为车规或电子产品只要加了蜂鸣器/弹窗报警，安全故障的严重度就能从 10 分降到 9 分。
+<div class="bullet-item" style="background:#f0fff4;border-color:#9ae6b4;"><div>✅ <strong>正解：</strong>新版手册明确规定，<strong>无论有无警告，凡涉及安全风险一律评为 S=10</strong>，S=9 专门对应“不符合法规”。</div></div></div>
+                    <div class="vector-diagram-card">
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="flow-grid">
+                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
+                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+            </div>
+        </div>
+<div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <img src="../assets/day094-manual-p229.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F2.1（原书 P229-231）（PDF 第 229 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F2.1（原书 P229-231）（PDF 第 229 页）</p>

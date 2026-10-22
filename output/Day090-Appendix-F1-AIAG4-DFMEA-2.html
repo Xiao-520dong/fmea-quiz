@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与变更背景</strong><br>在《AIAG & VDA FMEA 手册》附件 F1.1 中，重点对比了步骤五（风险分析）、步骤六（优化）以及步骤七（结果文件化）从 AIAG 第四版到新版的核心重大变更：<br>1) <strong>术语与评价标尺升级：</strong>将术语“排名（Ranking）”彻底替换为“评级（Rating）”，强调依据量表准则客观评级而非主观排序。严重度（S）定义了新的十分制量表，S=10（安全无警告）和 S=9（法规符合性），在 FE 为最终用户级别时 DFMEA/PFMEA/FMEA-MSR 保持统一；频度（O）强调以预防控制（PC）作为输入；探测度（D）综合考量探测能力、成熟度与探测机会。<br>2) <strong>措施优先级（AP）全面取代风险顺序数（RPN）：</strong>废除单纯 S×O×D 乘积的 RPN 阈值管理，引入基于逻辑条件分配的高（H）、中（M）、低（L）措施优先级表，AP 表在 DFMEA 和 PFMEA 中完全通用，并依次考虑 S、O、D 的权重与逻辑关系。<br>3) <strong>分类列变更为筛选器代码（Filter Code）：</strong>旧版产品图纸/规范中的失效分类非 DFMEA 必要项，新版以可选的“筛选器代码”列替代，用于标识特殊特性或企业特定内部标记。</div><div class="highlight-blue"><strong>2. 步骤六（优化）与步骤七（结果文件化）的规则拆解</strong><br>1) <strong>优化的结构化升级（表单重构）：</strong><br>- <strong>措施分流：</strong>将原“建议措施”拆分为清晰的“预防措施”和“探测措施”两列独立推进。<br>- <strong>状态管理规范化：</strong>新增“状态”列，推荐标准化状态级别（如尚未确定 Initial/Open、已完成 Completed、已弃用 Discarded 等）。<br>- <strong>基于证据的闭环：</strong>“采取的措施”变更为“采取基于证据的措施（Action Taken with Pointer to Evidence）”，明确要求闭环必须有实际试验报告、仿真数据、图纸更改记录等客观证据支撑。<br>- <strong>新增备注：</strong>设立专门“备注”列，供 FMEA 团队及企业内部记录技术背景与沟通细节。<br>- <strong>有效性评估重新评级：</strong>采取措施后需重新评估 S、O、D 及新的 AP。<br>2) <strong>步骤七（结果文件化）：</strong><br>- <strong>强化管理层所有权：</strong>新版明确 FMEA 过程归管理层所有，管理层对资源分配、项目节点与风险控制承担最终责任。<br>- <strong>技术风险与里程碑挂钩：</strong>步骤七要求出具总结报告，向内部管理层和客户汇报技术风险与改进成效，作为产品研发项目里程碑评审（如 EVT、DVT 阶段放行）的核心决策输入。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>以传音高功率快充手机（如 Infinix/TECNO 160W/260W 快充项目）的电池管理系统（BMS）及整机热失控防护 DFMEA 为例：<br>1) <strong>风险分析实施（步骤五）：</strong>FE 为“电池热失控引发整机起火”，S=10（安全相关）。即使原有 PC（过压硬件保护电路）较好，若原有 D 依靠后期常温整机充电老化抽检（D=5），查 AP 逻辑表，S=10、O=3、D=5 时直接触发 AP=H（高优先级），必须采取措施，彻底打消以往工程师以“RPN 仅 150，未超 200 阈值不用改”的侥幸推脱借口。<br>2) <strong>优化闭环与证据驱动（步骤六）：</strong>DFMEA 优化栏中，分流为“预防措施：增加二级独立过温断电保护芯片”和“探测措施：引入极端环境充放电失效注入仿真与 DVT 极限应力台架测试”。在“采取基于证据的措施”栏中，结构与硬件团队不仅填写“电路已修改”，还必须关联附带具体的仿真报告编号（SIM-BMS-2024-058）与 DVT 破坏性测试验证报告（TR-OVP-0034），并在状态栏置为“已完成”，重新评级后 AP 降至 L，符合量产放行要求。<br>3) <strong>管理评审（步骤七）：</strong>在传音专有的项目评审会（如 DVT 样机转生产线评审）上，FMEA 主持人必须提交步骤七总结报告，清晰展示 AP 从 H 降至 L 的闭环状态及残余风险，由研发总监与质量总监签字闭环。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><strong>误区 1：继续沿用旧版 RPN<100 作为不需要采取措施的判断标准。</strong><br><em>避坑指南：</em>新版全面废止 RPN 及任何硬性数值阈值。必须使用 AP 表依次根据 S、O、D 的逻辑组合评估 H/M/L。当 S 极高（如 9~10）时，即便 O 和 D 较低，AP 依然可能处于高或中级别，必须由团队优先评估或给出维持当前控制的充分技术理由。<br><strong>误区 2：优化栏中的“采取基于证据的措施”只写一句话“已改善”。</strong><br><em>避坑指南：</em>新版强调“基于证据（with pointer to evidence）”。仅填写“图纸已改”或“结构已优化”属于严重不合规；必须指引明确的支撑证据编号（如 ECN 变更单号、测试报告 ID、公差分析报告编号等），确保风险改善可追溯、可审计。<br><strong>误区 3：将新版的“筛选器代码（Filter Code）”视作必填的强制特殊特性列。</strong><br><em>避坑指南：</em>原书指出失效分类并非 DFMEA 的强制要求，新版设定的筛选器代码列是“可选的（Optional）”，企业可根据自身内部管理流程自定义使用，切勿因无内容而强行填写或视作缺陷。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day090-manual-p221.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.1（原书 P221-223）（PDF 第 221 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day090-manual-p221.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.1（原书 P221-223）（PDF 第 221 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.1（原书 P221-223）（PDF 第 221 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.1（原书 P221-223）（PDF 第 221-223 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

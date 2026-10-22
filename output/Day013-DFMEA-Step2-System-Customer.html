@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与目的（2.2.1节）</strong><br>设计结构分析（DFMEA 步骤二）的核心目的是<strong>将设计识别并分解为系统、子系统、装配件和组件/零件，以便进行后续的技术风险分析</strong>。结构分析不仅是功能分析（步骤三）的绝对基石，更具有明确的目标导向：<br>• <strong>分析范围的可视化：</strong>借助方块图、边界图（Boundary Diagram）、数字模型（3D/CAD）、实体零件或结构树直观展示系统组成。<br>• <strong>设计接口与交互识别：</strong>识别系统内部与外部的物理连接、间隙配合、信号交互与能量流动。<br>• <strong>工程协作与接口职责：</strong>明确顾客工程团队与供应商工程团队之间的接口责任分工。<br>• <strong>功能分析基础：</strong>为步骤三中逐层分配功能与性能指标建立清晰的物理承载实体。</div><div class="highlight-blue"><strong>2. 系统结构与两类核心顾客定义（2.2.2 & 2.2.3节）</strong><br>• <strong>系统结构的本质（2.2.2）：</strong>系统结构由<strong>系统要素（System Elements）</strong>构成。要素可以是系统、子系统、装配件或单个组件。关键铁律：<strong>系统要素是功能项目的独立、独特物理/逻辑组件，绝不是功能、要求或特性</strong>（例如：中框是系统要素，而“支撑主板”是功能，“抗弯刚度≥1200N”是要求）。系统拥有明确边界，并通过输入与输出与外界环境发生相互作用。<br>• <strong>定义两类关键顾客（2.2.3）：</strong>在DFMEA中，团队必须同时识别并考虑两类顾客，这是定义产品要求与后续失效影响（Severity）的前提：<br>1. <strong>最终用户（End User）：</strong>产品完成开发并销售后，在实际场景中使用该产品的个人或机构（直接影响用户体验、安全性、法规符合性）。<br>2. <strong>装配和制造作业（Assembly and Manufacturing）：</strong>包括零部件加工（如冲压、注塑、SMT贴片）以及整机总装（如整车/手机总装厂）的生产加工地点。<strong>处理好产品与其装配过程之间的接口（面向制造和装配的设计 DFMA）对有效的FMEA分析至关重要</strong>。任何下游作业或下一级制造过程都是DFMEA必须服务的顾客。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景剖析</strong><br>• <strong>手机整机系统结构树分解案例：</strong>以传音新一代中端智能手机研发为例，结构树逐层分解为：整机系统（Level 1: System）→ 射频/天线子系统、结构中框子系统、电池模组（Level 2: Sub-system）→ 结构中框压铸件、天线弹片、导热石墨片（Level 3: Component）。严禁在结构树节点中出现“散热好”、“强度高”等描述，必须是具体的物理硬件或逻辑固件单元。<br>• <strong>双重顾客在手机研发中的具体映射：</strong><br>- <em>针对最终用户：</em>非洲或南亚用户在高温高湿、多尘汗液浸润环境下握持使用手机，关注跌落不碎屏、按键手感清脆、充电接口耐拔插；<br>- <em>针对制造装配顾客：</em>重庆或海外总装厂的产线装配工人及自动化螺丝机。若中框卡扣倒角设计过小导致工人装配时手部疲劳或装配不到位（浮高），或螺钉柱定位间隙不足导致打螺钉滑丝，这属于<strong>DFMEA在产品设计阶段未能有效识别并满足“制造与装配顾客”需求导致的失效模式</strong>。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆系统要素与功能/特性。</strong>在DFMEA结构树的“系统要素”列填写“防水IP68”、“阻燃PC材质”或“固定主板”。<br><em>正解：</em>系统要素必须是名词或实体结构组件（如“机身中框密封圈”），其对应的功能和要求在步骤三（功能分析）中才定义。<br>• <strong>误区二：DFMEA只关注最终消费者，忽视制造与装配作业。</strong>认为制造装配的问题全部丢给PFMEA处理。<br><em>正解：</em>原书2.2.3节明确指出，装配和制造作业是DFMEA的核心顾客之一。产品设计必须具备防错性、易装配性及合理的公差链。如果一个结构设计导致产线无法可靠组装或极易装反，这是设计本身未满足制造顾客需求的重大DFMEA缺陷！</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day013-manual-p32.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.2.1 - 2.2.3 节（PDF 第 32 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day013-manual-p32.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.2.1 - 2.2.3 节（PDF 第 32 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.2.1 - 2.2.3 节（PDF 第 32 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.2.1 - 2.2.3 节（PDF 第 32-33 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与本质区别：为什么叫频率（F）而非频度（O）？</strong><br>在传统 DFMEA 中，频度（Occurrence, O）评估的是失效起因在设计生命周期内由于设计缺陷或薄弱点导致的发生概率，其关注的是制造前的设计本身；而在 FMEA-MSR 中，采用的是<strong>频率（Frequency, F）</strong>概念。<br>• <strong>分析前提假设：</strong>FMEA-MSR 的最终用户操作分析，明确<strong>假设制造过程已得到充分有效的控制</strong>，以便专注于评估系统设计对于实际运行环境与用户使用行为的适用性。<br>• <strong>定义：</strong>频率评级（F）是指在车辆或系统预期使用寿命期间，相关运行操作中<strong>发生失效起因的可能性</strong>。评估估计的基准参考量级通常为一百万台（1,000,000 台）在役运行设备。<br>• <strong>评级证据支撑：</strong>频率评级不能凭空猜测，必须基于扎实的事实与数据源，并在 FMEA-MSR 表格的“频率评级理由”列中进行明确记录。证据来源包括：DFMEA/PFMEA 评估结果、现场退货与拒收产品数据、顾客投诉、售后保修数据库、元器件数据手册（Datasheet/FIT率）等。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：F 评级标准（表 MSR2）与暴露时间调整规则（表 MSR2.1）</strong><br><strong>(1) 频率（F）1-10 级评估准则：</strong><br>• <strong>F=10（极高或无法确定）：</strong>发生频率未知，或已知很高且无法接受。<br>• <strong>F=9~8（高）：</strong>F=9 为预期寿命周期内可能会出现；F=8 为使用中经常出现。<br>• <strong>F=7~6（中）：</strong>F=7 为使用中频繁出现；F=6 为略微频繁地出现。<br>• <strong>F=5~4（低）：</strong>F=5 为偶尔出现；F=4 为极少出现，但预计在使用中至少发生 10 次。<br>• <strong>F=3（非常低）：</strong>预计在孤立事例中出现，预计在使用中至少发生 1 次。<br>• <strong>F=2（极低）：</strong>在预防/探测措施及现场经验基础上预计不会出现，不能排除孤立个例，尚无绝对证据证明绝不发生。<br>• <strong>F=1（不会出现）：</strong>预期寿命内几乎完全排除发生可能，有充分技术证据表明不会出现，起因已闭环记录。<br><strong>(2) 运行工况暴露度折减机制（表 MSR2.1 补充规则）：</strong><br>如果失效起因并不总是导致关联的失效后果，必须结合<strong>暴露于该特定运行条件的时间比例</strong>对 F 评级进行降级调整：<br>• <strong>比例 &lt; 10%：</strong>F 评级可降低 <strong>1 级</strong>（例如从 F=3 降为 F=2）。<br>• <strong>比例 &lt; 1%：</strong>F 评级可降低 <strong>2 级</strong>。<br><em>注意：</em>降级调整的原因和运行场景比例必须在“频率评级的理由”列中详细记录说明。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机闪光灯高压芯片击穿与闪光拍照工况分析</strong><br>• <strong>背景场景：</strong>在传音中高端拍照机型开发中，LED 闪光灯驱动芯片在高温严苛环境下可能发生内部击穿短路（失效起因），若发生短路且处于高占空比放电状态，可能引起主板过热烧蚀。<br>• <strong>数据支撑与基准 F 评定：</strong>根据供应商 Datasheet失效率及售后返修数据统计，该芯片硬件偶发失效以 ppm/年衡量，基准预估频率评定为 <strong>F=3</strong>（极低/非常低，在百万台设备寿命期内属于孤立个案，预计至少发生 1 次）。<br>• <strong>工况暴露度折减分析：</strong>闪光灯驱动芯片只有在用户执行“高亮度拍照/补光录像”工况时，芯片才处于大电流高负荷运转。经传音大数据统计，非洲及海外用户高亮度闪光开启时间占手机全生命周期总亮屏运行时间的比例远低于 <strong>10%</strong>（甚至低于 1%）。<br>• <strong>结论落地：</strong>依据表 MSR2.1 规则，该失效起因暴露于危害工况的实际比例 &lt; 10%，评级工程师可在表格“频率评级的理由”列写明工况占比依据，将 F 评级由 <strong>F=3 调整降级为 F=2</strong>，合理且真实地反映了用户在役风险。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 F 评级与传统 DFMEA 的频度 O。</strong>把产线 SMT 焊接不良或组装失误当作 FMEA-MSR 的失效起因来评估 F。<em>正解：</em>MSR 评估的前提假设是“制造过程受控合格”，F 评价的是合格产品流入市场后在用户在役使用期内元器件/硬件老化、环境疲劳或运行软件异常等起因的暴露频率。<br>• <strong>误区二：无凭无据任意降低 F 等级。</strong>工程师为了降低 AP 等级，主观认为“用户很少这么用”就直接把 F=5 改成 F=2，但未附任何运行时间数据。<em>正解：</em>根据手册规范，调整 F 等级必须有严格的运行时间占比依据（&lt;10% 减 1 级，&lt;1% 减 2 级），并必须在表格中完整记录理由。<br>• <strong>误区三：认为只要现场数据优良就可以打 F=1。</strong><em>正解：</em>F=1 要求“有确凿证据表明失效起因绝不会出现且起因已被记录”。通常电子电气硬件随机硬件失效（如随机开路/短路）最多评到 F=2，不可随意打 F=1。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/table-msr2.jpg" alt="表 MSR2 补充 FMEA-MSR 频率 (F) 表（原书第 124 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/table-msr2.jpg?v=1792660128" alt="表 MSR2 补充 FMEA-MSR 频率 (F) 表（原书第 124 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 MSR2 补充 FMEA-MSR 频率 (F) 表（原书第 124 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.4 - 4.5.5 节（PDF 第 135-136 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

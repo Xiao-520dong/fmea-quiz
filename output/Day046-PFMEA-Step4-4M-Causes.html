@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与因果逻辑</strong><br><ul><li><strong>失效起因（FC，Failure Cause）：</strong>指过程失效模式出现的原因。失效模式是失效起因的直接后果。编制 PFMEA 时，应在可能范围内为每个失效模式确定制造或装配方面的潜在原因。</li><li><strong>根本目的：</strong>失效起因必须尽可能简明扼要、具体明确地列出，以便能够针对性地制定预防控制（PC）和探测控制（DC）措施。</li><li><strong>来料假设黄金准则：</strong>在编制 PFMEA 时，<strong>应默认假设来料零件/材料是正确的</strong>。只有当历史数据证明来料零件存在质量缺陷时，FMEA 团队才可以作例外处理（不能把内部制程失效随意推卸给上游来料）。</li><li><strong>逻辑提问法：</strong>通过解答<strong>“为什么会出现该失效模式？”</strong>来建立失效起因（FC）与失效模式（FM）的强因果链。</li></ul></div><div class="highlight-blue"><strong>2. 经典石川 4M 框架与激励问题引导法</strong><br>原书推荐由推进者引导团队使用“值得深思的激励问题”来揭示 4M 失效起因：<ul><li><strong>人员（Man）：</strong>涵盖安装工人、设备操作员/助理、物料员、维护技术员等。<ul><li><em>激励问题：</em>是否可能使用错误零件？是否可能漏装/没有零件？零件加载方向是否可能颠倒？零件从周转拿取到装配应用期间是否受损？是否使用了错误材料？</li></ul></li><li><strong>机器/设备（Machine）：</strong>涵盖机器人、点胶机、注塑机、检验设备、夹具、供料器等。<ul><li><em>激励问题：</em>自动化流程是否会意外中断？参数/配方数据是否可能被错误输入？机器是否可能绕过联锁自动控制在手动模式下运行？预防和探测控制是否遵循点检/校准计划？</li></ul></li><li><strong>材料（间接）（Material - Indirect）：</strong>主要指制程辅料、流体和消耗品，如清洗剂、安装润滑脂、螺纹锁固胶、机油等。<ul><li><em>激励问题：</em>间接材料是否过多、过少或漏加？是否在错误的位置涂抹/应用了材料？</li></ul></li><li><strong>环境（Milieu / Environment）：</strong>涵盖温度、湿度、灰尘/洁净度、静电（ESD）、照度、车间噪音等。<ul><li><em>激励问题：</em>工位照明是否充足导致视认不清？作业现场的微粒/零件是否被混入产品视为异物？</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音制造实战场景：手机中框点胶贴合屏总成</strong><br>以传音某机型“工位 080：中框热熔胶自动点胶”为例，过程失效模式为 <strong>FM：中框边缘热熔胶轨迹局部断胶/胶量不足（宽度 < 0.6mm）</strong>，运用 4M 挖掘其失效起因（FC）：<ul><li><strong>【机 - 设备】：</strong>点胶机气动供胶阀针阀磨损卡滞，或点胶针头局部堵塞导致出胶不畅。</li><li><strong>【料 - 间接材料】：</strong>热熔胶胶水开封后超过有效作业时限，在预热胶管内发生局部结皮/固化。</li><li><strong>【人 - 操作员】：</strong>产线员工在更换胶管后，未按作业指导书执行针头点胶高度校准（Z轴对零偏移）。</li><li><strong>【环 - 环境】：</strong>点胶防尘罩气流扰动过大或工位环境温度低于 18℃，导致出胶粘度异常剧增。</li></ul>通过精准界定上述 4M 原因，后续就能对应制定如“定期更换撞针（PC）”、“CCD 胶路视觉自动检测（DC）”等闭环控制。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>禁用无效的抽象术语：</strong>原书（第97页）明确警告，“缺陷”、“破损”、“操作失败”、“不遵守要求”、“操作不正常”、“员工粗心”等词汇<strong>无法全面描述失效起因，更无法用于制定具体的工程应对措施</strong>，PFMEA 审核中一律判定为不合格。</li><li><strong>混淆产品直接材料与间接辅料：</strong>直接零件（如屏幕、主板）默认合格；PFMEA 的“料”重点关注直接参与工艺过程但非永久零件的间接辅料（润滑油、助焊剂、清洗水、保护膜等）的状态与用量。</li><li><strong>原因流于表面没有触及工作要素物理机制：</strong>写“电批坏了”是无效的，必须细化至部件与失效机理，如“电批扭力离合器弹簧疲劳磨损，导致提前跳脱断电”。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day046-manual-p96.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day046-manual-p96.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.4.6 节（PDF 第 96-97 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

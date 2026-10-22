@@ -63,11 +63,11 @@
                     <div class="highlight"><strong>1. 核心概念与定义（2.5.4 当前探测控制 DC）</strong><br>• <strong>定义与目的：</strong>当前探测控制（DC, Detection Control）是在项目交付生产前，探测失效起因（FC）或失效模式（FM）是否存在的控制活动。<br>• <strong>已计划/已完成属性：</strong>FMEA 中列出的当前探测控制必须表示<strong>已计划的活动或已完成的活动</strong>，绝不能填入未来“可能永远不会实施”的潜在愿望或待定测试。<br>• <strong>具体性与可追溯性要求：</strong>当前探测控制必须清楚全面地说明。诸如“测试”或“实验室测试”等笼统陈述<strong>不能</strong>算作明确的探测控制。必须明确引用具体测试编号、测试计划或标准程序（如：测试号 1234 爆裂压力测试，第 6.1 段），以表明团队已确认该测试切实具备探测出该起因或模式的能力。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（2.5.4 示例 & 2.5.5 控制确认与设计路线图）</strong><br>• <strong>原书典型探测控制（DC）示例：</strong>功能检查、爆裂测试、环境测试、驾驶测试、耐久性测试、运动范围研究、硬件在环（HIL）、软件在环（SIL）、实验设计（DoE）、电压输出实验室测量等。<br>• <strong>PC 与 DC 的时序与角色关系（图 2.5-1）：</strong><br>  - <strong>PC（预防）：</strong>发生在决策之前或设计确定阶段，如公差分析、理论计算、FEA 仿真、DoE 参数优化，目的是避免出现设计失效；<br>  - <strong>DC（应对/验证）：</strong>在设计形成实体或软硬件在环后，进行质量检验、失效检验、寿命周期功能测试、趋势分析，验证设计是否合格。<br>• <strong>控制有效性确认（2.5.5）：</strong><br>  - 必须确认当前 PC 和 DC 的有效性，通常在“验证分解评审（Design Verification Review）”过程中完成，并在 DFMEA 或项目文件中记录。<br>  - 若控制被证明无效，必须制定并执行额外的纠正/改进行动。<br>• <strong>继承历史 FMEA 的规则：</strong>若沿用旧机型/旧平台的 FMEA 条目，<strong>必须重新评审频度（O）和探测度（D）</strong>，因为新产品在新平台、新环境下可能存在不同的边界条件与失效机理。<br>• <strong>设计理解路线图（图 2.5-2）：</strong>随时间推进，团队通过“计算/新计算 → 模拟/DoE/新模拟 → 现有样品测试 → 新样品验证”逐步深化，从最初的理论预防走向 100% 的设计理解与实测探测确认。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>手机整机与元器件测试的 DC 具体化描述：</strong><br>  - <em>错误写法：</em>“跌落测试”、“高温测试”、“ESD 测试”。<br>  - <em>传音规范写法：</em>“整机定向微跌落测试（企标 Q/TY-RD-ME-042 第 4.2 节，0.5m 钢板跌落 1000 次）”、“高温高湿储存测试（GB/T 2423.50，65℃/95%RH 48h 开机点检）”、“Type-C 端口静电接触放电测试（IEC 61000-4-2，±8kV 接触/±15kV 空气放电）”。<br>• <strong>新兴非洲/南亚特殊环境的继承评审场景：</strong><br>  - 某机型直接复用国内/东南亚旧款主板的防护设计及 FMEA 条目。但在东非高原与西非沿海高盐雾汗液环境下，原有的盐雾测试（DC）与防腐蚀镀层预防（PC）必须重新评审 O 和 D。旧款 D=2（国内环境能检出）在新环境汗液腐蚀起因下可能失效，需升级为特定的人工汗液滴落耐受测试，否则不能直接照搬评分。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把“将来的打算/改进措施”当成“当前探测控制”。</strong><br>  <em>纠偏：</em>当前探测控制（DC）必须是当前项目已明确排期、已纳入 DV/PV 测试计划的活动。如果还在讨论“也许我们可以加做一次 CT 扫描”，绝不能写入当前 DC，而应作为步骤六的“优化措施”。<br>• <strong>误区二：笼统模糊，只写“实验室测试”或“功能测试”。</strong><br>  <em>纠偏：</em>手册明确规定这是不合格的。必须指明测试依据、测试项目编号及检验段落，确保该测试方法切实能激发并探测到该失效模式。<br>• <strong>误区三：老机型数据直接“Ctrl+C / Ctrl+V”。</strong><br>  <em>纠偏：</em>手册 2.5.5 强调：即使产品/过程外观相似，换了新项目、新客户、新使用环境，环境条件改变会导致探测难度变化，必须重新评审频度 O 与探测度 D。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-2-5-1.jpg" alt="图 2.5-1 设计 FMEA 中的预防和探测（原书第 46 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-2-5-1.jpg?v=1792660128" alt="图 2.5-1 设计 FMEA 中的预防和探测（原书第 46 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.5-1 设计 FMEA 中的预防和探测（原书第 46 页）</p>
         </div>
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-2-5-2.jpg" alt="图 2.5-2 设计理解路线图（原书第 46 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-2-5-2.jpg?v=1792660128" alt="图 2.5-2 设计理解路线图（原书第 46 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.5-2 设计理解路线图（原书第 46 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.4 - 2.5.5 节（PDF 第 57-59 页）</p>
@@ -169,31 +169,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

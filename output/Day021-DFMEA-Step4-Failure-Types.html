@@ -63,11 +63,11 @@
                     <div class="highlight"><strong>1. 核心概念与定义（步骤四目的与失效本质）</strong><br>根据手册 2.4.1 与 2.4.2 节：<br>• <strong>失效分析的目的：</strong>识别失效起因（FC）、失效模式（FM）和失效影响（FE），并显示它们之间的逻辑因果关系（失效链），以便为后续的风险评估与表格记录提供基础；同时促进顾客与供应商之间的跨层级协作（尤其是失效影响层面）。<br>• <strong>失效的本质与推导来源：</strong>失效由功能推导而来。功能在步骤三中使用肯定的词语定义，而步骤四的失效则是以否定的词语描述该功能未能满足的方式。一个功能可能对应多个潜在失效，绝不能识别出一个失效后就停止思考，团队必须持续追问“还有没有其它的失效？”。<br>• <strong>失效描述的规范要求：</strong>失效描述必须具体、清晰。系统/子系统层级的失效模式描述功能的损失或退化（必要时需包含整机运行工况）；组件/零件层级的失效模式通常由“名词 + 失效描述”组成（例如“密封件扭曲”）。严禁使用“未满足”、“不好”、“有缺陷”、“坏了”等模糊空洞的词汇。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（七类典型失效模式与 P-图关联）</strong><br>原书图 2.4-1 归纳了潜在失效模式的七种典型类别，并与 P-图（参数图）中输入、噪声因素与输出的关系（图 2.4-2）紧密关联：<br>• <strong>① 功能丧失（Loss of function）：</strong>无法操作、完全不动作、突然失效（如输出直接归零）。<br>• <strong>② 功能退化（Degradation of function）：</strong>性能随时间推移逐渐损失（如随时间衰减至规格下限以下）。<br>• <strong>③ 功能间歇（Intermittent function）：</strong>操作随机开始/停止/开始（如接触不良引发的反复震荡失效）。<br>• <strong>④ 部分功能丧失（Partial loss of function）：</strong>性能损失，处于较低或无法达到完全规格的水平，但并未完全归零。<br>• <strong>⑤ 非预期功能（Unintended function）：</strong>在错误的时间操作、意外的方向执行或产生非预期的动作（例如：向左打方向盘车辆向右转；或在静止未按压时自动触发）。<br>• <strong>⑥ 功能超范围（Exceeding function）：</strong>超出可接受极限的操作（如输出功率/电压过高、行程过冲）。<br>• <strong>⑦ 功能延迟（Delayed function）：</strong>在非预期的时间间隔之后才执行操作（如响应迟滞、唤醒超时）。<br>• <strong>与 P-图的内在关联：</strong>P-图将系统视为在噪声因素（Z）与系统参数控制下的能量传递通道。错误的输入（X）或环境噪音因素（Z）会导致系统产生错误的输出（超出范围的实际 Y）或不可容忍的附带影响。DFMEA 失效分析的核心就是专注于导致错误输出的系统要素与结构缺陷。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以手机侧键与快充系统为例）</strong><br>结合传音智能手机研发场景，具体运用七类失效模式与规范描述：<br>• <strong>场景 A：侧键/电源按键组件（零件/子系统）</strong><br>  - <i>功能丧失：</i>整机彻底无法通过电源键开机/唤醒（完全无信号输出）。<br>  - <i>功能间歇：</i>电源键轻微晃动时产生抖动导通，手机频繁随机锁屏/唤醒。<br>  - <i>部分功能丧失：</i>按键行程手感偏轻，触发回弹力不足（仅达标准手感的50%）。<br>  - <i>非预期功能：</i>手机装入紧身裤口袋或处于常温静止时，按键被误触发长按关机。<br>  - <i>组件级规范描述：</i>按键锅仔片（Dome）破裂、FPC排线撕裂，避免写“按键坏了”。<br>• <strong>场景 B：传音快充系统（充电管理子系统）</strong><br>  - <i>功能退化：</i>电池快充循环200次后，充电速率线性衰减超过35%（随时间退化）。<br>  - <i>功能超范围：</i>快充协商握手异常，实际输入电流达到4.5A，超出端口设计上限（4.0A）。<br>  - <i>功能延迟：</i>插拔快充充电器后，整机延迟8秒才识别到快充协议并开始充能。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：描述模糊空洞。</strong>工程师常写“Camera功能失效”、“按键不好”、“Type-C接口缺陷”。<br>  <em>避坑指南：</em>零件级必须采用“物理实体/名词 + 失效物理状态”（如“Camera Lens表面划伤”、“Type-C端子变形退针”）；子系统级必须清晰指出功能损失的具体形态。<br>• <strong>误区 2：单功能单失效陷阱。</strong>认为一个功能只对应一个失效模式（例如将“显示屏提供显示”只列出“黑屏”）。<br>  <em>避坑指南：</em>根据原书要求，团队识别出一个失效后必须追问“还有没有其它失效？”，全面覆盖黑屏（功能丧失）、闪烁（功能间歇）、发黄老化（功能退化）、局部暗斑（部分丧失）、触控飘移（非预期/超范围）等多种模式。<br>• <strong>误区 3：忽视环境噪声（P-图）引发的失效模式。</strong>仅分析常温标准实验室工况，忽略高温、高湿、跌落振动等输入/噪声对功能输出的偏移影响。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-2-4-1.jpg" alt="图 2.4-1 失效模式的类型（原书第 35 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-2-4-1.jpg?v=1792660128" alt="图 2.4-1 失效模式的类型（原书第 35 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.4-1 失效模式的类型（原书第 35 页）</p>
         </div>
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-2-4-2.jpg" alt="图 2.4-2 失效定义（P-图与失效关联，原书第 36 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-2-4-2.jpg?v=1792660128" alt="图 2.4-2 失效定义（P-图与失效关联，原书第 36 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.4-2 失效定义（P-图与失效关联，原书第 36 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.4.1 - 2.4.2 节（PDF 第 46-48 页）</p>
@@ -169,31 +169,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

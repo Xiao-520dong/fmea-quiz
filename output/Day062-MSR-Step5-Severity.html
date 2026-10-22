@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与风险分析目的</strong><br>根据《AIAG & VDA FMEA 手册》，FMEA-MSR 步骤五（风险分析）的核心目的在于通过系统化评估失效影响的<strong>严重度（S）</strong>、失效起因在运行场景下的<strong>发生频率（F）</strong>以及诊断监视功能的<strong>监视能力（M）</strong>，综合度量系统潜在风险，并为降低风险的改进措施确定优先级别（措施优先级 AP）。<br>与传统 DFMEA 采用 S（严重度）、O（频度）、D（探测度）不同，MSR 针对运行过程中的工况将评估维度重构为 <strong>S、F、M</strong>，评级范围均为 1 到 10 分，10 代表最高风险。</div><div class="highlight-blue"><strong>2. 步骤五的主要目标与严重度（S）评级规则</strong><br><ul><li><strong>风险分析的主要目标：</strong>分配现有和/或计划的控制措施并对失效进行评级；为频率（F）分配评定理由；分配诊断监视（M）控制措施；审查功能安全（如 ISO 26262）与法律法规合规性；推动客户与供应商之间在 S 与 F 维度上的协同输入；计算措施优先级（AP），为步骤六（优化）奠定基准。</li><li><strong>严重度（S）的通用性准则：</strong>严重度是与既定失效模式下<strong>最严重的失效影响</strong>相关联的度量。手册明确规定：<strong>DFMEA 与 FMEA-MSR 的严重度评级标准是完全相同且通用的</strong>。团队必须采用统一的基准，其评级需求需视情况由整车/终端客户传递至供应链。</li><li><strong>表 MSR1 严重度（S）梯队判定标准：</strong><ul><li><strong>10 ~ 9（非常高）：</strong>影响到车辆/设备或周边人员的操作安全与生命健康（10分），或违反法律法规（9分）。</li><li><strong>8 ~ 7（高）：</strong>在预期寿命内丧失产品主要功能（8分），或导致产品主要功能降级（7分）。</li><li><strong>6 ~ 5（中）：</strong>丧失产品次要功能（6分），或导致产品次要功能降级（5分）。</li><li><strong>4 ~ 2（低）：</strong>外观、声音、振动或触感令人感觉非常不适（4分）、一般性不适（3分）或略微不适（2分）。</li><li><strong>1（非常低）：</strong>无任何可觉察的影响。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及智能穿竭设备（如大功率快充架构、动力电池保护板 BMS、车载智能互联终端）的 MSR 风险分析中：<br><strong>实战案例（120W 超级快充协议与温度保护失效）：</strong><br>• <strong>失效模式（FM）：</strong>充电管理芯片 MOSFET 击穿直通且发热失控。<br>• <strong>最严重失效影响（FE）：</strong>若无保护机制，将引发电池热失控起火爆裂，直接威胁最终用户的生命安全，因此该失效链在表 MSR1 中的<strong>严重度 S = 10</strong>。<br>• <strong>设计协同考量：</strong>即使研发团队增加了二级 NTC 硬件切断和软件热保护（影响监视度 M），该底层物理危害对应的 S 评分依然必须如实定为 10 分，而不能主观调低 S 值。高严重度促使团队必须匹配最高等级的诊断覆盖率（M）与极低的起因失效率（F），以实现 AP 为 Low 的安全目标。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 DFMEA 与 MSR 的 S 评分表。</strong>部分工程师误以为 MSR 有一套独立的严重度打分规则。<strong>正解：</strong>手册明确规定 DFMEA 和 MSR 的 S 评级体系完全一致，确保整机系统分析与安全机制分析在同一标准语境下对话。</li><li><strong>误区二：误将“监视缓解后的效果”直接折算为初始严重度 S。</strong>例如认为系统具备降额充电功能，就直接将起火风险的 S 从 10 改为 5。<strong>正解：</strong>严重度 S 针对的是既定模式引发的后果严重程度，系统响应保护能力体现在监视评级（M）和减轻后影响评估中，切不可人为抹杀物理危害的 S 固有分值。</li><li><strong>误区三：供应商闭门自评 S 值。</strong>部件级供应商往往脱离整机使用场景打分，导致整机厂与供应商分值脱节。<strong>正解：</strong>手册要求严重度评估应通过客户与供应商充分协同，由客户将整车/整机层面的危害影响传递给供应商。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/table-msr1.jpg" alt="表 MSR1 补充 FMEA-MSR 严重度 (S) 表（原书第 122 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/table-msr1.jpg?v=1792660128" alt="表 MSR1 补充 FMEA-MSR 严重度 (S) 表（原书第 122 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 MSR1 补充 FMEA-MSR 严重度 (S) 表（原书第 122 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.1 - 4.5.3 节（PDF 第 133-134 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>过程功能分析的目的：</strong>确保产品/过程的预期功能与要求得到妥善分配。其主要目标包括：产品/过程功能可视化（通过结构树/网或过程流程图）；将要求或特性与功能关联；促进工程团队协作（系统、安全、组件）；为步骤四（失效分析）奠定坚实基础。</li><li><strong>功能（Function）的定义与语法结构：</strong>功能描述了过程项、过程步骤或过程工作要素的预期用途。推荐的短语格式为：<strong>行为动词（一般现在时基本形式）+ 名词</strong>，表达“做什么（动作）到什么（对象）”（如：钻孔、涂胶、插销、组装组件）。</li><li><strong>功能与失效的镜像关系（极为关键）：</strong><ul><li><strong>过程项的功能</strong>：高级别功能（内部/外部/顾客/最终用户），其<strong>反面即为“失效影响（FE）”</strong>。</li><li><strong>过程步骤的功能</strong>：描述在工位上产生的最终产品特征/变异控制，其<strong>反面即为“失效模式（FM）”</strong>。</li><li><strong>过程工作要素的功能</strong>：反映4M要素对创建过程/产品特性的贡献，其<strong>反面即为“失效起因（FC）”</strong>。</li></ul></li><li><strong>双向逻辑关系判定：</strong><ul><li><strong>“如何实现（How）”——从右到左（过程项 ← 过程步骤 ← 过程工作要素）：</strong>过程工作要素如何支持过程步骤，过程步骤如何实现过程项的要求。</li><li><strong>“为什么执行（Why）”——从左到右（过程工作要素 → 过程步骤 → 过程项）：</strong>执行该4M要素/工位是为了达到上一层级的什么目的。</li></ul></li></ul></div><div class="highlight-blue"><strong>2. 要求（特性）：产品特性与过程特性</strong><br><ul><li><strong>特性（Characteristic）：</strong>产品的区别特征或量化属性（如轴直径、涂层厚度）。在PFMEA中，要求被分为<strong>产品特性</strong>与<strong>过程特性</strong>。特性的反面对应着失效模式与失效起因。</li><li><strong>产品特性（Product Characteristic）：</strong><ul><li><strong>定义与来源：</strong>与执行过程功能的绩效有关，是<strong>可判断或测量的</strong>。源自图纸、规范文件，包括几何结构、材料、表面处理、涂装等。</li><li><strong>要求的四个维度：</strong>法律法规要求（如RoHS无铅、雨刮法规）、行业标准（如ISO 9001、VDA 6.3）、顾客要求（如交付质量、节拍/产能XYZ件/小时）、内部要求（如节拍周期、制造成本、报废率、清洁度等）。</li><li><strong>测量时机：</strong>产品特性通常在<strong>产品制造完成后</strong>测量（例如测量装配后的间隙、扭矩残留量）。</li><li><strong>注：</strong>在PFMEA表格中，特性的具体量值（如公差数值）属于<strong>可选项（Optional）</strong>。</li></ul></li><li><strong>过程特性（Process Characteristic）：</strong><ul><li><strong>定义与来源：</strong>指<strong>确保通过过程实现产品特性的过程控制参数</strong>。源自制造图纸、作业指导书（SOP）、设备操作/调试手册、防错验证规程等。</li><li><strong>测量时机：</strong>过程特性在<strong>产品制造过程中</strong>进行测量与监控（例如：压装压力、焊接温度、保压时间、注塑速度等）。</li><li><strong>关系链：</strong>过程特性是“因”，产品特性是“果”；控制好了过程特性，才能稳定输出符合要求的产品特性。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机中框点胶贴合工位（OP30）</strong><br>结合传音智能手机产线“中框与屏幕模组点胶贴合工位”，解析功能分析与特性的三层级映射：<br><ul><li><strong>过程项（智能手机总装线）：</strong>功能为“装配高可靠性整机（交付符合防水、外观要求的智能手机）”。【反面：整机IP68防水失效/屏幕脱落】</li><li><strong>过程步骤（OP30 屏幕点胶与保压贴合）：</strong>功能为“涂布结构胶并贴合屏幕至中框”。对应<strong>产品特性</strong>为：胶线宽度（0.8±0.1mm）、屏幕贴合段差（≤0.05mm）、保压后剪切拉拔力（≥50N）。测量时机：点胶及贴合完成后。【反面：胶线断胶/段差超标】</li><li><strong>过程工作要素（4M要素）：</strong><ul><li><strong>机（点胶机供胶阀）：</strong>功能为“以恒定气压及流速吐出结构胶”。对应<strong>过程特性</strong>：点胶气压（0.45±0.02MPa）、胶阀加热温度（35±2℃）。测量时机：点胶过程中在线传感器监控。</li><li><strong>人（操作员/治具装夹）：</strong>功能为“准确定位屏幕组件至贴合保压治具”。对应<strong>过程特性</strong>：贴合保压时间（15±1s）、保压气缸压力（0.3MPa）。</li></ul></li><li><strong>逻辑验证：</strong>为什么设定胶阀温度35℃（过程特性）？为了确保胶水流动性达到0.8mm胶宽（产品特性）；为什么保证胶宽？为了确保整机IP68防水密封（过程项功能）。逻辑链严密闭环。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>混淆产品特性与过程特性：</strong>许多工程师将保压时间、贴装压力写成产品特性。牢记：<strong>过程特性是制造过程中的工艺控制参数（如温度、压力、时间、速度），在过程中测量；产品特性是零件/半成品本身的物理/化学属性（如尺寸、胶厚、电阻、拔出力），在制造完成后检验。</strong></li><li><strong>功能描述不规范：</strong>避免写成“好”、“合格”、“满足要求”或空洞的“生产手机”。必须严格遵循<strong>“动词原形 + 名词”</strong>格式（例如：“涂覆UV密封胶”、“拧紧主板螺钉”）。</li><li><strong>混淆三层级功能的“反面”：</strong>过程工作要素功能的反面不是失效模式，而是<strong>失效起因（FC）</strong>；过程步骤功能的反面才是<strong>失效模式（FM）</strong>；过程项功能的反面是<strong>失效影响（FE）</strong>。对应错误将导致第四步失效链混乱。</li><li><strong>教条化追求公差数值：</strong>手册明确指出，在PFMEA表格中输入具体量值（如±0.05mm）是<strong>可选的</strong>，重点在于识别特性名称与控制逻辑，不要因前期公差未定而阻碍PFMEA开展。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day042-manual-p86.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.3.1 - 3.3.3 节（PDF 第 86 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day042-manual-p86.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.3.1 - 3.3.3 节（PDF 第 86 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.3.1 - 3.3.3 节（PDF 第 86 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.3.1 - 3.3.3 节（PDF 第 86-88 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

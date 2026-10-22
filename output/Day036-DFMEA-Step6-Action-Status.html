@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与五种措施状态定义（Section 2.6.3）</strong><br>根据手册规定，优化步骤中的措施状态必须进行分类管理，建议分为以下五类：<br><ul><li><strong>尚未确定（Untouched / Open）：</strong>目前尚未确定具体的改进措施。</li><li><strong>尚未决策（可选，Decision pending）：</strong>改进措施已经确定，但管理层或团队尚未做出最终决策，正在创建决策支持文件（如成本、可行性分析等）。</li><li><strong>尚未执行（可选，Implementation pending）：</strong>已对措施作出执行决定，但该措施尚未执行，或者<strong>正在执行/其有效性尚未得到测试验证</strong>。</li><li><strong>已完成（Completed）：</strong>措施已经被执行，<strong>其有效性已经被证明并记录</strong>，且已经进行了最终的 S、O、D 及 AP 重新评估。</li><li><strong>不执行（Not implemented）：</strong>当决定不执行某项措施时分配此状态。通常发生在实践和技术限制超出当前能力的情况下。如果不采取措施，AP 不会降低，风险将继续带入产品设计，且必须以书面形式记录并关闭。</li></ul></div><div class="highlight-blue"><strong>2. 措施有效性评估与闭环逻辑（Section 2.6.4 & 2.6.5）</strong><br><ul><li><strong>预测性评估 vs 最终闭环：</strong>新措施提出时，团队会先进行初步的措施优先级（AP）评估作为对有效性的预测。但手册明确要求：<strong>该措施必须一直保持“尚未执行”状态，直到其有效性得到充分测试为止！</strong>只有测试完成且结果得到确认/调整后，状态才允许从“尚未执行”变为“已完成”。</li><li><strong>重估依据：</strong>重新评估必须严格基于所采取预防措施（PC）和探测措施（DC）的实际有效性，并依照手册的 DFMEA 频度（O）和探测度（D）评分准则进行打分。若涉及消除失效影响的设计更改，严重度（S）亦需重估。</li><li><strong>基准与历史记录的持续改进：</strong>DFMEA 是产品设计的历史记录。初始的 S、O、D 必须保持可见或作为历史版本可追溯，形成记录决策与改进进展的知识存储库。对于通用/平台 DFMEA（Foundation/Family FMEA），在特定项目应用时可将初始值作为起点进行适配修订。</li><li><strong>内外部协同（Section 2.6.6）：</strong>DFMEA 优化是跨团队、管理层、客户与供应商协作的载体，旨在深化对产品功能与失效机理的理解，实现组织级技术经验的沉淀与传播。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>以传音某款中高端折叠屏手机“铰链转轴在跌落冲击下卡死/断裂”的优化闭环为例：<br><ul><li><strong>状态流转示范：</strong>针对起因“MIM 凸轮零件屈服强度不足”，结构团队提出“升级为超强马氏体不锈钢（1800MPa）”。方案提出时为“尚未决策”；经项目立项评审通过后转为“尚未执行”。此时系统内已预测 O 值从 7 降至 2，但状态绝不能改成“已完成”。</li><li><strong>有效性验证与闭环：</strong>结构团队完成开模打样并组装整机，送往可靠性实验室进行 1.2 米多角度定向跌落（50次）及 20 万次开合极限测试。实验室出具测试报告证实无卡死断裂，团队依据实测数据正式将 O 重估为 2、D 重估为 2，AP 降为 L，此时方可将状态正式更新为<strong>“已完成”</strong>，并将测试报告编号填入优化表完成闭环。</li><li><strong>“不执行”场景：</strong>若某散热优化建议“增加微型压电散热风扇”，经评估内部堆叠空间受限且成本超标，团队决议不采用，状态记录为“不执行”，并在备注栏详细记录管理层签字的风险接受说明。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：方案定下来、图纸发了就标记为“已完成”。</strong><br><em>纠偏：</em>大错特错！原书明确规定，图纸下发后措施仍处于“尚未执行”状态。必须等到测试验证通过（如通过实验室可靠性测试、量产前验证），证明措施切实有效后，才能转为“已完成”。</li><li><strong>误区二：措施执行后直接删掉初始 S/O/D 分值。</strong><br><em>纠偏：</em>DFMEA 具有工程历史追溯性。初始评级必须保持可见（在优化表左侧保留），绝对不能直接覆盖初始值，以保留技术决策与风险降低的历史轨迹。</li><li><strong>误区三：“不执行”的措施在表格里直接删行。</strong><br><em>纠偏：</em>必须保留该行并将状态设为“不执行”，书面记录超出技术能力或商务限制的理由。只有团队接受当前风险并完成书面闭环，FMEA 工作才算完整。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-2-6-1.jpg" alt="图 2.6-1 进行最新风险评估的 DFMEA 优化表格示例（原书第 63 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-2-6-1.jpg?v=1792660128" alt="图 2.6-1 进行最新风险评估的 DFMEA 优化表格示例（原书第 63 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 2.6-1 进行最新风险评估的 DFMEA 优化表格示例（原书第 63 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.6.3 - 2.6.6 节（PDF 第 73-75 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

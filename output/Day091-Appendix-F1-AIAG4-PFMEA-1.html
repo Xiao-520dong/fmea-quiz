@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与总体演进背景（步骤一：规划和准备）</strong><br>在原 AIAG 第四版 PFMEA 中，分析起点往往直接落在填表式的“范围定义”上，缺乏结构化的项目管理前置规划。新版《AIAG & VDA FMEA 手册》将其全面升格为“步骤一：规划和准备（5T 方法）”，明确界定了分析的边界、团队、时间节点与目标基准，使 PFMEA 由被动的质量记录表转变为主动的制造工艺风险预防工具。</div><div class="highlight-blue"><strong>2. 方法步骤与结构/功能/失效变更拆解（步骤二至步骤四）</strong><br>从 AIAG 第四版到新版 PFMEA，前四个步骤发生了根本性的逻辑重构：<br><strong>① 步骤二：结构分析的深化（引入 4M 过程工作要素）</strong><br>• <strong>旧版：</strong>仅粗略记录项目与过程步骤。<br>• <strong>新版：</strong>重组为严格的三级层次结构：【过程项（系统、子系统、零件要素或过程名称）】→【过程步骤（工位编号和关注要素名称）】→【过程工作要素（4M 类型：人 Man、机 Machine、料/间接物料 Material、法/环 Method/Milieu）】。使用原因在于：强制分析团队在评审制造工序活动时全面剖析 4M 资源构成，消除潜在死角。<br><strong>② 步骤三：功能分析的结构化（正向功能对应与特性解耦）</strong><br>• <strong>旧版：</strong>仅在关注步骤处列出粗略要求，常常混淆产品特性与工艺参数。<br>• <strong>新版：</strong>新增【过程项的功能】，明确正向功能有助于推导负面失效（失效影响 FE）。同时，将功能与特性清晰拆分为：【过程步骤的功能和产品特性（Product Characteristic）】与【过程工作要素的功能和过程特性（Process Characteristic）】。表格可单列或合并展示，使“工序要实现什么产品状态”与“4M 工作要素需满足什么工艺控制参数”严格解耦。<br><strong>③ 步骤四：失效分析的网络化（FE-FM-FC 严格锚定）</strong><br>• <strong>失效影响（FE）：</strong>旧版“潜在失效影响”变更为“上一较高级别要素和/或车辆/最终用户的失效影响（FE）”。严重度（S）直接针对 FE 评定。注：AIAG 旧版将制造影响与客户混在一起，新版则明确将制造影响拆分为“对本工厂的影响”和“对发运至工厂的影响（已知悉时）”，更符合现代制造业分工。<br>• <strong>失效模式（FM）：</strong>旧版“潜在失效模式”严格锚定为“关注要素的失效模式（FM）”，即过程步骤/产品特性的不符合。<br>• <strong>失效起因（FC）：</strong>旧版“潜在失效起因”严格锚定为“工作要素的失效起因（FC）”，即具体的人、机、料、环/法偏差导致的过程特性失控。由此构建起完整的“FC（4M要素）→ FM（工位要素）→ FE（顶层/客户）”因果链条。</div><div class="highlight-green"><strong>3. 传音制造实战场景：手机中框点胶贴合工位（步骤一至四落地）</strong><br>以传音某智能手机组装厂“中框与屏幕点胶贴合工位”为例，对比新旧分析方式：<br>• <strong>结构分析（步骤二）：</strong>过程项为“整机整平贴合过程”；过程步骤为“工位 030：屏幕与中框自动点胶工位（关注要素）”；过程工作要素（4M）精准细化为“全自动点胶机（Machine）”、“热熔胶胶水及针头（Material）”、“作业员装载治具操作（Man）”。<br>• <strong>功能分析（步骤三）：</strong>过程步骤功能为“在中框点胶槽精准涂敷 PUR 热熔胶”，对应产品特性为“胶线宽度 0.6±0.05mm、连续无断胶”；工作要素功能为“点胶机气压及温控稳定”，对应过程特性为“点胶阀气压 0.45±0.02MPa、加热温度 110±5℃”。<br>• <strong>失效分析（步骤四）：</strong>工作要素失效起因（FC）为“胶阀加热温控失灵导致胶水温度不足 95℃（Machine）”；导致关注要素失效模式（FM）为“出胶流动性变差引起胶线间断/局部胶宽不足 0.5mm”；最终引发上一级及用户失效影响（FE）：“在本厂引起保压贴合后溢胶不均/间隙超标不良，发运至整机测试厂导致整机 IP54 气密性测试不合格，最终用户面临雨水渗入导致主板腐蚀失效”。严重度（S）直接针对整机 IP 等级失效及主板烧毁评定高分，并清晰区分了组装厂与终端客户的不同影响。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆产品特性与过程特性。</strong>在步骤三中，常将“保压压力 0.3MPa”写在过程步骤的产品特性列中。正确做法：产品特性是工件达到的状态（如“屏幕贴合间隙 ≤0.15mm”），过程特性是设备/环境的工艺参数（如“气缸设定压力”、“加热温度”），必须归属到 4M 工作要素下。<br>• <strong>误区二：失效起因（FC）未具体对应到 4M 要素。</strong>填写失效起因时只写“点胶不良”或“员工疏忽”，未分解到具体人、机、料、法。新版强制要求 FC 必须是 4M 过程工作要素的具体缺陷或失控。<br>• <strong>误区三：严重度（S）评定忽略工厂分工。</strong>海外制造场景中，CKD/SKD 本地组装涉及多个分工厂。旧版评估常遗漏跨工厂发运影响，新版明确要求将制造影响拆分为“内部工厂”与“发运至客户工厂/下级工厂”，需综合对比并取最严重级别评定 S。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day091-manual-p223.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.2（原书 P223-225）（PDF 第 223 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day091-manual-p223.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.2（原书 P223-225）（PDF 第 223 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 F1.2（原书 P223-225）（PDF 第 223 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.2（原书 P223-225）（PDF 第 223-225 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

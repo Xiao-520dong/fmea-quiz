@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与定义</strong><br>《AIAG & VDA FMEA 手册》附件 B3 系统给出了“监视及系统响应的补充 FMEA（FMEA-MSR）”七步法的表单填写提示与软件视图模型。FMEA-MSR 专注于产品在<strong>车辆/终端用户实际使用（运行）过程中</strong>的电气/电子/可编程电子系统的故障安全逻辑。其核心逻辑在于：当底层硬件或传感器发生物理故障时，系统如何依靠内部<strong>诊断监视（Monitoring）</strong>实时捕获异常，并借助预设的<strong>系统响应（System Response）</strong>执行故障降级或安全防护，从而遏制顶层灾难性失效影响的发生。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br>基于原书 B3.1 至 B3.8 表格提示规范：<br><ul><li><strong>步骤一至步骤三（结构与功能）：</strong>结构分析划分为“1. 上一较高级别（车辆/系统/阵列）”、“2. 关注要素（子系统/ECU/接口）”、“3. 下一较低级别或特性类型（组件/引脚/传感器/材料特性等）”；功能分析逐级定义各层级的预期行为与要求（数值为可选项）。</li><li><strong>步骤四（失效分析）：</strong>明确失效链路径——底层硬件/信号接触不良（FC）&rarr; 导致关注要素防夹/保护功能未能启动（FM）&rarr; 最终导致顶层用户夹伤或法规违规（FE）。</li><li><strong>步骤五（补充 MSR 风险分析）：</strong>打破传统 S-O-D 框架，评估<strong>使用运行频度（F）及其评级依据</strong>、<strong>当前诊断监视方法</strong>、<strong>当前系统响应措施</strong>、<strong>监视评级（M）</strong>，以及关键的<strong>在系统响应后最严重的失效影响及严重度（S）</strong>，综合推导 AP。</li><li><strong>步骤六（补充 MSR 优化）：</strong>针对 F、M、系统响应后的 S 采取改进措施，分别从“降低使用故障率的预防措施”、“提高故障检测覆盖率的诊断措施”、“减缓危险影响的系统响应措施”三维闭环推进。</li><li><strong>步骤七（结果文件化）：</strong>原书明确指出，FMEA-MSR 步骤七由各组织单独管理，不作为扩展列直接记录在 FMEA-MSR 核心工作表中。</li><li><strong>B3.8 经典软件视图模型（车窗防夹保护）：</strong>展示了当霍尔传感器因振动接触不良（FC）导致信号丢失时，系统不仅要有硬件连接标准，更要在软件算法中采用“电机电流与霍尔传感器信号间的真实性/合理性核查（Plausibility Check）”作为诊断监视；一旦确认不一致，系统响应立即“禁用舒适一键关闭模式”，车窗转入手动受限运行，从而避免高严重度夹伤。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及储能产品的电控与快充安全设计中，FMEA-MSR 是热失控与电气安全防御的核心工具：<br><ul><li><strong>系统层级映射：</strong>上一较高级别为“智能手机整机充放电安全”；关注要素为“主板 PMIC/充电管理芯片及保护固件”；下一较低级别为“电池 NTC 热敏电阻及 I2C 采样通路”。</li><li><strong>失效链构建：</strong>跌落导致 NTC 引脚微裂接触不良（FC）&rarr; 充电子系统未能在过温状态下主动切断大电流（FM）&rarr; 电池持续超温充胀甚至起火爆炸（FE，严重度初始 S=9/10）。</li><li><strong>MSR 诊断与响应应用：</strong>若仅靠静态硬件连接，失效率与监视度均无法受控。应用 B3.8 思想，固件层增加“充入电量温升速率合理性交叉校验”（诊断监视，M=1~2）；当发现充电功率高但 NTC 阻值无任何合理波动时，判定信号失效，系统响应立即切断快充通路、强制回退至 500mA 涓流并弹窗提示维修（系统响应）。此时系统响应后的残余严重度大幅降级为“用户无法快充但无起火危险（S=4）”，AP 从高优先级（H）成功降至低优先级（L）。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>混淆监视度 M 与探测度 D：</strong>传统 DFMEA 中的探测度 D 是指“量产前在研发实验室通过测试用例检出设计缺陷的能力”；而 MSR 中的监视度 M 是指“量产后产品在终端用户手上运行时，系统软硬件实时感知自身故障的能力”。切忌将实验室可靠性测试填入 MSR 的监视控制列。</li><li><strong>忽略响应后的残余严重度（S）：</strong>部分工程师在评估系统响应后，直接将初始的严重度 S（如起火 S=9）照抄，导致优化失效。系统响应的目的就是限制或消除危险，必须客观评估故障安全（Fail-safe）状态下用户面临的新后果（如仅为功能受限 S=4）。</li><li><strong>步骤七表格化教条主义：</strong>在表格中强行增加步骤七列。原书 B3.7 明确指明步骤七不在表格中记录，而应体现为管理评审总结报告、技术安全概念（TSC）文档或向功能安全委员会提交的正式放行文件。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day077-manual-p181.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 B3.1 - B3.8（原书 P181-185）（PDF 第 181 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day077-manual-p181.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 B3.1 - B3.8（原书 P181-185）（PDF 第 181 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 B3.1 - B3.8（原书 P181-185）（PDF 第 181 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 B3.1 - B3.8（原书 P181-185）（PDF 第 181-185 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

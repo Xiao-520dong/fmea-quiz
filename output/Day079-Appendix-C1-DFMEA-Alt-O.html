@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与定义</strong><br>在《AIAG & VDA FMEA 手册》附件 C1.3 中，官方提供了两种备选 DFMEA 频度（O）评估表：<br><strong>① 表 C1.3.1（带每千台车/产品故障率）：</strong>将失效起因在定性描述（产品经验与预防控制）的基础上，与量化的失效概率（千分比/百万分比）建立对标（10级≥1/10，9级=1/20，8级=1/50，7级=1/100，6级=1/500，5级=1/2000，4级=1/10000，3级=1/100000，2级=1/1000000，1级为预防消除）。<br><strong>② 表 C1.3.2（基于时间的失效预测）：</strong>适用于根据运行周期、暴露时间或动作频次评估起因发生的场景，将失效起因对标到时间频度（10级=每次，9级=几乎每次，8级=每班超过一次，7级=每日超过一次，6级=每周超过一次，5级=每月超过一次，4级=每年超过一次，3级=每年一次，2级=每年少于一次，1级=从未发生）。<br>两个表格均强调核心定义：<strong>产品经验</strong>指在公司内使用产品的历史及完成的探测结果；<strong>预防控制</strong>指设计规则、最佳实践、仿真模拟（CAE）、公差叠加等预防工具的有效性。且特别注解：<strong>频度 10、9、8、7 级可根据产品验证活动（Validation）结果实现降级。</strong></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>（1）基于故障率量化评级映射（表 C1.3.1）：</strong><br>• <strong>10级（≥100/1000 即 ≥1/10）：</strong>在任何地方对新技术的首次应用，无操作经验/运行条件不可控，无验证经验，无标准/最佳实践，预防控制无法预测或不存在。<br>• <strong>9级（50/1000 即 1/20）：</strong>公司内首次应用创新技术/材料，新应用或工况改变，无验证经验，预防控制未针对特定性能。<br>• <strong>8级（20/1000 即 1/50）：</strong>在新应用内首次使用创新技术/材料，极少有标准且不能直接套用，预防控制无法可靠反映现场绩效。<br>• <strong>7级（10/1000 即 1/100）：</strong>相似技术/材料的新型设计，标准仅符合基础要求不适用于创新点，预防控制提供有限性能指标。<br>• <strong>6级（2/1000 即 1/500）：</strong>现有技术材料且相似设计，工况有改变，有既往测试/现场经验，预防控制具部分预防能力。<br>• <strong>5级（0.5/1000 即 1/2000）：</strong>成熟技术材料，细节变化，评估了教训但未经验证，预防控制能发现缺陷并提供部分指标。<br>• <strong>4级（0.1/1000 即 1/10000）：</strong>与短期现场暴露几乎相同，符合最佳实践，预防控制很可能反映符合性。<br>• <strong>3级（0.01/1000 即 1/100000）：</strong>已知设计细微变化或成功完成测试，预防控制预测与生产一致。<br>• <strong>2级（0.001/1000 即 1/1000000）：</strong>长期现场暴露经验，极高信心。<br>• <strong>1级（通过预防控制消除）：</strong>设计上物理消除起因。<br><strong>（2）基于时间/周期的频度映射（表 C1.3.2）：</strong>从 10 级（每次触发）、9 级（几乎每次）、8 级（每班次>1次）、7 级（每日>1次）到 2 级（每年<1次），直观度量动态工作周期中的失效暴露频次。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>场景一：折叠屏铰链新型水滴铰链机构设计（应用表 C1.3.1）</strong><br>传音某旗舰折叠机首次采用自研钛合金微型水滴铰链。属于“在公司内首次应用创新结构件与材料，力学工作周期巨幅改变”，初始评估无完整验证经验，预防控制（CAE 跌落仿真）未充分对齐极低落角应力，此时起因“铰链凸轮磨损导致闭合间隙超标”在方案设计初期判定为 <strong>O=9 级（故障率对应 50/1000）</strong>。团队后续通过 20 万次弯折疲劳加速试验（产品验证活动），验证了涂层配方与公差补偿的鲁棒性，依据手册注记将频度成功降至 <strong>O=4（0.1/1000）</strong>。<br><strong>场景二：传音非洲特定高湿热市场快充接口腐蚀失效（应用表 C1.3.2）</strong><br>针对 Type-C 接口电化学腐蚀起因“汗液/盐雾渗入引脚微短路”，若按传统台车故障率难以评估，采用基于时间的预测表 C1.3.2：在高湿度沿海重度使用者场景中，若无防腐蚀镀层和隔绝胶圈，腐蚀起因几乎在每日插拔充电时均被激发，可评定为 <strong>O=7 级（每日超过一次）</strong>。在采用纳米防水镀层与端子物理间距优化（预防控制）后，腐蚀起因发生周期被延缓至 <strong>O=2 级（每年少于一次）</strong>。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆表 C1.3.1 的千分比数字与整机 PPM。</strong>手册明确表 C1.3.1 的故障率是针对<strong>具体潜在失效起因（Failure Cause）的发生概率预测</strong>，而非整机失效率或单一失效模式的综合失效率，不可直接拿售后整机维修率来套用。<br>• <strong>误区二：无视“频度 10/9/8/7 可通过验证活动降级”的官方规则。</strong>部分工程师认为频度（O）完全由预防控制（PC）决定，测试验证（探测控制 DC）不能改变频度。然而手册明确规定：对于全新技术与材料（7-10级），在产品验证（Validation）完成并证实起因被有效抑制后，频度应当且必须被重新降级评定。<br>• <strong>误区三：滥用基于时间的失效预测（表 C1.3.2）。</strong>将偶发性跌落击穿错误套用“基于时间”表。基于时间的频度表主要针对具有周期性应力暴露、机械往复磨损、环境持续侵蚀（如按键按压、滑轨滑动、热循环疲劳、电化学腐蚀）等时间/周次依赖型失效起因。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day079-manual-p189.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day079-manual-p189.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C1.3.1 - C1.3.2（原书 P189-193）（PDF 第 189-193 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

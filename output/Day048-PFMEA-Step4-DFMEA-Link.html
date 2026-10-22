@@ -63,11 +63,11 @@
                     <div class="highlight"><strong>1. 核心概念与定义（DFMEA 与 PFMEA 的内在关系）</strong><br>依据《AIAG & VDA FMEA 手册》3.4.8 节，产品特性设计失效会导致一项或多项产品功能失效，而相应的过程失效是指“过程无法实现设计特征（特性）”。当过程未能达成既定产品特性时，就会产生失效影响（FE）。<br>关键判据准则：<strong>只有在过程失效导致的产品特性不符合与 DFMEA 中识别的不符合完全一致时，DFMEA 与 PFMEA 中的失效影响才会一致</strong>。所有由纯制造过程本身引入、且未在 DFMEA 中识别的失效影响，均须在 PFMEA 中独立且重新进行定义与评估。此外，对手册强调：与产品、系统及最终用户相关的失效影响及其严重度（S）必须基于客观事实进行确认与记录，严禁基于主观假设。在非标准开发流程（如平台工艺开发优先于具体机型设计）中，团队须合理调整 DFMEA 与 PFMEA 之间的交互时序与信息流。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（文件化表达与供方协作）</strong><br><strong>(1) 失效分析文件化视图（3.4.9 节）</strong>：完成步骤二至步骤四分析后，系统可通过电子表格呈现多维度视图：<br>• <strong>过程项－功能－失效视图（图 3.4-5）</strong>：过程项关注上一较高级别要素及最终用户的失效影响（FE），需从本厂装配（如间隙过小无法装入）、下游工厂组装（如装配卡滞、需额外压入力造成潜在损坏）、最终用户（如功能响应迟缓、无法运作）三个层级逐一映射。<br>• <strong>过程步骤－功能－失效视图（图 3.4-6）</strong>：聚焦工位关注要素，描述过程步骤功能及产品特性（量值为可选），对应的失效模式（FM）即为未能达成图纸或工艺规范的产品特性要求。<br>• <strong>过程工作要素－功能－失效视图（图 3.4-7）</strong>：细化到 4M 要素，阐明设备、夹具等过程特性，其失效模式（即整条链中的失效起因 FC）体现为微观层面的异常状态（如设备未到预设位停机、气缸压力不足等）。<br><strong>(2) 供应链与客户协作（3.4.10 节）</strong>：失效影响的确认依赖于供需双方透明沟通。根据双方协议与保密要求，失效分析输出成果应在步骤五（风险分析）前后与客户或关键元器件供应商进行针对性评审，统一对严重度（S）的认知。<br><strong>(3) 贯通步骤五风险分析的基础（3.4.11 节）</strong>：步骤四对潜在失效模式、起因和影响的完整定义是步骤五评估严重度（S）、频度（O）与探测度（D）的前提。若失效描述含糊不清或关键要素缺失，后续的风险优先级（AP）与控制措施制定将彻底失真。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机整机装配与供应链穿透）</strong><br>在传音智能手机制造工程中（如中框与主板点胶贴合、屏模组热压组装工位）：<br>• <strong>DFMEA 与 PFMEA 联动案例</strong>：在 DFMEA 中，中框结构设计失效“卡扣倒钩干涉量不足”导致主板松动（FE：最终用户跌落死机）。在 PFMEA 贴装工位（OP40），过程失效模式为“主板贴装浮高、卡扣未卡到位”。由于该工位过程失效直接违背了中框组装图纸的定位产品特性，此时 PFMEA 中直接继承 DFMEA 的整机跌落失效影响；但若该工位产生“压头倾斜挤压导致板边元器件微裂”，此非 DFMEA 设计失效，而是过程挤压损伤，PFMEA 必须独立定义该失效对产线功能测试（FT）及客户暗病返修的失效影响。<br>• <strong>海外组装厂（CKD/SKD）与供应商协同</strong>：传音将模组或散件发运至海外工厂时，“发运至工厂”的失效影响需特别识别。例如，海外工厂若因散件辅料尺寸超差导致贴装阻力异常增加，必须与国内研发、模切供方跨组织评审，确保整条失效链条严重度评级准确无误。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：盲目照抄 DFMEA 的失效影响</strong>。部分工艺工程师直接复制 DFMEA 中的整机功能丧失作为 FE，忽略了过程独有的失效后果（如对产线节拍影响、刀具磨损导致的批量报废或装配阻力过大导致的暗伤）。<strong>正确做法</strong>：仅当过程未能实现设计特性且后果同等时方可对齐，过程特有的附带损伤必须单独定义。<br>• <strong>误区二：凭空臆断最终用户严重度（S）</strong>。在缺乏整机验证数据的情况下，私自降低用户端失效影响级别。<strong>正确做法</strong>：手册强调“应在了解事实后对失效影响及其严重度进行记录，而非对其作出假设”，必须基于 DFMEA 传递的界定或客户输入。<br>• <strong>误区三：失效起因（FC）直接写成失效模式（FM）</strong>。在工作要素层级将设备停机、气压不足等起因与工序步骤的焊接不良、贴偏混为一谈。<strong>正确做法</strong>：严格依据过程要素（4M）功能推导工作要素的失真状态作为 FC。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-3-4-4.jpg" alt="图 3.4-4 PFMEA 与 DFMEA 的失效关联关系（原书第 88 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-3-4-4.jpg?v=1792660128" alt="图 3.4-4 PFMEA 与 DFMEA 的失效关联关系（原书第 88 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.4-4 PFMEA 与 DFMEA 的失效关联关系（原书第 88 页）</p>
         </div>
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-3-4-5-6-7.jpg" alt="图 3.4-6 & 3.4-7 过程步骤与过程工作要素失效表格视图（原书第 89 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-3-4-5-6-7.jpg?v=1792660128" alt="图 3.4-6 & 3.4-7 过程步骤与过程工作要素失效表格视图（原书第 89 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.4-6 & 3.4-7 过程步骤与过程工作要素失效表格视图（原书第 89 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.4.8 - 3.4.11 节（PDF 第 99-102 页）</p>
@@ -169,31 +169,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

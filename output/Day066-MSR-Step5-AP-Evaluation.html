@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与 AP 的本质逻辑</strong><br>在 FMEA-MSR 中，措施优先级（Action Priority, AP）是通过综合考虑严重度（S）、频度/发生频率（F）和监视度（M）的 SFM 评级，来确定降低风险措施的优先顺序的方法。<br><strong>核心澄清：</strong>原书明确指出，<strong>AP 不是对高、中、低“风险”本身的优先排序，而是对“降低风险的措施”的优先排序</strong>。<br><strong>三个优先级等级定义：</strong><ul><li><strong>高优先级 (H)：</strong>评审和措施的最高优先级。团队<strong>需要</strong>确定适当的措施来降低频率（F）和/或改进监视控制（M），或者证明并记录为何当前的控制措施足够有效。</li><li><strong>中优先级 (M)：</strong>评审和措施的中等优先级。团队<strong>应该</strong>确定适当的措施来降低频率和/或改进监视控制，或者由公司自行证明并记录为何当前控制措施足够有效。</li><li><strong>低优先级 (L)：</strong>评审和措施的低优先级。团队<strong>可以</strong>确定措施来降低频率和/或改进监视控制。</li></ul>原书特别强调：对于潜在严重度 S 为 9-10 且措施优先级为高（H）和中（M）的失效影响，<strong>建议至少应由管理层评审</strong>，包括所采取的任何建议措施。若团队决定不采取进一步措施，必须在“备注”列中注明“无需进一步措施”，以表明风险分析已闭环完成。</div><div class="highlight-blue"><strong>2. AP 查表逻辑拆解（基于 PDF 第 143-144 页 AP 表）</strong><br>MSR 的 AP 表以 S 划分为主层级，次级看 F（运行寿命内的失效率预测），最后结合 M（监视有效性）：<br><strong>① S = 10（对产品影响极高/危及生命安全等）：</strong><ul><li>F=5-10（中-极高）：无论 M 是 1 还是 10，AP 均为 <strong>H</strong>。</li><li>F=4（低）：M=2-10 时 AP=<strong>H</strong>；仅当 M=1（可靠）时，AP 降为 <strong>M</strong>。</li><li>F=3（非常低）：M=4-10 时 AP=<strong>H</strong>；M=2-3 时 AP=<strong>M</strong>；M=1 时 AP=<strong>L</strong>。</li><li>F=2（极低）：M=4-10 时 AP=<strong>M</strong>；M=1-3 时 AP=<strong>L</strong>。</li><li>F=1（不会出现）：M=1-10 时 AP 均为 <strong>L</strong>。</li></ul><strong>② S = 9（对产品影响高）：</strong><ul><li>F=4-10（低-极高）：M=1-10 均为 <strong>H</strong>。</li><li>F=2-3（极低-很低）：M=2-10 为 <strong>H</strong>；仅当 M=1 时降为 <strong>L</strong>（跳过 M 级）。</li><li>F=1（不会出现）：M=1-10 时 AP 均为 <strong>L</strong>。</li></ul><strong>③ S = 7-8（对产品影响较高）：</strong><ul><li>F=6-10（中-极高）：M=1-10 均为 <strong>H</strong>。</li><li>F=5（中）：M=5-10 为 <strong>H</strong>；M=1-4 为 <strong>M</strong>。</li><li>F=4（低）：M=7-10 为 <strong>H</strong>；M=4-6 为 <strong>M</strong>；M=1-3 为 <strong>L</strong>。</li><li>F=3（非常低）：M=9-10 为 <strong>H</strong>；M=7-8 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>。</li><li>F=2（极低）：M=7-10 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>；F=1 时全为 <strong>L</strong>。</li></ul><strong>④ S = 4-6（对产品影响较低）：</strong><ul><li>F=7-10：M 无论多少全为 <strong>H</strong>。</li><li>F=5-6：M=6-10 为 <strong>H</strong>；M=1-5 为 <strong>M</strong>。</li><li>F=2-4：M=9-10 为 <strong>M</strong>；M=7-8 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>；F=1 时全为 <strong>L</strong>。</li></ul></div><div class="highlight-green"><strong>3. 传音研发实战场景：高压快充与电池热失控保护</strong><br>在传音中高端机型 120W/180W 超级快充系统 FMEA-MSR 分析中：<br><strong>失效分析：</strong>低压差稳压器击穿导致电池过压引发热失控起火，失效影响严重度评定为 <strong>S=10</strong>。<br><strong>情况对比：</strong><ul><li><strong>方案 A（传统方案）：</strong>硬件失效率评定 F=4（低）。软件端采用普通轮询电压检测，若通信卡死则响应超时（M=5，较高-无效区间）。查表：S=10, F=4, M=5 对应 <strong>AP = H</strong>。研发团队必须强制制定预防或监视改进措施，不可直接归档！</li><li><strong>方案 B（传音架构优化）：</strong>团队引入独立硬件级次级过压切断芯片（二级硬保护）且具备上电自检，实现故障后 10ms 内硬切断并使系统进入安全阻断状态，监视有效性达到极其可靠（M=1）。查表：S=10, F=4, M=1，措施优先级由 H 成功降为 <strong>M</strong>。团队编写合规安全技术文档，并提报研发管理层评审归档。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 AP 与风险等级。</strong>工程师常误称“这个失效模式是 H 风险”。纠偏：AP 是 Action Priority（措施优先级），AP=H 代表“降低风险的措施具有最高优先级”，而不是系统整体风险等同于高。</li><li><strong>误区二：S=9/10 时，只要 AP 不为 H 就可以不管。</strong>纠偏：原书强制要求，对于潜在严重度 S 为 9-10 且 AP 为 H 或 M 的失效影响，<strong>建议至少应由管理层评审</strong>，必须有高级技术管理者签字确认其控制有效性。</li><li><strong>误区三：认为 MSR 的 AP 判定逻辑与 DFMEA 完全一样。</strong>纠偏：DFMEA 采用的是 SOD（严重度/发生度/探测度），探测度针对的是试产或验证中的设计缺陷发现能力；而 MSR 采用的是 SFM，监视度 M 评估的是车辆/设备运行寿命中系统实时监测及自愈响应能力。查表矩阵的具体分段和收敛点并不相同。</li><li><strong>误区四：AP=H 时未采取措施且在“备注”空白。</strong>纠偏：若团队评估现有控制已足够有效而不采取新措施，必须提供充分的工程证据并在“备注”栏中正式填入“无需进一步措施”，否则评审不予通过。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/table-ap-msr.jpg" alt="FMEA-MSR 措施优先级 (AP) 表（原书第 131 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/table-ap-msr.jpg?v=1792660128" alt="FMEA-MSR 措施优先级 (AP) 表（原书第 131 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 FMEA-MSR 措施优先级 (AP) 表（原书第 131 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.8 节（上）（PDF 第 142-144 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

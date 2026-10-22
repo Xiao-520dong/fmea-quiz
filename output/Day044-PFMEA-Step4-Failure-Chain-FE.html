@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与失效分析目的</strong><br>PFMEA 步骤四（失效分析）的核心目的在于识别过程中的失效起因（FC）、失效模式（FM）和失效影响（FE），并建立三者之间的关联（失效链/失效网），为后续步骤五的风险评估提供依据。<br>• <strong>失效链模型：</strong>每个特定失效都由三个核心要素构成——过程要素/作业步骤的“失效起因（FC）”导致了过程步骤的“失效模式（FM）”，进而对更高层级系统、后续工序或最终顾客产生“失效影响（FE）”。<br>• <strong>失效影响（FE）的本质：</strong>FE 始终与过程项的功能直接挂钩，被描述为顾客（包括内部后续工序、外部顾客 OEM/工厂、法规监管机构及最终用户）所注意、体验或承受的后果。在 PFMEA 中必须明确标识涉及人员安全或法规不符合的失效。</div><div class="highlight-blue"><strong>2. 方法步骤与三类失效影响（FE）评估规则</strong><br>根据手册规定，PFMEA 中需针对以下三类失效影响进行严重度（S）评估与分类分析：<br>① <strong>您的工厂（Your Plant）：</strong>假设在当前工厂内部被检测到，该失效模式引发的操作或经济后果（如：100%报废、工位停线、降低节拍、返工/返修、设备损坏、操作人员安全风险等）。<br>② <strong>发运至工厂（Ship-to Plant）：</strong>假设零件在出厂前未被检测出而发运至下一个工厂/下游顾客工厂，在对方组装或加工时产生的影响（如：无法在工位对配/卡嵌/组装、钻孔受阻、导致刀具过度磨损、下游停线、需在顾客端进行分拣或整机候检等）。<br>③ <strong>最终用户（End User）：</strong>过程项缺陷流入市场后导致最终用户感知或体验到的功能、安全或感官不良（如：无法开机、功能间歇性运行、发热异响、外观严重不良、安全隐患等）。<br>• <strong>分析逻辑与决策树：</strong>在分析失效影响时，先提问：“该失效是否对下游组装或设备/人员造成物理影响或伤害？”若造成物理无法装配，则该缺陷无法流至最终用户，重点分析“您的工厂”与“发运至工厂”的制造装配影响；若可继续组装流出，则必须独立于当前检验控制措施，结合 DFMEA 深入分析对“最终用户”的功能和感知影响。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>结合传音智能手机中框点胶与主板装配制程深入剖析：<br>• <strong>失效模式（FM）：</strong>工位 030 主板螺钉紧固扭矩不足（过松）。<br>• <strong>失效影响拆解：</strong><br>  - <strong>您的工厂（内部影响）：</strong>若在下道工位或整机测试位检出，造成整机功能测试不良，需拆机返工更换螺钉，导致下线返工工时增加、产线节拍损失。<br>  - <strong>发运至工厂（分厂/下游加工）：</strong>若主板半成品需转运至海外组装厂（SKD/CKD 模式），散落螺钉可能卡入自动化治具造成设备卡死磨损，或在后续扣合电池盖时导致主板与中框对配不到位、干涉变形。<br>  - <strong>最终用户（终端消费者）：</strong>整机在非洲高温颠簸运输或日常跌落后，主板接地不良或接插件松脱，用户体验到手机间歇性黑屏重启、信号弱甚至完全无法开机。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆检测控制与失效影响。</strong> 许多工程师在写“您的工厂”影响时直接填写“AOI 光学检测报警”或“功能测试治具报错”。<em>纠错：</em>检验是探测控制手段，不是失效影响。真正的失效影响是检验检出后工厂采取的纠正或损失行为，如“主板报废”、“单板下线返修”、“产线降速排查”。<br>• <strong>误区二：认为零件无法装配还会影响最终用户。</strong> 若某结构件变形导致“在下道工位完全无法卡入中框”，部分工程师仍套用 DFMEA 填写“最终用户外壳缝隙大”。<em>纠错：</em>原书明确指出，若零件在制造端已呈现物理性无法装配或无法对配，该缺陷在工位即阻断，其主要失效影响应锁定在“您的工厂/发运至工厂”的制造组装端，而不能直接转嫁为最终用户体验。<br>• <strong>误区三：随意杜撰最终用户影响，脱离 DFMEA。</strong> 编写 PFMEA 最终用户影响时凭空捏造。<em>纠错：</em>手册明确强调，PFMEA 中与产品功能相关的最终用户影响描述，必须与对应 DFMEA 保持严格一致，确保全流程风险链条闭环。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-3-4-1.jpg" alt="图 3.4-1 PFMEA 理论失效链模型（原书第 80 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-3-4-1.jpg?v=1792660128" alt="图 3.4-1 PFMEA 理论失效链模型（原书第 80 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 3.4-1 PFMEA 理论失效链模型（原书第 80 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.4.1 - 3.4.4 节（PDF 第 91-94 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

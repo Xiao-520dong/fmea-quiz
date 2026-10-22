@@ -63,11 +63,11 @@
                     <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>当前监视控制（Current Monitoring Controls）：</strong>所有计划中或已实施的、能使系统或最终用户在客户运行操作期间探测到失效起因（FC）、失效模式（FM）或失效影响（FE）的控制措施。探测后必须明确系统采取的失效响应（如降级、切换安全默认值等）。监视的目的是在危险状态或法规违规发生前，及早探测并减缓初始影响，从而将系统带入较低严重度的最终状态。</li><li><strong>监视评级（M，Monitoring）：</strong>度量在顾客操作期间探测故障/失效并应用故障响应来维持系统处于安全或合规状态的能力。M 是单个 FMEA 范围内的相对评级，不考虑 S 或 F 即可独立评估。</li><li><strong>关键判定前提：</strong>监视的有效性取决于传感器硬件、冗余架构以及诊断算法（单纯的合理性/真实性指标不足以视为有效监视）。在评级前，必须明确界定诊断监视和响应、故障监视响应时间与容错时间间隔（Fault Tolerant Time Interval, FTTI）的关系。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与三种监视/响应场景深度拆解</strong><br>手册定义了三种典型的监视与响应工况：<ul><li><strong>情况 (1) 不存在故障/失效监视（No Monitoring）：</strong>系统未部署监视机制，或监视/响应未能在容错时间间隔（FTTI）内完成。此时监视评级直接定为无效：<strong>M = 10</strong>，失效影响无法减缓，保持初始的最严重状态。</li><li><strong>情况 (2) 可靠的故障/失效监视及系统响应（Reliable Monitoring & Response）：</strong>诊断与响应高度可靠（<strong>M = 1</strong>），几乎完全消除了初始失效影响，仅留存减缓后的失效影响（Mitigated FE）。<strong>关键规则：</strong>在此情况下，与措施优先级（AP）评估直接相关的是减缓后的失效影响严重度（Mitigated S），而非原始严重度！但要达成 M = 1，必须排除起因变差、硬件变差、时序限制（如仅上电自检）、响应变差、人类反应变差等不确定性。</li><li><strong>情况 (3) 不太可靠的故障/失效监视（Partially Effective Monitoring）：</strong>系统具有部分诊断覆盖率（如仅能探测并响应 90% 的失效，其余 10% 漏检）。探测到的部分转入减缓影响（Mitigated FE），但未探测到的部分依然会导致初始的最严重影响（Initial FE）。<strong>关键规则：</strong>最严重失效影响仍按原始 S（如 S=10）计算，监视能力的不完备性通过较高的监视评级 M（如 M=6 或更高）体现。</li><li><strong>保守评级原则：</strong>在监视控制与系统响应中，如果两者效能不一致，必须采用与最低效标准相关的评级。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>结合传音智能手机及穿戴设备电源与热管理开发：<ul><li><strong>情况 (1) M=10 无效场景：</strong>主板 PMIC 内部短路产生突发大电流引发热失控，系统没有过流硬件熔断保护，软件也无实时周期性 ADC 监控；或软件轮询周期超过热失控容错时间（FTTI），判定为 M=10，严重度维持电池起火爆炸的最高级（S=9/10）。</li><li><strong>情况 (2) M=1 可靠场景：</strong>快充链路中部署了独立于主芯片的硬件级 OVP/OCP 专用比较器，响应时间（微秒级）远小于电池受损容错时间（毫秒级）。一旦发生过压起因（FC），硬件在纳秒/微秒级切断充电回路并通知系统切换至待机安全态，完全避免电池鼓包或起火，仅留存“停止充电并弹出告警提示”的减缓影响（S 降为 4-6）。此架构可在全工况闭环消除原始危害，M 评为 1，AP 分析基于 S=4 计算。</li><li><strong>情况 (3) 部分有效场景（如 M=6~8）：</strong>系统依靠软件算法采样 NTC 热敏电阻检测电池温度。若仅在开机或屏幕点亮时进行检测，熄屏高负载后台下载时因 CPU 休眠降低采样频率导致漏检或响应滞后（未覆盖全工况）；或者算法仅能覆盖 90% 的缓变过热，对突发尖峰温升覆盖不足。此时初始严重影响（电池鼓包/损坏，S=8）依然存在，减缓措施仅部分起效，M 必须评为 6 甚至更高。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：只要设计了诊断保护软件，就认为可以降低严重度 S。</strong><br><em>避坑指南：</em>只有当监视与响应达到可靠水平（M=1），几乎消除初始失效影响时，减缓后的 S 才被用于 AP 评估。如果只是部分有效（如情况 3），用于风险评估的严重度依然是最严重的原始 S，降低的风险由 M 评级体现。</li><li><strong>误区 2：忽视容错时段（FTTI）与执行时机。</strong><br><em>避坑指南：</em>如果某个监视逻辑只在开机阶段（Power-on 自检）执行，在运行中发生故障无法探测；或者探测响应时间超过了物理危害发生的容错时间，该监视在运行工况中等同于无效，必须评为 M=10。</li><li><strong>误区 3：单以诊断覆盖率判定 M，忽略系统响应。</strong><br><em>避坑指南：</em>监视控制包含“探测”和“系统响应”两个不可分割的环节。即使算法探测覆盖率达到 99%，但如果系统响应动作（如执行切断、降功率、进入安全模式）不可靠或受阻，评级必须取探测与响应两者中最低效的一项。</li></ul>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-4-5-1-2.jpg" alt="图 4.5-1 无监视 & 图 4.5-2 可靠的诊断监测（原书第 126 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-4-5-1-2.jpg?v=1792660128" alt="图 4.5-1 无监视 & 图 4.5-2 可靠的诊断监测（原书第 126 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 4.5-1 无监视 & 图 4.5-2 可靠的诊断监测（原书第 126 页）</p>
         </div>
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/fig-4-5-3.jpg" alt="图 4.5-3 部分有效的 FMEA-MSR 诊断监视（原书第 127 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/fig-4-5-3.jpg?v=1792660128" alt="图 4.5-3 部分有效的 FMEA-MSR 诊断监视（原书第 127 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 图 4.5-3 部分有效的 FMEA-MSR 诊断监视（原书第 127 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.6 - 4.5.7 节（上）（PDF 第 137-139 页）</p>
@@ -169,31 +169,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

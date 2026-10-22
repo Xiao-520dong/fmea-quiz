@@ -63,11 +63,11 @@
                     <div class="highlight"><strong>1. 核心概念与探测度（D）评估三要素</strong><br>根据《AIAG & VDA FMEA 手册》2.5.9 节，<strong>探测度评级（D）</strong>是对<strong>探测控制有效性</strong>的估计，其核心目标是：在项目交付生产前，可靠地证明（探测出）失效起因或失效模式。关于 D 评级的核心规则如下：<br><ul><li><strong>独立性与相对性：</strong>探测度是一个相对评级，且在单个 FMEA 范围内评级，它的确定<strong>绝不考虑严重度（S）或频度（O）</strong>。</li><li><strong>最有效控制原则：</strong>当存在多项探测控制措施时，探测度评级与<strong>最有效的那项探测控制</strong>相关。</li><li><strong>评估四连问：</strong>确定该估计时，团队必须思考并回答：①探测失效起因或失效模式的最有效测试是什么？②探测失效所需的使用记录/工作周期是什么？③探测失效需要多少样品？④探测该起因/失效模式的测试程序是否已得到证明？</li><li><strong>动态更新：</strong>D 评级最初是对尚未被证实的控制有效性的预测；在测试完成后，必须对其有效性进行验证和重新评估。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与表 D3 探测度 1-10 级评分体系拆解</strong><br>表 D3 将探测控制的能力划分为两大维度的交叉判定：<strong>探测方法成熟度</strong>与<strong>探测机会（测试类型及节点）</strong>：<br><table style="width:100%; border-collapse:collapse; margin-top:8px; font-size:12px;" border="1"><thead><tr style="background-color:#f2f2f2;"><th style="width:8%;">评级 D</th><th style="width:14%;">探测能力</th><th style="width:38%;">探测方法成熟度</th><th style="width:40%;">探测机会（测试方法 / 时间节点）</th></tr></thead><tbody><tr><td align="center"><strong>10</strong></td><td rowspan="2" align="center">非常低</td><td>尚未确定测试方法。</td><td>尚未制定测试过程。</td></tr><tr><td align="center"><strong>9</strong></td><td>没有为探测失效模式或失效起因而特别地设计测试方法。</td><td>通过/不通过测试、失效测试、老化测试（泛用无针对性测试）。</td></tr><tr><td align="center"><strong>8</strong></td><td rowspan="2" align="center">低</td><td rowspan="2">新测试方法，尚未经过验证。</td><td>通过/不通过测试、失效测试、老化测试（早期新方法未验证）。</td></tr><tr><td align="center"><strong>7</strong></td><td>新测试方法，处于验证初期。</td></tr><tr><td align="center"><strong>6</strong></td><td rowspan="3" align="center">中</td><td rowspan="3">已经验证的测试方法，用于功能性验证或性能、质量、可靠性及耐久性确认。<strong>但测试计划时间在产品开发周期内较迟</strong>，若失败将导致重新设计、重新开模甚至生产延迟。</td><td>通过/不通过测试（开发后期，成本风险极高）</td></tr><tr><td align="center"><strong>5</strong></td><td>失效测试（开发后期，测至失效）</td></tr><tr><td align="center"><strong>4</strong></td><td>老化测试（开发后期，长期可靠性验证）</td></tr><tr><td align="center"><strong>3</strong></td><td rowspan="3" align="center">高</td><td rowspan="3">已经验证的测试方法，用于功能验证或性能、质量、可靠性及耐久性确认；<strong>计划时间充分，可以在开始生产之前修改生产工装</strong>。</td><td>通过/不通过测试（开发早期充足时间窗口）</td></tr><tr><td align="center"><strong>2</strong></td><td>失效测试 / 老化测试（开发早期且充足时间修改模具与工装）</td></tr><tr><td align="center"><strong>1</strong></td><td align="center">非常高</td><td colspan="2">之前测试证明<strong>不会出现</strong>失效模式或失效起因，或者探测方法经过实践验证<strong>总是能够探测到</strong>失效模式或失效起因。</td></tr></tbody></table></div><div class="highlight-green"><strong>3. 传音研发实战场景映射</strong><br>以传音某新兴市场三防/长续航手机「电池盖卡扣在跌落测试中脆断（失效起因：应力集中）」为例：<br><ul><li><strong>情境 A（评为 D=9/10）：</strong>研发团队仅计划在整机装配后做通电点亮检查，完全未制定针对卡扣结构抗跌落冲击的力学测试方法（D=10）或仅靠普通搬运晃动测试充数（D=9）。</li><li><strong>情境 B（评为 D=8）：</strong>团队引入了一套全新的高速光学应变测试夹具，但由于该治具属于首创开发、未经校准与行业验证，此时即便安排在样机期，D 仍必须评为 8。</li><li><strong>情境 C（评为 D=5）：</strong>在量产前试产阶段（PVT/量产磨合期较迟节点）进行 1.5 米微跌测试至卡扣断裂（失效测试）。虽然测试方法高度成熟，但由于时间太晚，一旦断裂需修改模具钢件导致量产延迟，故评分定为 D=5。</li><li><strong>情境 D（评为 D=2/3）：</strong>在产品开发早期（如 EVT 结构手板或软模阶段），使用行业公认的跌落台进行跌落至破损破坏性试验（失效测试）。此时预留了充足的修模和改结构周期，此时可评为 D=2。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>❌ 误区 1：把“容易被用户发现”当成探测度好（打低分）。</strong><br><em>正解：</em>DFMEA 的探测度<strong>只针对“项目交付生产前（研发设计验证阶段）被工程测试探测到的能力”</strong>。绝不能因为“手机外壳开裂用户一眼就能看到”而给 D 打 1 分！用户拿到时已是交付之后，那是严重度 S 的范畴。</li><li><strong>❌ 误区 2：忽视“测试时间节点（探测机会）”对 D 评级的决定性作用。</strong><br><em>正解：</em>AIAG & VDA 新版标准中，D=4~6 与 D=2~3 采用完全相同的“成熟已验证测试方法”，唯一的断代分水岭是<strong>“测试发生的时间节点是否充分留有修改工装/模具的余量”</strong>。太迟的测试即使百发百中，也是 D=4~6。</li><li><strong>❌ 误区 3：多个测试控制措施时，取平均分或最差分。</strong><br><em>正解：</em>原书明确规定，当一个失效起因有多个探测控制（如仿真分析、手板测试、可靠性测试）时，探测评级<strong>与最有效的那项探测控制相关</strong>。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/table-d3-1.jpg" alt="表 D3 DFMEA 探测度 (D) 评分表（原书第 53 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/table-d3-1.jpg?v=1792660128" alt="表 D3 DFMEA 探测度 (D) 评分表（原书第 53 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 D3 DFMEA 探测度 (D) 评分表（原书第 53 页）</p>
         </div>
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/table-d3-2.jpg" alt="表 D3 DFMEA 探测度 (D) 评分表（续，原书第 54 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/table-d3-2.jpg?v=1792660128" alt="表 D3 DFMEA 探测度 (D) 评分表（续，原书第 54 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 表 D3 DFMEA 探测度 (D) 评分表（续，原书第 54 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.9 节（表D3）（PDF 第 65-67 页）</p>
@@ -169,31 +169,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

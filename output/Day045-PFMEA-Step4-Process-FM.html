@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与基本假设（原书 3.4.5 节）</strong><br>• <strong>过程失效模式（FM）的定义：</strong>指“过程导致产品无法交付或提供预期功能的方式”。失效模式针对的是特定工序步骤（Focus Element）未满足其功能要求。<br>• <strong>关键假设 1（设计正确假设）：</strong>团队在进行 PFMEA 分析时，<strong>应假设产品的基本设计是正确的</strong>。若在评审中识别出设计缺陷（例如零件公差设计过紧导致产线无法装配），PFMEA 团队应将其反馈给产品设计团队（DFMEA 团队）协同解决，而非用过程手段无限期掩盖设计缺陷。<br>• <strong>关键假设 2（可能发生但非必然）：</strong>假设失效模式可能出现，但不一定会必然出现。<br>• <strong>表述规范：</strong>失效模式必须使用<strong>技术术语（Technical Terms）</strong>进行客观描述，严禁描述为“顾客容易察觉的现象”或症状（后者属于失效影响 FE）。<br>• <strong>完整性验证来源：</strong>以往错误案例、不合格品/废品报告、集体研讨（Brainstorming）、对标类似过程、以及分析类似组件的最终用户和后续操作的索赔案例。</div><div class="highlight-blue"><strong>2. 潜在失效模式的类别与典型表现（原书 3.4.5 节）</strong><br>原手册将潜在失效模式的类型系统划分为以下几种形态（与步骤三功能类型严格对应）：<br>• <strong>过程功能丧失 / 操作未执行：</strong>例如完全漏装零件、漏焊、漏贴辅料、跳过检测工位、标签丢失。<br>• <strong>部分功能丧失 / 操作不完整：</strong>例如连接器未完全到位（假扣合）、紧固螺钉拧入扭矩不足、点胶量不足。<br>• <strong>过程功能降低：</strong>过程能力不足导致的性能衰减。<br>• <strong>过程功能超出预期（高出太多）：</strong>例如打胶过多溢胶、压合力过大导致压损零件、孔加工过深、表面处理过度。<br>• <strong>间歇过程功能 / 操作不一致 / 运行不稳定：</strong>偶发性未压实、加热温度波动导致虚焊。<br>• <strong>非预期过程功能 / 操作错误 / 安装错误零件：</strong>例如装配错误料号的元器件、ECU 刷新时烧录错误版本软件、接收不合格零件而拒收合格零件。<br>• <strong>过程功能延迟（操作太迟）：</strong>点胶后保压延迟过长导致胶水表面结皮固化失效。<br>• <strong>原书典型失效模式清单：</strong>孔太浅/太深/缺失或偏离位置；表面脏污；表面处理过度；连接器插脚错位；连接器未完全到位；接收不合格零件/拒收合格零件/跳过检测工位；标签丢失；条形码不可读；ECU 刷新时用错软件。</div><div class="highlight-green"><strong>3. 传音研发与智能制造实战场景</strong><br>结合传音手机主板 SMT、整机组装（FA）与软件烧录环节，失效模式必须规范为工程技术术语：<br>• <strong>案例 1（软件下载工位）：</strong>若操作将测试版工程 ROM 烧录进量产机，错误描述为“手机无法激活/开机卡顿”（这是 FE），标准 FM 描述应为“<strong>软件烧录错误（刷入错误版本/配置的固件软件）</strong>”（对应非预期过程功能）。<br>• <strong>案例 2（主板 BTB 连接器扣合工位）：</strong>错误描述为“屏幕黑屏/触控失灵”（这是 FE），标准 FM 描述应为“<strong>BTB 连接器浮高 / 未完全到位</strong>”或“<strong>BTB 端子引脚错位 / 压伤变形</strong>”（对应部分功能丧失或操作错误）。<br>• <strong>案例 3（中框点胶工位）：</strong>错误描述为“屏幕漏光/后盖脱胶”（这是 FE），标准 FM 描述应为“<strong>中框密封胶点胶轨迹偏离预定路径</strong>”或“<strong>点胶量不足 / 溢胶</strong>”。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆失效模式（FM）与失效影响（FE）。</strong>把“产线停线”、“客户投诉手机不开机”、“屏幕无显示”直接写在 FM 列。<strong>正解：</strong>FM 是工序本身的物理/工程缺陷（如“FPC 连接器虚插”），FE 才是该缺陷导致的后果（“屏幕无显示”）。<br>• <strong>误区二：在 PFMEA 中擅自归咎于产品设计问题。</strong>例如“结构件卡扣间隙过小导致装配困难”直接作为制造过程不可控理由。<strong>正解：</strong>手册明确规定应假设“产品基本设计是正确的”，制造侧应专注于工艺参数与操作；若确实是公差干涉等设计问题，必须通过工程变更（ECR/ECO）与 DFMEA 团队接口闭环。<br>• <strong>误区三：用口语化或含糊词汇表述 FM。</strong>例如“员工操作不当”、“组装不良”、“机器故障”。<strong>正解：</strong>失效模式必须是清晰的物理技术状态（如“螺钉滑牙”、“螺钉浮高”、“辅料贴附偏位超出图纸公差 ±0.1mm”）。</div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day045-manual-p95.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day045-manual-p95.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.4.5 节（PDF 第 95-96 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

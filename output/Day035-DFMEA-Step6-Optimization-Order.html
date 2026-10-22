@@ -63,7 +63,7 @@
                     <div class="highlight"><strong>1. 核心概念与优化目的（2.6.1）</strong><br>设计优化的主要目的是确定减轻风险的措施以及评估这些措施的有效性，其本质是通过改进设计来制定降低风险和增加顾客满意度的措施。<br><ul><li><strong>主要目标：</strong>确认降低风险的必要措施；为措施实施分配职责和任务期限；实施措施并将其形成文件（含有效性确认与重新评估）；促进跨团队、管理层、顾客和供应商在潜在失效方面的协作；为改进产品要求和预防/探测控制提供基础。</li><li><strong>措施的实质属性：</strong>优化措施必须是<strong>具体、可衡量、可实现（Specific, Measurable, Achievable）</strong>的措施，而不是可能永远不会实施的潜在或口头意向。</li><li><strong>与现有控制的区别：</strong>优化措施<strong>不用于记录已经计划好的活动</strong>，因为既定活动已作为“现有预防控制（PC）”或“现有探测控制（DC）”在步骤五初始风险分析中评估过了。如果团队评估后判定无需进一步采取措施，必须在备注中明确注明<strong>“无需进一步的措施”</strong>，以示风险分析闭环。</li></ul></div><div class="highlight-blue"><strong>2. 优化的最有效顺序与变更规则（2.6.1 & 2.6.2）</strong><br>手册明确规定了优化措施制定的最有效优先级顺序：<br><ol><li><strong>第一优先：修改设计以消除或减少失效影响（FE）：</strong>从根本上消除危险或将影响降至最低（例如改变物理架构使跌落时核心器件完全不受力）。</li><li><strong>第二优先：修改设计以降低失效起因（FC）的频度（O）：</strong>通过强化设计裕量、降额设计等方式降低失效根因发生的概率（消除或降低起因）。</li><li><strong>第三优先：提高探测（D）失效起因（FC）或失效模式（FM）的能力：</strong>在设计无法变更或频度无法进一步降低时，增加更早、更有效的验证与测试手段。</li></ol><ul><li><strong>设计修改重新评估规则：</strong>在发生一般设计修改时，所有受影响的设计要素都要重新评估。</li><li><strong>概念变更的特别要求：</strong>若发生<strong>概念变更（Concept Change）</strong>，FMEA 的<strong>所有步骤都必须针对受影响的部分进行全面评审</strong>，因为初始分析是基于已失效的旧设计概念，原分析结论已不再有效。</li><li><strong>责任分配三要素：</strong>每个措施必须分配<strong>唯一负责人（Person Responsible）</strong>与切合实际的<strong>目标完成日期（Target Completion Date）</strong>。负责人负责确保措施状态更新及实施落地，完成日期必须与产品开发计划阶段锚定（如 DV 前、PV 前、SOP 前），并最终闭环记录实际完成日期。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机新平台整机跌落风险优化中的应用实践：<br><ul><li><strong>场景说明：</strong>非洲及新兴市场用户使用场景恶劣，某中端机型在 1.5 米微跌落/自由跌落测试中，主板 BGA 芯片焊点开裂导致整机黑屏死机（FE: S=8, FC: 跌落时主板受弯曲形变应力过大, O=6, DC: EVT跌落试验, D=4，AP=H）。</li><li><strong>优化顺序落地：</strong><ul><li><em>首选措施（修改设计消减 FE/降低 O）：</em>结构团队增加主板屏蔽罩局部加强筋，并在 CPU/Flash 底角点胶（Underfill），将应力集中区域变形量减少 45%，直接将失效起因频度降至 O=2。</li><li><em>次选措施（提高探测能力 D）：</em>在原有 EVT 整机跌落测试基础上，在模流/应变片仿真阶段新增瞬态冲击仿真验证（仿真应变峰值标准），提前在方案阶段探测出应力超标缺陷，将 D 提升至 2。</li><li><em>责任与进度锁定：</em>指定整机结构主任工程师 Li 为负责人，目标完成日期绑定在“TR3 模具冻结（Tooling Freeze）前”，禁止出现未指定责任人或将日常计划列为优化措施的情况。</li></ul></li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：把“已经计划好的例行测试”写进优化措施。</strong><br><em>纠正：</em>如“安排整机做 DVT 跌落测试”本身就是标准研发流程中的已计划活动，应属于步骤五的现有探测控制（DC），绝不能当作步骤六的优化措施来充数。优化措施必须是针对高/中风险额外制定的具体改进动作。</li><li><strong>误区二：遇到高风险首先想到“加强检测/加严测试标准”（本末倒置）。</strong><br><em>纠正：</em>违反了手册的优先顺序。探测控制无法消除缺陷本身，永远是最后手段；必须优先通过修改产品几何尺寸、材料、容差等物理设计来消除影响或降低发生频度。</li><li><strong>误区三：发生设计概念变更时，仅更新当前行的 S/O/D 分数。</strong><br><em>纠正：</em>手册明确规定，一旦方案发生“概念变更”（例如由冲压中框改为压铸铝一体成型中框），前序的所有步骤（结构分析、功能分析、失效分析等）必须全部重新评审，不可简单套用旧概念的分析数据。</li></ul></div>
                     <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-            <img src="../assets/day035-manual-p72.jpg" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
+            <img src="../assets/day035-manual-p72.jpg?v=1792660128" alt="原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72 页）" style="max-width:100%; height:auto; border-radius:6px; display:block; margin:0 auto;">
             <p style="font-size:13px; color:#4a5568; margin: 10px 0 0 0; font-weight: 500;">📊 原书图表/页面实录：《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72 页）</p>
         </div></div><!-- /manual-figure-box -->
 <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.6.1 - 2.6.2 节（PDF 第 72-73 页）</p>
@@ -165,31 +165,186 @@
         }
     </script>
 
+
 <style>
-.manual-figure-box img { cursor: zoom-in; transition: transform 0.2s ease; }
-.manual-figure-box img:hover { transform: scale(1.01); }
-#img-lightbox-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;
-    padding: 20px; box-sizing: border-box; cursor: zoom-out;
+.manual-figure-box { position: relative; }
+.manual-figure-box img, .highlight-green img {
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease;
 }
-#img-lightbox-overlay img {
-    max-width: 96%; max-height: 94vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+.manual-figure-box img:hover, .highlight-green img:hover {
+    box-shadow: 0 4px 16px rgba(66, 153, 225, 0.4);
+}
+.zoom-hint-badge {
+    display: inline-block;
+    background: #ebf8ff;
+    color: #2b6cb0;
+    border: 1px solid #bee3f8;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+}
+#img-lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.92);
+    z-index: 99999;
+    flex-direction: column;
+    user-select: none;
+}
+.lightbox-toolbar {
+    height: 54px;
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #fff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+.lightbox-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lh-btn {
+    background: #334155;
+    color: #fff;
+    border: 1px solid #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+.lh-btn:hover { background: #475569; }
+.lh-btn.primary { background: #3182ce; border-color: #63b3ed; }
+.lh-btn.danger { background: #e53e3e; border-color: #fc8181; }
+.lightbox-viewport {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px;
+    cursor: grab;
+}
+.lightbox-viewport:active { cursor: grabbing; }
+#img-lightbox-target {
     background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+    transform-origin: top center;
+    transition: width 0.15s ease;
+    max-width: none !important;
+    max-height: none !important;
+    display: block;
+    margin: auto;
 }
 </style>
-<div id="img-lightbox-overlay" onclick="this.style.display='none'">
-    <img id="img-lightbox-target" src="" alt="高清大图预览">
+<div id="img-lightbox-overlay">
+    <div class="lightbox-toolbar">
+        <div id="lightbox-caption" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:45%;">📊 原书图表高清放大器（滚轮/按钮可放大至 400%，按住鼠标可拖拽）</div>
+        <div class="lightbox-controls">
+            <button type="button" class="lh-btn" onclick="zoomLightbox(-0.3)">➖ 缩小</button>
+            <span id="lightbox-scale-text" style="min-width:52px; text-align:center; font-weight:700; color:#63b3ed;">150%</span>
+            <button type="button" class="lh-btn primary" onclick="zoomLightbox(0.3)">➕ 放大</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(1.0)">适应宽</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(2.0)">200% 超清</button>
+            <button type="button" class="lh-btn" onclick="setLightboxScale(3.0)">300% 特写</button>
+            <button type="button" class="lh-btn danger" onclick="closeLightbox()">✖ 关闭</button>
+        </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport" onclick="if(event.target===this) closeLightbox()">
+        <img id="img-lightbox-target" src="" alt="高清大图预览">
+    </div>
 </div>
 <script>
+let currentZoomScale = 1.5;
+let baseImgWidth = 900;
+
+function updateLightboxRender() {
+    const target = document.getElementById('img-lightbox-target');
+    const scaleText = document.getElementById('lightbox-scale-text');
+    target.style.width = Math.round(baseImgWidth * currentZoomScale) + 'px';
+    scaleText.innerText = Math.round(currentZoomScale * 100) + '%';
+}
+
+function zoomLightbox(delta) {
+    currentZoomScale = Math.min(4.0, Math.max(0.5, +(currentZoomScale + delta).toFixed(2)));
+    updateLightboxRender();
+}
+
+function setLightboxScale(scale) {
+    currentZoomScale = scale;
+    updateLightboxRender();
+}
+
+function closeLightbox() {
+    document.getElementById('img-lightbox-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openLightbox(img) {
+    const overlay = document.getElementById('img-lightbox-overlay');
+    const target = document.getElementById('img-lightbox-target');
+    const cap = document.getElementById('lightbox-caption');
+    target.src = img.src;
+    cap.innerText = '🔍 ' + (img.alt || '原书高清图表预览') + ' （支持鼠标滚轮缩放 & 按住拖动）';
+    baseImgWidth = Math.min(window.innerWidth * 0.88, 1000);
+    currentZoomScale = 1.6; // 默认打开直接放大到 160% 宽幅！
+    updateLightboxRender();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 document.querySelectorAll('.manual-figure-box img, .highlight-green img').forEach(img => {
-    img.title = '点击查看超清大图';
-    img.addEventListener('click', () => {
-        const overlay = document.getElementById('img-lightbox-overlay');
-        const target = document.getElementById('img-lightbox-target');
-        target.src = img.src;
-        overlay.style.display = 'flex';
-    });
+    img.title = '点击打开可缩放高清大图（默认 160% 放大，支持最高 400% 缩放）';
+    img.addEventListener('click', () => openLightbox(img));
+    const p = img.parentElement.querySelector('p');
+    if (p && !p.querySelector('.zoom-hint-badge')) {
+        const badge = document.createElement('div');
+        badge.innerHTML = '<span class="zoom-hint-badge">🔍 点击图片或此处：打开 160%~400% 无级放大查看器</span>';
+        badge.onclick = () => openLightbox(img);
+        p.appendChild(badge);
+    }
+});
+
+// 支持鼠标滚轮直接缩放与拖拽平移
+const vp = document.getElementById('lightbox-viewport');
+vp.addEventListener('wheel', (e) => {
+    if (document.getElementById('img-lightbox-overlay').style.display === 'flex') {
+        e.preventDefault();
+        zoomLightbox(e.deltaY < 0 ? 0.2 : -0.2);
+    }
+}, { passive: false });
+
+let isDragging = false, startX, startY, scrollL, scrollT;
+vp.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - vp.offsetLeft;
+    startY = e.pageY - vp.offsetTop;
+    scrollL = vp.scrollLeft;
+    scrollT = vp.scrollTop;
+});
+vp.addEventListener('mouseleave', () => isDragging = false);
+vp.addEventListener('mouseup', () => isDragging = false);
+vp.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    vp.scrollLeft = scrollL - (e.pageX - vp.offsetLeft - startX);
+    vp.scrollTop = scrollT - (e.pageY - vp.offsetTop - startY);
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
 });
 </script>
 </body>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 016：DFMEA 步骤二：结构树构建、表格视图与供方协作</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 016：DFMEA 步骤二：结构树构建、表格视图与供方协作</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：五种主要接口类型：</strong>原书明确接口包含物理连接（支架/紧固）、材料交换（液体/气压）、能量传递（热/摩擦/运动）、数据交换（信号/总线/安全项目）、人-机接口（控制/显示/警告），以及特殊的零件间静态/动态物理间隙。</li><li><strong>上期核心2：接口分析的关键输出价值：</strong>接口分析记录方块图/边界图中所有内外部接口的关系性质（强/弱/无、有益/有害）与类型，直接为 DFMEA 提供主要/接口功能输入，识别潜在失效起因/机理，并为 P 图（参数图）输入理想功能与噪音因素。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与结构树定义（原书 2.2.4.3 节）</strong><br><ul><li><strong>结构树定义：</strong>结构树按层次排列系统要素，并通过结构化连接展示其依赖关系。系统要素之间的物理或逻辑交互作用，将在后续步骤三（功能分析）中转化为功能，并由功能网（Function Net）来表达。</li><li><strong>无冗余唯一性原则：</strong>为了防止冗余，<strong>每个系统要素在结构树中只存在一次</strong>，这就保证了整个系统层级结构的清晰明了。每个系统要素下排列的结构都是其独立的子结构。</li><li><strong>功能派生要素原则：</strong>结构树中总是会存在一个系统要素，<strong>即使它当前只是从功能派生出来的，而且还不能清楚地定义它到底具体是什么物理实体</strong>（概念设计阶段即可建立要素占位）。</li></ul></div><div class="highlight-blue"><strong>2. 步骤二表格视图与供方协作（原书 2.2.4.3、2.2.5、2.2.6 节）</strong><br><ul><li><strong>标准结构分析表格三列架构（图 2.2-3）：</strong><br>1) <strong>1. 上一较高级别（Higher Level）：</strong>分析范围内最高集成层级（如系统级或整机级）；<br>2) <strong>2. 关注要素（Focus Element）：</strong>当前受关注的核心要素，也是后续构建失效链（Failure Chain）的主题项目；<br>3) <strong>3. 下一较低级别或特性类型（Lower Level or Characteristic Type）：</strong>结构中处于关注要素下一低级别的子要素或零件特性。</li><li><strong>顾客与供应商之间的协作工具（2.2.5 节）：</strong>结构分析的可视化输出（系统结构树、边界图及接口定义）为顾客和供应商在设计和/或 DFMEA 项目技术评审期间的联合协同提供了通用技术语言和对齐边界的基准工具。</li><li><strong>结构分析对功能分析的承接决定性（2.2.6 节）：</strong>步骤二“结构分析”中定义的信息是步骤三“功能分析”的输入骨架。<strong>手册明确强调：结构分析中缺少的设计要素（项目），在功能分析中也会必然缺失，进而导致后续失效分析产生盲区！</strong></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：摄像头马达（VCM）及主板结构拆解</strong><br><ul><li><strong>典型三级表格在传音手机中的映射：</strong>在传音中高端机型防抖摄像头（OIS VCM）DFMEA 中：<br>- <strong>1. 上一较高级别：</strong>整机摄像头模组（Camera Module）；<br>- <strong>2. 关注要素：</strong>光学防抖马达总成（OIS VCM Assembly，分析的核心主体）；<br>- <strong>3. 下一较低级别：</strong>悬丝弹片（Suspension Wire）、驱动线圈（Coil）、永磁体（Magnet）、底座支架（Base Holder）。</li><li><strong>“无冗余原则”与元器件管理：</strong>主板上有数百个阻容器件与 5 颗同型号 LDO 芯片，在结构树展开时，同一层级下的物料编号或功能位置必须唯一归属，避免交叉重叠嵌套导致后续功能分配错乱。</li><li><strong>非洲严苛环境下的供方技术评审（协作实践）：</strong>传音与马达供应商召开 DFMEA 联合评审时，依据结构树与接口图，直接拉齐马达基座与手机中板的点胶装配接口、热传导接口及高湿高盐雾下的密封间隙要求，确保供方 DFMEA 的上一级与整机 DFMEA 关注要素完全咬合。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆关注要素与分析范围：</strong>把整机直接当成关注要素，导致下一较低级别堆积成百上千个零件。<em>正确做法：</em>逐级下钻，当以“主板总成”为关注要素时，上一级为手机整机，下一级为屏蔽罩、PCB、主芯片等；当以“主芯片”为关注要素时，上一级转为主板总成，下一级为其引脚、硅基封装体等。</li><li><strong>误区二：结构树中重复出现同一子零件：</strong>在不同的分支下重复挂载同一个结构件造成统计和失效链循环混乱。<em>手册要求：</em>每个系统要素只存在一次，通过明确的父子逻辑保持独立。</li><li><strong>误区三：前期物理定义不明确就遗漏要素：</strong>新方案立项时因尚未完成选型便放弃构建该节点。<em>手册明确：</em>即使仅从功能派生且未明确具体物理方案，也必须先在结构树中建立要素占位，确保步骤三功能不丢失。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.2.4.3 - 2.2.6 节（PDF 第 36-39 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》2.2.4.3 节，关于结构树构建规则，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 允许同一系统要素在树状结构的不同分支中多次出现，以强调其在多个子系统中的重要性</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 为了防止冗余，每个系统要素在结构树中只存在一次，保证结构清晰明了</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只有完成了详细物理选型和料号冻结的零件才能加入结构树，不能存在由功能派生的抽象要素</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 结构树主要用于表达要素之间的功能失效因果网，而不是层次依赖关系</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 2.2.4.3 节明确指出：“为了防止冗余，每个系统要素只存在一次，这就保证了整个系统结构清晰明了。”同时规定：“结构树中总是会存在一个系统要素，即使它只是从功能派生出来，而且还不能清楚地定义它到底是什么。”因此 B 正确，A、C 错误。结构树展示的是层次与依赖关系，交互作用稍后在功能网与失效网中表达，D 错误。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 AIAG & VDA DFMEA 步骤二的结构分析表格中，“关注要素（Focus Element）”的核心定义是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 分析范围内处于最高集成层级的要素</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 结构中处于受关注要素下一低级别的要素或特性</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 受关注的要素，也是考虑失效链的主题项目</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 专指供应商直接供货的最小物理外购件</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 2.2.4.3 节图 2.2-3 表格说明明确定义：1. 上一较高级别：分析范围内最高集成层级；2. 关注要素：受关注的要素，也是考虑失效链的主题项目；3. 下一较低级别或特性类型：结构中处于关注要素下一低级别的要素。因此 C 正确。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在针对智能手机开展整机级 DFMEA 分析时，若将“侧键指纹识别模组（Fingerprint Module）”设定为【关注要素】，则根据结构分析表格逻辑，下列层级划分最合理的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 上一较高级别：整机系统（Smartphone）；下一较低级别：指纹传感器芯片、软排线（FPC）、金属支架</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 上一较高级别：指纹传感器芯片；下一较低级别：手机整机系统</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 上一较高级别：按键微动开关；下一较低级别：中框天线隔离槽</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 上一较高级别：传音全球云服务系统；下一较低级别：整机系统</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>当“侧键指纹识别模组”作为【关注要素】时，其上一较高级别应是集成该模组的上位系统（整机系统）；其下一较低级别应是构成该模组的子零件/组件（指纹芯片、FPC、金属支架等）。A 完全符合原书结构分析三层架构逻辑。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 2.2.5 节与 2.2.6 节，关于“结构分析”与其他流程环节的关系，下列表述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 结构分析的输出（设计及其接口的可视化）为顾客和供应商在设计和/或 DFMEA 项目技术评审期间的协作提供了工具</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 步骤二“结构分析”中定义的信息将被用于步骤三“功能分析”</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 结构分析中如果缺少某个设计要素，在后续功能分析中该要素对应的功能也必然会缺失</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 结构分析完全独立于后续步骤，结构树遗漏的物理要素可以在失效分析步骤中自动补齐，无任何影响</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 2.2.5 节明确指出设计及其接口的可视化为顾客与供方技术评审协作提供工具（A正确）；2.2.6 节明确指出步骤二定义的信息将被用于步骤三，且“结构分析中缺少的设计要素（项目），在功能分析中也会缺少”（B、C正确）。D 选项与手册原文原则相悖，错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于系统要素在结构分析中的处理方式，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 每个系统要素下排列的结构都是独立的子结构</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 系统要素之间的交互作用将在步骤三（功能分析）中描述为功能，并由功能网表示</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 在全新技术开发阶段，如果某零件具体物理形态未定，则结构树中绝对不允许出现该节点</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 结构树按层次排列系统要素，并通过结构化连接展示系统内部各要素的依赖关系</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 2.2.4.3 节指出：“结构树按层次排列系统要素，并通过结构化连接展示依赖关系”（D正确）；“每个系统要素下排列的结构都是独立的子结构”（A正确）；“系统要素之间的交互作用稍后可以描述为功能并由功能网表示”（B正确）；原书明确指出“结构树中总是会存在一个系统要素，即使它只是从功能派生出来，而且还不能清楚地定义它到底是什么”，因此 C 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

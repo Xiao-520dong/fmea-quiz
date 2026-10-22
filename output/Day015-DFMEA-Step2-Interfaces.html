@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 015：DFMEA 步骤二：五种主要接口类型与接口分析</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 015：DFMEA 步骤二：五种主要接口类型与接口分析</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>方块图/边界图通过边界线明确设计控制范围，只有团队设计或控制的零件才放在边界内，且方块图展现的通常是比当前分析层级低一级的要素。</li><li><strong>上期核心2：</strong>方块图不仅展示零件要素，还必须用带有方向的箭头表示系统内部以及系统与外部环境之间的物理、能量、信号等流动与交互作用。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>接口分析（Interface Analysis）用于描述系统要素之间的交互作用。在复杂系统设计中，失效往往发生在要素之间的“结合部”与“交互界面”。接口分析将方块图/边界图中展示的所有内、外部接口的关系性质（如：强/弱/无、有益/有害）及其物理类型形成结构化文件。<br>根据《AIAG & VDA FMEA 手册》，接口分析为设计 FMEA 提供了极其有价值的输入（如主要功能、接口功能，以及相邻系统与环境影响导致的潜在失效起因/机理），同时也为参数图（P图）提供了理想功能和噪音因素的输入。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br>原书明确定义了<strong>五种主要接口类型</strong>以及<strong>一种特殊接口形态</strong>：<br>① <strong>物理连接（Physical Connection）：</strong>支架、螺栓紧固、卡扣、夹紧、胶粘等硬性或柔性机械连接；<br>② <strong>材料交换（Material Exchange）：</strong>气压平衡、液压油、水、相变介质或任何流体、物料的流通与交换；<br>③ <strong>能量传递（Energy Transfer）：</strong>热量传递（传导/对流/辐射）、机械运动传递（如齿轮、铰链、连杆传动）、摩擦力传递、电磁能量感应等；<br>④ <strong>数据交换（Data Exchange）：</strong>计算机/芯片的输入或输出、线束电平、总线电信号、射频信号通信，以及网络安全（Cybersecurity）相关的信息交互；<br>⑤ <strong>人-机（Human-Machine）：</strong>人机交互界面，例如按键、触控开关、屏幕显示、声音提示/告警、机身握持手感等；<br>⑥ <strong>特殊接口形态——物理间隙（Clearance/Gap）：</strong>没有物理连接的零件之间的物理间隙，间隙可以是<strong>静态间隙</strong>（如装配避位、绝缘安全距离）或<strong>动态间隙</strong>（如运动部件摆幅避空、电池充放电膨胀余量）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及穿戴设备研发中，接口分析是预防“板级集成与整机装配失效”的核心工具：<br>• <strong>物理连接 + 物理间隙：</strong>在电池仓设计中，电池与中框采用易拉胶固定（物理连接），但四周必须保留充放电循环引起的厚度与长宽膨胀余量（动态物理间隙）。若间隙不足，会导致挤压挤爆屏幕或刺穿电芯引发起火。<br>• <strong>能量传递：</strong>高算力芯片（SoC）通过导热硅脂和均热板（VC）向铝合金中框传递热量（热能传递）。若导热界面接触热阻过大，会导致芯片过热降频卡顿。<br>• <strong>材料交换：</strong>整机具备 IP54/IP68 防水防尘等级时，听筒/喇叭出声孔与泄气孔采用 ePTFE 防水透气膜，既要保证空气内外气压平衡（材料交换），又要阻止液态水分子进入。<br>• <strong>数据交换：</strong>主板与副板之间通过柔性印制板（FPC）传递 MIPI 屏幕信号及快充电流，高频数字差分信号极易对周边的射频天线造成 EMI 电磁干扰（有害的数据/能量接口交互）。<br>• <strong>人-机接口：</strong>侧键（电源键/音量键）的行程、段落感压强曲线设计，直接决定了用户的物理按压手感与误触防范。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区1：只看“有形的零件”，忽视“无形的间隙”。</strong>许多工程师只把螺钉、胶水当接口，遗漏了“物理间隙”。案例：摄像头模组（Camera Deco）与玻璃后盖未保留公差动态干涉间隙，整机微跌落测试中直接撞击碎裂。<br>• <strong>误区2：只记录“有益的交互”，遗漏“有害的交互”。</strong>接口不仅有预期的“正常信号与动力传递”，还伴随副产物。例如：马达振动（有益）伴随着对主板晶振的机械共振冲击（有害）；大电流走线（有益）伴随着辐射 EMI 噪声干扰射频接收（有害）。接口分析必须注明性质是“有益”还是“有害”。<br>• <strong>误区3：接口分析与 P 图/功能分析割裂。</strong>接口分析不仅是划分类别，其直接输出物是步骤三（功能分析）中的接口功能定义，以及 P 图中的噪音因素（如外部传入的热量、振动等）。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.2.4.2 节（PDF 第 35-36 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，下列关于“接口分析”在 DFMEA 中的作用，描述最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 仅用于计算结构复杂度和确定产品开发 BOM 成本</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 将方块图中的内外部接口性质和类型形成文件，为 DFMEA 潜在失效起因/机理分析以及参数图（P图）提供输入</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 用于替代步骤三的功能分析，直接生成严重度（S）评分</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 仅用于定义生产制造现场夹具与工件之间的装配公差</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书第 36 页明确指出：“接口分析将方块图/边界图中显示的所有内、外部接口发生的关系性质和类型形成文件。接口分析中的信息可为设计 FMEA 提供有价值的输入……将与相邻系统和环境影响导致的潜在失效起因/机理一起进行分析。接口分析还为参数图（P 图）提供理想功能和噪音因素的输入。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">原书第 36 页明确定义的五种主要接口类型不包括以下哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 材料交换（Material exchange）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 能量传递（Energy transfer）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 物理连接（Physical connection）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 资金结算（Financial transaction）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第 36 页明确列出的五种主要接口类型为：物理连接、材料交换、能量传递、数据交换、人-机。资金结算不属于工程设计中的接口类型。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机的硬件设计中，折叠屏铰链在开合运动中与柔性屏背板必须保持特定安全距离以防挤压，且随着弯折状态变化该距离发生动态改变。根据手册 2.2.4.2 节，这种接口属于什么类型？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 没有物理连接的零件之间的动态物理间隙（Dynamic Clearance）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 人-机交互接口</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 材料交换接口</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 网络安全数据交换接口</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书第 36 页指出：“另一种类型的接口可以描述为没有物理连接的零件之间的物理间隙，间隙可以是静态和/或动态的。”铰链在弯折运动过程中与屏幕背板之间的运动避让属于典型的动态物理间隙。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在对系统内部及外部接口进行分析与文件化记录时，应详细记录接口的哪些维度特征？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 接口类型（物理、能量、信息或材料交换等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 关系的强度（强 / 弱 / 无）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 关系的性质（有益 / 有害）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 该零部件在 ERP 系统中的采购单价与供应商代码</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 36 页指出：“接口分析将方块图/边界图中显示的所有内、外部接口发生的关系性质（强/弱/无、有益/有害）和类型（物理、能量、信息或材料交换）形成文件。”采购单价不属于接口分析的技术维度。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在智能手机研发的 DFMEA 实践中，下列关于接口实例与其类型归属的匹配，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 均热板（VC）将热量从中框导向整机外壳——能量传递</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 侧键 FPC 上的按键开关被用户手指按下并产生按压行程与手感——人-机接口</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 扬声器音腔上的防水泄气阀平衡机身内外气压——材料交换</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 主板 CPU 向屏幕驱动芯片发送 MIPI 图像刷新信号——数据交换</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书五大接口类型的定义：A 项属于热量传递（能量传递）；B 项按键开关提供触觉控制属于人-机接口；C 项气压平衡属于气态介质流通（材料交换）；D 项芯片间显示信号传输属于计算机/电信号（数据交换）。四项均完全正确。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

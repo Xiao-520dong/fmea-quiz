@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 064：FMEA-MSR 步骤五：当前监视控制与三种故障监视/响应情况对比</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 064：FMEA-MSR 步骤五：当前监视控制与三种故障监视/响应情况对比</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>FMEA-MSR 使用频率（F，Frequency）而非传统 DFMEA 的频度（O），评估的是在客户实际操作中失效起因发生的潜能与在具体运行工况/暴露情境下的发生概率。</li><li><strong>上期核心2：</strong>F 评级体系与 DFMEA 预防控制评分机制解耦，必须紧密结合运行工况（Operation Conditions）以及时间/里程/周期的暴露率进行综合评估。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>当前监视控制（Current Monitoring Controls）：</strong>所有计划中或已实施的、能使系统或最终用户在客户运行操作期间探测到失效起因（FC）、失效模式（FM）或失效影响（FE）的控制措施。探测后必须明确系统采取的失效响应（如降级、切换安全默认值等）。监视的目的是在危险状态或法规违规发生前，及早探测并减缓初始影响，从而将系统带入较低严重度的最终状态。</li><li><strong>监视评级（M，Monitoring）：</strong>度量在顾客操作期间探测故障/失效并应用故障响应来维持系统处于安全或合规状态的能力。M 是单个 FMEA 范围内的相对评级，不考虑 S 或 F 即可独立评估。</li><li><strong>关键判定前提：</strong>监视的有效性取决于传感器硬件、冗余架构以及诊断算法（单纯的合理性/真实性指标不足以视为有效监视）。在评级前，必须明确界定诊断监视和响应、故障监视响应时间与容错时间间隔（Fault Tolerant Time Interval, FTTI）的关系。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与三种监视/响应场景深度拆解</strong><br>手册定义了三种典型的监视与响应工况：<ul><li><strong>情况 (1) 不存在故障/失效监视（No Monitoring）：</strong>系统未部署监视机制，或监视/响应未能在容错时间间隔（FTTI）内完成。此时监视评级直接定为无效：<strong>M = 10</strong>，失效影响无法减缓，保持初始的最严重状态。</li><li><strong>情况 (2) 可靠的故障/失效监视及系统响应（Reliable Monitoring & Response）：</strong>诊断与响应高度可靠（<strong>M = 1</strong>），几乎完全消除了初始失效影响，仅留存减缓后的失效影响（Mitigated FE）。<strong>关键规则：</strong>在此情况下，与措施优先级（AP）评估直接相关的是减缓后的失效影响严重度（Mitigated S），而非原始严重度！但要达成 M = 1，必须排除起因变差、硬件变差、时序限制（如仅上电自检）、响应变差、人类反应变差等不确定性。</li><li><strong>情况 (3) 不太可靠的故障/失效监视（Partially Effective Monitoring）：</strong>系统具有部分诊断覆盖率（如仅能探测并响应 90% 的失效，其余 10% 漏检）。探测到的部分转入减缓影响（Mitigated FE），但未探测到的部分依然会导致初始的最严重影响（Initial FE）。<strong>关键规则：</strong>最严重失效影响仍按原始 S（如 S=10）计算，监视能力的不完备性通过较高的监视评级 M（如 M=6 或更高）体现。</li><li><strong>保守评级原则：</strong>在监视控制与系统响应中，如果两者效能不一致，必须采用与最低效标准相关的评级。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>结合传音智能手机及穿戴设备电源与热管理开发：<ul><li><strong>情况 (1) M=10 无效场景：</strong>主板 PMIC 内部短路产生突发大电流引发热失控，系统没有过流硬件熔断保护，软件也无实时周期性 ADC 监控；或软件轮询周期超过热失控容错时间（FTTI），判定为 M=10，严重度维持电池起火爆炸的最高级（S=9/10）。</li><li><strong>情况 (2) M=1 可靠场景：</strong>快充链路中部署了独立于主芯片的硬件级 OVP/OCP 专用比较器，响应时间（微秒级）远小于电池受损容错时间（毫秒级）。一旦发生过压起因（FC），硬件在纳秒/微秒级切断充电回路并通知系统切换至待机安全态，完全避免电池鼓包或起火，仅留存“停止充电并弹出告警提示”的减缓影响（S 降为 4-6）。此架构可在全工况闭环消除原始危害，M 评为 1，AP 分析基于 S=4 计算。</li><li><strong>情况 (3) 部分有效场景（如 M=6~8）：</strong>系统依靠软件算法采样 NTC 热敏电阻检测电池温度。若仅在开机或屏幕点亮时进行检测，熄屏高负载后台下载时因 CPU 休眠降低采样频率导致漏检或响应滞后（未覆盖全工况）；或者算法仅能覆盖 90% 的缓变过热，对突发尖峰温升覆盖不足。此时初始严重影响（电池鼓包/损坏，S=8）依然存在，减缓措施仅部分起效，M 必须评为 6 甚至更高。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：只要设计了诊断保护软件，就认为可以降低严重度 S。</strong><br><em>避坑指南：</em>只有当监视与响应达到可靠水平（M=1），几乎消除初始失效影响时，减缓后的 S 才被用于 AP 评估。如果只是部分有效（如情况 3），用于风险评估的严重度依然是最严重的原始 S，降低的风险由 M 评级体现。</li><li><strong>误区 2：忽视容错时段（FTTI）与执行时机。</strong><br><em>避坑指南：</em>如果某个监视逻辑只在开机阶段（Power-on 自检）执行，在运行中发生故障无法探测；或者探测响应时间超过了物理危害发生的容错时间，该监视在运行工况中等同于无效，必须评为 M=10。</li><li><strong>误区 3：单以诊断覆盖率判定 M，忽略系统响应。</strong><br><em>避坑指南：</em>监视控制包含“探测”和“系统响应”两个不可分割的环节。即使算法探测覆盖率达到 99%，但如果系统响应动作（如执行切断、降功率、进入安全模式）不可靠或受阻，评级必须取探测与响应两者中最低效的一项。</li></ul>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.6 - 4.5.7 节（上）（PDF 第 137-139 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在 FMEA-MSR 中关于“可靠的故障/失效监视及系统响应（情况2）”，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 即使达到可靠监视，后续计算措施优先级（AP）时也必须强制使用初始的失效影响严重度（S）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 仅在可靠监视（几乎消除初始失效影响）的情况下，减缓的失效影响（Mitigated FE）才与措施优先级（AP）相关</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只要软件算法的真实性指标（plausibility check）通过，即可直接判定为 M=1</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 监视评级（M）必须结合严重度（S）和频率（F）的大小综合计算得出</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 PDF 第 138 页明确指出：“几乎消除了初始的失效影响。仅减缓的失效影响仍与产品或系统的风险评估相关。仅在这一情况下，减缓的 FE 与措施优先级相关，而不是与原始的 FE 相关。” A项与此相反；C项错误，手册第 137 页强调“仅真实性指标不被认为是有效的”；D项错误，M 是在单个 FMEA 范围内的相对评级，在不考虑严重度或频率的情况下确定。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">如果某个系统设计了故障监视功能，但该监视响应动作所需的时间超出了系统的容错时段（FTTI），根据手册准则，该监视评级（M）应确定为：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. M = 1</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. M = 4</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. M = 7</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. M = 10</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 PDF 第 138-139 页明确指出：如果不存在监视控制，或者在故障处理间隔时间（容错时段 FTTI）内未发生监视和响应/无法探测，则监视应评为无效（M=10）。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机高压快充模块的 FMEA-MSR 分析中，主控软件设计有温度监控机制：可探测 90% 的缓变温升并降低充电功率避免过热；但对于突发性短路引起的瞬态过热，软件因采样延迟无法有效响应，仍有 10% 概率发生电池严重过热损坏（S=8）。针对这种情况，团队应如何正确评级？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 属于“不太可靠的故障/失效监视（情况3）”，最严重的失效影响仍评为 S=8，未被完全消除的风险由较高的 M 值（如 M=6）体现</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 属于“可靠的监视（情况2）”，直接按降温后的轻微影响评估 S=3，监视评级填 M=1</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 软件存在漏检，故所有监视均视为无效，直接定为 S=8、M=10</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 按照加权平均法计算严重度：S = 8 × 10% + 3 × 90% = 3.5</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>对应手册情况 (3) 不太可靠的故障/失效监视（PDF 第 139 页）。在此情况下，虽然大多数失效被探测且影响被降低，但初始失效影响依然可能发生，因此最严重的失效影响仍维持初始严重度（S=8），而诊断不完全的风险通过监视评级 M 反映。FMEA 不允许使用加权平均 S 值。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册第 138 页，失效起因的监视评级及其相应监视控制的可靠性取决于以下哪些方面？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 失效起因或失效模式的变差</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 实现诊断监视的硬件变差与系统响应的变差</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 安全机制的执行时间安排（例如：仅在“通电”自检期间探测）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 人类感知和反应的变差</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 研发工程师的主观设计经验与自信度</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 PDF 第 138 页明确列出了影响监视评级与控制可靠性的 6 个方面：a. 失效起因或失效模式的变差；b. 实现诊断监视的硬件的变差；c. 安全机制的执行时间安排（如仅通电期间探测）；d. 系统响应的变差；e. 人类感知和反应的变差；f. 其他项目实施和有效性的知识（新颖性）。E 选项并非手册规定的客观分析维度。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 FMEA-MSR 步骤五中“监视评级（M）”的标准与规则，下列描述符合手册规范的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 监视评级是对顾客操作期间探测故障/失效并应用故障响应来维持安全或合规状态能力的度量</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 在评定 M 时，若诊断监视标准与系统响应标准评级不一致，应采用与最低效标准相关的评级</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 监视评估只需分析传感器硬件即可，诊断软件算法和机械响应不属于监视控制范畴</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 要在评级前确定诊断监视和响应、故障监视响应时间与容错时段的有效性</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A、B、D 均严格符合手册内容（见 PDF 第 137、139 页）。C 选项错误，手册明确指出监视涉及传感器硬件、冗余、诊断算法、逻辑、机械驱动与物理反应（以及人类感知）的组合能力，绝不仅限于传感器硬件。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

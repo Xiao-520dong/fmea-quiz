@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 066：FMEA-MSR 步骤五：MSR 措施优先级（AP）判定逻辑与查表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 066：FMEA-MSR 步骤五：MSR 措施优先级（AP）判定逻辑与查表</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>监视度（M）1-10级评分标准依据诊断监视有效性（故障检测率/机制）与系统响应（缓解失效影响进入安全状态）的双重表现来综合评定。</li><li><strong>上期核心2：</strong>M=1代表极其可靠的监视与响应（如ASIL D级别高诊断覆盖率并进入安全状态），而M=10代表无监视或监视无效，故障将直接演变成危险后果。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与 AP 的本质逻辑</strong><br>在 FMEA-MSR 中，措施优先级（Action Priority, AP）是通过综合考虑严重度（S）、频度/发生频率（F）和监视度（M）的 SFM 评级，来确定降低风险措施的优先顺序的方法。<br><strong>核心澄清：</strong>原书明确指出，<strong>AP 不是对高、中、低“风险”本身的优先排序，而是对“降低风险的措施”的优先排序</strong>。<br><strong>三个优先级等级定义：</strong><ul><li><strong>高优先级 (H)：</strong>评审和措施的最高优先级。团队<strong>需要</strong>确定适当的措施来降低频率（F）和/或改进监视控制（M），或者证明并记录为何当前的控制措施足够有效。</li><li><strong>中优先级 (M)：</strong>评审和措施的中等优先级。团队<strong>应该</strong>确定适当的措施来降低频率和/或改进监视控制，或者由公司自行证明并记录为何当前控制措施足够有效。</li><li><strong>低优先级 (L)：</strong>评审和措施的低优先级。团队<strong>可以</strong>确定措施来降低频率和/或改进监视控制。</li></ul>原书特别强调：对于潜在严重度 S 为 9-10 且措施优先级为高（H）和中（M）的失效影响，<strong>建议至少应由管理层评审</strong>，包括所采取的任何建议措施。若团队决定不采取进一步措施，必须在“备注”列中注明“无需进一步措施”，以表明风险分析已闭环完成。</div><div class="highlight-blue"><strong>2. AP 查表逻辑拆解（基于 PDF 第 143-144 页 AP 表）</strong><br>MSR 的 AP 表以 S 划分为主层级，次级看 F（运行寿命内的失效率预测），最后结合 M（监视有效性）：<br><strong>① S = 10（对产品影响极高/危及生命安全等）：</strong><ul><li>F=5-10（中-极高）：无论 M 是 1 还是 10，AP 均为 <strong>H</strong>。</li><li>F=4（低）：M=2-10 时 AP=<strong>H</strong>；仅当 M=1（可靠）时，AP 降为 <strong>M</strong>。</li><li>F=3（非常低）：M=4-10 时 AP=<strong>H</strong>；M=2-3 时 AP=<strong>M</strong>；M=1 时 AP=<strong>L</strong>。</li><li>F=2（极低）：M=4-10 时 AP=<strong>M</strong>；M=1-3 时 AP=<strong>L</strong>。</li><li>F=1（不会出现）：M=1-10 时 AP 均为 <strong>L</strong>。</li></ul><strong>② S = 9（对产品影响高）：</strong><ul><li>F=4-10（低-极高）：M=1-10 均为 <strong>H</strong>。</li><li>F=2-3（极低-很低）：M=2-10 为 <strong>H</strong>；仅当 M=1 时降为 <strong>L</strong>（跳过 M 级）。</li><li>F=1（不会出现）：M=1-10 时 AP 均为 <strong>L</strong>。</li></ul><strong>③ S = 7-8（对产品影响较高）：</strong><ul><li>F=6-10（中-极高）：M=1-10 均为 <strong>H</strong>。</li><li>F=5（中）：M=5-10 为 <strong>H</strong>；M=1-4 为 <strong>M</strong>。</li><li>F=4（低）：M=7-10 为 <strong>H</strong>；M=4-6 为 <strong>M</strong>；M=1-3 为 <strong>L</strong>。</li><li>F=3（非常低）：M=9-10 为 <strong>H</strong>；M=7-8 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>。</li><li>F=2（极低）：M=7-10 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>；F=1 时全为 <strong>L</strong>。</li></ul><strong>④ S = 4-6（对产品影响较低）：</strong><ul><li>F=7-10：M 无论多少全为 <strong>H</strong>。</li><li>F=5-6：M=6-10 为 <strong>H</strong>；M=1-5 为 <strong>M</strong>。</li><li>F=2-4：M=9-10 为 <strong>M</strong>；M=7-8 为 <strong>M</strong>；M=1-6 为 <strong>L</strong>；F=1 时全为 <strong>L</strong>。</li></ul></div><div class="highlight-green"><strong>3. 传音研发实战场景：高压快充与电池热失控保护</strong><br>在传音中高端机型 120W/180W 超级快充系统 FMEA-MSR 分析中：<br><strong>失效分析：</strong>低压差稳压器击穿导致电池过压引发热失控起火，失效影响严重度评定为 <strong>S=10</strong>。<br><strong>情况对比：</strong><ul><li><strong>方案 A（传统方案）：</strong>硬件失效率评定 F=4（低）。软件端采用普通轮询电压检测，若通信卡死则响应超时（M=5，较高-无效区间）。查表：S=10, F=4, M=5 对应 <strong>AP = H</strong>。研发团队必须强制制定预防或监视改进措施，不可直接归档！</li><li><strong>方案 B（传音架构优化）：</strong>团队引入独立硬件级次级过压切断芯片（二级硬保护）且具备上电自检，实现故障后 10ms 内硬切断并使系统进入安全阻断状态，监视有效性达到极其可靠（M=1）。查表：S=10, F=4, M=1，措施优先级由 H 成功降为 <strong>M</strong>。团队编写合规安全技术文档，并提报研发管理层评审归档。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 AP 与风险等级。</strong>工程师常误称“这个失效模式是 H 风险”。纠偏：AP 是 Action Priority（措施优先级），AP=H 代表“降低风险的措施具有最高优先级”，而不是系统整体风险等同于高。</li><li><strong>误区二：S=9/10 时，只要 AP 不为 H 就可以不管。</strong>纠偏：原书强制要求，对于潜在严重度 S 为 9-10 且 AP 为 H 或 M 的失效影响，<strong>建议至少应由管理层评审</strong>，必须有高级技术管理者签字确认其控制有效性。</li><li><strong>误区三：认为 MSR 的 AP 判定逻辑与 DFMEA 完全一样。</strong>纠偏：DFMEA 采用的是 SOD（严重度/发生度/探测度），探测度针对的是试产或验证中的设计缺陷发现能力；而 MSR 采用的是 SFM，监视度 M 评估的是车辆/设备运行寿命中系统实时监测及自愈响应能力。查表矩阵的具体分段和收敛点并不相同。</li><li><strong>误区四：AP=H 时未采取措施且在“备注”空白。</strong>纠偏：若团队评估现有控制已足够有效而不采取新措施，必须提供充分的工程证据并在“备注”栏中正式填入“无需进一步措施”，否则评审不予通过。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.8 节（上）（PDF 第 142-144 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于措施优先级（AP）的本质理解，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. AP 是对系统风险大小直接进行的绝对高、中、低排序</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. AP 是为了降低风险，对需要采取的各项措施进行的优先排序</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只要严重度 S=10，不论发生频率 F 和监视度 M 评分为多少，AP 必定为高优先级（H）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. AP 为低优先级（L）意味着该失效起因没有任何危害，无需记录在案</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 142 页明确指出：“这不是对高、中、低风险的优先排序，而是对降低风险的措施的优先排序。”同时当 S=10 但 F=1 时，AP 可以是 L；当 F=2 且 M=1-3 时 AP 也可以是 L，因此 A、C 错误。AP=L 表示措施优先级低，但依然属于 FMEA 记录分析的范畴，D 错误。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">某汽车电子控制器/手机控制模块在运行中发生失效，其严重度 S=10，使用寿命内起因发生频度预测为“非常低”（F=3），此时系统的诊断监视有效性评定为 M=1（极其可靠并及时进入安全状态）。根据 MSR 的 AP 评估表，该项的措施优先级（AP）判定为：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 高优先级 (H)</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 中优先级 (M)</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 低优先级 (L)</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 无法查表，需计算 RPN 综合判定</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>查原书 PDF 第 143 页 AP 表：在 S=10 的层级下，当频度 F=3（非常低）时，监视有效性 M=4-10 对应 H，M=2-3 对应 M，而 M=1（可靠）对应的是 L（低优先级）。故正确答案为 C。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机快充芯片的 FMEA-MSR 项目中，某失效模式严重度 S=9，发生频度预测 F=3（极低-很低），原监控方案诊断有效性 M=4。团队经技术攻关将软硬件联动监视升级为 ASIL 级别的自检与安全关断，监视度提升至 M=1。请问其 AP 优先级发生了何种变化？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 从 H 降为 M</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 从 H 直接降为 L</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 从 M 降为 L</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. AP 维持 H 不变，因为 S=9 属于致命高严重度</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>查原书 PDF 第 143 页 S=9 AP 表：当 S=9 时，在 F=2-3（极低-很低）区间，M=2-10 对应的 AP 全为 H；仅当 M=1（可靠）时，AP 会直接跨过 M 跃迁至 L。因此，从 M=4 优化到 M=1，措施优先级由 H 直接降为了 L。答案为 B。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书规定，对于措施优先级高（H）、中（M）、低（L）的操作要求，下列描述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 优先级高 (H)：团队需要确定适当措施降低频率或改进监视，或证明并记录为何当前控制足够有效</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 优先级中 (M)：团队应该确定适当措施降低频率或改进监视，或由公司自行证明并记录为何当前控制足够有效</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 优先级低 (L)：团队可以确定措施来降低频率和/或改进监视控制</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 若团队决定不需要采取进一步措施，可在‘备注’列留白不填，默认表示已闭环</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 142 页明确规定：H 级对应“需要 (need to)”采取措施或证明有效；M 级对应“应该 (should)”采取措施或证明有效；L 级对应“可以 (could)”确定措施；若团队决定不需要采取进一步措施，则在“备注”列中填入“无需进一步措施”，以表明已经完成风险分析，绝不能直接留白，D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 FMEA-MSR 的管理与评审要求中，下列哪些做法符合《AIAG & VDA FMEA 手册》的原书规范？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 对于潜在严重度 S 为 9-10 且措施优先级为高（H）的失效影响，建议至少应由管理层评审</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 对于潜在严重度 S 为 9-10 且措施优先级为中（M）的失效影响，建议至少应由管理层评审</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 只要严重度 S=9-10，无论 AP 为何值，都必须强制修改产品设计，禁止出厂</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 管理层评审的内容应包括团队所采取的任何建议措施</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 142 页明确强调：“对于潜在的严重度为 9-10 且措施优先级为高和中的失效影响，建议至少应由管理层评审，包括所采取的任何建议措施。”手册并未规定“强制修改产品设计、禁止出厂”，若能通过极其可靠的监视（M=1）与低频度控制或充分论证控制有效性，经管理层评审后亦可接受，故 C 错误，A、B、D 正确。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

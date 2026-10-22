@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 011：DFMEA 步骤一（规划和准备）：目的与项目边界确定</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 011：DFMEA 步骤一（规划和准备）：目的与项目边界确定</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（5T之任务与工具）：</strong>FMEA 的任务（Task）必须与 APQP/MLA 闸口评审强关联，七步法逐层展开；工具（Tool）推荐使用专业 FMEA 数据库软件以保证追溯性与知识继承。</li><li><strong>上期核心2（七步法总览）：</strong>七步法分为系统分析（步1-3）、失效分析与风险降低（步4-6）、风险沟通（步7），其中步骤一（规划和准备）是决定后续所有分析质量的基石。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义（步骤一的目的与目标）</strong><br>依据《AIAG & VDA FMEA 手册》，设计 FMEA（DFMEA）步骤一“规划和准备”的根本目的是：<strong>确定项目将要执行的 FMEA 类型，并根据正在进行的分析类型（系统、子系统或组件）明确定义每个 FMEA 类型中包含（In Scope）和不包含（Out of Scope）的内容。</strong><br>步骤一的五大主要目标包括：<br>① <strong>项目确定：</strong>明确界定需要评估的业务与技术对象；<br>② <strong>项目计划：</strong>基于 5T 方法论（目的、时间、团队、任务、工具）制定执行计划；<br>③ <strong>分析边界：</strong>清晰界定分析中“包括什么”以及“不包括什么”（二者同等重要）；<br>④ <strong>基准确认：</strong>利用以往经验识别并调用基础（Foundation）/家族（Family）基准 FMEA；<br>⑤ <strong>奠定基础：</strong>为后续步骤二“结构分析”提供明确输入和逻辑前提。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（DFMEA 项目确定与边界界定）</strong><br><strong>(1) 项目确定的 8 大核心提问：</strong>手册给出了帮助跨职能团队决断是否开展、开展何种 DFMEA 的决策清单：<br>• 顾客要向我们购买什么？是否包含新要求？<br>• 顾客或公司体系是否要求 DFMEA？<br>• 我们是否自制且拥有设计控制权？（自研自制：需完整全层级分析）<br>• 我们是否外购但拥有设计控制权？（ODM/定制委外：我方负责规格与系统集成验证，需做系统/子系统分析）<br>• 我们是否外购且不拥有设计控制权？（标准元器件/黑盒件：我方仅把控<strong>接口规范与选型适配</strong>）<br>• <strong>谁负责接口设计？</strong>（接口永远是失效高发带，必须明确责任方归属）<br>• 我们需要系统级、子系统级还是组件级的 DFMEA？<br><br><strong>(2) 定义边界的关键输入依据：</strong>法律法规、技术规范、内外顾客需求与期望、技术规范、类似项目图表（方块图/边界图 Boundary Diagram）、BOM 物料清单、3D 数模/示意图、类似产品历史 FMEA、DFM/A（可制造与可装配性设计）、QFD 等。<br><br><strong>(3) 范围深度的 7 大考量维度：</strong>技术新颖性/创新程度、质量与可靠性历史（内部良率、退网率、保修索赔）、设计复杂性、人员与系统安全、网络物理系统（包含网络安全/信息安全 Cyber-security）、法律合规性、目录和标准零件。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>场景案例：智能手机“潜望式长焦防抖摄像模组（OIS）”新机型导入</strong><br>• <strong>项目判定：</strong>整机项目为传音新一代影像旗舰。模组虽由战略供应商生产，但内部光机结构与整机主板/中框堆叠由传音手机架构团队深度定制并拥有主导设计控制权。因此判定：必须开展“整机系统级”与“相机子系统级”DFMEA。<br>• <strong>边界界定（In Scope vs Out of Scope）：</strong><br>  - <strong>包含（In Scope）：</strong>中框限位公差与模组跌落碰撞风险、主板供电纹波对马达驱动芯片的影响、高低温环境下胶水挥发导致镜头起雾、整机 FPC 接口公母座抗拉拔能力。<br>  - <strong>不包含（Out of Scope）：</strong>供应商采购的图像传感器（Sensor）内部半导体晶圆光刻制造缺陷（界定为供应商内部制造与半导体设计控制范围，传音只做规格输入与黑盒接口验收）。<br>• <strong>考量维度落地：</strong>由于引入全新结构形态与大功率驱动算法，技术新颖性高，且非洲/拉美户外颠簸与跌落可靠性历史数据显示摄像头损坏率高，该子系统被划定为高优先级深度分析边界。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：只定义“包含什么”，从不明确写出“不包含什么”。</strong><br>  <em>后果：</em>分析漫无边界，评审时不断发散，或者以为某些风险已由他人分析，最终形成灰色责任真空盲区。<br>  <em>正确做法：</em>在步骤一的范围文档或边界图上，必须用实线框定 In Scope，用虚线或批注白纸黑字列出 Out of Scope，并说明排除理由。<br>• <strong>误区二：认为外购的标准件/黑盒元器件完全不需要做 DFMEA。</strong><br>  <em>后果：</em>忽略了黑盒件与系统的“物理机械接口”、“电气接口”、“热接口”和“软件通信协议接口”，导致插拔断裂或信号反射死机。<br>  <em>正确做法：</em>即使不拥有零件内部控制权，也必须在系统/子系统 DFMEA 中将其作为边界组件，深入分析其<strong>输入/输出接口与装配集成风险</strong>。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.1.1 - 2.1.2 节（PDF 第 29-30 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于 DFMEA 步骤一（规划和准备）中“边界确定”的原则，以下表述最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 分析范围越广越好，应尽可能将供应商内部所有生产制造工序全部纳入 DFMEA</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在分析中需要明确“不包括的内容”与“包括的内容”同样重要</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只有在完成步骤四失效分析之后，才能最终回过头来确认边界</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 边界定义仅针对全新开发项目，对于借用旧机型平台的产品无需定义边界</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 2.1.2 节明确指出：“DFMEA 项目确定包括明确了解需要评估的内容……在分析中需要不包括和包括的内容同样重要。”清晰排除不属于本次分析范围的内容，可以防止资源分散并明确接口责任划分。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在界定 DFMEA 项目时，当企业从外部供应商购买产品但“不拥有该产品的内部设计控制权”（如标准芯片或标准电容）时，企业 DFMEA 分析的重点应当是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 深入分析该芯片内部晶圆制造的刻蚀光刻失效机理</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 无需开展任何分析，所有责任由供应商承担，整机 DFMEA 彻底忽略该零件</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 聚焦于该零件与整机系统的集成、功能需求定义以及接口（机械、电气、热、协议）设计责任</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 强制要求供应商交出专利电路图，并在企业内部组件级 DFMEA 中重新画图分析</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 2.1.2 节列出的核心基本问题包括：“我们是否购买产品、但不拥有设计控制权？谁负责接口设计？”对于此类黑盒/标准零件，企业没有内部设计控制权，但必须对系统集成的接口设计（Interface Design）和应用工况负责。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音研发团队正在为新兴市场开发一款超大容量电池的快充手机，团队在步骤一规划时，评估是否需要将“电池仓结构抗冲击及过热保护”纳入高优先级 DFMEA 深入分析。团队依据手册 2.1.2 节界定范围时，考量的最关键维度组合是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 技术新颖性/创新程度、人员和系统安全、质量/可靠性历史</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 仅仅考虑物料清单（BOM）中的零件采购单价高低</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 评审人员的个人偏好以及项目排期是否充裕</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 软件开发语言的版本以及 UI 交互界面图标的美观度</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 2.1.2 节明确指出，界定范围时应酌情考虑：技术新颖性/创新程度、质量/可靠性历史（内部/现场/保修）、设计复杂性、人员和系统安全、法规符合性等。高密度大容量快充电池涉及安全和严苛环境新颖性，必须依据安全、新颖性及历史可靠性进行重点界定。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，跨职能团队在定义 DFMEA 边界时，可以借助以下哪些技术输入或工程工具？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 法律法规与技术规范（Requirements Specification）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 方块图/边界图（Block Diagram / Boundary Diagram）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 示意图、工程图纸和/或 3D 几何模型</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. DFM/A（可制造性和可装配性设计）与物料清单（BOM）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 2.1.2 节明确列出有助于团队定义边界的输入包括：法律要求、技术要求、顾客需求/期望、要求规范、方块图/边界图、示意图/图纸/3D模型、物料清单、类似产品曾用 FMEA、DFM/A、质量功能展开（QFD）等。四个选项全部正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">DFMEA 步骤一“规划和准备”的主要交付目标包括下列哪些内容？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 项目确定与 5T 项目计划制定</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 分析边界的界定（明确包括与不包括的内容）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 利用以往经验确认可参考的基础（Foundation）或系列（Family）基准 FMEA</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 计算并确定最终的风险顺序数（RPN）以完成设计冻结</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 2.1.1 节明确列出步骤一的五大目标：项目确定、项目计划（5T）、分析边界、利用以往经验确认基准 FMEA、为结构分析奠定基础。选项 D 错误，因为 RPN 在新版手册中已被 AP（行动优先级）取代，且风险评估属于步骤五和步骤六的内容，绝非步骤一的目标。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 036：DFMEA 步骤六：五种措施状态闭环、有效性重估与持续改进</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 036：DFMEA 步骤六：五种措施状态闭环、有效性重估与持续改进</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（优化目的与优先顺序）：</strong>优化的首要目的是降低技术风险，最有效的改进顺序必须严格遵循：①修改设计以消除/减少失效影响（FE）→ ②修改设计以降低失效起因（FC）的频度（O）→ ③提高探测失效起因（FC）或失效模式（FM）的能力（D）。</li><li><strong>上期核心2（责任分配与日期）：</strong>每项措施必须指派明确负责人并设定切合实际的目标完成日期（如在DV测试前、生产启动前），负责人对措施的状态更新及确认后的实施落地全权负责。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与五种措施状态定义（Section 2.6.3）</strong><br>根据手册规定，优化步骤中的措施状态必须进行分类管理，建议分为以下五类：<br><ul><li><strong>尚未确定（Untouched / Open）：</strong>目前尚未确定具体的改进措施。</li><li><strong>尚未决策（可选，Decision pending）：</strong>改进措施已经确定，但管理层或团队尚未做出最终决策，正在创建决策支持文件（如成本、可行性分析等）。</li><li><strong>尚未执行（可选，Implementation pending）：</strong>已对措施作出执行决定，但该措施尚未执行，或者<strong>正在执行/其有效性尚未得到测试验证</strong>。</li><li><strong>已完成（Completed）：</strong>措施已经被执行，<strong>其有效性已经被证明并记录</strong>，且已经进行了最终的 S、O、D 及 AP 重新评估。</li><li><strong>不执行（Not implemented）：</strong>当决定不执行某项措施时分配此状态。通常发生在实践和技术限制超出当前能力的情况下。如果不采取措施，AP 不会降低，风险将继续带入产品设计，且必须以书面形式记录并关闭。</li></ul></div><div class="highlight-blue"><strong>2. 措施有效性评估与闭环逻辑（Section 2.6.4 & 2.6.5）</strong><br><ul><li><strong>预测性评估 vs 最终闭环：</strong>新措施提出时，团队会先进行初步的措施优先级（AP）评估作为对有效性的预测。但手册明确要求：<strong>该措施必须一直保持“尚未执行”状态，直到其有效性得到充分测试为止！</strong>只有测试完成且结果得到确认/调整后，状态才允许从“尚未执行”变为“已完成”。</li><li><strong>重估依据：</strong>重新评估必须严格基于所采取预防措施（PC）和探测措施（DC）的实际有效性，并依照手册的 DFMEA 频度（O）和探测度（D）评分准则进行打分。若涉及消除失效影响的设计更改，严重度（S）亦需重估。</li><li><strong>基准与历史记录的持续改进：</strong>DFMEA 是产品设计的历史记录。初始的 S、O、D 必须保持可见或作为历史版本可追溯，形成记录决策与改进进展的知识存储库。对于通用/平台 DFMEA（Foundation/Family FMEA），在特定项目应用时可将初始值作为起点进行适配修订。</li><li><strong>内外部协同（Section 2.6.6）：</strong>DFMEA 优化是跨团队、管理层、客户与供应商协作的载体，旨在深化对产品功能与失效机理的理解，实现组织级技术经验的沉淀与传播。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>以传音某款中高端折叠屏手机“铰链转轴在跌落冲击下卡死/断裂”的优化闭环为例：<br><ul><li><strong>状态流转示范：</strong>针对起因“MIM 凸轮零件屈服强度不足”，结构团队提出“升级为超强马氏体不锈钢（1800MPa）”。方案提出时为“尚未决策”；经项目立项评审通过后转为“尚未执行”。此时系统内已预测 O 值从 7 降至 2，但状态绝不能改成“已完成”。</li><li><strong>有效性验证与闭环：</strong>结构团队完成开模打样并组装整机，送往可靠性实验室进行 1.2 米多角度定向跌落（50次）及 20 万次开合极限测试。实验室出具测试报告证实无卡死断裂，团队依据实测数据正式将 O 重估为 2、D 重估为 2，AP 降为 L，此时方可将状态正式更新为<strong>“已完成”</strong>，并将测试报告编号填入优化表完成闭环。</li><li><strong>“不执行”场景：</strong>若某散热优化建议“增加微型压电散热风扇”，经评估内部堆叠空间受限且成本超标，团队决议不采用，状态记录为“不执行”，并在备注栏详细记录管理层签字的风险接受说明。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：方案定下来、图纸发了就标记为“已完成”。</strong><br><em>纠偏：</em>大错特错！原书明确规定，图纸下发后措施仍处于“尚未执行”状态。必须等到测试验证通过（如通过实验室可靠性测试、量产前验证），证明措施切实有效后，才能转为“已完成”。</li><li><strong>误区二：措施执行后直接删掉初始 S/O/D 分值。</strong><br><em>纠偏：</em>DFMEA 具有工程历史追溯性。初始评级必须保持可见（在优化表左侧保留），绝对不能直接覆盖初始值，以保留技术决策与风险降低的历史轨迹。</li><li><strong>误区三：“不执行”的措施在表格里直接删行。</strong><br><em>纠偏：</em>必须保留该行并将状态设为“不执行”，书面记录超出技术能力或商务限制的理由。只有团队接受当前风险并完成书面闭环，FMEA 工作才算完整。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.6.3 - 2.6.6 节（PDF 第 73-75 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在优化步骤中，关于措施状态从“尚未执行”转变为“已完成”的充分必要条件，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 负责人已确定且目标完成日期已经获得项目经理批准</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 措施已经被执行，其有效性已经被测试证明并记录，且已完成重新评估</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 预防措施的工程图纸已经完成更改并释放到 PLM 系统中</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 团队对新的措施优先级（AP）做出了初步的预测性评估</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册第 74 页 2.6.3 及 2.6.4 节明确规定：“已完成状态是指措施已经被执行，其有效性已经被证明和记录，并已经进行了最终评估。该措施将一直保持‘尚未执行’的状态，直到其有效性得到测试为止。测试完成后……状态从‘尚未执行’改为‘已完成’。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">当 FMEA 团队因当前实践和技术限制超出能力范围，决定对某项高风险起因不采取进一步优化措施时，应如何规范处理？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 直接从 DFMEA 分析表格中删除该潜在起因行，以避免审核不通过</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 将措施状态标记为“不执行”，在书面记录中说明理由并接受该风险水平，AP 不会降低</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 将探测度（D）人为打分为 1，强制使 AP 降低为 L 后关闭措施</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 将措施状态直接填写为“已完成”，并在备注中写明“因技术限制无需措施”</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册第 74 页 2.6.3 节指出：“当决定不执行某项措施时，就会分配‘不执行’的状态。如果实践和技术限制超出当前能力，就会发生这种情况……如果‘不采取措施’，那么‘措施优先级’就不会降低，失效风险就会继续进入产品设计。对于具有开放性目标的措施，需以书面形式将其关闭。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音影像硬件团队针对“摄像头模组跌落导致马达脱胶”问题，提出将胶水升级为超强紫外固化胶。目前胶水物料已到样，结构工程师进行了点胶固化，但尚未送可靠性实验室进行微跌落测试。此时在 DFMEA 表格中，该措施的状态及处理方式正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 状态应为“尚未执行”，可对 AP 进行初步预测性评估，待可靠性跌落测试通过后方可改为“已完成”</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 状态应为“已完成”，因为结构胶已经完成实物打样和试制点胶</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 状态应为“尚未确定”，因为跌落测试还没开始做，无法确定措施好坏</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 状态应为“尚未决策”，因为实验室主管尚未在测试报告上签字</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册第 74 页 2.6.4 节规定：“新的措施将获得初步措施优先级评估，作为对有效性的预测。然而，该措施将一直保持‘尚未执行’的状态，直到其有效性得到测试为止。测试完成后……措施的状态从‘尚未执行’改为‘已完成’。”此时样品虽已制作但有效性测试未完成，故状态为“尚未执行”。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，优化步骤（步骤六）建议的措施状态分类包括以下哪些选项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 尚未确定（Open / Untouched）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 尚未决策（可选，Decision pending）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 尚未执行（可选，Implementation pending）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 已完成（Completed）</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 不执行（Not implemented）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册第 73-74 页 2.6.3 节明确列出了措施状态的建议五大分类：尚未确定、尚未决策（可选）、尚未执行（可选）、已完成、不执行。全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在进行措施有效性重新评估与持续改进时，关于 DFMEA 数据的维护与管理，下列做法符合手册规范的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 措施实施完成后，重新评估应基于预防和探测措施的实际有效性，依据手册评级表重新评定 O 和 D</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. DFMEA 是设计的历史记录，初始的严重度（S）、频度（O）和探测度（D）编号需显示可见或可作为历史记录访问</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 一旦重新评估完成，为了保持表格整洁，应将初始 S、O、D 数据永久覆盖且不留任何历史痕迹</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 基础 FMEA 或系列 FMEA（Foundation/Family DFMEA）的初始评级可作为特定新项目应用分析的起点</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 如果团队决定某项目不需要进一步采取措施，应在备注部分写上“无需进一步的措施”，以表示风险分析已完成</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据手册第 73 页 2.6 节末尾及第 74-75 页 2.6.4、2.6.5 节：A、B、D、E 均完全符合原文要求。C 选项错误，手册明确指出“初始严重度、频度和探测度（S、O、D）编号需显示可见，或至少可作为历史记录一部分使用和访问”，绝不能直接擦除覆盖历史。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D,E"}, "5": {"correct": "A,B,D,E"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

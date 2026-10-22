@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 004：过渡策略、基础 FMEA 与家族 FMEA</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 004：过渡策略、基础 FMEA 与家族 FMEA</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（高管承诺与跨职能资源）：</strong>FMEA 不是质量部门的单打独斗，必须建立高管承诺（Sponsor、FMEA 所有者明确权责），确保跨职能团队获得充足的时间与技术资源。</li><li><strong>上期核心2（知识保护与客户协议）：</strong>企业需通过专有技术过滤（如提供摘要报告）保护核心知识产权；同时新项目启动前必须与客户书面明确 FMEA 交付时间节点、评审格式与评级表标准（CSR）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>过渡策略（Transition Strategy）：</strong>针对从 AIAG 第四版 / VDA 向新版 AIAG & VDA FMEA 的切换原则。手册明确规定：现有基于旧版制作的 FMEA <strong>可保持原有格式并用于后续版本修订</strong>，无需全盘推翻。对于新项目，原则上应切换到新版方法；但若团队判定新项目仅是现有产品的<strong>微小变更（Minor Change）</strong>，允许继续保留原有格式。过渡里程碑由企业根据顾客特殊要求（CSR）自主确定。</li><li><strong>基础 FMEA（Foundation FMEA）：</strong>亦称基准、模板、通用、母版或最佳实践 FMEA。它汇总了组织在先前开发中积累的全部知识，<strong>不针对具体项目</strong>，允许对需求、功能和失效措施进行较为原则性、笼统性的概述，是企业知识资产的核心载体。</li><li><strong>家族 FMEA（Family FMEA）：</strong>是基础 FMEA 的<strong>具体化与特化</strong>。针对具有共同或一致产品边界、相似功能的产品系列（Product Family），或用于制造多款零部件的共用工序过程，建立覆盖全家族成员的 FMEA。</li><li><strong>三大应用情形（1.4 节）：</strong>FMEA 在三种情形下启动：情形1-新设计/新技术/新过程（全范围覆盖）；情形2-现有设计/过程的新应用（聚焦新环境、新工况对现有方案的影响）；情形3-工程变更（因技术改进、法规变更、市场质量问题触发修订）。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>新旧过渡执行决策规则：</strong><br>① 量产在跑老项目：保持原格式，后续 ECO/ECN 修订直接在原表修改。<br>② 衍生改型项目（微小变更）：评估后可沿用旧版 FMEA 格式。<br>③ 客户有明确 CSR 要求 / 全新平台开发：必须全面应用新版 AIAG & VDA 七步法、新版 AP 动作优先级及评级表。</li><li><strong>“继承与差异分析”（Delta Analysis）标准流程：</strong><br>使用基础/家族 FMEA 绝对不是“直接另存为（Save As）”。核心步骤：<br>第一步：调取家族 FMEA 基线数据；<br>第二步：<strong>强制识别差异点（Delta）</strong>，重点审查新旧产品/工艺的边界、工况、接口变化；<br>第三步：根据特定应用场景（Use-case）<strong>重新严格核查失效影响与 S/O/D 评分</strong>，禁止盲目照搬原评级。</li><li><strong>量产后 FMEA 触发更新的 8 大输入：</strong><br>生产启动后，出现以下任一情形必须启动 FMEA 修订：①设计或过程变更；②运行条件变更；③法律法规/规范/客户要求变更；④厂内质量问题、零公里故障、售后投诉；⑤危害分析（Safety）更新；⑥威胁分析（Security）更新；⑦监控预警异常；⑧新吸取的经验教训（Lessons Learned）。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>传音平台化架构（家族 FMEA 实践）：</strong>在传音智能机研发中，以 Helio G99 或天玑平台为主板核心的机型矩阵（覆盖 TECNO CAMON 系列与 Infinix NOTE 系列）属于典型的“产品家族”。硬件团队应建立《G99 平台主板硬件家族 DFMEA》，固化共用的供电树、高频布线及射频拓扑。</li><li><strong>基础 FMEA 的沉淀：</strong>制造工程部（ME）建立《传音整机 SMT 贴片工艺基础 PFMEA》与《螺钉自动锁附最佳实践 PFMEA》。这些基础 FMEA 不绑定具体机型，汇总了十几年深耕海外组装的最佳参数窗口与常见虚焊/滑牙失效模式。</li><li><strong>差异化分析实操：</strong>当针对拉美或非洲超多汗液、高湿度环境开发定制防汗手机时，团队基于整机家族 FMEA 开展分析，重点不是重新分析通用的按键手感，而是<strong>聚焦汗液电化学腐蚀对 Type-C 接口尾插排线的新环境失效（情形2）</strong>，重新评定严重度与探测度。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：“Ctrl+C / Ctrl+V 式偷懒”：</strong>将家族 FMEA 复制更名后直接作为新机型的交付件，未执行“差异分析（Delta Analysis）”。<strong>纠偏：</strong>审核员与专家会严格审查新机型特征参数与使用场景，未针对变更项重评 S/O/D 将直接判定为 FMEA 严重不符合。</li><li><strong>误区二：“盲目运动式翻新老项目”：</strong>新标准发布后，强行要求研发团队把正在稳定量产的数千个老机型 FMEA 全部重写为 AIAG & VDA 格式。<strong>纠偏：</strong>手册 1.3.5 节明确说明老项目允许保留原有格式维护，组织应聚焦于新平台与重大变更项目。</li><li><strong>误区三：“把基础 FMEA 视为不可修改的死模版”：</strong>现场发生售后重大召回（如电池跌落起火），改了项目 FMEA 却不回填基础 FMEA。<strong>纠偏：</strong>经验教训必须闭环“反哺”回基础 FMEA 与家族 FMEA，否则未来同类平台机型仍会重复踩坑。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.3.5 - 1.3.6 节（PDF 第 17-18 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">关于《AIAG & VDA FMEA 手册》第一章中规定的“过渡策略（Transition Strategy）”，以下描述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 所有此前使用 AIAG 第四版完成的现有 FMEA，必须在新标准发布一年内全部强制重写为新版格式</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 现有 FMEA 可以保持原有格式并用于后续版本修订；对于新项目，若仅是现有产品的微小变更，团队经评估可保留现有格式</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 无论任何项目，只要进入新财年，一律严禁继续使用旧版打分表与表格格式</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 基础 FMEA 一旦创建，在新项目继承使用时，其严重度（S）和频度（O）打分在新项目中不允许任何修改</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.5 节：使用 AIAG 第四版和 VDA 制作的现有 FMEA 可以保持原有格式并用于后续修订；在新项目中，如果团队确定该新计划只是现有产品的微小变更，他们可以保留 FMEA 现有格式。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于“基础 FMEA”（Foundation FMEA）与“家族 FMEA”（Family FMEA）的关系与定义，下列说明最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 基础 FMEA 是针对某一具体订单机型开发的，而家族 FMEA 则是跨行业适用的</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 基础 FMEA 包含了组织先前开发积累的通用知识，不针对具体项目；家族 FMEA 是基础 FMEA 的具体化，涵盖同一产品系列或共享工艺的一系列产品</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 基础 FMEA 只能由企业高层管理者维护，家族 FMEA 则由产线作业员维护</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 家族 FMEA 属于强制执行实践，基础 FMEA 属于顾客特定要求（CSR）中的非合规项目</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.6 节：基础 FMEA（也称基准、模板、母版等）包含先前积累知识且不针对具体项目；家族 FMEA 是基础 FMEA 的具体化，适用于具有共同/一致产品边界和功能的系列产品或共用工艺过程。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">【传音实战场景题】传音某硬件项目团队正在规划一款针对拉美高海拔、高盐雾地区的新手机。该项目沿用了公司成熟的 4G 平台主板，仅更换了结构外壳并销往新地理环境。团队调用了该平台的“家族 FMEA”。根据手册要求，团队此时最核心的 FMEA 任务是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 重点识别和专注分析现有产品与新应用环境（高海拔气压、盐雾腐蚀）之间的差异，严格结合具体工况核查信息与评级</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 因为主板硬件电路完全未变，直接将原家族 FMEA 另存为新项目机型名称并归档，无需开展评审</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 推翻原有的所有分析，按照情形1（全新技术）从零搭建完整元器件级的 DFMEA</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 忽略环境差异，仅对生产工厂组装螺钉扭力公差进行重新打分</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.6 节与 1.4 节（情形2）：对新产品/过程使用家族 FMEA 时，团队应识别和专注分析现有和新产品、过程或应用之间的差异。从家族 FMEA 获得的信息和评级，必须根据具体使用案例（Use-case，如高盐雾、气压）进行严格检查。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 1.3.6 节，企业创建并有效复用“基础 FMEA”和“家族 FMEA”能够带来哪些核心业务价值？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 最大限度利用过去的经验和知识，在产品生命周期内持续积累组织过程资产</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 确保不会重复发生先前的性能问题和设计缺陷，落实经验教训（Lessons Learned）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 有效减少重复编写分析的工作量和开发费用支出</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 允许工程团队在后续所有改型项目中彻底免除设计评审与验证测试</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.6 节：使用基础和家族 FMEA 提供了利用过去经验和知识的最大机会，确保在产品生命周期内积累知识，并且不会重复先前的性能问题（吸取经验教训），此外还可以减少工作量和费用支出。D 选项彻底免除验证测试属于严重违背质量工程原则的错误说法。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册第 1.4 节规定，在产品正式量产（SOP）后，如果发生以下哪些情形，应当对原有的 FMEA 进行审查或修订？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 发生工程变更（设计变更或制造工艺步骤变更）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 产品的使用环境或运行条件发生改变</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 售后市场发生质量投诉、零公里故障或严重失效</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 适用法规、行业标准规范或顾客特定要求（CSR）发生更新</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.4 节：生产开始后，若至少有以下一点适用，可在生产开始后进行修订：设计或过程变更；运行条件变更；要求变更（法律、规范、顾客或最新技术）；质量问题（工厂经验、零公里、使用现场问题、投诉）；危害分析/威胁分析变更；产品监视发现问题；经验教训等。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

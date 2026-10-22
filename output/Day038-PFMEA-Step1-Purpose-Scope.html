@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 038：PFMEA 步骤一（规划与准备）：目的与确定过程边界的六大维度</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 038：PFMEA 步骤一（规划与准备）：目的与确定过程边界的六大维度</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>DFMEA 步骤七核心：</strong>结果文件化旨在向管理层、顾客和团队沟通针对降低设计风险所采取的行动和有效性，确认技术合规性与剩余风险可接受度。</li><li><strong>FMEA 报告必备内容：</strong>报告需详细记录针对最高风险采取的行动、AP 状态变化、无法关闭的风险评估，并作为组织经验教训积累及未来开发基准。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. PFMEA 步骤一（规划与准备）的核心目的与主要目标</strong><br>过程 FMEA（PFMEA）步骤一的核心目的，是<strong>描述 PFMEA 项目评审中包含或不包含的产品/过程</strong>。组织内所有制造过程理论上均可通过 PFMEA 进行分析或重新分析，本步骤使企业能够在较高水平上评审所有过程，最终决定需要优先分析哪些过程，其总体优势在于<strong>将宝贵的工程与质量资源集中在优先级最高的过程上</strong>。<br>主要目标包含五大维度：<br>① <strong>项目确定</strong>：明确顾客购买内容、是否有新要求及谁拥有设计控制权；<br>② <strong>项目计划（5T）</strong>：明确目的（InTent）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools）；<br>③ <strong>分析边界</strong>：清晰划定分析中“包含什么”和“不包含什么”（两者同等重要）；<br>④ <strong>基准 FMEA 确定</strong>：根据过往经验教训确定可沿用的基准；<br>⑤ <strong>奠定结构分析基础</strong>：为步骤二构建过程流程和物理结构提供输入。</div><div class="highlight-blue"><strong>2. 确定过程边界与分析范围的判定输入与考量因素</strong><br>原书明确指出，确定 PFMEA 边界时需依托的输入文件及考量维度：<br>• <strong>边界确定的关键输入</strong>：法律要求、技术要求、顾客期望（内/外部）、图纸/3D模型、BOM、以往类似产品 FMEA、DFM/A（可制造性/装配性设计）要求、QFD、过程方块图等。<br>• <strong>全工厂全生命周期覆盖</strong>：受 PFMEA 管辖的过程绝不仅限于产线组装，还涵盖：<strong>物料接收、零件/材料储存、厂内交付/搬运、加工制造、装配、包装、贴标、成品运输、仓储、设备维护过程、检验测量过程，以及返工和返修过程（Rework & Repair）</strong>。<br>• <strong>确定分析范围的七大考量维度</strong>：① 技术新颖性/创新程度；② 质量/可靠性历史（内部良率、0公里、现场客诉、保修索赔）；③ 设计复杂性；④ 人员和系统安全；⑤ 网络物理系统（Cyber-Physical Systems，包含网络安全）；⑥ 法律合规性；⑦ 目录和标准零件。<br>• <strong>触发 PFMEA 纳入或更新的十类典型情形</strong>：新产品/新过程、产品或过程变更、运行环境变更、法规/标准/顾客规范变更、0公里或现场保修问题、可能产生危险的过程失效、内部监视异常、人机工程（Ergonomics）问题及持续改进需求。</div><div class="highlight-green"><strong>3. 传音制造实战场景：智能手机制造全流程边界界定</strong><br>在传音海外制造工厂或国内制造基地（如重庆、宜宾）策划一款全新中高端手机的 PFMEA 时：<br>① <strong>边界界定（包含与不包含）</strong>：必须打破“PFMEA 只管主板贴片和整机组装”的传统狭隘视角。例如对于极易受静电与湿气影响的器件（如高像素摄像头模组、屏下指纹 Sensor、受潮易分层的 BGA 芯片），<strong>原材料 IQC 接收过程、恒温恒湿仓储管理、产线料车配送搬运过程</strong>必须明确纳入 PFMEA 分析边界；<br>② <strong>离线与异常过程纳管</strong>：针对产线常见的主板屏蔽盖手工补焊、显示屏贴合气泡不良后的<strong>返工/返修工位（Rework Process）</strong>，以及贴片机吸嘴保养、点胶阀定期清洗等<strong>工装设备维护过程</strong>，必须正式列入 PFMEA 边界，绝不允许作为“游离在体系外的灰色地带”；<br>③ <strong>技术创新与人机工程触发</strong>：若新机型首次导入“超薄潜望式长焦模组”或“高压点胶密封工艺”，因具备技术新颖性与装配高精度要求，必须优先立项并作为深度 PFMEA 分析范围。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：PFMEA 边界仅包含正常作业流程，排除返工和维护过程</strong>。很多工程师认为返工（Rework）是个别现象、设备维护属于设备部职责，不在 PFMEA 考虑范围内。原书明确强调：<strong>返工、返修、维护、储存、物料接收过程均对最终产品质量有重大影响，均属于 PFMEA 可考虑的分析范围</strong>。<br>• <strong>误区二：只定义“包含什么”，不定义“不包含什么”</strong>。原书强调“在分析中，不包含和包含的内容同等重要”。如果未明确边界排除项（如来料芯片的内部晶圆制造由供应商 PFMEA 管辖，本厂仅管入库存储与贴装），将导致团队在接口分析时产生职责争议或遗漏接口风险。<br>• <strong>误区三：项目范围一成不变，未根据现场质量动态触发</strong>。以为量产后 PFMEA 就可以封存。根据手册，一旦出现“0公里缺陷、现场保修索赔、人机工程安全隐患或产品/过程变更”，必须触发 PFMEA 边界重新评估与更新。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.1.1 - 3.1.2 节（上）（PDF 第 77-79 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，PFMEA 步骤一（规划与准备）的首要目的是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 全面计算所有工序的失效模式严重度（S）并评估初始 AP 等级</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 描述 PFMEA 项目评审中包含或不包含的产品/过程，将资源聚焦于最高优先级过程</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 明确产线每一个操作工位的人工动作并编写标准化作业指导书（SOP）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 审计制造供应商的质量管理体系是否符合 IATF 16949 要求</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 3.1.1 节明确指出：“过程规划与准备步骤旨在描述 PFMEA 项目评审中包含或不包含的产品/过程……准备阶段的总体优势是将资源集中在优先级最高的过程上。”A 属于步骤三/五；C、D 不属于 PFMEA 步骤一的核心目的。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在确定 PFMEA 项目和边界时，手册明确提出了“在分析中，不包含和包含的内容同等重要”。以下关于界定边界的基本指导问题，哪一项不符合原书要求？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 顾客从我们这里购买什么？是否有新的要求？</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 我们是否制造产品并拥有设计控制权？谁负责接口设计？</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 是否必须等到产线批量报废率超过设定阈值后，才能将该过程纳入分析？</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 在传达要求/特性时，哪些特定过程/要素会导致风险？</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 3.1.2 节“以下基本问题可帮助确认 PFMEA 项目”包含 A、B、D 选项。C 选项完全违背了 FMEA 的预防性原则；PFMEA 应在过程策划初始阶段即完成边界确定，而非等批量报废后才界定。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机新项目的试产策划中，制造工程团队对哪些工序应纳入 PFMEA 产生了争议。依据原书对“影响产品质量且可考虑进行 PFMEA 分析的过程”的定义，下列哪一做法是最正确的？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 仅对 SMT 贴片与整机组装主线进行 PFMEA，原料仓储、出厂运输及异常返工因不产生新特性直接剔除</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 将物料接收、敏感芯片恒温储存、点胶返工工位以及贴片机保养维护等过程均纳入 PFMEA 考虑范围</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 所有采购的屏幕模组已由供应商做过 PFMEA，因此传音工厂内的拆包、检验和上线配送无需重复分析</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 设备维护与返修过程属于设备管理与维修部门的行政制度范畴，严禁作为 PFMEA 的过程要素</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 3.1.2 节明确列出：“工厂内会影响产品质量且可考虑进行 PFMEA 分析的过程包括：接收过程、零件和材料储存、产品和材料交付、制造、装配、包装、标签、成品运输、储存、维护过程、检测过程以及返工和返修过程等。”因此 B 正确，A、C、D 均违背手册规定。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">在确定 PFMEA 的具体范围（Scope）时，团队可以从哪些维度进行评估与考量？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 技术新颖性与创新程度（Innovation Level）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 质量/可靠性历史（包括内部缺陷、0公里、现场客诉与保修）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 人员和系统安全（Personnel and System Safety）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 网络物理系统（Cyber-Physical Systems，包括网络安全）</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 销售部门的年度业绩提成方案</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 3.1.2 节明确给出了确定 PFMEA 范围的考量方面：技术新颖性/创新程度、质量/可靠性历史、设计复杂性、人员和系统安全、网络物理系统（包括网络安全）、法律合规性、目录和标准零件。E 选项与 FMEA 范围评估无关。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">某款手机已进入量产阶段，下列哪些情况的发生应触发团队决定将现有过程重新纳入或更新 PFMEA 范围？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 关键结构件由普通注塑变更为微弧氧化铝合金新工艺（产品或过程变更）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 手机在海外特定高温高湿地区使用时出现电池盖脱胶异常（运行条件变更或现场保修问题）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 目标市场出台了更严苛的电池环保与阻燃强制认证新法规（法律法规要求变更）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 组装工位作业员反映打螺丝气批扭力反作用力过大导致手腕劳损（人体工程学问题）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 3.1.2 节列出的“可帮助决定是否将现有 PFMEA 纳入最终范围的项目”包括：新开发的产品和过程、产品或过程变更、运行条件变更、要求变更（法律/法规/标准/客户）、制造经验/0公里/现场保修问题、可能产生危险的过程失效、内部监视结果、人体工程学问题、持续改进。A、B、C、D 均完全符合。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

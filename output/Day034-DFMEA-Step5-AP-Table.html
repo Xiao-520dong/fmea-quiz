@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 034：DFMEA 步骤五：AP（高/中/低）判定表逻辑与风险分析案例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 034：DFMEA 步骤五：AP（高/中/低）判定表逻辑与风险分析案例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>废除传统 RPN（S×O×D）乘积法的原因在于其缺乏逻辑权重，无法体现 S（严重度）对人身安全和法规的决定性影响，易造成不同严重风险在数值上等同并诱发数字游戏。</li><li><strong>上期核心2：</strong>新版采用措施优先级（AP: High/Medium/Low）替代 RPN，其判定逻辑严格遵循 S → O → D 的逐级过滤机制，高优先级（H）必须识别适当措施或记录合理理由，低优先级（L）可由团队自行决定是否改进。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与 AP 逻辑表深度拆解（原书 2.5.10）</strong><br>新版手册提供的 AP（Action Priority）判定表不仅是 DFMEA 与 PFMEA 共用的逻辑矩阵，更是风险评估的标准标尺：<br>• <strong>影响度极高/高（S = 9-10 / S = 7-8）：</strong>只要频度预测非常高（O = 8-10），无论探测度 D 是 1 还是 10，AP 级别一律无条件为 <strong>H（高优先级）</strong>；当 S = 7-8，O = 6-7 时，D 在 2-10 范围内均为 H，仅当 D = 1（非常高探测能力）时降为 M；当 S = 7-8 且 O = 1 时，无论 D 为何值，AP 均评定为 L。<br>• <strong>影响度中等（S = 4-6）：</strong>当 O = 8-10 且 D = 5-10 时为 H，D = 1-4 时降为 M；当 O = 6-7 时，D = 2-10 均为 M，D = 1 降为 L；当 O = 2-3 时，全 D 范围均为 L。<br>• <strong>影响度低（S = 2-3）：</strong>仅在频度极高（O = 8-10）且探测能力中等偏低（D = 5-10）时出现 M，其余绝大多数组合直接定级为 L。<br>• <strong>影响度无（S = 1）：</strong>无论频度 O（1-10）和探测度 D（1-10）为何值，AP 恒定为 <strong>L</strong>。</div><div class="highlight-blue"><strong>2. 步骤四至步骤五完整案例解析与供应链协作（原书 2.5.11 & 图 2.5-3）</strong><br>• <strong>原书车窗升降电机案例拆解：</strong><br>&nbsp;&nbsp;- <strong>失效影响（FE）：</strong>车窗升降电机的扭矩和转动速度过低（S = 6，中等影响）。<br>&nbsp;&nbsp;- <strong>失效模式（FM）：</strong>换向系统的角度偏差导致间歇性错误连接线圈。<br>&nbsp;&nbsp;- <strong>失效起因（FC）：</strong>电刷盒的碳刷接触部位弯曲。<br>&nbsp;&nbsp;- <strong>当前预防控制（PC）：</strong>根据 FEM 6370 进行的电刷盒动态受力模拟（评定 O = 2）。<br>&nbsp;&nbsp;- <strong>当前探测控制（DC）：</strong>抽样测试：依据测试规范 MRJ82/60 测量电刷盒的弹性和塑性变形影响（评定 D = 2）。<br>&nbsp;&nbsp;- <strong>AP 判定：</strong>查表 S = 6，O = 2，D = 2 → 对应的措施优先级为 <strong>L（低）</strong>。<br>• <strong>跨层级/跨组织技术风险协作（S 的传递）：</strong>风险分析的结果是客户与供应商达成一致的技术风险理解。OEM 将整车级 DFMEA 的功能、影响和 S 传递给一级供应商；一级供应商传达给二级供应商并输出产品特殊特性（SC/CC），作为下级 PFMEA 建立预防与探测控制的输入。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机中框按键与摄像头模组 AP 评定</strong><br>• <strong>传音影像模组 DFMEA 实操案例：</strong><br>&nbsp;&nbsp;- <strong>FE：</strong>非洲户外高湿强光环境下主摄防抖失效，画面模糊无法对焦（严重度 S = 7，主要功能丧失/顾客严重不满意）。<br>&nbsp;&nbsp;- <strong>FM：</strong>OIS 悬丝阻尼胶老化脱落。<br>&nbsp;&nbsp;- <strong>FC：</strong>胶水在 45℃ 极热及高紫外工况下粘接内聚力不足。<br>&nbsp;&nbsp;- <strong>PC：</strong>参考同平台既有选胶设计规范（团队评定 O = 4，中等）。<br>&nbsp;&nbsp;- <strong>DC：</strong>整机常规信赖度温湿度循环 240h 测试（未针对极端紫外加速老化，评定 D = 6，中等探测能力）。<br>&nbsp;&nbsp;- <strong>AP 查表判定：</strong>在 S = 7-8 区间，O = 4-5 时，D = 5-6 对应的 AP 等级为 <strong>M（中优先级）</strong>。传音研发团队必须评审该 M 项，权衡是否将信赖度测试升级为双 85 + UV 联合强化测试以将 D 降至 3 以下。<br>• <strong>设计到制造的传递：</strong>传音研发将按键侧键配合间隙的公差界限（S = 6）作为特殊特性输出给东莞/重庆制造基地，产线据此在 PFMEA 中配置高精度的自动化视觉检测治具（提升 D 级）并防呆卡合（提升 P 级）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南（衔接步骤六优化）</strong><br>• <strong>误区一：混淆“已计划的验证控制”与“步骤六优化措施”。</strong>原书 2.5.12 节明确强调：步骤六的措施不用于已经计划好的常规实验或测试，因为它们已经在 PC/DC 中记录并参与了初始 AP 评级；优化措施必须是<strong>额外的、针对降低 O 或提升 D 专门制定的新设计变更或新验证规范</strong>。<br>• <strong>误区二：认为 AP 查表结果等于执行裁决。</strong>AP 仅仅是“优先排序”，高（H）代表优先最高，但绝不免除团队对部分关键 M 甚至特定 L 项的专业评审义务。<br>• <strong>误区三：单向闭门评审，不与供应商同步 S 级。</strong>若主机厂不将系统级 FE 与 S 值向下传递，模组供应商（如镜头、马达厂商）在部件 DFMEA 中盲目将 S 评估为 3 或 4，会导致整个供应链对质量风险的严重低估。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.10 - 2.5.12 节（PDF 第 69-72 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》措施优先级（AP）判定逻辑，当某失效链分析结果为严重度 S = 7，起因频度预测 O = 2，探测能力评级 D = 3 时，其 AP 判定级别为：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. H（高）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. M（中）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. L（低）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 无法判定，需计算 RPN 乘积</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>查原书第 69 页 AP 判定表：在“对产品或工厂的影响度高（S = 7-8）”行组内，当频度预测为“低（O = 2-3）”时，若探测度 D = 2-4，其对应的措施优先级（AP）明确为 L。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在原书 2.5.10 节 AP 表中，关于严重度 S = 1（没有可觉察到的影响）的判定规则，下列描述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 若频度 O 为 10 且探测度 D 为 10，AP 为 H</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 只要频度 O > 5，AP 自动升级为 M</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 无论频度 O（1-10）和探测度 D（1-10）评级为何，措施优先级 AP 恒定为 L</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 此时团队应拒绝评估，该行在 FMEA 中属于无效数据</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>查原书第 70 页 AP 判定表最后一行：当影响度 S = 1（没有可觉察到的影响）时，其频度预测范围为 1-10（非常低－非常高），探测能力为 1-10（非常高－非常低），对应的措施优先级（AP）恒为 L。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在进行某机型侧键 DFMEA 风险分析时，识别出“按键卡滞”，严重度评估为 S = 6（中等影响）。若当前预防控制使起因发生概率处于 O = 4（中等），若希望该失效起因的措施优先级（AP）评定为 L（低），当前探测控制（D）必须至少达到什么水平？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 探测度 D 必须达到 1-6（即中等及以上探测能力）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 探测度 D 只要达到 7-10 即可</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 在 S = 6，O = 4 时，无论 D 为何值，AP 均不可能为 L</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 探测度 D 必须在 1-4 范围内</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>查原书第 69 页 AP 判定表：在 S = 4-6、O = 4-5 行中，当探测能力 D = 7-10 时 AP = M；当 D = 5-6 时 AP = L；当 D = 2-4 时 AP = L；当 D = 1 时 AP = L。因此，当 D 在 1 到 6 的范围内时，AP 均为 L。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于原书 2.5.11 节“顾客和供应商之间的协作（严重度）”，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. OEM 可将整车级 DFMEA 的设计功能、失效影响和严重度与一级供应商的 DFMEA 进行比较</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 一级供应商可将子系统 DFMEA 的功能、影响和严重度传递给具有设计责任的二级供应商</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 一级供应商以图纸/规范传递特殊特性与严重度，作为二级供应商 PFMEA 的输入</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 供应链之间无需沟通严重度 S，各级供应商必须独立且保密地评估自身的 S 级别</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 71 页 2.5.11 节明确列出了跨供应链协同严重度的三种典型机制：整车厂比对一级供应商（A 对）、一级比对二级（B 对）、一级向下游输出包含产品特殊特性与 S 值的图纸规范作为 PFMEA 输入（C 对）。D 选项与原书协同原则相违背。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 2.5.12 和 2.6.1 节，关于“步骤六：优化”所制定的措施，下列要求正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 优化措施指的是具体、可衡量、可实现的措施，而不是可能永远不会实施的潜在措施</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 优化措施可以直接套用已经计划好的产品常规信赖度测试验证活动</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 优化措施不用于已经计划的活动，因为常规计划已在 PC 或 DC 中记录并在初始风险分析中考虑过了</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 优化措施的主要目标是降低失效起因发生的可能性（降低 O），或增强探测控制的有效性（降低 D）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书第 72 页 2.6.1 节明确规定：“优化措施指的是具体、可衡量、可实现的措施，而不是可能永远不会实施的潜在措施”（A 对）；“这些措施不用于已经计划的活动，因为它们已经在预防或探测控制中记录下来并且已经在初始风险分析中考虑过了”（C 对，B 错误）；优化的目的是降低起因发生可能性或增强探测控制有效性（D 对）。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

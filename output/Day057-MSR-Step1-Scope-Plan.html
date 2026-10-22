@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 057：FMEA-MSR 步骤一（规划和准备）：项目边界、机电系统架构与计划</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 057：FMEA-MSR 步骤一（规划和准备）：项目边界、机电系统架构与计划</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>FMEA-MSR（监视及系统响应补充FMEA）专用于分析电气/电子/可编程电子系统在<strong>客户运行期间</strong>的故障诊断、监视及故障安全响应能力，不能脱离DFMEA独立存在，而是对DFMEA中涉及安全与法规风险的机制深化。</li><li><strong>上期核心2：</strong>与传统DFMEA依赖设计预防/探测控制（消除起因或出厂拦截）不同，FMEA-MSR通过<strong>在线实时监控（Sensors/SW）与系统响应（如安全降级、跛行、切断危险源）</strong>，在失效起因发生时阻断危险升级，从而有效降低严重度（S）对客户安全的潜在危害。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与系统架构（Sensor - ECU - Actuator）</strong><br>根据《AIAG & VDA FMEA 手册》第 4.1.2 节，FMEA-MSR 的第一步是“规划和准备”，其核心使命是明确评估对象，界定分析的“包含”与“排除”边界。<br>可纳入 FMEA-MSR 范围的典型对象为<strong>机械电子系统（Mechatronic Systems）</strong>，该系统通常由至少以下三部分或其子集构成：<br><ul><li><strong>传感器（Sensor）：</strong>负责采集物理量（如温度、电流、霍尔磁场、角位移等），并将模拟或数字信号传递给控制单元。</li><li><strong>电子控制单元（ECU / Logic Processing Unit）：</strong>内置微控制器（MCU/SOC/PMIC）与嵌入式软件算法，负责对传感器信号进行合理性校验、故障诊断判定并输出控制决策。</li><li><strong>执行器（Actuator）：</strong>根据控制指令动作，执行系统功能或安全响应（如 MOSFET 开关切断、马达反转、阻抗切换、显示告警等）。</li></ul>系统间通过数据总线、电压、电流等电气物理量相互耦合，构成完整的闭环监控响应架构。</div><div class="highlight-blue"><strong>2. 边界确定的三大黄金准则与输入标准</strong><br>原书明确指出，完成系统 DFMEA 后，需通过以下<strong>三大基本提问</strong>来严格界定是否启动 FMEA-MSR：<br><ol><li><strong>法规与伤害关联性：</strong>在电气/电子/可编程电子系统上完成 DFMEA 后，是否存在可能导致<strong>人员伤害（人身安全）</strong>或<strong>法规不符合</strong>的影响？（若无严重安全/法规影响，通常无需展开 MSR）。</li><li><strong>故障可探测性：</strong>DFMEA 是否表明，导致伤害或不合规的故障起因，能够通过<strong>直接感知（硬件传感器）和/或合理性算法（软件逻辑）</strong>被系统在运行时探测到？</li><li><strong>预期系统响应定义：</strong>DFMEA 是否表明，系统对探测到的起因具备明确的预期响应机制？例如：<strong>切换到降级运行状态</strong>（包括限制功率、进入安全模式或禁用设备）、<strong>主动通知用户/驾驶员</strong>，以及<strong>将诊断故障代码（DTC/Log）写入服务存储区</strong>。</li></ol>此外，FMEA-MSR 的范围确定标准应参考：系统安全关联性、ISO 标准（如 ISO 26262 功能安全目标）、法律法规文件要求（如 UN/ECE 法规、FMVSS、OBD 车载诊断合规性等）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（百瓦大功率快充监控系统）</strong><br>在传音中高端机型的 120W/180W 极速快充系统研发中，系统架构与 MSR 边界定义完全贴合该闭环：<br><ul><li><strong>传感器（Sensor）：</strong>主板电荷泵芯片内置的温度感测单元（Internal NTC）、电池包外置测温 NTC、电流采样电阻（Current Shunt）。</li><li><strong>控制逻辑（ECU）：</strong>充电管理芯片（Charger IC）与 AP 侧充电守护算法（Thermal Daemon），实时对采样电压、电流与温度做互检校验与越限合理性判断。</li><li><strong>执行器（Actuator）：</strong>快充回路的主隔离开关（Power MOSFET）与屏幕 UI 弹窗提示模块。</li><li><strong>三大准则落地：</strong>①若电荷泵短路过温，将直接导致电池热失控起火（威胁用户人身安全）；②该短路起因可通过 NTC 温度突变梯度结合 I2C 采样电流超标算法被直接探测；③探测到异常后，算法在 50ms 内切断快充 MOSFET、降低充电功率至 5W 慢充或彻底停充，在屏幕弹出“检测到充电接口过热，已暂停充电”提示，并将 Fault Code 存入 NVRAM/AP Panic 日志中供售后分析。因此，该快充热保护链路是传音硬件工程中开展 FMEA-MSR 的绝佳标准对象。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：把纯机械结构直接拉入 FMEA-MSR。</strong><br><em>纠偏：</em>如果机械结构失效不包含传感器感知与逻辑芯片控制闭环（例如手机后盖跌落破裂），只能由传统 DFMEA 处理，不符合 MSR 的机电架构范畴。</li><li><strong>误区二：认为所有软件 Bug 都需要在 MSR 中穷举分析。</strong><br><em>纠偏：</em>FMEA-MSR 重点评估的是<strong>硬件故障在运行时的监视与安全响应机制</strong>（HW 故障发生时，SW 算法如何安全保护）。纯软件功能逻辑缺陷应在软件工程、软件质量流程或专用 SW-FMEA 中管控。</li><li><strong>误区三：项目计划与产品主计划脱节（违背 5T 原则）。</strong><br><em>纠偏：</em>手册 4.1.3 节强调使用 5T 方法（目的 Intent、时间 Timing、团队 Team、任务 Tasks、工具 Tools）。MSR 活动必须提早启动，且<strong>七步法各里程碑必须纳入传音产品开发流程（PDX/IPD）的软硬件架构锁定节点（如 EVT 评审前）</strong>，不可在售后出问题后才被动“补材料”。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.1.2 - 4.1.3 节（PDF 第 123-124 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，以下哪项属于确定电气/电子/可编程电子系统是否属于 FMEA-MSR 分析边界的三个核心提问之一？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 产线生产组装时是否可以通过 EOL（下线测试）设备 100% 筛选出该缺陷？</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在完成 DFMEA 后，是否存在可能导致人员伤害或涉及法律法规不符合的影响？</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 供应商提供的零部件 BOM 成本是否超过了整机安全预算阈值？</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 系统是否采用了冗余的云端大数据备份与远程 OTA 恢复架构？</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 4.1.2 节明确提出界定 FMEA-MSR 边界的三个基本问题，第一个即为：在电气/电子/可编程电子系统上完成 DFMEA 后，是否存在可能对人员伤害或涉及法规不符合的影响？选项 A 属于制造过程 PFMEA/EOL 范畴，C 属于成本管理，D 非边界定义准则。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">原书第 124 页图 4.1-1 所定义的“机械电子系统”（Mechatronic System）的标准 FMEA-MSR 架构，通常由以下哪组核心要素构成？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 传感器（Sensor）、电子控制单元（ECU）、执行器（Actuator）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 结构件（Bracket）、紧固螺钉（Screw）、密封圈（Gasket）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 原材料（Raw Material）、制造工序（Process）、检验夹具（Fixture）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 用户界面（UI）、云端服务器（Cloud）、通信基站（Base Station）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 4.1.2 节指出：可视为属于监视及系统响应补充 FMEA 的一部分的系统通常由至少一个传感器、一个控制单元和一个执行器或者其一部分组成，并被称为机械电子系统。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在开发折叠屏马达驱动系统时，针对转轴受外力卡死（可能导致马达过热冒烟伤及用户）设计了“霍尔传感器角位移检测 + MCU 电流积分算法 + 切断马达供电进入阻尼保护态”的机制。针对该模块是否应纳入 FMEA-MSR，下列判断最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 应纳入，因为该场景涉及人员伤害风险，具备传感器/算法探测能力，且有明确的安全降级响应机制，完全符合 MSR 边界三准则</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 不应纳入，因为折叠屏转轴属于机械五金件，严禁作为 FMEA-MSR 的分析对象</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 不应纳入，因为系统切断供电会导致折叠屏无法展开，破坏了用户体验，不属于“预期系统响应”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 应纳入，但只需在手机售后阶段记录故障率，无需在设计阶段开展七步法分析</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>该案例包含 Sensor（霍尔/电流检测）、ECU（MCU算法）、Actuator（切断马达供电），具备人身伤害风险且存在探测与安全降级响应机制，完全符合手册 4.1.2 界定的三大准则；切断供电正是为了防止起火伤害的安全响应。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">在开展 FMEA-MSR 步骤一（规划和准备）时，项目团队可以借助以下哪些输入资料来帮助创建和明确 FMEA-MSR 项目清单？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 危害分析和风险评估（HARA）及类似产品以往的 FMEA</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 法律法规要求与客户技术规范（Requirements Specification）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 方块图/边界图、原理图、图纸或 3D 模型</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 物料清单（BOM）与技术要求规范</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据手册第 123 页 4.1.2 节列表，团队确定 FMEA-MSR 项目的输入资料包括：危害分析和风险评估、法律要求、技术要求、顾客需要/需求/期望、要求规范、图表（方块/边界图/系统）、原理图/图纸/3D模型、物料清单（BOM）、类似产品以往的 FMEA 等，四个选项全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 FMEA-MSR 项目计划（手册 4.1.3 节）的管理要求，以下说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 建议采用第 1.5 节所述的 5T 方法（目的、时间安排、团队、任务、工具）来制定执行计划</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 确定 FMEA-MSR 项目后，应立即制定执行计划，有助于公司提早启动该活动</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. FMEA-MSR 的七步法过程应完全独立于公司产品研发主计划，研发冻结后再单独进行</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 适用范围标准可能涵盖 ISO 标准（如 ISO 26262 安全目标）及相关法律法规与车载诊断（OBD）合规要求</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据手册 4.1.3 节，确定项目后应立即制定计划，建议采用 5T 方法，提早启动，且 FMEA-MSR 活动（七步法）应“纳入总体设计项目计划中”，绝不能独立或滞后脱节（故 C 错误）。D 选项符合 4.1.2 节关于范围标准的阐述。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "A"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 073：附件 B1（上）：DFMEA 步骤一至步骤三表格逐列填写提示</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 073：附件 B1（上）：DFMEA 步骤一至步骤三表格逐列填写提示</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：FMEA-MSR 表格布局：</strong>学习了手册附录 A3 的标准 FMEA-MSR 表格结构，包含基础视图（视图 H）及增加了用于监视系统有效性评估评级列的替代视图（视图 I）。</li><li><strong>上期核心2：监视与响应的三级评级链：</strong>复习了 FMEA-MSR 在失效分析与风险评估中的核心链条，即严重度（S）、发生频度（O，结合运行情境）以及监视评级（M，包含故障探测与减轻措施的综合有效性）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定位：手册附件 B1 表格填写提示的作用</strong><br>《AIAG & VDA FMEA 手册》附件 B1（B1.1 - B1.7）为工程团队提供了标准 DFMEA 表格从步骤一到步骤六的逐列填写提示与标准化指引。本节聚焦于前三步骤（系统规划与准备、结构分析、功能分析）。这些提示旨在统一工程语言，消除跨职能团队在表格填充过程中的歧义，确保从项目范围定义到结构树/功能网建立的逻辑闭环。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：步骤一至步骤三逐列提示要求</strong><br><ul><li><strong>步骤一：规划与准备（表头管理信息）：</strong><ul><li><strong>公司名称：</strong>负责 DFMEA 的公司名称。</li><li><strong>工程地点：</strong>负责设计的地理位置（如传音深圳研发中心、上海研发中心）。</li><li><strong>顾客名称：</strong>顾客名称或产品系列（如智能手机、特定市场客户项目）。</li><li><strong>年型/项目：</strong>顾客应用或公司模式/类型（项目代号/机型平台）。</li><li><strong>项目：</strong>DFMEA 项目名称（系统、子系统和/或组件）。</li><li><strong>DFMEA 开始日期与修订日期：</strong>项目初次启动日期及最后一次更新维护日期。</li><li><strong>跨职能团队：</strong>所需的团队成员名单（包含结构、硬件、射频、材料、可靠性、质量等跨部门人员）。</li><li><strong>DFMEA ID 编号与设计职责：</strong>由公司确定的唯一追溯编号；明确 DFMEA 所有人的姓名。</li><li><strong>保密级别：</strong>业务分类，如商业应用、专有、保密（Proprietary/Confidential）。</li></ul></li><li><strong>步骤二：结构分析（三级物理分解）：</strong><ul><li><strong>1. 上一较高级别：</strong>子系统、系统、系统阵列或整车/整机级别。</li><li><strong>2. 关注要素：</strong>分析的核心对象，可以是子系统、组件或接口名称。</li><li><strong>3. 下一较低级别或特性类型：</strong>组件或接口名称，或直接细化到具体的<strong>特性类型</strong>，如：形状（Geometry）、材料（Material）、表面光洁度（Surface Finish）、涂层（Coating）等。</li></ul></li><li><strong>步骤三：功能分析（功能与要求映射）：</strong><ul><li><strong>1. 上一较高级别功能及要求：</strong>整车/整机、系统或子系统的功能，以及其必须满足的要求或预期输出的描述（注：手册特别标明，<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>2. 关注要素功能及要求：</strong>子系统、组件或接口的功能，以及其必须满足的要求或预期输出的描述（<strong>量值为可选项，每行一个要求</strong>）。</li><li><strong>3. 下一较低级别功能及要求或特性：</strong>组件或接口的功能或特性描述（<strong>量值为可选项，每行一个特性</strong>）。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发实战场景：手机整机与摄像头模组 DFMEA 映射</strong><br>以传音手机影像系统（Camera Module）的 DFMEA 表格填写为例：<br><ul><li><strong>步骤一（表头）：</strong>公司填“传音控股”，工程地点填“深圳留仙洞研发总部”，项目填“Phantom 旗舰潜望式长焦模组设计”，跨职能团队列明光学工程师、硬件工程师、马达驱动专家、结构可靠性工程师及供应商质量工程师（SQE）。保密级别标定为“高度保密（Confidential）”。</li><li><strong>步骤二（结构）：</strong>上一较高级别为“智能手机整机/影像子系统”；关注要素为“潜望长焦摄像头模组”；下一较低级别/特性类型为“VCM 对焦马达弹片/行程限制位”或直接分解为特性类型“弹片铍铜材质硬度、冲压折弯倒角 R 角、抗疲劳涂层”。</li><li><strong>步骤三（功能）：</strong>上一较高级别为“实现 10x 混合变焦清晰成像，跌落冲击后防抖功能正常（量值可选：跌落 1.5m 满足 MTF>0.6）”；关注要素功能为“驱动镜头群快速稳定移动，响应时间 <15ms”；下一较低级别特性为“弹片提供恢复力矩，满足屈服强度与抗疲劳要求”。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆步骤二“下一较低级别”与“特性类型”：</strong>许多工程师误以为下一较低级别只能填零部件实体名词。原书明确提示，该列可以是“组件或接口名称”，也可以直接是“<strong>特性类型</strong>（如形状、材料、表面光洁度、涂层等）”，这为底层失效原因（特性缺陷）的推导提供了直接物理落脚点。</li><li><strong>误区二：功能描述中强行堆砌公差与参数：</strong>部分工程师在功能描述中纠结是否必须填写具体公差，导致进度停滞。手册原书提示明确指出：“<strong>量值为可选项（Values are optional）</strong>，但关键原则是<strong>每行一个要求/每行一个特性</strong>”，切忌在一行中杂糅多个功能或要求。</li><li><strong>误区三：步骤一表头跨职能团队形同虚设：</strong>仅填写 DFMEA 责任工程师一人，缺少制造、材料、测试等跨部门名单。步骤一必须清晰记录核心跨职能团队成员，确保分析的视角完备性与评审有效性。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 B1.1 - B1.3（原书 P169-170）（PDF 第 169-170 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 B1.2（步骤二结构分析提示），在“3. 下一较低级别或特性类型”一列中，除了组件或接口名称之外，还可以填写什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 失效原因与制造工序参数</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 特性类型，如形状、材料、表面光洁度、涂层等</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 预防控制措施与探测控制措施</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 严重度与频度等级评分</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书图 B1.2-1 提示，第 3 列名称为“3. 下一较低级别或特性类型”，明确指明可填写“组件或接口名称或特性”，特性类型包括“形状、材料、表面光洁度、涂层等”。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》附件 B1.3（步骤三功能分析提示）中，关于功能要求中“量值（量化指标/公差）”的填写规则，原书的明确提示是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 必须强制填写所有公差数值，否则功能分析不合格</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 严禁填写任何公差数值，量值只能在控制计划中体现</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 量值为可选项，每行一个要求（或每行一个特性）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 仅在整车/整机级别需要量值，底层组件不可填写量值</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书图 B1.3-1 提示，在各级功能及要求的描述下方均明确注明：“（量值为可选项，每行一个要求）”或“（量值为可选项，每行一个特性）”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音研发团队正在进行智能手机电池盖（Battery Cover）的 DFMEA，当进行到步骤二与步骤三时，下列哪项填写方式完全符合手册 B1 附件规范？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 步骤二第3列填写“复合板材涂层”，步骤三对应填写“抗指纹附着性能良好（接触角>110°）”，每行独立对应一个要求</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 步骤二第3列填写“喷涂良率低”，步骤三填写“提高产线巡检频次”</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 步骤二第3列填写“整机跌落开裂”，步骤三填写“结构工程师签名”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 步骤二第3列留空，步骤三将整机耐摔、摄像头透光、后盖手感全部合并写在同一行中</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>A选项符合规范：步骤二第3列允许填写“特性类型（如涂层）”，步骤三针对该特性描述具体功能要求（可包含可选量值），且保持每行一个要求；B、C选项混淆了失效模式、控制措施与结构要素；D选项违背了“每行一个特性/要求”的分解原则。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 B1.1，在 DFMEA 步骤一“规划与准备”的表头中，包含以下哪些标准信息要素？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 公司名称、工程地点、顾客名称</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 年型/项目、项目（系统、子系统和/或组件）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. DFMEA 开始日期与修订日期、保密级别</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 跨职能团队名单、DFMEA ID 编号与设计职责（所有人姓名）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书图 B1.1-1，步骤一表头包含：公司名称、工程地点、顾客名称、年型/项目、项目、DFMEA 开始日期、DFMEA 修订日期、跨职能团队、DFMEA ID 编号、设计职责、保密级别，故 A、B、C、D 全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册附件 B1.2 与 B1.3，下列关于 DFMEA 步骤二（结构分析）与步骤三（功能分析）逻辑关系的描述中，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 步骤二的“上一较高级别”、“关注要素”、“下一较低级别”与步骤三的“上一较高级别功能”、“关注要素功能”、“下一较低级别功能”必须严格逐层对应</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 步骤二的关注要素可以是子系统、组件或接口名称</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 步骤三中对功能的预期输出描述，每行只能包含一个要求或一个特性，不能多项混杂</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 结构分析只能分解到物理零件实体，绝不允许出现“材料”或“涂层”等具体特性</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A、B、C 均符合手册定义；D 选项错误，手册图 B1.2-1 明确指出第 3 列包含特性类型，如“形状、材料、表面光洁度、涂层等”。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

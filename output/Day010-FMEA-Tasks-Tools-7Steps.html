@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 010：5T 法之任务（Task）、工具（Tool）与七步法总览</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 010：5T 法之任务（Task）、工具（Tool）与七步法总览</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（协调员能力）：</strong>推进者/协调员是 FMEA 过程的裁决者与催化剂，必须熟练掌握 FMEA 方法论、具备较强的团队引导能力与冲突化解技巧，而非必须是具体产品技术的首席专家。</li><li><strong>上期核心2（扩展团队专家职责）：</strong>扩展团队成员（如供应商、材料专家、可靠性实验室测试员等）按需提供关键试验数据、特殊边界输入并参与商业案例编写，保障核心团队高效决策。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据手册 1.5.4 与 1.5.5 节定义：<br>• <strong>FMEA 任务（Task）：</strong>“七步法”为 FMEA 提供了标准化的任务工作框架与阶段性交付成果。FMEA 团队必须按照七步法要求完成阶段任务，并准备好接受管理层、顾客审核员及第三方注册机构的合规性评审。<br>• <strong>FMEA 工具（Tool）：</strong>用于开发 DFMEA、PFMEA 及追踪改善措施的载体，包括专用 FMEA 商业软件、企业内部定制数据库或标准电子表格。新版手册指出工具具备两种呈现形态：<strong>软件视图</strong>（展示结构树、功能网、失效网）与<strong>表格视图</strong>（标准行列表单）。手册特别强调：无论企业选用何种工具软件，七步法的逻辑与流程完全一致。<br>• <strong>七步法（Seven-Step Approach）三大支柱：</strong>七步法在逻辑上被划分为三大阶段：<strong>系统分析</strong>（步骤 1-3）、<strong>失效分析与风险降低</strong>（步骤 4-6）、<strong>风险沟通</strong>（步骤 7）。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（七步法全景与步骤一启动）</strong><br>• <strong>七步法全景映射：</strong><br>　- <strong>系统分析：</strong>步骤一【规划和准备】（5T策划、明确边界、锁定基准）→ 步骤二【结构分析】（产品/过程边界可视化、识别设计接口与间隙）→ 步骤三【功能分析】（功能网建立、要求/特性与功能关联）。<br>　- <strong>失效分析和风险降低：</strong>步骤四【失效分析】（构建失效链：失效影响-失效模式-失效起因，分配预防控制）→ 步骤五【风险分析】（分配探测控制、评定 S/O/D、评估 AP 优先级）→ 步骤六【优化】（分配预防与探测措施、再评估风险）。<br>　- <strong>风险沟通：</strong>步骤七【结果文件化】（生成报告、沟通残余风险、管理层闭环评审）。<br>• <strong>步骤一（规划和准备）的核心决策问题：</strong><br>　手册 2.1.2 明确，确认项目边界必须回答核心决策问题：顾客要买什么？是否有新要求？我们是否拥有该产品/零件的设计控制权（制造自研 vs 采购委外）？谁负责跨模块接口设计？分析处于系统、子系统还是组件层级？必须明确定义<strong>“包含什么”与“不包含什么”</strong>。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景：传音新一代折叠屏或潜望式摄像模组 DFMEA 启动：</strong><br>　- <strong>Tool（工具）应用：</strong>传音工程师如果仅使用 Excel 表格编写潜望式马达失效，往往难以看清驱动 IC、音圈马达、镜片组之间的级联影响。采用专业 FMEA 软件视图，先建立结构树，再通过“功能网”和“失效网”自动投影生成行列表格，能彻底解决因关联错位导致的逻辑断层。<br>　- <strong>Task（任务）与边界决策：</strong>在步骤一中，针对镜头模组：传音负责整机堆叠与接口电路设计，模组内部音圈马达结构属于 Tier 1 供应商（传音无马达内部设计控制权）。因此，DFMEA 项目清单边界严格划分：模组与中框装配间隙、排线信号接口“必须包含”在传音 DFMEA 中；马达内部线圈缠绕与磁石点胶“不包含”，要求供应商提供其马达级 Component DFMEA 进行对齐。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：“工具崇拜”或“死守 Excel”走极端：</strong>部分工程师认为不上百万级软件就无法执行新版 FMEA；另一部分人则将 Excel 填表当成 FMEA 本身。<strong>纠偏：</strong>手册明确指出，无论是结构树软件还是电子表格，七步法逻辑完全通用；核心在于是否建立了严密的“结构-功能-失效”逻辑网，而非工具本身的形式。<br>• <strong>误区二：跳过步骤一，直接从失效模式开工：</strong>团队往往忽视 5T 规划与“包含/不包含”边界梳理，导致分析过程中频繁扯皮（例如整机团队分析了供应商芯片内部物理层失效，而遗漏了自身板级走线接口）。<strong>纠偏：</strong>必须在步骤一回答“谁拥有设计控制权、分析范围包括什么与不包含什么”，形成项目边界协议后再开展步骤二。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.5.4 - 1.6 节（PDF 第 27-29 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》关于“七步法”整体框架的划分，以下归类正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 步骤 1 至 3 属于“结构分析”，步骤 4 至 6 属于“风险评估”，步骤 7 属于“优化措施”</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 步骤 1 至 3 属于“系统分析”，步骤 4 至 6 属于“失效分析和风险降低”，步骤 7 属于“风险沟通”</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 步骤 1 属于“规划和准备”，步骤 2 至 5 属于“定性分析”，步骤 6 至 7 属于“定量优化”</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 步骤 1 至 2 属于“项目定义”，步骤 3 至 5 属于“失效链分析”，步骤 6 至 7 属于“措施追踪”</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 1.6 节图 1.6-1 明确将七步法划分为三大板块：系统分析（步骤一规划和准备、步骤二结构分析、步骤三功能分析）；失效分析和风险降低（步骤四失效分析、步骤五风险分析、步骤六优化）；风险沟通（步骤七结果文件化）。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于 FMEA 工具（Tool）及视图呈现，手册 1.5.5 节给出的明确指导是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 严禁使用电子表格，新版 FMEA 强制要求所有企业购买专用商业软件</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 无论采用结构树专业软件视图还是电子表格视图，七步法的过程与逻辑都是一样的</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 电子表格仅适用于 PFMEA，专业软件视图仅适用于 DFMEA</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 结构树视图只能展示产品结构，无法关联功能与失效网络</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 1.5.5 指出，公司可开发内部数据库或购买商业软件，手册提供了软件视图（结构树、功能网、失效网）与表格视图两种示例，并明确强调：“无论哪种情况，七步法的过程都是一样的”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机硬件开发启动步骤一（规划和准备）时，针对外购的指纹识别芯片，团队应如何界定分析边界？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 传音拥有芯片完整设计控制权，必须在传音 DFMEA 中分析芯片晶圆内部逻辑门电路失效</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 传音无需分析任何与指纹相关的内容，所有风险完全由指纹供应商承担</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 回答“我们是否制造产品并拥有设计控制权”等问题，将芯片与主板的电气接口、装配公差纳入传音 DFMEA，而芯片硅片内部设计则要求供应商在其组件 DFMEA 中分析</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 必须将外购指纹模组直接认定为基准 FMEA，不再做任何边界定义</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.1.2 节的项目确定决策问题（“我们是否购买产品、但/并不拥有设计控制权？谁负责接口设计？”），传音购买芯片不拥有内部半导体物理层设计控制权，传音 DFMEA 的“包含”范围是模组与整机的接口、匹配公差及系统集成，芯片内部失效属于供应商范围，必须清晰界定“包括与不包括的内容”。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 2.1.1 节，设计 FMEA（DFMEA）步骤一“规划和准备”的主要目标包括哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 项目确定（确定评估对象并达成一致）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 制定项目计划：目的、时间安排、团队、任务和工具（5T）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 明确分析边界：分析中包括什么、不包括什么</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 利用以往的经验确认基准 FMEA，并为结构分析步骤奠定基础</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 2.1.1 明确列出了 DFMEA 规划和准备步骤的五大主要目标：1. 项目确定；2. 项目计划（5T）；3. 分析边界（包括什么、不包括什么）；4. 利用以往的经验确认基准 FMEA；5. 结构分析步骤的基础。选项 A、B、C、D 全部符合原书定义。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 1.5.4 节关于“FMEA 任务（Task）”的阐述，以下表述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. “七步法”为 FMEA 提供了标准化的任务框架和交付成果</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. FMEA 团队应按照要求准备好与管理层和顾客评审其分析结果</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. FMEA 的任务执行可由内审员、顾客审核员或第三方注册机构进行审核，以确保按要求完成</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 只要项目团队内部完成评估，FMEA 交付成果严禁展示给外部顾客审核员</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据手册 1.5.4 节原文，“七步法提供了 FMEA 的任务框架和交付成果”；“FMEA 团队应按照要求准备好与管理层和顾客评审其分析结果”；“FMEA 可由内审员、顾客审核员或第三方注册机构进行审核”。D 选项与原书要求完全违背。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

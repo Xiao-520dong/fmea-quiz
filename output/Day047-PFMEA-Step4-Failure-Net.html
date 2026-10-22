@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 047：PFMEA 步骤四：电机装配线失效结构树与失效网实例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 047：PFMEA 步骤四：电机装配线失效结构树与失效网实例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（4M挖掘失效起因）：</strong>PFMEA 失效起因（FC）直接对应 4M（人机料环）工作要素的功能失效，需针对机器（参数漂移、手动运行）、材料（多/少/错位）、环境（照度、异物）等具体维度展开提问挖掘。</li><li><strong>上期核心2（FC描述禁止模糊化）：</strong>严禁用“缺陷”、“破损”、“操作失败”、“不遵守要求”或“不正常”等笼统词汇描述失效起因或模式，必须清晰阐明具体失效物理机制，才能为后续控制措施提供靶向目标。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与失效网逻辑（Failure Net / Chain）</strong><br>根据《AIAG & VDA FMEA 手册》3.4.7节，失效分析必须紧紧依托步骤三（功能分析）构建的层级逻辑导出故障链，即失效结构树/失效网（Failure Net）。<br><ul><li><strong>关注要素的相对性：</strong>在三层结构中，关注要素被称为<strong>失效模式（FM）</strong>，上一较高级别要素对应<strong>失效影响（FE）</strong>，下一级工作要素对应<strong>失效起因（FC）</strong>。一个失效现象的角色完全取决于分析的视点。</li><li><strong>逻辑关联构建的核心提问法：</strong><ul><li>构建 FM 与 FC 的关联：通过解答<strong>“为什么会出现失效模式？”（Why did the failure mode occur?）</strong>找到失效起因。</li><li>构建 FM 与 FE 的关联：通过解答<strong>“失效模式会导致什么后果？”（What happens when the failure mode occurs?）</strong>找到失效影响。</li></ul></li></ul></div><div class="highlight-blue"><strong>2. 原书电机装配线（OP30 烧结轴承压入）失效结构树与表头解析</strong><br>原书图 3.4-2 与图 3.4-3 给出了经典三层映射与表格编号规范：<br><ul><li><strong>级别 1：过程项 / FE（表头 1）——对上一较高级别要素和/或最终用户的影响：</strong><ul><li><em>您的工厂（本厂后道工序）：</em>间隙太小无法安装轴，存在潜在碰伤/损害。</li><li><em>发运至工厂（OEM/下一级客户）：</em>将电机安装至车门上需要额外插入力，存在潜在损害。</li><li><em>最终用户（车主/消费者）：</em>舒适模式关闭时间过长。</li><li><em>注：</em>电子表格用户需注意，潜在失效模式可导致多个分类失效影响，分类记录可避免相同的失效模式与起因过多重复。</li></ul></li><li><strong>级别 2：过程步骤 / FM（表头 2）——关注要素的失效模式：</strong>与产品特性直接关联。原书案例为：<strong>不能实现烧结轴承在电机壳内的轴向定位</strong>（间隙要求最大 < 0.3 mm 未达成）。</li><li><strong>级别 3：过程工作要素 / FC（表头 3）——4M 相关的失效起因：</strong>与过程特性关联。原书机器（Press Machine）案例为：<strong>设备在达到最终位置（止点）前停止运行</strong>。</li><li><strong>3.4.8 PFMEA 与 DFMEA 的关系纽带：</strong>PFMEA 关注的是过程无法实现设计特征（产品特性）。当过程失效导致不符合产品特性时，DFMEA 与 PFMEA 中的失效影响才是一致的。若属于过程特有失效或 DFMEA 未识别的影响，必须在 PFMEA 中重新定义评估，严禁纯主观假设。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机屏幕模组压合工序）</strong><br>以传音中高端机型 AMOLED 屏幕与中框点胶贴合（OP40 屏幕保压压合工位）构建失效网：<br><ul><li><strong>表头 2 - 关注要素失效模式（FM，针对过程步骤 OP40）：</strong>屏幕模组压合后平整度超差（面段差 > 0.15mm）或保压压力不足导致局部翘起（未满足产品特性）。（提问：为什么翘起？/ 会导致什么后果？）</li><li><strong>表头 3 - 工作要素失效起因（FC，针对 4M 机器与夹具）：</strong>保压机气缸下压位移传感器松动，导致压头未到达设定下死点即提前返程（机器）；治具限位槽存在残胶异物导致定位高度偏差（环境/工具）。</li><li><strong>表头 1 - 失效影响（FE，三层展开）：</strong><ul><li><em>本厂下道（您的工厂）：</em>中框保压后在整机超声气密性测试工位泄漏检测不通过（Yield loss / 返修拆屏导致盖板碎裂）。</li><li><em>海外客户/区域仓库（发运）：</em>长途海运受温湿度变化后整机发生屏幕脱胶起翘。</li><li><em>终端消费者（最终用户）：</em>手机在日常使用中整机 IP68 防尘防水失效，进水烧板；或者屏幕边缘漏光、触控漂移。</li></ul></li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：混淆因果关联，逻辑倒置。</strong>将 FE 写成 FC（例如把“整机气密测试漏气”当作压机下压不到位的起因）。<strong>纠偏：</strong>牢记“问为什么得起因，问后果得影响”，自下而上遵循物理传递链条。</li><li><strong>误区 2：在 PFMEA 中生搬硬套 DFMEA 的影响。</strong>部分工程师认为 PFMEA 的 FE 必须与 DFMEA 完全一字不差。<strong>纠偏：</strong>原书 3.4.8 明确指出，只有在“过程未实现产品设计特征”时两者最终用户影响才一致；所有因制造制造过程额外引入的风险（如碰伤、本厂组装报废、工厂装配额外插入力）必须在 PFMEA 中重新识别。</li><li><strong>误区 3：FE 仅写“本厂报废”，忽视下游与最终用户。</strong>只记录本工位不良，忽略了当不良流出后对客户工厂组装（发运工厂）及终端消费者（最终用户）的多层级影响。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.4.7 节（PDF 第 97-99 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》3.4.7 节，在建立失效链（失效网）时，用于寻找“失效起因（FC）与失效模式（FM）之间关联”的核心提问是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 失效模式会导致什么后果？</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 为什么会出现失效模式？</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 过程工作要素的功能是什么？</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 探测控制措施能否发现该缺陷？</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 97 页（3.4.7节）明确指出：“可通过解答‘为什么会出现失效模式’这一问题找到失效起因和失效模式之间的关联。可通过解答‘失效模式会导致什么后果’这一问题找到失效影响与失效模式之间的关联。”故选项 B 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在手册 3.4.7 节原书图 3.4-2 及图 3.4-3 的电机装配线案例中，针对“OP30 烧结轴承压入过程”，下列哪一项被明确定义为“关注要素的失效模式（FM）”？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 间隙太小无法安装轴，存在潜在损害</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 舒适模式关闭时间过长</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 设备在达到最终位置前停止</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 不能实现烧结轴承在电机壳内的轴向定位</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书图 3.4-2 与图 3.4-3：关注要素的过程步骤失效模式（FM）是“不能实现烧结轴承在电机壳内的轴向定位”；A 是您工厂的 FE；B 是最终用户的 FE；C 是压机工作要素的 FC。故选项 D 正确。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音重庆制造工厂在分析手机主板 SMT 印刷工序的 PFMEA 时，发现印刷锡膏厚度偏薄（FM）。针对 DFMEA 与 PFMEA 中“失效影响（FE）”的关系，根据手册 3.4.8 节，下列理解正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 只要是不符合产品设计特性导致的失效影响，PFMEA 与 DFMEA 中的最终用户失效影响才会一致；但制造过程特有的影响必须在 PFMEA 中重新定义</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. PFMEA 中的失效影响必须 100% 照抄 DFMEA，不得新增任何本厂制造层面的影响</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 针对产品特性的失效影响及其严重度，PFMEA 团队无需了解事实，应尽可能作出最坏假设</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. DFMEA 始终在任何开发流程中均优先于 PFMEA 完成，两者的信息流向是绝对单向不可变的</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 99 页（3.4.8节）规定：“不符合产品特性这一项就会导致失效影响。只有在这种情况下，设计 FMEA 和过程 FMEA 中的失效影响才会一致。所有因过程失效导致的失效影响以及设计 FMEA 中未识别的失效影响都必须在过程 FMEA 中进行重新定义和评估。”同时手册强调应在了解事实后记录而非做出假设，非标准流程中时间与信息流动也可能有差异。故 A 正确。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在 PFMEA 失效分析（步骤四）电子表格中，表头编号 (1)、(2)、(3) 推荐的标准对应关系包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 1. 失效影响（FE）：对应过程项的功能（包含您的工厂、发运至工厂、最终用户）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 2. 失效模式（FM）：对应过程步骤的功能（关注要素的失效）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 3. 失效起因（FC）：对应过程工作要素（4M）的功能失效</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 1. 失效模式（FM），2. 失效起因（FC），3. 失效影响（FE）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 98-99 页表格及说明：表头 1 为“失效影响（FE）：与功能分析中 1 过程项的功能相关”；表头 2 为“失效模式（FM）：与功能分析中 2 过程步骤的功能相关”；表头 3 为“失效起因（FC）：与功能分析中 3 过程工作要素的功能相关”。D 顺序颠倒，故 A、B、C 正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在原书 3.4.6 与 3.4.7 节中，关于失效模式与失效起因的描述规范，下列说法符合手册要求的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 单独使用“破损”、“缺陷”、“操作失败”或“不正常”无法全面描述失效，属于不合格描述</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 潜在失效模式（FM）在逻辑上可以导致多个层级或类别的失效影响（FE）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 失效结构的关注要素是固定的，不能根据分析对象转换为失效影响或失效起因</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 失效起因的描述必须清晰准确，以便于针对性确定预防和探测应对措施</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 97 页：“‘缺陷’、‘破损’、‘操作失败’、‘不遵守要求’或‘不正常’等术语无法全面描述失效起因和模式并确定应对措施”，A 正确；“失效起因的描述需清晰准确”，D 正确；第 97 页提到“根据关注对象的不同，失效可被理解为失效影响、失效模式或失效起因”，故 C 错误（具有相对性）；第 98 页明确提到“潜在失效模式可导致多个失效影响”，B 正确。本题选 A、B、D。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

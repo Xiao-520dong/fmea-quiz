@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 112：机器设备 FMEA (MFMEA)</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 112：机器设备 FMEA (MFMEA)</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>特殊工艺：</strong>如焊接、热处理等无法进行100%非破坏检验的工艺。</li>
+<li><strong>控制重心：</strong>特殊工艺高度依赖设备参数监控（预防控制）来降低发生频度(O)。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是机器设备 FMEA (MFMEA)？</strong><br>
+MFMEA 用于分析和评估制造设备、工装或机器在运行过程中发生故障的风险。它不是评估“生产出的产品好不好”，而是评估“机器会不会罢工、故障或带来安全隐患”。
+</div>
+<div class="highlight-blue">
+<strong>2. MFMEA 的核心关注点</strong><br>
+- <strong>失效影响(FE)：</strong>通常是停机时间(Downtime)、产能损失、设备损坏或人员安全问题。<br>
+- <strong>预防控制(PC)：</strong>主要体现为<strong>预防性维护 (PM)</strong>，如定期更换易损件、润滑保养。<br>
+- <strong>探测控制(DC)：</strong>设备自带的传感器预警、振动监测、工人开班前的设备点检。
+</div>
+<div class="highlight-green">
+<strong>3. MFMEA 与 PFMEA 的联动</strong><br>
+PFMEA 中分析的是“如果机器故障导致了产品不良怎么办”；MFMEA 分析的是“机器为什么会故障”。两者结合，可以确保关键工序既不产出不良，也不意外停机。
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">📚 内容来源：AIAG 机械 FMEA (MFMEA) 参考手册及预防性维护(PM)指南</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">MFMEA (机器设备 FMEA) 的主要研究对象是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 产品的外观设计</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 制造设备、工装或模具的故障风险</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 供应链的物流运输路线</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 客户的使用习惯</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>MFMEA关注设备自身的可靠性和故障停机风险。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">在 MFMEA 中，“主轴轴承磨损”属于失效的哪个层级？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 失效起因 (FC)</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 失效模式 (FM)</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 失效影响 (FE)</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 探测控制 (DC)</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>部件磨损是导致设备丧失功能的底层原因，属于失效起因 (FC)。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">为了降低某设备故障的频度 (O)，最常用的预防控制 (PC) 是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 在设备停机后报警</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 实施严格的预防性维护计划 (PM)，定期更换易损件</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 让工人更努力地干活弥补产能</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 把设备卖掉</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>预防性维护(PM)是MFMEA中最核心的预防控制手段，通过提前保养防止设备发生故障。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">设备故障的失效影响 (FE) 通常包括哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 导致生产线长时间停机</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 对操作工造成安全伤害</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 导致产出严重不合格的产品</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 导致食堂饭菜不好吃</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>设备故障会影响产能（停机）、安全（事故）和质量（不良品）。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">在现代制造业中，哪些属于 MFMEA 中常用的探测控制 (DC)？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 电机异常振动在线监测系统</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 油压、水压传感器的实时报警</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 每日开机前的设备点检表</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 机器坏了之后才发现冒烟了</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>ABC都属于在故障发生早期或萌芽期能够提供探测预警的控制措施。D属于事后失效。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "A"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

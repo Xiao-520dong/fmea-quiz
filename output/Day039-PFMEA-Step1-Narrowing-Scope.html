@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 039：PFMEA 步骤一：缩小准备范围演示、项目计划、基准与表头</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 039：PFMEA 步骤一：缩小准备范围演示、项目计划、基准与表头</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>PFMEA 步骤一（规划与准备）的核心目的是确定分析范围、组建跨职能团队并调配资源，确保过程风险分析在早期得以受控推进。</li><li><strong>上期核心2：</strong>原书界定了确定过程边界的六大维度（产品/过程变更、制造经验/现场保修、高风险工序、人体工学、法律法规与持续改进），严格界定“包含”与“排除”清单是聚焦分析深度的前提。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与逻辑演进</strong><br>PFMEA 的规划与准备阶段并不是把整个工厂所有设备漫无目的地堆砌分析，而是通过分层递进的逻辑<strong>缩小准备范围</strong>（从工厂/部门层面逐步聚焦到具体的装配线、OP 工序工作站）。同时，为了避免“重复发明轮子”，手册明确引入了<strong>基础 PFMEA（Baseline/Foundation PFMEA）</strong>与<strong>家族 PFMEA</strong>的概念：基础 PFMEA 是适用于具有共同或一致产品边界/制造工序的基础过程文件；新项目启动时，跨职能团队应以基准 PFMEA 为母本，仅针对新项目特有的组件、变更功能及新工序进行增量（Delta）分析，极大提升分析效率与历史经验继承度。若无可用基准，团队才从零开发新 PFMEA。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>① 缩小范围的考量维度（原书第 79 页）：</strong>技术新颖性/创新程度、设计复杂性、人员和系统安全、网络物理系统（Cyber-Physical Systems，包含网络安全）、法律合规性、目录/标准零件，以及质量与可靠性历史（内部缺陷、零公里失效、现场保修）。<br><strong>② PFMEA 项目计划与 5T 方法（原书第 80 页）：</strong>手册明确规定——<strong>“DFMEA 项目明确后，应当立即制定 PFMEA 的执行计划”</strong>。必须提前启动，全面应用 5T 方法（目的 Intent、时间安排 Timing、团队 Team、任务 Tasks、工具 Tools），并融入顾客特殊要求（CSR），将 PFMEA 关键节点纳入公司总体开发主计划。<br><strong>③ PFMEA 表头规范（原书第 80-81 页）：</strong>准备阶段必须完整规范地填写表头，包含 10 项核心准备信息：公司名称、制造地址（具体地理位置/厂区）、顾客名称、年型/项目、项目名称、PFMEA 开始日期、最后修订日期、跨职能团队名单、PFMEA ID 编号、<strong>过程职责（必须是具体的 PFMEA 所有人 Process Owner 姓名，严禁仅写部门）</strong>以及保密级别。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及配件制造体系（如重庆、东莞制造中心及海外制造基地）中：<br><strong>场景 A（基准 PFMEA 派生）：</strong>传音开发一款 TECNO 品牌搭载潜望式长焦摄像头的高端机型时，SMT 贴片及通用主板点胶工序复用成熟的《传音智能手机主板 SMT 基础 PFMEA》；跨职能团队只需将范围聚焦在新增工序——如长焦模组精密热熔压接工位（OP40）以及超薄 VC 均热板贴装工序，极大缩短分析周期并杜绝遗漏基础风险。<br><strong>场景 B（表头与 5T 计划管控）：</strong>在方案立项阶段（EVT 前），DFMEA 冻结初步架构，ME（制造工程）、PE（工艺工程）、QA、IE 即启动 5T 计划。表头中“制造地址”明确为“传音重庆制造基地二期 3 号厂房 2 号组装线”，“过程职责”由资深工艺主管具体署名，杜绝职责悬空。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><strong>误区 1：PFMEA 启动时间严重滞后。</strong>很多工厂在试产（PVT 阶段）甚至量产下线后才为了应付审核补写 PFMEA。手册明确规定：DFMEA 明确后就应立即启动 PFMEA 策划，滞后实施将失去过程缺陷预防价值。<br><strong>误区 2：盲目推翻重来或全盘复制。</strong>要么每次新机型都从零编写，浪费海量工时且容易遗漏历史教训；要么机械全盘复制旧 PFMEA 不做增量评审，导致新结构/新工艺的失效模式沦为盲区。正确做法是严格维护并继承“基础 PFMEA”。<br><strong>误区 3：表头信息模糊与责任人缺失。</strong>“过程职责（Process Responsibility）”栏目常被误填为“工艺部”或“制造工程部”，手册明确要求填写 PFMEA 所有人姓名（Owner Name），确保风险闭环责任到人。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.1.2（下）- 3.1.5 节（PDF 第 79-81 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 3.1.3 节关于 PFMEA 项目计划的明确规定，组织应当在何时制定 PFMEA 的执行计划？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 在产线工装夹具与设备完全进厂安装调试完成之后</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在第一批试生产样件（PPAP/PVT）交付顾客之前</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 在 DFMEA 项目明确后，应当立即制定</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 必须在获得顾客正式量产订单批准之后</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书第 80 页 3.1.3 节明确指出：“DFMEA 项目明确后，应当立即制定 PFMEA 的执行计划。建议使用本手册第 1.5 节所述的 5T 方法……PFMEA 计划有助于公司提前启动 PFMEA。”因此选 C。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于手册第 3.1.4 节所定义的“基础 PFMEA（Foundation/Baseline PFMEA）”，下列描述最为准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 基础 PFMEA 是临时草稿，量产启动后必须彻底废弃并由新文件替代</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 基础 PFMEA 是专门适用于具有共同或一致产品边界或相关功能的产品的基础过程 FMEA，新产品可在此基础上添加特定组件和功能</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 基础 PFMEA 只针对标准外购目录零件，严禁用于自主制造组装工序</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 只要产品型号发生任何变更，跨职能团队就严禁参考基础 PFMEA，必须从零新建</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第 80 页 3.1.4 节明确界定：“基础 PFMEA 是专门适用于具有共同或一致产品边界或相关功能的产品的基础过程 FMEA。在新产品的基础上，基础 PFMEA 将添加新项目特定组件和功能，以完成新产品的 PFMEA……若没有可用的基准，团队则会开发一个新 PFMEA。”因此选 B。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机新项目的 PFMEA 准备阶段，跨职能工程团队正在填写表头及界定工序范围。按照手册 3.1.5 节规范与制造实战要求，下列哪项做法是正确的？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 表头中的“过程职责（Process Responsibility）”应填写具体的 PFMEA 所有人（如工艺主管工程师张工）的姓名</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 为简化文档，“制造地址”只需写“中国”或公司母品牌名称，无需具体到工厂地理位置</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. “跨职能团队”栏目只需由 PFMEA 编写者一人代签工艺部、测试部、品质部所有名单即可，无需实际组建团队</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 表头中的“PFMEA 开始日期”应当填写量产 SOP 当天的日期</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书第 81 页 3.1.5 节及图 3.1-2 示例明确指出：“制造地址：地理位置”；“过程职责：PFMEA 所有人姓名”（示例中为 B. Black）；跨职能团队需要真实的团队协同；开始日期为规划准备启动日期，严禁填量产日期。因此 A 正确。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 3.1.2 节，在确定 PFMEA 的分析范围及缩小范围时，跨职能团队可酌情考虑以下哪些维度？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 技术新颖性／创新程度与设计的复杂性</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 质量／可靠性历史（内部、零公里缺陷、现场失效与保修索赔）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 人员和系统安全，以及网络物理系统（包括网络安全）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 法律合规性与目录/标准零件</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 79 页明确列出在确定 PFMEA 范围时可酌情考虑的方面包括：技术新颖性／创新程度、质量／可靠性历史、设计的复杂性、人员和系统安全、网络物理系统（包括网络安全）、法律合规性、目录和标准零件。全部选项均符合原文描述。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在规划与准备阶段，PFMEA 表头必须包含的基本准备信息有哪些？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 公司名称、制造地址与顾客名称</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 年型/项目、项目名称及 PFMEA ID 编号</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. PFMEA 开始日期与 PFMEA 修订日期</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 跨职能团队名单、过程职责（所有人）及保密级别</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书第 80-81 页 3.1.5 节列出的表头基本准备信息完整包括：公司名称、制造地址、顾客名称、年型/项目、项目、PFMEA 开始日期、PFMEA 修订日期、跨职能团队、PFMEA ID 编号、过程职责、保密级别。四个选项均属必须包含的内容。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

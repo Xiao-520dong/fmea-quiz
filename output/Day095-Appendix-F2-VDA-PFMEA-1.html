@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 095：附件 F2.2（上）：从 VDA 第四卷到新版 PFMEA 的变更点（步骤一至四）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 095：附件 F2.2（上）：从 VDA 第四卷到新版 PFMEA 的变更点（步骤一至四）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：DFMEA 步骤五与步骤六变更：</strong>回顾了 VDA 4 到新版 DFMEA 中严重度（S，引入 10/9 安全法规分级）、频度（O，引入预防控制作为输入）、探测度（D，强调探测能力与时机）及 AP 替代 RPN 的重大演变。</li><li><strong>上期核心2：优化措施职责与状态跟踪：</strong>新版强化了“状态”分类（如已规划、未决等）、以证据确认措施有效性，并新增步骤七“结果文件化”以正式技术报告向项目里程碑及高层汇报技术风险。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心背景与七步法框架演进（F2.2 概述）</strong><br>新版《AIAG & VDA FMEA 手册》附件 F2.2 对比了原 VDA 第四卷《产品和过程FMEA》向新版 PFMEA 的演变历程：<br>① <strong>五步法升级为七步法：</strong>原 VDA 第四卷的“定义（D）”扩展为独立的“步骤一：项目规划和准备”；同时在末端增加了“步骤七：结果文件化”，形成完整的七步法闭环。<br>② <strong>表头与特殊特性处理：</strong>PFMEA 表格中明确<strong>保留了特殊特性列</strong>（而 DFMEA 表格中删除了特殊特性列，改由特性规范管理）；新增了“历史/变更授权”列用于支持工程变更与持续改进。<br>③ <strong>界面与供应链协作：</strong>详细阐述了 DFMEA 与 PFMEA 之间的输入输出映射，以及“顾客－第n级供应商－第n+1级供应商”的多级协作机制。</div><div class="highlight-blue"><strong>2. 步骤一至步骤四的具体变更点与对比规则拆解</strong><br>原书逐步骤剖析了从 VDA 第四卷到新版的结构性优化与变更原因：<br>① <strong>步骤一：规划和准备：</strong>原 VDA 4 的“定义（D）”被替换为“步骤一：规划和准备”，重新规范了文档深度。表头新增并细化了多项管理信息，包括<strong>变更内容</strong>（年型/项目、项目、开始日期和修订日期、跨职能团队、PFMEA ID 编号、过程职责）以及<strong>添加内容</strong>（公司名称、工程地点、顾客名称、保密级别）。<br>② <strong>步骤二：结构分析：</strong>原项目扩展为三层级：<strong>1. 过程项</strong>（系统、子系统、零件要素或过程名称）；<strong>2. 过程步骤</strong>（工位编号和关注要素名称）；<strong>3. 过程工作要素</strong>（明确以 <strong>4M 类型</strong>划分，增加设备、人员、间接材料、环境/里程碑等标签）。明确了过程流程图与结构树的对应关系。<br><em>变更原因：</em>使团队聚焦于要素分析，清晰建立失效影响与失效起因之间的物理/逻辑载体联系。<br>③ <strong>步骤三：功能分析：</strong>功能对应展开为三层级：<strong>1. 过程项的功能</strong>；<strong>2. 过程步骤的功能和产品特性</strong>（量值为可选项）；<strong>3. 过程工作要素的功能和过程特性</strong>。详细定义了 P 图（参数图）的应用与团队协作。<br><em>变更原因：</em>先从正向完整识别过程功能与产品/过程特性，才能精准导出反向的失效影响、失效模式与失效起因。<br>④ <strong>步骤四：失效分析：</strong>确立“关注要素”为分析核心，构建结构化的失效链：<strong>1. 对上一较高级别要素和/或最终用户的失效影响（FE）</strong>；<strong>2. 关注要素的失效模式（FM）</strong>；<strong>3. 下一较低级别要素或特性的失效起因（FC）</strong>。明确了失效影响的三个维度（“您的工厂”、“发运至工厂”和“最终用户”）。<br><em>变更原因：</em>通过系统化的问题解决方法，确保 FE、FM 与 FC 的逐级对齐，彻底厘清制造过程变异向整机及客户传递的机理。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机 SMT 贴片与整机组装 PFMEA</strong><br>在传音智能手机及移动互联终端制造工厂推进新版 PFMEA 时的典型应用：<br>① <strong>结构分析落地（4M 拆解）：</strong>以“主板 SMT 锡膏印刷工位（工位 020）”为例：过程项为“主板 PCBA 制造过程”；过程步骤为“工位 020 锡膏印刷”；过程工作要素按 4M 严格分解为：机（全自动印刷机刮刀机构）、人（印刷操作员/转线技术员）、料-间接材料（无铅锡膏膏体与助焊剂批次）、环（印刷机内部温湿度环境监控）。<br>② <strong>功能与特性对应：</strong>过程步骤的功能为“将规定厚度的锡膏准确转印至主板焊盘”，对应<strong>产品特性</strong>为“锡膏厚度 110±20μm、印刷覆盖率≥95%”；过程工作要素的功能为“刮刀提供均匀恒定压力与匀速移动”，对应<strong>过程特性</strong>为“刮刀压力 0.18-0.22 MPa、印刷速度 35mm/s”。<br>③ <strong>失效链层层对齐：</strong>过程工作要素失效起因（FC：刮刀压力偏低至 0.12 MPa）→ 导致工位关注要素失效模式（FM：手机射频芯片焊盘锡膏印刷少锡/偏薄）→ 导致三维度失效影响（FE：您的工厂：AOI 报警拦截或回流焊后虚焊返工；发运至工厂：整机拼装测试 RF 驻波比超标拦截；最终用户：特定弱信号区域通话掉话或 4G/5G 掉网）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>① <strong>混淆 DFMEA 与 PFMEA 对“特殊特性”的处理：</strong>工程师常误以为新版手册所有表格都移除了特殊特性列。原书明确指出：<strong>PFMEA 表格中保留了特殊特性列</strong>，仅 DFMEA 进行了移除。<br>② <strong>结构分析跳过 4M 直接分析作业动作：</strong>在步骤二中直接将“贴合盖板”当作工作要素，忽略了“机（贴合机气缸）、人（取放手势）、料（间接治具/胶水）、环（无尘室洁净度等级）”分类，导致步骤四分析失效起因（FC）时缺乏物理归因，无法落地预防控制。<br>③ <strong>步骤三混淆“产品特性”与“过程特性”的位置：</strong>将主板焊盘上的锡膏厚度（产品特性）写在工作要素列，或将刮刀压力（过程特性）写在过程步骤列。必须牢记：过程步骤对应的是<strong>产品特性</strong>，过程工作要素（4M）对应的是<strong>过程特性</strong>。<br>④ <strong>失效影响（FE）遗漏制造厂内部影响：</strong>只写“最终用户通话不良”，漏掉了手册特别强调的“您的工厂（报废、停线、返修）”与“发运至工厂/下一级组装厂”的影响，导致严重度 S 评分维度不全。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F2.2（原书 P231-233）（PDF 第 231-233 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F2.2，关于新版 PFMEA 表格与 DFMEA 表格在“特殊特性（Special Characteristics）”处理上的区别，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. DFMEA 与 PFMEA 表格中均删除了特殊特性列，统一下放至控制计划中</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. DFMEA 与 PFMEA 表格中均严格保留了特殊特性列，以确保与 ISO 26262 协同</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. PFMEA 表格中保留了特殊特性列，但在 DFMEA 表格中删除了它</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. DFMEA 表格保留了特殊特性列，但在 PFMEA 表格中删除了它</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 231 页“F2.2 VDA 第四卷过程FMEA 变更为AIAG & VDA FMEA 手册”中明确记载：“PFMEA 表格中保留了特殊特性，但在DFMEA 删除了它。见附录D1 特殊特性。”故 C 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在从 VDA 第四卷向新版 PFMEA 演进的步骤一（规划和准备）中，表头内容发生了变更与新增。下列选项中，属于手册明确指出新版表头“添加内容（Added Content）”的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 年型/项目、项目、开始日期</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 公司名称、工程地点、顾客名称、保密级别</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. PFMEA ID 编号、过程职责、跨职能团队</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 修订日期、措施优先级（AP）、设计职责</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 231 页步骤一中明确区分了“变更内容”与“添加内容”。添加内容包括四项：vii. 公司名称，viii. 工程地点，ix. 顾客名称，x. 保密级别。年型/项目、项目、跨职能团队、PFMEA ID 编号等属于“变更内容”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机中框点胶装配工位的 PFMEA 分析中，工程师正在执行步骤三（功能分析）。根据新版手册规定，下列关于“功能与特性”层级匹配正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 过程步骤的功能对应“点胶机出胶气压恒定”，产品特性为“气压 0.40±0.02 MPa”</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 过程工作要素（4M）的功能对应“胶条宽度与连续性满足密封”，过程特性为“IP68 防水合格”</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 过程步骤的功能对应“在中框胶槽涂布连续密封胶条”，产品特性对应“胶条宽度 0.8±0.1mm、断胶量为 0”；过程工作要素的功能对应气动点胶机阀体动作，过程特性对应“气动阀点胶压力与出胶延时”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 过程项对应“过程特性”，过程工作要素对应“最终用户产品特性”</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 232 页步骤三中明确定义：过程步骤对应的是“过程步骤的功能和产品特性（量值为可选项）”；过程工作要素（4M）对应的是“过程工作要素的功能和过程特性”。在手机中框点胶中，中框上的胶条形态（宽度、连续性）属于产品特性，落在过程步骤层级；点胶机气压、阀门出胶延时属于设备工作要素的过程特性，落在工作要素层级。故 C 正确。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">在新版 PFMEA 步骤二（结构分析）中，相比原 VDA 第四卷进行了系统扩展，下列属于步骤二变更核心要点的是：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 项目扩展为过程项（系统、子系统、零件要素或过程名称）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 过程步骤包含工位编号和关注要素名称</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 过程工作要素采用 4M 类型（明确添加设备、人员、间接材料、环境等标签）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 彻底取消了过程流程图，仅保留结构树作为唯一分析工具</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 232 页步骤二“结构分析”指出：过程项扩展为系统、子系统、零件要素或过程名称；过程步骤包括工位编号和关注要素名称；过程工作要素包括 4M 类型（设备、人员、间接材料、里程碑/环境等），并详细说明了过程流程图和结构树的关联说明，并非取消流程图。故 A、B、C 正确，D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F2.2，在步骤四（失效分析）中，新版对手册结构与失效链逻辑进行了哪些重要升级？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 引入“关注要素”概念，明确失效分析的聚焦点</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 失效影响（FE）明确区分了“您的工厂”、“发运至工厂”和“最终用户”三个维度</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 在系统中将上一较高级别的 FE、关注要素的 FM、下一较低级别的 FC 进行严密逻辑对齐</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 将失效起因（FC）直接等同于人员操作失误，无需再关联 4M 要素或过程特性</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 233 页步骤四“失效分析”明确指出：①“关注要素概念确定了分析的重点”；②“确定了‘您的工厂’、‘发运至工厂’和‘最终用户’之间的影响”；③变更原因明确为“在系统中，对上一较高级别要素和/或最终用户的失效影响（FE）、关注要素的失效模式（FM）和下一较低级别要素或特性的失效起因（FC）进行调整（对齐）”。D 选项违反 4M 分析原则。故 A、B、C 正确。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

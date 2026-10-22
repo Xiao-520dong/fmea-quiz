@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 020：DFMEA 步骤三：功能结构树、功能网连接逻辑与跨团队协作</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 020：DFMEA 步骤三：功能结构树、功能网连接逻辑与跨团队协作</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>参数图（P-图）是功能分析的重要辅助工具，通过明确输入信号、预期输出、噪声因素（外/内/件间/退化）、控制因素及错误状态，清晰界定系统边界与物理转化机制。</li><li><strong>上期核心2：</strong>在 P-图分析中，设计的根本目标是通过优化控制因素（工程参数），在严苛的噪声因素干扰下，最大化预期输出并最小化错误状态（能量泄漏或非预期产物）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义：功能网的“双向逻辑”与层级传递</strong><br>在 AIAG & VDA DFMEA 步骤三中，功能结构树自上而下逐渐详细，其核心是将“系统层级”与“物理实现机制”建立因果链路。原书明确指出了检验功能结构逻辑连贯性的两个根本问题：<br>① <strong>自上而下（How，如何实现）：</strong>“较低级别功能如何使得较高级别功能生效？”——解释了高阶功能实现的物理路径与支撑架构。<br>② <strong>自下而上（Why，为何存在）：</strong>“为什么需要较低级别功能？”——回答了底层零部件存在的目的和对上层价值的贡献。<br>在 FMEA 表格中，功能分析划分为三列：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求或特性。这三栏与步骤二的结构要素严格对应，构建了坚实的功能网络。</div><div class="highlight-blue"><strong>2. 跨团队协作机制与“失效分析的基础”</strong><br>原书第 2.3.6 与 2.3.7 节给出了两项关键工程指引：<br>① <strong>工程团队协作（系统、安全与组件）：</strong>DFMEA 不是孤岛工作。系统团队提供设计架构（避免 DFMEA 团队重复定义结构）；安全团队与客户协作明确安全目标与危险（确保失效影响的严重度 S 评级保持全项目一致）；组件团队深入底层物理特性。多团队协同能防止跨部门技术风险遗漏与评估断层。<br>② <strong>失效分析的推导法则（肯定词 → 否定词）：</strong>功能的完整定义必须采用“肯定词语”（如：在规定间隙内传递电流、提供 Z 轴限位支撑）。只有用肯定词语把预期功能定义全面，步骤四的失效分析才能推导出完整的潜在失效模式（用“否定词语”描述）。原书指出功能失效包含 7 大典型形态：功能丧失、功能退化、功能间歇、部分功能丧失、非预期功能、功能超范围、功能延迟。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机摄像头马达（VCM）功能网构建与协同</strong><br>以传音中高端机型潜望长焦/主摄 VCM 闭环马达为例构建功能网：<br>• <strong>上一较高级别功能（手机整机/影像系统）：</strong>在 0.1s 内精准驱动镜头群位移至目标焦平面，实现锐利成像（满足 DCI-P3 动态抓拍需求）。<br>• <strong>关注要素功能（VCM 马达总成）：</strong>音圈系统根据 Driver IC 输入的电流变化产生受控的洛伦兹力，驱动载体（Carrier）平稳沿 Z 轴移动。<br>• <strong>下一较低级别功能/特性（悬丝簧片 & 霍尔传感器）：</strong>簧片提供精准的机械回复力与 Z 轴导向刚度；霍尔芯片实时检测磁场位移并反馈闭环位置信号（灵敏度误差 ≤ 1%）。<br><strong>双向验证：</strong>自上而下看，为什么能精准对焦？因为簧片导向良好且霍尔实时反馈闭环位置；自下而上看，为什么霍尔要高精度测距？为了支撑 VCM 的受控位移，最终满足整机快速抓拍。同时，影像系统团队与器件硬件团队协作，对焦超时（延迟）直接关联整机拍照模糊的严重度评估。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“功能网逻辑方向”，上下级因果倒置。</strong>工程师常把上一级功能写成“由底层组件支撑”，而在自下而上提问“为什么需要这个组件”时却无法回答它对系统的具体贡献，导致功能树断链。<br>• <strong>误区二：在功能定义中使用否定或失效词汇。</strong>在步骤三中直接写“防止漏电流”、“避免发热”。<em>纠偏：</em>步骤三必须用“肯定词语”（如“提供绝缘隔离阻抗 ≥ 100MΩ”），到了步骤四再推导否定词“绝缘击穿/电阻退化”。<br>• <strong>误区三：单兵作战，缺乏系统与安全团队输入。</strong>结构工程师自己闭门写 DFMEA，脱离系统架构与安全标准，导致对整机失效影响（严重度 S）主观臆断打分过低或过高。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.3.5 - 2.3.7 节（PDF 第 44-46 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》中，为了使功能结构符合逻辑地连接，工程师应采用哪两个核心问题来进行双向检验？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 自上而下提问“该功能的成本是多少？”，自下而上提问“该组件的供应商是谁？”</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 自上而下提问“较低级别功能如何使得较高级别功能生效？”，自下而上提问“为什么需要较低级别功能？”</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 自上而下提问“该功能何时失效？”，自下而上提问“失效后如何进行客户补偿？”</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 自上而下提问“该功能是否有专利保护？”，自下而上提问“竞品是否具备该功能？”</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书第 44 页明确指出：以下几个问题有助于功能结构符合逻辑地连接：“较低级别功能如何使得较高级别功能生效？”（自上而下，How）以及“为什么需要较低级别功能？”（自下而上，Why）。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于跨工程团队协作（系统、安全和组件团队）在 DFMEA 中的作用，原书第 2.3.6 节的表述以下哪项是正确的？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只有组件团队需要编写 DFMEA，系统和安全团队仅负责签署发布</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 系统团队创建的设计架构有助于避免重复工作，安全团队明确的安全目标有助于确保失效影响严重度（S）评级的一致性</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 跨团队协作主要是为了分摊产品设计缺陷所产生的质量索赔责任</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 安全团队的主要任务是评估组件的装配公差，系统团队负责元器件物料选型</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>根据原书第 45 页 2.3.6 节，系统团队创建的设计架构（结构）信息有助于 DFMEA 避免重复工作；安全团队与顾客协作了解安全目标和危险，此信息有助于 DFMEA 确保失效影响的严重度（S）评级一致。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机 Type-C 接口模块的 DFMEA 功能分析中，下列关于“功能网三级连接”描述最符合手册规范的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 上一级功能（主板未短路）→ 关注要素（不烧机）→ 下一级功能（引脚不歪斜）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 上一级功能（整机实现 68W 超级快充协议通信与能量传输）→ 关注要素（Type-C 母座可靠导通 3.4A 电流并维持接触阻抗稳定）→ 下一级功能（端子铜合金触点提供 ≥ 0.6N 正压力及镀金层抗氧化）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 上一级功能（用户满意度高）→ 关注要素（符合国际标准）→ 下一级功能（注塑件成本低于 0.2 元）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 上一级功能（外观无缝隙）→ 关注要素（防水点胶）→ 下一级功能（无溢胶缺陷）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>选项 B 严格遵循了“整机/系统级预期（快充）→ 关注要素（母座导通电流与接触阻抗）→ 下级组件特性（端子接触正压力与镀金层）”的层层支撑关系，且全部采用规范的肯定词语与可度量技术要求。A 和 D 大量使用否定词/失效词；C 脱离了技术功能物理定义。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 2.3.7 与 2.4.2 节，关于功能与失效分析关系的表述，以下哪些是正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 功能应使用肯定的词语进行完整定义，因为功能的完整定义将使失效分析更全面</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 功能失效是由功能推导而来的，潜在失效的方式和功能失效的方式相同，通常用否定的词语描述</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 潜在失效模式仅包含“功能完全丧失”一种形态，其他形态属于制造缺陷</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 潜在失效模式包括功能退化、功能间歇、非预期功能、功能超范围、功能延迟等多种形态</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 46 页指出：功能的完整定义（用肯定的词语）将使失效分析更全面，失效由功能推导而来（用否定的词语）。潜在失效模式包括但不限于：功能丧失、功能退化、功能间歇、部分功能丧失、非预期功能、功能超范围、功能延迟。因此 A、B、D 正确，C 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 AIAG & VDA DFMEA 功能分析（步骤三）的标准表格中，通常包含以下哪些层级的列定义？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 1. 上一较高级别功能及要求（分析范围内的系统/顾客功能）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 2. 关注要素功能及要求（在结构分析中识别的相关系统要素功能）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 3. 下一较低级别功能及要求或特性（在结构分析中识别的相关组件功能/特性）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 4. 失效影响严重度预估值（初评打分）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书第 45 页图 2.3-5 功能分析表格示例，步骤三包含三列：1. 上一较高级别功能及要求；2. 关注要素功能及要求；3. 下一较低级别功能及要求或特性。选项 D 属于步骤四/步骤五的失效与风险分析内容，不属于步骤三功能分析表格的表头列。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

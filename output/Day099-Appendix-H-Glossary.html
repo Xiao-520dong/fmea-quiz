@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 099：附件 H：AIAG & VDA FMEA 核心术语与标准词汇表精讲</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 099：附件 H：AIAG & VDA FMEA 核心术语与标准词汇表精讲</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：FMEA 关联标准全景网：</strong>回顾了 IATF 16949（体系合规与特殊特性）、VDA 系列（VDA 6.3/MLA 过程与成熟度保障）、ISO 26262（功能安全与 ASIL 分级）以及 SAE J1739/J2980 等标准与新版 FMEA 的紧密衔接关系。</li><li><strong>上期核心2：多体系协同赋能价值：</strong>明确了 FMEA 不是孤立的技术工具，而是贯穿产品全生命周期、承接安全机制（FMEA-MSR）与持续改进的核心纽带。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义（FMEA 核心架构与功能安全术语）</strong><br>新版手册附件 H 汇集了打通系统工程、DFMEA、PFMEA 及 FMEA-MSR 的核心通用术语，建立了跨学科、跨组织的标准化语言体系：<br>• <strong>网络物理系统（Cyber-Physical Systems）：</strong>一种通过互联网与系统用户紧密融合、基于计算机算法进行控制或监控的机制。<br>• <strong>失效链（Failure Chain）与失效网（Failure Net）：</strong>失效链包含“失效影响（FE）-失效模式（FM）-失效起因（FC）”。失效网则由一个或多个失效链在多个层级相互连接而成，体现了因果级联关系：在某一系统层级表现为失效起因的要素，在其相邻的较低层级即表现为该层级的失效模式。<br>• <strong>关注要素（Focus Element）：</strong>位于当前 FMEA 分析中心的对象。在按层级描述的系统结构中，关注要素拥有一个上级系统要素，以及至少一个下级系统要素。<br>• <strong>混合失效链（Hybrid Failure Chain）：</strong>特指在 FMEA-MSR 中包含“失效起因/失效模式、预期的监测控制，以及缓解的失效影响”的级联逻辑链条。<br>• <strong>诊断覆盖率（Diagnostic Coverage）：</strong>依据 ISO 26262-1:2018，由实施的安全机制所探测或监视到的硬件要素失效率或失效模式失效率的百分数，诊断数值由硬件功能安全分析确定。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（系统功能、响应与生命周期术语）</strong><br>理解标准词汇表在 FMEA 七步法分析中的具体映射规则：<br>• <strong>结构与系统要素：</strong>“系统要素”是指在结构树中显示的系统内要素；“结构树”则是以图解形式描述系统要素及其附属要素之间层级联系的工具。<br>• <strong>主要功能 vs 次要功能：</strong>“车辆/系统主要功能”是实现产品基础用途所必需的功能（如转向、制动、通信等）；“车辆/系统次要功能”是能够增强或确保主要功能及良好用户体验的功能，包括安全性、舒适性、便利性、接口功能、诊断功能及可服务性。<br>• <strong>系统响应（System Response）：</strong>系统对探测到的故障所作出的回应，通常体现为功能降级、功能禁用，和/或向操作人员发出警示信息并设置故障代码（DTC）。<br>• <strong>运行状况（Operational Condition）与残余风险（Residual Risk）：</strong>根据 ISO 26262-1:2018，运行状况是指在寿命周期内发生的情形（如高温充电、极端震动、驻车维修等）；残余风险则是部署安全机制与风险防范措施之后剩余的风险。<br>• <strong>使用寿命（Useful Life / Service Life）与 0 公里（Zero Kilometer）：</strong>使用寿命是指产品预期的设计寿命，在此操作时间段内系统可提供正常功能且失效率在可接受公差范围内；“0 公里”特指尚未离开组装厂/制造厂的阶段（制造出厂前的早期失效防范窗口）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（智能终端领域的术语映射与落地）</strong><br>在传音智能手机及多品类（如快充充电器、智能穿戴）产品开发中，附件 H 的术语具有极高的实践指导价值：<br>• <strong>关注要素与失效网层级：</strong>在手机快充系统 DFMEA 中，关注要素为“主板充电管理电路”，其上级为“整机整机系统”，下级为“充电 IC 与外围滤波电容”。当下级滤波电容击穿失效（FC）时，在关注要素层级即表现为“充电电路无法稳压输出（FM）”，最终在上级整机端体现为“手机无法快速充电或后盖异常发热（FE）”，形成完整的失效网。<br>• <strong>混合失效链与系统响应：</strong>在手机电池过温安全机制中，起因是“快充热失控风险（FC）”，预期监测控制为“NTC 热敏电阻与软件温控驱动”，系统响应为“自动降流至 5W 并在 UI 界面弹窗警告‘温度过高，充电已暂停’”，从而将严重度极高的起火风险降低为用户感知的局部体验影响（缓解的失效影响）。<br>• <strong>0 公里与使用寿命边界：</strong>生产线整机自动化功能测试（FT/FCT）拦截主板冷焊脱焊属于控制“0 公里失效”；而针对非洲高温高湿环境开展的 1000 小时双 85 湿热加速老化试验，则是在验证产品的“使用寿命（Useful Life）”。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>混淆“失效链”与“失效网”的层级动态性：</strong>错误地认为失效模式、起因和影响是静态固定的词条。手册明确指出：因果关系随关注层级而动态迁移，中间层级的失效模式向上一层级推演即为失效起因，向下一层级探究即为失效影响。<br>• <strong>割裂“主要功能”与“次要功能”的危害等级：</strong>误以为“次要功能”不重要。在标准定义中，“次要功能”直接涵盖了“安全性（Safety）与诊断功能”，一旦安全次要功能失效，可能会诱发极其严重的灾难性后果。<br>• <strong>误读“0 公里”失效：</strong>将出厂后刚售出几天（如开箱即损 DOA）混同为手册定义的“0 公里”。手册标准词汇表中明确界定，“0 公里”是指“尚未离开组装厂（Not yet left the assembly plant）”的产品，属于制造出厂前的厂内阶段。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 H（原书 P238-239）（PDF 第 238-239 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 H 词汇表，关于“失效网（Failure Net）”的定义，下列描述最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 失效网仅指在单一系统要素内并列罗列的所有潜在失效模式的集合</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 失效网由一个或多个失效链连接在一起，在多层级显示失效，某层级的失效起因在相邻较低层级表现为失效模式</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 失效网是由故障树分析（FTA）转化而来、只包含顶事件与底事件的双层结构</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 失效网是专门用于 FMEA-MSR 中描述传感器与控制器交互作用的物理拓扑图</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册原书 P238 明确定义：“失效网由一个或多个失效链连接在一起，这些失效链可以在多个层级对失效现象进行显示，这样在某个层级的失效起因在相邻较低层级则为失效模式。”选项 B 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">根据附件 H 词汇表，关于“0 公里（Zero Kilometer）”的标准定义，是指下列哪种状态的产品？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 刚刚交付终端用户、累计使用未超过 24 小时的产品</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 尚未离开组装厂的产品</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 在售后保修期第 1 个月内发生质量索赔的产品</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 运输途中因跌落振动导致性能受损的在途产品</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册原书 P238 原文明确指出：“0 公里：尚未离开组装厂的车辆（对于零部件/电子制造即尚未出厂的产品）”。A、C 属于售后早期失效或保修期，不属于 0 公里的标准定义。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机电源管理系统（PMIC）的 FMEA 分析中，定义系统对异常高压探测的“系统响应（System Response）”。根据词汇表，下列属于标准“系统响应”表现形式的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 硬件芯片彻底烧毁并形成开路</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 自动降低充电功率（功能降级）、关闭快充通路并向屏幕 UI 发出过温警示、记录错误日志</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 供应商对产线贴片工艺进行制程能力 CPK 分析</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 生产线操作工目视检查充电口是否有异物</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 P238 词汇表定义：“系统响应：系统对探测到的故障的回应，通常以功能降级或禁用和/或向操作人员发出警示信息并设置故障代码方式进行回应”。选项 B 准确对应了功能降级、功能禁用、警示与报错机制。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 H 词汇表，关于“次要功能（Secondary Function）”的描述，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 次要功能是指能够增强或确保主要功能及良好用户体验的功能</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 安全性（Safety）属于次要功能的涵盖范畴</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 诊断功能、可服务性与接口功能属于次要功能</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 次要功能因为重要性低，在 DFMEA 分析中可以完全忽略不计</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册原书 P238 明确定义：“车辆次要功能：一种能够增强或确保车辆主要功能及良好用户体验的功能，例如：安全性、舒适性、便利性、接口功能、诊断功能，以及可服务性。”虽然被称为“次要”，但包含安全性与诊断功能，绝不可忽略，故 D 错误，A、B、C 正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据附件 H 词汇表，关于 FMEA-MSR 及功能安全关联术语，下列定义正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 混合失效链：包含失效起因或失效模式、预期的监测控制，以及缓解的失效影响</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 诊断覆盖率：由实施的安全机制所探测或监视到的硬件要素失效率或失效模式失效率的百分数</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 残余风险：在部署安全措施之前的系统固有原始风险</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 运行状况：根据 ISO 26262-1:2018，在产品/车辆寿命周期内发生的情形（如高温操作、低电量运行、维修等）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 P238 明确定义：混合失效链包含失效起因/模式、预期监测控制及缓解的失效影响（A 对）；诊断覆盖率是安全机制探测到的硬件失效率百分数（B 对）；残余风险是“在部署安全措施之后的剩余风险”，而非部署前（C 错）；运行状况是指在寿命周期内发生的情形（D 对）。因此正确答案为 A、B、D。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

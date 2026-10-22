@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 090：附件 F1.1（下）：从 AIAG 第四版到新版 DFMEA 的变更点（步骤五至七）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 090：附件 F1.1（下）：从 AIAG 第四版到新版 DFMEA 的变更点（步骤五至七）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（结构与功能分析变更）：</strong>AIAG 第四版无独立结构分析，新版确立了三层次结构树（上一较高、关注、下一较低）；功能分析中强化了“用户-产品-组件”的功能对应与失效分析的基础映射。</li><li><strong>上期核心2（失效分析与失效链）：</strong>失效分析各列从旧版的 FM-FE-FC 调整为符合因果逻辑顺序的 FE（影响）- FM（模式）- FC（起因），明确了由关注要素辐射上下层级的失效链模型。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与变更背景</strong><br>在《AIAG & VDA FMEA 手册》附件 F1.1 中，重点对比了步骤五（风险分析）、步骤六（优化）以及步骤七（结果文件化）从 AIAG 第四版到新版的核心重大变更：<br>1) <strong>术语与评价标尺升级：</strong>将术语“排名（Ranking）”彻底替换为“评级（Rating）”，强调依据量表准则客观评级而非主观排序。严重度（S）定义了新的十分制量表，S=10（安全无警告）和 S=9（法规符合性），在 FE 为最终用户级别时 DFMEA/PFMEA/FMEA-MSR 保持统一；频度（O）强调以预防控制（PC）作为输入；探测度（D）综合考量探测能力、成熟度与探测机会。<br>2) <strong>措施优先级（AP）全面取代风险顺序数（RPN）：</strong>废除单纯 S×O×D 乘积的 RPN 阈值管理，引入基于逻辑条件分配的高（H）、中（M）、低（L）措施优先级表，AP 表在 DFMEA 和 PFMEA 中完全通用，并依次考虑 S、O、D 的权重与逻辑关系。<br>3) <strong>分类列变更为筛选器代码（Filter Code）：</strong>旧版产品图纸/规范中的失效分类非 DFMEA 必要项，新版以可选的“筛选器代码”列替代，用于标识特殊特性或企业特定内部标记。</div><div class="highlight-blue"><strong>2. 步骤六（优化）与步骤七（结果文件化）的规则拆解</strong><br>1) <strong>优化的结构化升级（表单重构）：</strong><br>- <strong>措施分流：</strong>将原“建议措施”拆分为清晰的“预防措施”和“探测措施”两列独立推进。<br>- <strong>状态管理规范化：</strong>新增“状态”列，推荐标准化状态级别（如尚未确定 Initial/Open、已完成 Completed、已弃用 Discarded 等）。<br>- <strong>基于证据的闭环：</strong>“采取的措施”变更为“采取基于证据的措施（Action Taken with Pointer to Evidence）”，明确要求闭环必须有实际试验报告、仿真数据、图纸更改记录等客观证据支撑。<br>- <strong>新增备注：</strong>设立专门“备注”列，供 FMEA 团队及企业内部记录技术背景与沟通细节。<br>- <strong>有效性评估重新评级：</strong>采取措施后需重新评估 S、O、D 及新的 AP。<br>2) <strong>步骤七（结果文件化）：</strong><br>- <strong>强化管理层所有权：</strong>新版明确 FMEA 过程归管理层所有，管理层对资源分配、项目节点与风险控制承担最终责任。<br>- <strong>技术风险与里程碑挂钩：</strong>步骤七要求出具总结报告，向内部管理层和客户汇报技术风险与改进成效，作为产品研发项目里程碑评审（如 EVT、DVT 阶段放行）的核心决策输入。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>以传音高功率快充手机（如 Infinix/TECNO 160W/260W 快充项目）的电池管理系统（BMS）及整机热失控防护 DFMEA 为例：<br>1) <strong>风险分析实施（步骤五）：</strong>FE 为“电池热失控引发整机起火”，S=10（安全相关）。即使原有 PC（过压硬件保护电路）较好，若原有 D 依靠后期常温整机充电老化抽检（D=5），查 AP 逻辑表，S=10、O=3、D=5 时直接触发 AP=H（高优先级），必须采取措施，彻底打消以往工程师以“RPN 仅 150，未超 200 阈值不用改”的侥幸推脱借口。<br>2) <strong>优化闭环与证据驱动（步骤六）：</strong>DFMEA 优化栏中，分流为“预防措施：增加二级独立过温断电保护芯片”和“探测措施：引入极端环境充放电失效注入仿真与 DVT 极限应力台架测试”。在“采取基于证据的措施”栏中，结构与硬件团队不仅填写“电路已修改”，还必须关联附带具体的仿真报告编号（SIM-BMS-2024-058）与 DVT 破坏性测试验证报告（TR-OVP-0034），并在状态栏置为“已完成”，重新评级后 AP 降至 L，符合量产放行要求。<br>3) <strong>管理评审（步骤七）：</strong>在传音专有的项目评审会（如 DVT 样机转生产线评审）上，FMEA 主持人必须提交步骤七总结报告，清晰展示 AP 从 H 降至 L 的闭环状态及残余风险，由研发总监与质量总监签字闭环。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><strong>误区 1：继续沿用旧版 RPN<100 作为不需要采取措施的判断标准。</strong><br><em>避坑指南：</em>新版全面废止 RPN 及任何硬性数值阈值。必须使用 AP 表依次根据 S、O、D 的逻辑组合评估 H/M/L。当 S 极高（如 9~10）时，即便 O 和 D 较低，AP 依然可能处于高或中级别，必须由团队优先评估或给出维持当前控制的充分技术理由。<br><strong>误区 2：优化栏中的“采取基于证据的措施”只写一句话“已改善”。</strong><br><em>避坑指南：</em>新版强调“基于证据（with pointer to evidence）”。仅填写“图纸已改”或“结构已优化”属于严重不合规；必须指引明确的支撑证据编号（如 ECN 变更单号、测试报告 ID、公差分析报告编号等），确保风险改善可追溯、可审计。<br><strong>误区 3：将新版的“筛选器代码（Filter Code）”视作必填的强制特殊特性列。</strong><br><em>避坑指南：</em>原书指出失效分类并非 DFMEA 的强制要求，新版设定的筛选器代码列是“可选的（Optional）”，企业可根据自身内部管理流程自定义使用，切勿因无内容而强行填写或视作缺陷。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.1（原书 P221-223）（PDF 第 221-223 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》中，关于步骤五（风险分析）相较于 AIAG 第四版的变更描述，下列说法错误的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 术语“排名（Ranking）”被替换为“评级（Rating）”，强调根据评级表标准进行评价</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在严重度（S）评级中，评级 10 和 9 分别与功能安全及法规对应，无论有无警告安全均为 10</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 依然保留风险顺序数（RPN）作为首要评估指标，只有在 RPN>200 时才参考 AP 表</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 原“分类”列被替换为可选的“筛选器代码”列，用于标记特殊特性或公司特定信息</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 221-222 页，新版手册中明确提供“措施优先级（AP）以替代风险顺序数（RPN）”，AP 表全面取代了 RPN，依次考虑 S、O、D 的重要性并应用逻辑确定优先级。因此 C 选项“依然保留 RPN 作为首要指标”说法错误。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">根据原书关于步骤六（优化）的变更说明，原 AIAG 第四版的“建议措施”在新版表格中被拆分调整为哪两列？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 设计措施 和 制造措施</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 预防措施 和 探测措施</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 纠正措施 和 预防措施</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 短期临时措施 和 长期永久措施</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 222 页“步骤六：优化”第 i 条明确指出：“建议的措施分为两列：预防措施和探测措施”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在进行某款旗舰机型潜望式长焦马达的 DFMEA 优化闭环评审时，针对“采取的措施”一栏，下列哪位工程师的做法最符合新版手册对“步骤六：优化”的最新要求？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 工程师甲在表格中仅填写：“已优化马达结构限位”，未附带任何附件或报告编号</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 工程师乙填写：“通过调整注塑模具加强筋厚度防止跌落卡死，详见仿真报告 SIM-2024-AF01 及跌落验证报告 TR-CAM-0082”，状态置为已完成并附上验证数据</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 工程师丙计算采取措施后的 RPN 值为 88，认为低于 100 即自动合格，无需重新评估措施优先级（AP）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 工程师丁认为状态只有“已完成”一种，凡是未开始的均直接删除该行</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>新版手册明确变更内容为“采取基于证据的措施（Action Taken with Pointer to Evidence）”，要求可视化管理且能有效追踪支撑证据（如仿真或测试报告编号）。同时废弃了 RPN 机制，状态级别包括尚未确定、已完成、已弃用等。因此工程师乙的做法完全符合新版要求。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据原书 PDF 第 222 页，新版 DFMEA 在步骤六（优化）中新增和变更的表格要素包括哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 建议措施明确细分为预防措施和探测措施两列</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 新增“状态”列，推荐状态包括尚未确定、已完成、已弃用</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. “采取的措施”变更为“采取基于证据的措施”</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 新增“备注”列，供 DFMEA 团队或内部使用</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 强制要求在优化后恢复计算 RPN 乘积以验证改善率</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 222 页明确说明步骤六的变更包括：i. 建议的措施分为两列：预防措施和探测措施；ii. 新增内容：状态（建议状态级别：尚未确定、已完成、已弃用）；iii. 变更内容：采取基于证据的措施；iv. 新增内容：备注（供 DFMEA 团队或内部使用）。E 选项中恢复计算 RPN 属于错误说法，新版已彻底废除 RPN。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于《AIAG & VDA FMEA 手册》中步骤七（结果文件化）及管理层职责的表述，下列符合原书内容的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 步骤七总结了报告中 DFMEA 的范围和结果，供内部管理层和/或顾客评审</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. FMEA 过程归 FMEA 主持人个人所有，管理层仅负责最后在图纸上签字</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. FMEA 过程归管理层所有，管理层最终负责资源的选择和应用，并确保时间安排等风险管理过程有效</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 步骤七报告应指出失效发生的技术风险，将其视作组件开发计划和项目里程碑的一部分</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 223 页“步骤七：结果文件化”明确指出：总结了 DFMEA 的范围和结果供管理层和/或顾客评审；FMEA 过程归管理层所有，最终负责资源的选择和应用及时间安排等风险管理有效性；报告应指出失效发生的技术风险，以视作组件开发计划和项目里程碑的一部分。B 选项严重违背管理层所有权原则。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

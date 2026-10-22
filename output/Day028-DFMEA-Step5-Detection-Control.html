@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 028：DFMEA 步骤五：当前探测控制（DC）、控制确认与设计路线图</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 028：DFMEA 步骤五：当前探测控制（DC）、控制确认与设计路线图</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：设计控制与预防控制（PC）：</strong>预防控制是在产品投产前消除或降低失效起因发生的可能性，主要通过设计准则、最佳实践、设计裕量、仿真及防错结构实现。</li><li><strong>上期核心2：PC与频度（O）的关系：</strong>预防控制直接决定了频度（O）的初始评级，预防措施完成并固化后，其最终实际效果需要通过探测控制来验证与确认。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义（2.5.4 当前探测控制 DC）</strong><br>• <strong>定义与目的：</strong>当前探测控制（DC, Detection Control）是在项目交付生产前，探测失效起因（FC）或失效模式（FM）是否存在的控制活动。<br>• <strong>已计划/已完成属性：</strong>FMEA 中列出的当前探测控制必须表示<strong>已计划的活动或已完成的活动</strong>，绝不能填入未来“可能永远不会实施”的潜在愿望或待定测试。<br>• <strong>具体性与可追溯性要求：</strong>当前探测控制必须清楚全面地说明。诸如“测试”或“实验室测试”等笼统陈述<strong>不能</strong>算作明确的探测控制。必须明确引用具体测试编号、测试计划或标准程序（如：测试号 1234 爆裂压力测试，第 6.1 段），以表明团队已确认该测试切实具备探测出该起因或模式的能力。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（2.5.4 示例 & 2.5.5 控制确认与设计路线图）</strong><br>• <strong>原书典型探测控制（DC）示例：</strong>功能检查、爆裂测试、环境测试、驾驶测试、耐久性测试、运动范围研究、硬件在环（HIL）、软件在环（SIL）、实验设计（DoE）、电压输出实验室测量等。<br>• <strong>PC 与 DC 的时序与角色关系（图 2.5-1）：</strong><br>  - <strong>PC（预防）：</strong>发生在决策之前或设计确定阶段，如公差分析、理论计算、FEA 仿真、DoE 参数优化，目的是避免出现设计失效；<br>  - <strong>DC（应对/验证）：</strong>在设计形成实体或软硬件在环后，进行质量检验、失效检验、寿命周期功能测试、趋势分析，验证设计是否合格。<br>• <strong>控制有效性确认（2.5.5）：</strong><br>  - 必须确认当前 PC 和 DC 的有效性，通常在“验证分解评审（Design Verification Review）”过程中完成，并在 DFMEA 或项目文件中记录。<br>  - 若控制被证明无效，必须制定并执行额外的纠正/改进行动。<br>• <strong>继承历史 FMEA 的规则：</strong>若沿用旧机型/旧平台的 FMEA 条目，<strong>必须重新评审频度（O）和探测度（D）</strong>，因为新产品在新平台、新环境下可能存在不同的边界条件与失效机理。<br>• <strong>设计理解路线图（图 2.5-2）：</strong>随时间推进，团队通过“计算/新计算 → 模拟/DoE/新模拟 → 现有样品测试 → 新样品验证”逐步深化，从最初的理论预防走向 100% 的设计理解与实测探测确认。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>手机整机与元器件测试的 DC 具体化描述：</strong><br>  - <em>错误写法：</em>“跌落测试”、“高温测试”、“ESD 测试”。<br>  - <em>传音规范写法：</em>“整机定向微跌落测试（企标 Q/TY-RD-ME-042 第 4.2 节，0.5m 钢板跌落 1000 次）”、“高温高湿储存测试（GB/T 2423.50，65℃/95%RH 48h 开机点检）”、“Type-C 端口静电接触放电测试（IEC 61000-4-2，±8kV 接触/±15kV 空气放电）”。<br>• <strong>新兴非洲/南亚特殊环境的继承评审场景：</strong><br>  - 某机型直接复用国内/东南亚旧款主板的防护设计及 FMEA 条目。但在东非高原与西非沿海高盐雾汗液环境下，原有的盐雾测试（DC）与防腐蚀镀层预防（PC）必须重新评审 O 和 D。旧款 D=2（国内环境能检出）在新环境汗液腐蚀起因下可能失效，需升级为特定的人工汗液滴落耐受测试，否则不能直接照搬评分。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把“将来的打算/改进措施”当成“当前探测控制”。</strong><br>  <em>纠偏：</em>当前探测控制（DC）必须是当前项目已明确排期、已纳入 DV/PV 测试计划的活动。如果还在讨论“也许我们可以加做一次 CT 扫描”，绝不能写入当前 DC，而应作为步骤六的“优化措施”。<br>• <strong>误区二：笼统模糊，只写“实验室测试”或“功能测试”。</strong><br>  <em>纠偏：</em>手册明确规定这是不合格的。必须指明测试依据、测试项目编号及检验段落，确保该测试方法切实能激发并探测到该失效模式。<br>• <strong>误区三：老机型数据直接“Ctrl+C / Ctrl+V”。</strong><br>  <em>纠偏：</em>手册 2.5.5 强调：即使产品/过程外观相似，换了新项目、新客户、新使用环境，环境条件改变会导致探测难度变化，必须重新评审频度 O 与探测度 D。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.4 - 2.5.5 节（PDF 第 57-59 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于“当前探测控制（DC）”的描述，下列哪一项是正确的？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 当前探测控制可以列出团队未来设想、但尚未确定是否实施的潜在测试计划</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 只要写明“实验室测试”或“出厂功能测试”，就满足了手册对探测控制的明确性要求</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 当前探测控制表示计划的活动（或已完成的活动），在交付生产前探测失效起因或失效模式是否存在</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 探测控制只能在量产后用于监控生产线的产品不良率，无法在设计交付前实施</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据手册第 57 页 2.5.4 节：当前探测控制在项目交付生产前探测失效起因或失效模式是否存在；列出的必须是“计划的活动（或已完成的活动），而不是可能永远不会实施的潜在活动”；诸如“测试”或“实验室测试”等陈述不能算是明确说明，故 A、B、D 均错误，C 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">手册 2.5.5 节中对于“使用之前产品的 FMEA 条目”有明确的指导原则，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只要产品结构未变，之前产品的频度和探测度评估可以直接继承，无需评审</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 若使用之前产品的 FMEA 条目，应对频度和探测度评估进行评审，因为新产品可能有不同的条件</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 只要产品名称改变，就必须废弃旧 FMEA，不允许复用任何历史条目</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 继承历史 FMEA 时，只需要重新评估严重度 S，频度 O 和探测度 D 永远保持不变</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据手册第 58 页 2.5.5 节原话：“若使用之前产品的 FMEA 条目，应对频度和探测度评估进行评审，因为新产品可能有不同的条件。”因此 B 选项正确。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在编写智能手机铰链机构的 DFMEA 时，针对失效模式“转轴折叠异响”，下列哪种当前探测控制（DC）的表述最符合新版手册规范？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. “测试”</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. “实验室机械可靠性测试”</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. “铰链寿命耐久性与异响声学测试（依据 Q/TY-TEST-2023 规范第 4.3 节，20万次弯折，声级计测量＜35dB）”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. “后续如果出现异响，计划研发一台新型声纹振动分析仪进行探测”</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据手册第 57 页 2.5.4 节：探测控制必须清楚全面说明，“测试”或“实验室测试”不合规（排除 A、B）；探测控制必须是已计划或已完成的，不能是未来假设的活动（排除 D）；引用具体测试规程、编号及方法的 C 选项完全符合规范。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》图 2.5-1 及 2.5.4 节，下列哪些属于典型的“探测控制（DC）”或其确认活动？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 爆裂测试（Burst Testing）与耐久性测试</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 硬件在环（HIL）与软件在环（SIL）测试</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 寿命周期的功能测试与趋势分析</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 设计阶段早期的理论公差累积分析（Tolerance Study）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据手册第 57 页 2.5.4 节列表及第 58 页图 2.5-1：爆裂测试、耐久测试、HIL、SIL、寿命周期功能测试和趋势分析均属于 DC；而选项 D 公差累积分析（Tolerance Study）属于典型的“预防控制（PC）”，发生在设计决策确定之前，故排除 D。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于“当前预防和探测控制的确认”及设计理解路线图（2.5.5 节与图 2.5-2），下列叙述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 应确认当前预防和探测控制的有效性，这可以在验证分解评审过程中完成</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 如果当前预防或探测控制被证明无效，则需要额外的纠正/改进行动措施</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 设计理解路线图表明，设计理解度随着“计算 → 仿真模拟/DoE → 样品测试”逐步提升至 100%</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 探测控制执行完毕后，只能用来评估严重度（S），不能用来确认频度（O）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据手册第 57-58 页：“应确认当前预防和探测控制的有效性。这可以在验证分解评审过程中完成。如果这些控制被证明无效，则需要额外的措施”，A、B 正确；图 2.5-2 详细展示了通过计算、模拟、测试不断逼近 100% 设计理解，C 正确；手册第 57 页第 1 行明确指出：“预防措施完成后，频度通过探测控制来确认”，D 选项说法颠倒错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 060：FMEA-MSR 步骤四（失效分析）：失效场景逻辑（有/无系统响应对比）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 060：FMEA-MSR 步骤四（失效分析）：失效场景逻辑（有/无系统响应对比）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（操作条件与功能层次）：</strong>功能分析（步骤三）需将系统拆解为上一级要求（如防夹保护）、关注要素功能（如发出电机停止与反转信号）及下一级要素/特性（如霍尔传感器信号与状态传输），明确诊断监视的职责边界。</li><li><strong>上期核心2（诊断监视的承载体）：</strong>监视与诊断功能高度依赖于具有诊断能力的微控制器/ECU，其核心目标是为进入步骤四（失效分析）识别故障行为及后续触发系统安全响应提供功能基础。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>FMEA-MSR 失效分析目的（4.4.1 节）：</strong>在相关操作场景下，说明导致最终影响的完整事件链（失效起因 → 监视 → 系统响应 → 减轻的失效影响）。通过参数图或失效网建立产品失效链，作为表格记录和风险分析的基础，并促进客户与供应商之间的协作。</li><li><strong>失效场景定义（4.4.2 节）：</strong>由特定操作条件与事件序列组成的系统状态演进过程。起点为确定的失效起因，终点为最终的失效影响。分析核心聚焦于具有诊断能力的组件（ECU/MCU）。</li><li><strong>故障处理时间间隔（Fault Handling Time Interval, FHTI）：</strong>在安全机制未激活或失效的前提下，从故障发生到危险事件或不合规失效影响产生之间的最大允许时间跨度。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与三大失效场景对比拆解</strong><br>根据系统是否具备诊断能力及安全机制响应，手册将失效场景划分为三种典型路径：<ul><li><strong>场景 (1) —— 无危险事件（S = 1~9，无安全机制或未触发）：</strong>故障出现 → 产生故障行为（失效模式） → 经过一定时间演变为最终影响。此影响不会造成人身危险，但可能导致功能丧失、客户抱怨或法规不合规（如通信丢失、显示异常）。</li><li><strong>场景 (2) —— 危险事件（S = 10，安全机制未激活/不存在）：</strong>故障出现 → 发生故障行为 → 超过故障处理时间间隔（FHTI） → 直接引发危害人身安全的危险事件（如电池热失控、电机失控夹伤）。在此场景中，FHTI 评估是安全设计的硬约束。</li><li><strong>场景 (3) —— 减轻/减缓影响（含监视与系统响应）：</strong>故障出现 → 发生故障行为 → <strong>在 FHTI 内完成故障探测与系统响应（系统响应时间 = 探测时间 + 过渡时间 ≤ FHTI）</strong> → 系统进入安全状态或降级模式 → 避免危险事件，最终影响仅为功能的损失或退化（严重度降低，M 评价生效）。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以智能手机 68W 超快充热保护为例）</strong><br>在传音中高端机型快充架构中，PMIC/电荷泵具备硬件与固件联合监视能力：<ul><li><strong>失效起因（FC）：</strong>主板 USB 接口 NTC 热敏电阻焊点受跌落应力虚焊，输出异常悬空高阻抗信号。</li><li><strong>无系统响应场景（场景 2 风险）：</strong>若充电管理芯片未设计开路检测与超时机制，大电流持续灌入，电芯温度突破极限引发起火/热失控（S = 10 危险事件），该过程跨越的时间即为系统热击穿时间窗口。</li><li><strong>有系统响应场景（场景 3 缓解）：</strong>系统定义 FHTI 为 1.5 秒。PMIC 内部看门狗与 ADC 诊断机制在 200ms 内探测到 NTC 阻值突变（探测时间），并在 300ms 内强行拉低 PWM 驱动、断开快充路径并回退至 5V/500mA 安全供电（过渡时间）。系统总响应时间 500ms &lt; 1.5s，成功将危险降级为“弹出充电异常提示，仅维持慢充”（S 降低，功能降级但无危险）。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 DFMEA 探测度与 MSR 监视响应：</strong>工程师常将产线 EOL 测试或研发测试当作 MSR 响应。<em>纠正：</em>FMEA-MSR 的失效分析完全立足于“终端客户使用过程中的在线实时诊断与响应”，非制造/测试端手段。</li><li><strong>误区二：忽略“系统响应时间 ≤ 故障处理时间间隔”这一前提：</strong>以为只要写了“系统切入保护”就必然能减轻严重度。<em>纠正：</em>如果软件滤波或硬件关断过渡时间超过了物理破坏的 FHTI 窗口，危险事件依然会先一步爆发，降级逻辑无效。</li><li><strong>误区三：认为场景 (3) 可以消除所有失效影响：</strong><em>纠正：</em>场景 (3) 的结果是“减缓的失效影响”，通常伴随功能的退化、降级或安全停机，必须如实记录降级后的影响并评估严重度。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.4.1 - 4.4.2 节（PDF 第 128-130 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，FMEA-MSR 步骤四（失效分析）中构建“失效场景”的核心起点和终点分别是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 起点为产品设计规范，终点为制造工序缺陷</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 起点为确定的失效起因，终点为失效影响（系统最终状态）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 起点为客户抱怨记录，终点为软件故障码（DTC）清除</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 起点为探测控制手段，终点为严重度评级</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 4.4.2 节明确指出，失效场景是由相关操作条件描述及事件序列组成的系统状态演进过程，“它的起点为确定的失效起因，而其终点为失效影响”。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在安全机制未激活的前提下，关于“故障处理时间间隔”（Fault Handling Time Interval）的概念，下列描述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 指工厂产线在线 ICT 测试治具检出元器件短路所需的最长时间</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 指售后维修网点读取并清除故障诊断代码的平均工时</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 指从故障发生到危险/不合规失效影响发生之间，允许故障行为持续的最大时间跨度</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 指软件看门狗复位处理器的固定周期时间</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 4.4.2 节图 4.4-3 及正文定义：故障处理时间间隔系指在安全机制未激活的前提下，从故障发生到危险/不合规失效影响发生之间的时间跨度，即危险事件发生前故障行为的最大时间跨度。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机摄像头光学防抖（OIS）驱动模块的 FMEA-MSR 分析中，若驱动 IC 的霍尔反馈引脚发生断路故障，且安全响应成功执行，属于原书定义的哪种失效场景？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 失效场景 (3)：在 FHTI 内完成诊断并切断驱动电流，避免音圈马达持续过流烧毁，手机降级为无防抖普通对焦模式</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 失效场景 (2)：系统无任何诊断，马达剧烈振荡导致镜头断裂引发人身伤害</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 失效场景 (1)：系统完全消除故障，马达恢复全部正常防抖特性，严重度 S 降为 1</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 传统 DFMEA 场景：直接判定为产线装配来料虚焊，无需在终端设计监视机制</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>失效场景 (3) 说明了从故障出现到减缓的失效影响出现的演进过程。系统在 FHTI 内通过监视与响应使系统进入安全或降级状态，避免了严重硬件损坏或危险事件，但表现为功能的损失或退化（防抖失效降级为普通对焦）。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 4.4.1 节，FMEA-MSR 失效分析的主要目标包括以下哪些项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 建立失效链（失效起因、监视、系统响应、减轻的失效影响）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 使用参数图或失效网确定产品失效起因</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 促进顾客与供应商之间就失效影响开展协作</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 为 FMEA 表格记录和风险分析步骤奠定基础</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 4.4.1 节列出的主要目标包括：建立失效链（失效起因、监视、系统响应、减轻的失效影响）、使用参数图或失效网确定产品失效起因、顾客与供应商之间的协作（失效影响）、FMEA 表格和风险分析步骤中失效记录的基础。全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 4.4.2 节的失效场景 (3)（减缓影响模型），系统若要成功实现“减轻失效影响”，必须满足以下哪些时序条件？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 必须在系统操作运行期间由具有诊断能力的组件（如 ECU/MCU）检出故障</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 系统响应时间由“探测时间”和“过渡时间”两部分构成</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 系统的总响应时间（探测时间 + 过渡时间）必须小于或等于故障处理时间间隔（FHTI）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 必须确保系统绝对不发生任何功能的损失或性能退化</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书图 4.4-4 及文字：具有诊断能力的组件需在线探测故障，系统响应时间由探测时间与过渡时间组成，且必须在故障处理时间间隔（FHTI）内完成过渡并触发减缓影响；而减缓后的结果通常会导致功能的损失或退化，而非完全无损，故 D 错误，正确选项为 A、B、C。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

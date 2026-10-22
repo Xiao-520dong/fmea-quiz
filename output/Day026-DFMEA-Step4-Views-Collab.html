@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 026：DFMEA 步骤四：三级表格视图转换与顾客/供应商协作</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 026：DFMEA 步骤四：三级表格视图转换与顾客/供应商协作</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：失效结构与失效链构建：</strong>基于步骤二结构分析与步骤三功能分析的三级结构，DFMEA 步骤四通过“上一较高级别要素（FE-失效影响）← 关注要素（FM-失效模式）← 下一较低级别要素/特性（FC-失效起因）”自上而下或自下而上建立具有严密因果逻辑的失效链。</li><li><strong>上期核心2：多重因果与失效网逻辑：</strong>单一关注要素的失效模式（FM）可能由多个下一级起因（FC）引起，并可能在上一较高级别引发多种不同的失效影响（FE），通过失效网能清晰呈现系统、子系统与零件之间的网状连锁失效机制。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义（2.4.8 - 2.4.10 节）</strong><br>• <strong>失效分析记录的多视图转换（2.4.8）：</strong>结构分析、功能分析与失效分析完成后，DFMEA 表格不仅可以展示全景失效链，还可以依据业务评审需求拆解为三个独立的“项目－功能－失效”视图：<br>  - <strong>图2.4-7 产品最终项目－功能/失效表格视图：</strong>聚焦于“1. 上一较高级别要素”及其功能/要求与失效影响（FE）；<br>  - <strong>图2.4-8 关注项目/要素－功能－失效表格视图：</strong>聚焦于“2. 关注要素”及其功能/要求与失效模式（FM）；<br>  - <strong>图2.4-9 较低级别项目－功能－失效表格视图：</strong>聚焦于“3. 下一较低级别或特性类型”及其功能/要求或特性与失效起因（FC）。<br>• <strong>顾客与供应商协作机制（2.4.9）：</strong>失效分析输出（尤其是失效影响 FE）是上下游协同的核心纽带。根据与顾客的协议以及与供应商共享的需要，失效分析成果可以在风险分析（步骤五）之前或之后进行正式的跨组织联合评审。<br>• <strong>风险分析的基础（2.4.10）：</strong>对潜在失效的完整定义是步骤五“风险分析”的基石。严重度（S）、频度（O）和探测度（D）的评估完全依赖于失效描述的精准度。如果潜在失效定义模糊或遗漏，将直接导致后续风险评估失真或不完整。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br>• <strong>标准三级要素与表头编号映射（1-2-3体系）：</strong><br>  - <strong>列 1（FE 失效影响）：</strong>必须对应上一较高级别要素/最终用户的失效。如手册示例：上一级别“车窗升降电机”功能为“根据参数设置将电能转化为机械能”，其 FE 为“车窗升降电机的扭矩和转动速度过低”；<br>  - <strong>列 2（FM 失效模式）：</strong>必须对应关注要素本身的物理/功能丧失。如示例：关注要素“换向系统”功能为“在电磁转换系统的线圈对之间传输电流”，其 FM 为“换向系统的角度偏差导致间歇性错误连接线圈(L1、L3和L2，而不是L1、L2和L3)”；<br>  - <strong>列 3（FC 失效起因）：</strong>必须对应下一较高级别要素或具体产品特性的缺陷。如示例：下一级要素“电刷盒基座”功能为“支撑碳刷弹簧系统”，其 FC 为“电刷盒的碳刷接触部位弯曲”；或者“碳刷”的 FC 为“碳刷传输的电流过小”。<br>• <strong>跨层级传递与协同准则：</strong>上一级的 FM 成为下级供应商的 FE；本级的 FM 由供应商提供其 FC 进行支撑。这种视图切换实现了 OEM、一级供应商（Tier 1）与二级供应商（Tier 2）之间接口的无缝对接与边界保护。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>整机与部件的视图拆分与协同示例（手机潜望式摄像头模组马达驱动）：</strong><br>  - <strong>上一较高级别视图（手机整机系统）：</strong>功能要求为“在暗光远摄场景下快速准确完成光学对焦”，FE 为“手机长焦拍照模糊，对焦超时失败”（面向整机用户与影像测试部门）；<br>  - <strong>关注要素视图（传音模组工程师评审马达）：</strong>关注要素为“OIS/AF 驱动音圈马达（VCM）”，功能要求为“根据驱动 IC 电流线性驱动镜头位移”，FM 为“VCM 悬丝倾斜卡滞导致行程不足”；<br>  - <strong>下一较低级别视图（供应商部件特性）：</strong>下一级要素为“马达悬丝弹片”，功能要求为“维持特定屈服强度与装配平面度”，FC 为“悬丝材料局部残余应力超标导致受热微翘曲”。<br>• <strong>实战落地价值：</strong>在与马达供应商召开技术对齐会时，传音向供应商输出“FE：对焦不良与卡滞”，供应商仅需聚焦其内部“FM：悬丝翘曲”并深入分析其材料特性与冲压模具公差（FC），既实现了工程技术闭环，又规范了知识产权与接口边界。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：视图转换时因果倒置或混淆编号。</strong>工程师误把部件特性缺陷写在 FM（列 2），而把系统级表现当成 FM。<em>正确做法：</em>严格遵循 1-FE（上一级）、2-FM（本级）、3-FC（下一级）的层级对应关系，确保从左到右或视图拆分时因果链始终吻合物理逻辑。<br>• <strong>误区二：在进入步骤五风险分析前，失效描述过于抽象宽泛。</strong>如写“马达坏了”、“芯片失效”，导致在步骤五评估 S、O、D 时无法明确打分标准。<em>正确做法：</em>正如手册 2.4.10 强调的，失效模式必须包含明确的物理失效机理（如角度偏差、错误连接、接触部位弯曲），具体明晰的描述才能为步骤五赋分提供扎实基础。<br>• <strong>误区三：闭门造车，忽略顾客/供应商协同评审。</strong>主机厂工程师自行臆测供应商零部件的物理失效起因，或供应商不了解系统级失效影响。<em>正确做法：</em>依托 2.4.9 规则，在步骤四完成之后、步骤五风险评估前后，就 FE 与 FC 的接口定义与供应商/客户进行联合评审确认。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.4.8 - 2.4.10 节（PDF 第 53-55 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》2.4.8 节，关于“产品最终项目－功能/失效表格视图”（图2.4-7）的内容，以下表述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 该视图重点展示关注要素的功能要求及其对应的失效模式（FM）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 该视图重点展示下一较低级别要素或特性及其对应的失效起因（FC）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 该视图重点展示上一较高级别要素、其对应的功能和要求，以及失效影响（FE）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 该视图仅记录频度（O）与探测度（D）的评估结果</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书第54页 2.4.8 节及图 2.4-7，产品最终项目－功能/失效表格视图对应的是“1. 上一较高级别”要素，记录其“上一较高级别的功能和要求”以及“对于上一较高级别要素和/或最终用户的失效影响（FE）”。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">手册在 2.4.10 节特别指出，完整定义潜在失效是步骤五“风险分析”的基础，其主要原因是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只有完成完整的失效定义，才能计算出 AP（行动优先级）的数值大小</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 严重度（S）、频度（O）和探测度（D）的评级都基于失效描述，若失效过于模糊或缺失会导致风险分析不完整</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 完整的失效定义可以完全免除步骤六的优化改进措施</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 潜在失效定义完成后，设计控制中的预防与探测措施将自动生成</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第55页 2.4.10 节明确指出：“对潜在失效的完整定义将为步骤五‘风险分析’的完整实施提供基础，因为严重度、频度和探测度的评级都基于失效描述。如果潜在失效过于模糊或缺失，可能导致风险分析不完整。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机的电池管理系统（BMS）DFMEA 编制中，硬件团队作为“关注要素”设计 BMS 保护板。根据手册 2.4.9 节关于顾客与供应商协作的逻辑，下列哪项协作方式最为规范合理？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 传音向电芯供应商下发整机关机失效影响（FE），由电芯供应商自主反推整机软件逻辑并定义保护板失效模式（FM）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 传音 BMS 工程师将“过充保护电路切断延迟”作为关注要素失效模式（FM），并与上一级整机团队评审确认其失效影响（FE为电池鼓包/过热），同时与晶体管供应商共享该失效以评审其物理起因（FC）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 传音直接要求所有外部供应商填写完整的整机系统级 FE，且不需要跨组织沟通，直接交由商务定损</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 供应商只需提供部件 BOM，所有失效分析视图完全由传音工程师独立闭门推演，禁止与供应商共享</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据 2.4.8 与 2.4.9 节，关注要素（BMS保护板）负责自身失效模式（FM）的定义，其失效影响（FE）需与上一级（整机）顾客/系统协同确认，而其底层的失效起因（FC）需结合下级组件（晶体管等）的技术边界与供应商共享评审，形成跨层级有效衔接。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 53-55 页，完成步骤二、三、四后，DFMEA 表格可以呈现哪些维度的表格视图？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 上一较高级别：产品最终项目－功能/失效表格视图（包含 FE）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 关注要素：关注项目/要素－功能－失效表格视图（包含 FM）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 下一较低级别：较低级别项目－功能－失效表格视图（包含 FC）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 过程检验项目：制造工序参数控制及检验方法视图</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书第54页 2.4.8 节图 2.4-7、图 2.4-8 和图 2.4-9，完成结构分析、功能分析和失效分析后，DFMEA 表格具有三个视图：产品最终项目－功能失效表格视图（图2.4-7）、关注项目/要素－功能－失效表格视图（图2.4-8）以及较低级别项目－功能－失效表格视图（图2.4-9）。D 选项属于制造过程控制，不属于 DFMEA 步骤四的视图。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 2.4.9 节与 2.5 节前言，关于“顾客与供应商协作”及“步骤五风险分析的基础”，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 根据协议与共享需要，失效分析的输出可在风险分析步骤之前或之后由顾客和供应商进行评审</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 严重度评级仅仅取决于失效起因（FC）的物理参数，与失效影响（FE）无关</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 针对失效起因（FC）应分配预防控制；针对失效起因（FC）和/或失效模式（FM）应分配探测控制</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 现有的设计控制包括预防型控制和探测型控制，它们是现有验证和确认方法库的一部分</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书第55页：A 项符合 2.4.9 节原话；C 项和 D 项完全符合 2.5.2 节关于设计风险分析的主要目标及设计控制的描述；B 项错误，严重度（S）评估的是失效影响（FE）对上一级别或最终用户的后果严重程度，而非仅取决于 FC。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

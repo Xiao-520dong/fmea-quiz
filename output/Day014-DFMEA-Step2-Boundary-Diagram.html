@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 014：DFMEA 步骤二：方块图（边界图）构建方法与车窗案例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 014：DFMEA 步骤二：方块图（边界图）构建方法与车窗案例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（系统结构层级划分）：</strong>DFMEA结构分析需严格拆分为系统、子系统和组件三层结构，每个要素均需同时作为关注要素、上一级和下一级要素进行双向串联分析。</li><li><strong>上期核心2（定义两类顾客）：</strong>设计必须同时关注直接将组件装配至上一级的“直接顾客/下一级制造”，以及最终购买、操作与维护产品的“最终用户/服务人员”，两者不可混淆。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与可视化价值（原书 2.2.4 & 2.2.4.1）</strong><br>系统结构的可视化有助于 DFMEA 团队直观开展结构分析，手册推荐了两种常用方法：<strong>方块图/边界图（Block/Boundary Diagram）</strong>与<strong>结构树（Structure Tree）</strong>。<br>• <strong>边界图的定义与作用：</strong>用于描述所分析系统及其与相邻系统、环境和顾客之间的接口。它以图表形式为结构化头脑风暴提供指引，表示产品组件之间的物理和逻辑关系、系统内交互以及与制造、服务、运输、人员和环境的接口，是后续参数图（P图）与 FMEA 分析的核心输入。<br>• <strong>方块图与边界图的区别：</strong>手册中两词常交替使用，但<strong>边界图更为全面</strong>，因为它明确划定了分析责任边界，并包含了外部影响（环境、相邻系统）与系统交互作用。边界图中要素之间的接口可直接作为关注要素纳入后续结构与功能分析中。</div><div class="highlight-blue"><strong>2. 边界图构建的六步法与接口四分类（PEIM法则）</strong><br>根据手册第 34-35 页规范，构建边界图的标准流程分为以下步骤：<br>• <strong>步骤 a - 描述组件和特性：</strong>统一命名零件与特性（避免别名混淆），完整呈现所有系统组件和外部接口组件。<br>• <strong>步骤 b - 调整方块以显示相互联系：</strong>使用<strong>实线</strong>表示直接物理接触；使用<strong>虚线</strong>表示间接接口（如装配间隙、热辐射或相对运动）；用<strong>箭头</strong>标识流向，完整标记能量流、信号或力传递。<br>• <strong>步骤 c - 描述连接类型（PEIM 标准分类，包含期望与不期望的）：</strong><br>&nbsp;&nbsp;- <strong>P (Physical)：</strong>物理连接（如螺栓紧固、卡扣、点胶粘接、焊接、夹紧等）；<br>&nbsp;&nbsp;- <strong>E (Energy transfer)：</strong>能量传递（如机械扭矩、电能、传热/热辐射等）；<br>&nbsp;&nbsp;- <strong>I (Information exchange)：</strong>信息传递（如传感器数据、ECU控制总线、I2C/SPI信号等）；<br>&nbsp;&nbsp;- <strong>M (Material exchange)：</strong>物料交换（如流体、水汽、废气、胶水流动等）。<br>• <strong>步骤 d - 增加接口系统与外部输入：</strong>纳入顾客/最终用户、相邻系统（虽不直接物理接触，但存在间隙、运动干涉或热辐射的系统）。<br>• <strong>步骤 e - 确定边界与控制范围：</strong><strong>核心规则——只有团队设计或控制的零件才放在边界线内！</strong>边界图中的方块比正在分析的层次低一级。对于外部由供应商或整机客户控制的零件必须标记在边界线外。<br>• <strong>步骤 f - 完善图表工程细节：</strong>明确系统/项目名称、团队成员、日期、修改版本等级，并用不同颜色或线型区分交互类型。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：摄像头模组（CCM）边界图绘制</strong><br>以传音中高端机型潜望式长焦摄像头模组（CCM）DFMEA 为例：<br>• <strong>划定设计边界：</strong>边界线<strong>内</strong>为摄像头研发团队自主定义的部件，包括模组支架、OIS/AF驱动马达、镜头组（Lens）、Sensor与FPC软板；边界线<strong>外</strong>为相邻系统与外部环境，包括手机中框（相邻结构）、主板SOC（相邻电子系统）、闪光灯/电池（发热相邻系统）、后盖玻璃盖板（结构间隙接口）以及终端组装产线工人（制造顾客）和最终用户。<br>• <strong>PEIM 接口标注：</strong><br>&nbsp;&nbsp;- <strong>P（物理连接）：</strong>FPC连接器与主板BTB插座锁合（实线）；镜头与后盖Deco保护镜片的避让间隙（虚线，间接接口）；<br>&nbsp;&nbsp;- <strong>E（能量传递）：</strong>主板PMU供电电源（2.8V/1.8V输入）；马达线圈电磁感应；主板CPU/电池工作时对马达与Sensor传导的热辐射；<br>&nbsp;&nbsp;- <strong>I（信息传递）：</strong>MIPI高速图像差分信号、I2C马达驱动总线、OIS陀螺仪同步脉冲；<br>&nbsp;&nbsp;- <strong>M（物料交换）：</strong>外部环境湿气通过点胶密封缝隙微量渗透（不期望物料交换）。<br>通过清晰界定边界图，团队能立即识别出“镜头与保护玻璃撞件”是由于虚线间接接口间隙不足导致的失效模式。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：把外围所有零件都圈进“设计边界”内部。</strong>很多工程师把手机主板、中框全部圈在摄像头模组边界内。<strong>纠正：</strong>边界内<strong>仅限本团队设计与控制的零部件</strong>；外部采购件、整机交互结构必须画在边界框外作为接口输入。<br>• <strong>误区 2：只画实线直接接触，遗漏虚线间接接口。</strong>忽略了零件间的相对运动空间、电气绝缘间隙或高热元器件对塑胶件的热辐射。<strong>纠正：</strong>凡是存在相对运动、安全间隙、热辐射或磁场耦合的交互，必须用<strong>虚线</strong>标示。<br>• <strong>误区 3：只识别“期望的接口”，忽略“非期望的接口”。</strong>例如只标注了供电与信号，忽略了振动冲击（不期望力传递）、散热串温（不期望热传递）和潮气入侵（不期望物料流动）。PEIM接口必须包含有害与寄生的非期望交互！</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.2.4.1 节（PDF 第 33-35 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于“方块图”与“边界图”的理解，下列说法中最准确的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 方块图专门用于工艺过程分析（PFMEA），边界图专门用于产品设计分析（DFMEA）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 两者术语常交替使用，但边界图包含了外部影响和系统交互作用，因此比方块图更为全面</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 方块图必须包含环境因素与人员接口，而边界图仅展示内部物理零件</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 边界图只允许标注物理连接，不能展示软件、信号或能量流等逻辑关系</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书第 33 页明确指出：“在本手册中，术语‘方块图’和‘边界图’交替使用。然而，由于边界图包含了外部影响和系统交互作用，因此更为全面。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 DFMEA 绘制边界图（Boundary Diagram）时，判断一个组件方块应该画在“系统边界线之内”还是“边界线之外”的核心准则是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 属于物理上尺寸较大的零件画在边界内，小螺钉和小胶条画在边界外</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 只有团队设计或控制范围内的零件才放在边界内，超出团队设计责任的放在边界外</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 只要产品最终会组装在一起的整机零件，全部必须画在系统边界之内</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 成本高于 1 美元的零件画在边界内，低成本标准件画在边界外</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书第 35 页步骤 e 规则：“确定边界（团队控制范围内有哪些零件？哪些是新的或修改过的？），只有团队设计或控制的零件才放在边界内。边界图中的方块比正在分析的层次低一级。可以对边界图中的方块做标记，以显示分析范围之外的零件。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机指纹模组（Fingerprint Module）的 DFMEA 边界图绘制中，结构工程师需要标示指纹模组与手机电池之间的关系：电池工作时会发热并通过空气对指纹模组产生热辐射影响，两者在物理上不直接接触。根据手册规范，该连接线型与接口类型代码应标记为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 实线，标注代码 P（物理连接）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 虚线，标注代码 E（能量传递）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 虚线，标注代码 M（物料交换）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 实线，标注代码 I（信息传递）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据原书第 34 页：用实线表示直接接触，用“虚线表示间接接口，即间隙或相对运动”，同时相邻系统包含“物理上不接触但有交互作用，涉及间隙、运动或热辐射”的系统；接口分类中“E 代表能量传递（如热量、扭矩等）”。因此不直接接触的热辐射应使用虚线并标注 E。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，边界图中的接口连接必须全面考虑期望的和不期望的交互。下列属于标准 PEIM 四大接口类型分类的是哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. P —— 物理连接（如焊接、螺栓紧固、夹紧等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. E —— 能量传递（如扭矩、热量、电能等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. I —— 信息传递（如 ECU、传感器、控制信号等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. M —— 物料交换（如冷却液、废气、微量流体等）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 34 页明确定义了四类连接代码：P 代表物理连接（Physical）、E 代表能量传递（Energy transfer）、I 代表信息传递（Information exchange）、M 代表物料交换（Material exchange）。四个选项全部正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书第 34-35 页规范，一个标准、规范的方块图/边界图应包含并满足以下哪些要素与要求？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 用实线表示直接接触，虚线表示间接接口（如间隙或相对运动），用箭头表示流动方向</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 包含相邻系统（虽不直接接触但有交互/间隙/热辐射的系统）与顾客/最终用户</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 增加图表工程属性细节，如系统/项目名称、团队成员、日期、修改版本等级等</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 边界图必须在概念设计阶段一次性锁定，后续设计成熟过程中严禁修改与完善</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书第 34-35 页明确规定：a-f 步骤中包括实线/虚线/箭头的规范（A正确）、相邻系统与顾客输入（B正确）、工程识别细节及修改等级（C正确）。而原书第 34 页明确指出“方块图/边界图随着设计的成熟而不断完善”，并非一次性冻结不可修改，因此 D 选项错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

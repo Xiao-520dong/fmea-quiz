@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 052：PFMEA 步骤五：过程探测度（D）探测方法成熟度与机会（表P3）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 052：PFMEA 步骤五：过程探测度（D）探测方法成熟度与机会（表P3）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：过程频度（O）评估双维度：</strong>频度评级（表P2）不仅关注起因发生的预计发生率（ppm/Cpk），更直接与预防控制的类型（行为规范/作业指导书、机器控制、防错设计）及控制成熟度（有无经验、是否经过验证）绑定。</li><li><strong>上期核心2：最佳预防控制级别：</strong>当采用通过设计或过程直接避免失效起因发生的防错设计，或经过实践验证能完全阻止起因的设备控制时，过程频度O可评定为最低的1级。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与双维度评级逻辑（表P3）</strong><br>PFMEA中的探测度（D）用于评估过程设计验证或生产控制中，现有探测控制发现失效起因（FC）或失效模式（FM）的能力，分值从10（非常低）到1（非常高）。根据《AIAG & VDA FMEA 手册》表P3，PFMEA探测度评级严格基于两个核心维度：<br>① <strong>探测方法成熟度（Detection Method Maturity）：</strong>测试或检验方法是否建立、是否有经验、测量系统的重复性和再现性（GR&R）是否可接受、防错措施是否经过实践验证；<br>② <strong>探测机会（Detection Opportunity）：</strong>检验是人工检验（视/听/触/量具）还是以设备为基础的自动化检验；探测是发生在工位上还是下游；探测对象是失效模式还是直接探测失效起因；是否具备拦截或自动隔离差异零件的系统机制。<br>确定评级时，团队必须思考四个核心问题：最有效的测试是什么？使用场景/工作周期是什么？需要的样本量是多少？测试程序是否已得到证明？</div><div class="highlight-blue"><strong>2. 表P3 探测度等级与判定规则拆解</strong><br><ul><li><strong>D = 10（几乎无法探测）：</strong>尚未建立或有已知的测试/检验方法，不能或无法探测到失效模式。</li><li><strong>D = 9（非常低）：</strong>测试或检验方法不可能探测到失效模式，仅通过任意或不定时的审核很难探测到失效模式。</li><li><strong>D = 8（低 - 方法未成熟+人工）：</strong>测试/检验方法尚未经过实践证明有效（GR&R接近边际值），通过人工检验（视觉、触觉、听觉或计数/计量型量具）探测失效模式或起因。</li><li><strong>D = 7（低 - 方法未成熟+设备）：</strong>方法未经验证（GR&R接近边际），采用以设备为基础的检验（光学、蜂鸣器、CMM三坐标等自动化/半自动化装置）探测失效模式或起因。</li><li><strong>D = 6（中 - 方法成熟+人工）：</strong>方法已证实有效可靠（工厂有经验，GR&R可接受），采用人工检验（视/听/触或人工测量量具）探测失效模式或起因（包括抽样检验）。</li><li><strong>D = 5（中 - 方法成熟+设备/半自动）：</strong>方法已证实有效可靠，采用以设备为基础的检验（光学/蜂鸣器半自动化方式，或CMM三坐标等检验设备）探测失效模式或起因（包括抽样）。</li><li><strong>D = 4（高 - 设备全自动+下游拦截）：</strong>已证实可靠的系统，在<strong>下游工位</strong>通过设备全自动探测失效模式，进而避免进一步加工；或系统识别差异产品并允许其在过程中自动前进，直至到达指定的不合格品卸载区并受控监视，防止流出工厂。</li><li><strong>D = 3（高 - 设备全自动+本工位拦截）：</strong>已证实可靠的系统，在<strong>当前工位上</strong>通过设备全自动探测失效模式，避免进一步加工或自动流向指定受控卸载区。</li><li><strong>D = 2（非常高 - 设备探测失效起因并防错）：</strong>探测方法已经过实践证明有效或可靠（防错确认措施有经验），以设备为基础<strong>直接探测失效起因</strong>，从而避免出现失效模式（避免产生差异零件）。</li><li><strong>D = 1（非常高 - 物理不可能或总是探测）：</strong>根据设计或加工过程而<strong>不会实际出现失效模式</strong>，或者探测方法经过实践验证<strong>总是能够</strong>探测到失效模式或失效起因。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机制造与组装产线中，表P3的落地评估如下：<br>① <strong>D=6 vs D=5：</strong>在PCBA打件后，若由产线QC人员手持放大镜目视检查0201电容虚焊（GR&R可接受），评为D=6；若引入离线AOI设备半自动扫描抽检，评为D=5。<br>② <strong>D=4 vs D=3：</strong>屏幕点胶保压后，若在后续组装工位通过下工位传感器检测到胶水溢出并报警停线，属于下游拦截，评为D=4；若在点胶保压机台<strong>本工位</strong>集成了激光高度传感器，一旦压合高度超差立即在工位上锁定治具并拒绝放行，评为D=3。<br>③ <strong>D=2（探测起因）：</strong>在整机锁螺丝工位，智能电批实时监测拧紧过程中的“扭矩-转角曲线”，当检测到滑牙（起因：扭矩到达但角度异常超限）时，电批在<strong>失效起因发生瞬间即刻报警并切断气源/停机</strong>，阻止螺钉浮高或滑丝的失效零件流入下一道工序，评为D=2。<br>④ <strong>D=1：</strong>SIM卡槽装配采用非对称物理防呆凹槽，结构上反向根本无法插入，或治具具备100%硬物理闭锁，评为D=1。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>① <strong>误区一：混淆起因探测与模式探测。</strong>将“探测到已经拧坏的滑丝螺钉（探测失效模式）”评为D=2。<strong>纠正：</strong>D=2的核心是“探测失效起因（如实时监测扭矩拐点防错）以避免产生不合格零件”；若零件已经损坏才被本工位自动化检测出来，最高只能评D=3。<br>② <strong>误区二：无视测量系统能力（GR&R）而盲目评定高分。</strong>只要上了AOI或视觉相机就直接打D=3或D=4。<strong>纠正：</strong>表P3中D=3~5的前提是“测试/检验方法已经过实践证明有效可靠（GR&R可接受）”。如果相机算法误判率高、GR&R处于边际值，即便是自动化检测设备，也只能评D=7。<br>③ <strong>误区三：忽略“不合格品隔离流道”的完整性。</strong>认为只要传感器报警就算D=3。<strong>纠正：</strong>手册明确要求自动化系统必须能“避免进一步加工”或“使差异产品自动前进至指定卸载区且受到监视”。如果工位虽然报警，但作业员可以手动复位并随意将不良品放回流水线，不存在闭环防流出机制，不得评为D=3/D=4。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.5.8 节（PDF 第 110-112 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表P3，关于过程探测度（D）的判定，下列哪项属于评定为 D=2 的关键特征？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 在工位上采用自动化设备探测到失效模式，并自动拦截差异产品</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在下游工位采用设备全自动探测失效模式，防止产品流出工厂</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 探测方法已经过实践证明可靠，以设备为基础直接探测失效起因并避免出现失效模式（差异零件）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 无论何时何地，只要测试方法的人工测量GR&R可接受即可</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据手册表P3：D=2的定义是“探测方法已经经过实践证明为有效或可靠，以设备为基础的探测方法，其可以探测失效起因并避免出现失效模式（差异零件）”。选项A为D=3，选项B为D=4。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在评估过程探测度（D）时，手册明确指出评定人员应考虑四个核心问题。以下哪项不属于这四个核心问题之一？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 探测失效起因或失效模式的最有效测试是什么？</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 该失效模式会导致的客户索赔金额与严重度等级是多少？</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 探测失效所要求的使用场景／工作周期是什么？探测需要的样本量是多少？</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 探测该起因／失效模式的测试程序是否已得到证明？</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册第110页明确指出，确定评级时应考虑以下四个问题：1. 探测失效起因或失效模式的最有效测试是什么？2. 探测失效所要求的使用场景／工作周期是什么？3. 探测失效需要的样本量是多少？4. 探测该起因／失效模式的测试程序是否已得到证明？索赔金额属于影响严重度S的范畴，与探测度D的评估无关。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音中试车间在评估手机中框点胶工序的探测控制。方案A是在点胶工位后紧接着的第3个工位，利用经过验证的高精度AOI光学检测机全自动识别漏胶不良，并由机械手自动抓取至受控锁定的废料箱；方案B是在点胶工位本工位直接加装同轴测距传感器，胶量不足时本工位自动停机且托盘锁定。关于两者的探测度评级，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 方案A为下游全自动拦截应评为D=4；方案B为本工位全自动探测拦截应评为D=3</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 方案A与方案B都属于设备全自动检测，因此探测度均评为D=2</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 方案A经过了3个工位才检出，属于人工审核性质，应评为D=9</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 方案B探测的是失效模式而非起因，因此只能评为D=5</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据表P3：在方法成熟可靠的前提下，以设备为基础的自动化探测，若在下游探测到失效模式并自动送入指定受控卸载区，评为D=4（方案A）；若在工位上探测到失效模式进而避免进一步加工或自动隔离，评为D=3（方案B）。两者均探测的是失效模式（漏胶/胶量不足的零件状态），故分别对应D=4与D=3。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表P3，下列哪些情况下探测度（D）的评级会落入低能力区间（D = 7 或 D = 8）？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 工厂在测试或检验方法方面没有经验，类似过程测量系统的GR&R分析结果接近边际值</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 测试或检验方法尚未经过实践证明为有效和可靠</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 依赖人工检验（视觉、触觉、听觉）或人工量具探测失效模式或起因，且方法未经验证</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 采用以设备为基础的半自动光学检测，但该检测系统尚未经过实践证明有效（GR&R接近边际）</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 工厂在相同程序上具备成熟经验，通过目视检查抽检零件</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据表P3，D=7和D=8的共同前提是“测试或检验方法尚未经过实践证明为有效和可靠（例如没有或很少经验，GR&R接近边际值等）”。在此前提下，人工检验为D=8，基于设备的自动化/半自动化检验为D=7。选项A、B、C、D均符合该特征。选项E中方法已证实有效可靠且采用人工检验，应评为D=6。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于新版 FMEA 手册中探测度（D）评级准则与措施优先级（AP）的逻辑关联，下列论述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 探测度评级不仅看探测手段是人工还是设备，还必须考察探测方法成熟度（如GR&R与应用经验）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 在评定D=3或D=4时，系统不仅要能识别差异产品，还必须具备避免进一步加工或受控监视隔离差异产品的机制，防止流出工厂</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 只要实施了任何未经验证的控制措施，就可以直接将其评为最高探测等级（D=1或D=2）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 措施优先级（AP）逻辑遵循失效预防优先原则，其排序逻辑首先着重于严重度（S），其次为频度（O），最后才为探测度（D）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>选项A正确，表P3明确分为“方法成熟度”与“探测机会”双维度。选项B正确，原书第111页对D=3/D=4明确要求“差异产品将在一个有效的系统内受到监视，避免这些产品从工厂内流出”。选项C错误，原书第110页明确指出“在实施任何未经验证的控制后，可验证和重新评估其有效性”，未经验证的控制通常只能评为较低等级（如D=7或8），不可直接给高评级。选项D正确，原书第111页第3.5.9节指出AP方法“首先着重于严重度，其次为频度，然后为探测度，其逻辑遵循了FMEA的失效预防目的”。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 017：DFMEA 步骤三（功能分析）：功能规范描述与内外部要求</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 017：DFMEA 步骤三（功能分析）：功能规范描述与内外部要求</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>步骤二输出与协作基石：</strong>DFMEA 步骤二（结构分析）通过系统、子系统及组件三层树状或表格视图，清晰界定了产品边界与接口，是供方与客户协同评审的核心工具。</li><li><strong>结构与功能的强依赖关系：</strong>“结构分析中缺少的设计要素（项目），在功能分析中也会缺少”。若结构定义不完整，后续功能分析和失效分析将直接发生严重脱节与遗漏。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>功能分析的目的（2.3.1）：</strong>确保要求/规范中规定的功能被适当地分配给系统要素，并用“功能术语”编写。它是产品功能可视化、功能树/网构建、参数图（P图）绘制以及后续失效分析的基础。</li><li><strong>功能（Function, 2.3.2）：</strong>描述了项目/系统要素的预期用途及输入与输出之间的转换关系。一个结构要素可包含多个功能；除了主要功能外，还必须覆盖接口功能、诊断功能和可服务性功能等辅助功能。</li><li><strong>要求（Requirement, 2.3.3）：</strong>ISO 9000 定义为特定设计、产品或过程需要满足的需求或期望。分为<strong>功能性要求</strong>（衡量功能预期性能的标准，如材料硬度、传输速率）和<strong>非功能性要求</strong>（限制设计决策自由度的边界，如工作温度范围、外形尺寸限制）。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>规范化动名词语法规则：</strong>推荐使用<strong>“主动词（基本形式/现在时态） + 名词（可测量目标）”</strong>格式。动词如：交付（Deliver）、包含（Contain）、控制（Control）、组装（Assemble）、传输（Transfer）；标准范例：传输动力、传递热量、控制速度、包含液体。禁止使用模糊定性动词。</li><li><strong>内外部要求的五大分类源头：</strong><ul><li><strong>法律要求：</strong>环保设计、可回收性、误用安全（Abuse）、阻燃防火等。</li><li><strong>行业规范和标准：</strong>ISO 9001、VDA 6.3、功能安全（ISO 26262）、网络安全（SAE J3061）等。</li><li><strong>顾客要求：</strong>包括明确要求（客户规范书指标）和隐含要求（如无禁用物质、高温高湿下的握持舒适度）。</li><li><strong>内部要求：</strong>特定产品规范、可制造性（DFM）、测试可达性（DFT）、老机型零部件复用性、清洁度及防尘颗粒防扩散等。</li><li><strong>产品特性（Product Characteristics）：</strong>显著且可量化的设计属性（如轴径、壁厚、表面光洁度、公差），是承载功能性要求的物理实体。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>整机散热系统（以传音中高端机型均热板 VC 为例）：</strong><ul><li><strong>要素与功能定义：</strong>关注要素为“VC均热板”，其标准功能描述为“传递热量（Transfer heat）”及“传导工质液体（Contain working fluid）”。</li><li><strong>功能性要求绑定：</strong>在 10W 热负荷下等效导热系数 ≥ 5000 W/(m·K)，压降温差 ≤ 1.5℃。</li><li><strong>非功能性要求绑定：</strong>满足非洲极端环境环境温度 -10℃ ~ 55℃ 正常工作，VC 厚度限制 ≤ 0.30mm（空间自由度限制）。</li><li><strong>内部与制造要求（DFM）：</strong>与主板屏蔽罩点胶贴合公差 ≤ 0.05mm，满足 SMT 组装线体吸嘴自动化贴装平整度。</li></ul></li><li><strong>传音 Type-C 接口模块：</strong>主要功能为“传输电能”与“传输数据”；辅助/接口功能为“抵御盐雾侵蚀（耐汗液/高湿环境腐蚀）”；法律要求必须符合 RoHS/REACH 环保无卤素标准。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>避坑 1：动词选用模糊或主观：</strong>如写成“良好地散热”、“优化天线性能”。<em>纠正：</em>必须拆解为可测量的基本动词加名词，如“传递热量（降温 ≥ 3℃）”、“辐射射频信号（TRP ≥ 20dBm）”。</li><li><strong>避坑 2：混淆功能与特性：</strong>把“外壳壁厚 1.2mm”、“电池容量 5000mAh”直接当作功能。<em>纠正：</em>壁厚与电容量是“产品特性”或“非功能性/性能要求”，其对应的功能是“支撑内部元器件（结构件）”或“存储电能（电池芯）”。</li><li><strong>避坑 3：遗漏辅助功能与内部制造要求：</strong>仅记录用户能感知的主要功能（如拍照、通话），完全忽略了产线组装所需的辅助对准功能、测试治具所需的 DFT 测试点传输功能以及跌落等极端工况下的防失效约束。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.3.1 - 2.3.3 节（PDF 第 38-41 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于步骤三功能分析中“功能（Function）”的描述格式，推荐采用的标准形式是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 形容词 + 名词（例如：高效的散热架构）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 现在时态的主动词基本形式 + 名词（例如：传递热量）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 过去分词 + 测量指标（例如：已校准的电压值）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 系统要素名称 + 期望状态（例如：Type-C 接口保持干燥）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.3.2 节：推荐的短语格式为一个“行为动词”后加一个“名词”，表示可测量的功能；功能应该是“现在时态”，并使用动词的基本形式（如交付、包含、控制、组装、传输）。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">ISO 9000 将要求分为“功能性要求”与“非功能性要求”。根据手册 2.3.3 节，下列哪一项属于典型的“非功能性要求”？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 金属中框的材料硬度达到特定维氏硬度值 HV</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 手机快充电路的电流传输速率达到 3A</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 摄像头马达的对焦时间小于 150ms</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 手机必须在 -20℃ 至 60℃ 的极端温度环境范围内正常运行</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.3.3 节：功能性要求是判断或测量功能预期性能的标准（如材料硬度、传输速率、响应时间）；非功能性要求是对设计决策自由度的限制（如温度范围、空间几何尺寸限制）。选项 D 属于对设计自由度的环境限制，属于非功能性要求。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音结构工程师在针对新兴市场定制的“三防智能三防机（三防：防尘、防摔、防水）”编写 DFMEA 时，对于“电池盖密封圈”的功能及要求定义，下列描述最为规范和完整的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 功能：阻挡外部粉尘液体；要求：满足 IP68 防护等级，在 1.5 米常温静水中浸泡 30 分钟无进水</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 功能：优质的高弹性硅胶圈；要求：外径 85mm，公差 ±0.05mm</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 功能：保证整机绝对不进水；要求：牢固可靠</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 功能：提供非洲本地化设计保护；要求：成本低于 0.2 美元</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.3.2 与 2.3.3 节，A 选项采用了规范的“动词基本形式 + 名词（阻挡粉尘液体）”，并将功能关联到了明确、可测量的量化标准与环境运行条件（IP68、水深及时间），符合功能与要求的标准定义。B 选项把材料和产品特性错当功能；C、D 描述主观且不具备可测量的技术功能定义。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，设计功能分析（DFMEA 步骤三）的主要目标包括下列哪些项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 产品或过程功能可视化，制作功能树/网或参数图（P图）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 将相关要求与顾客（内部和外部）功能关联</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 促进工程团队（系统、安全和组件）之间的跨专业协作</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 确定不可接受的 AP 优先级风险并直接分配预防措施</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 为后续失效分析步骤提供基础支撑</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.3.1 节明确列出的主要目标：1) 产品或过程功能可视化；2) 制作功能树/网或功能分析表格和 P 图；3) 将相关要求与顾客功能关联；4) 将要求或特性与功能关联；5) 工程团队协作；6) 失效分析步骤的基础。选项 D 属于步骤五（风险分析）和步骤六（优化）的内容，不属于步骤三的目标。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 DFMEA 功能分析中，工程团队必须全面识别来自内部和外部的各种要求。下列属于原书 2.3.3 节列举的“内部要求（Internal Requirements）”范畴的是：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 生产线 SMT 贴片与测试治具的可达性（DFT/DFM）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 目标市场的电子垃圾环保与回收法律法规（WEEE/RoHS）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 与平台已有通用零部件或模块的兼容性与可复用性</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 生产及装配现场对颗粒物进入和扩散性的清洁度管控指标</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据手册 2.3.3 节：内部要求包括特定产品规范、可制造性（DFM）、测试应用性（DFT）、与其他现有产品的兼容性、可重复使用性、清洁性/清洁度、颗粒物的进入和扩散性；选项 B 明确属于“法律要求（Legal Requirements）”，属于外部来源。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,E"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

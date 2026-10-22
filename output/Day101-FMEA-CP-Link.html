@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 101：FMEA 与控制计划 (CP) 的联动关系</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 101：FMEA 与控制计划 (CP) 的联动关系</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>基础回顾：</strong>PFMEA 用于识别制造过程中的失效风险，并输出降低风险的预防控制和探测控制措施。</li>
+<li><strong>新版手册变更：</strong>七步法使逻辑更加严密，并用 AP 替代了 RPN 来判断措施优先级。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是控制计划 (Control Plan, CP)？</strong><br>
+控制计划是描述如何对产品和过程特性进行控制的书面文件，是保证过程稳定产出合格品的现场执行标准。它通常分为原型样件、试生产和量产三个阶段。
+</div>
+<div class="highlight-blue">
+<strong>2. FMEA 与 CP 的逻辑联动</strong><br>
+PFMEA 是“分析”，CP 是“执行”。PFMEA 中识别出的<strong>当前预防控制 (PC)</strong> 和 <strong>当前探测控制 (DC)</strong> 必须 100% 转移并体现在控制计划中。如果 PFMEA 提出了新的优化措施（如增加防错工装），当措施实施并验证有效后，也必须更新到 CP 中。
+</div>
+<div class="highlight-green">
+<strong>3. 特性流转</strong><br>
+在 PFMEA 中识别的产品特性（如尺寸、脱出力）和过程特性（如压力、温度），特别是被标记为“特殊特性”的项目，必须在控制计划中明确规定它们的控制方法、样本容量、检查频率和反应计划。
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">📚 内容来源：《AIAG & VDA FMEA 手册》过程FMEA 步骤六（第116页）及 APQP手册 控制计划章节</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">PFMEA 与控制计划 (CP) 之间的关系是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. PFMEA 和 CP 是两个独立的文件，互不相干</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. PFMEA 是风险分析，CP 是基于 PFMEA 识别出的控制措施的现场执行文件</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. CP 应该在 PFMEA 之前完成</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. CP 只关注质量检验，不关注过程控制</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>PFMEA用于识别和分析风险，得出的预防和探测控制必须落实到CP中进行日常现场监控。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 步骤六（优化）中新增了一道工装防错，这道防错验证有效后，下一步必须做什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只需将 PFMEA 的 AP 分数降低即可</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 将该防错措施更新到控制计划(CP)和作业指导书(SOP)中</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 告诉操作员注意即可</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 归档 PFMEA，任务结束</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>任何在FMEA中确立的有效新控制，都必须闭环更新到现场的受控文件（CP和SOP）中。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">控制计划通常分为哪三个阶段？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 研发、采购、制造</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 样件、试生产、量产</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 检验、返工、报废</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 结构、功能、失效</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>按照 IATF 16949 及 APQP 的要求，控制计划分为样件(Prototype)、试生产(Pre-launch)和量产(Production)三个阶段。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">以下哪些内容应该从 PFMEA 转移到控制计划 (CP) 中？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 产品特性</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 过程特性</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 探测控制 (DC) 的方法</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 失效影响的严重度(S)分数</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>特性（产品/过程）以及如何控制它们（预防和探测方法）必须转移到CP中。S分数留在FMEA中，CP不记录分数。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">关于“特殊特性”，以下说法正确的是？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. PFMEA 中识别出的特殊特性，必须在 CP 中有明确的控制方法</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 特殊特性通常需要更严格的监控，如更高的抽样频率或 SPC 管控</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 特殊特性符号在图纸、PFMEA 和 CP 中必须保持一致或有对照表</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 特殊特性只影响外观，不影响安全</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>特殊特性直接影响安全或法规合规，对过程变差敏感，因此必须在图纸、FMEA、CP中保持一致，并实施严格控制。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

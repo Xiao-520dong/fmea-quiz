@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 074：附件 B1（下）：DFMEA 步骤四至步骤六填写提示与软件视图示例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 074：附件 B1（下）：DFMEA 步骤四至步骤六填写提示与软件视图示例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（步骤一至步骤三表格映射）：</strong>附件 B1 规范了 DFMEA 表格前三步骤的填写逻辑，明确关注要素位于三列正中，上一级对应系统/用户，下一级对应组件/接口或特性。</li><li><strong>上期核心2（功能与要求的对齐）：</strong>每个级别的功能描述必须紧密承接上一级的结构，并量化输入输出要求，为步骤四的失效推导建立严谨的技术基准。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与填表定义（步骤四至步骤七）</strong><br>根据手册附件 B1.4 至 B1.7 的表格填表提示：<br><ul><li><strong>步骤四 失效分析（FE / FM / FC）：</strong>严格依托三栏结构建立失效链。<ul><li><strong>失效影响 (FE)：</strong>针对上一较高级别要素和/或车辆最终用户，描述车辆、系统或子系统如何未能实现功能，评估其对整机功能、法规及用户的潜在影响（打分 S: 1-10）。</li><li><strong>失效模式 (FM)：</strong>子系统、组件或接口如何未能实现关注要素的功能并导致失效影响。</li><li><strong>失效起因 (FC)：</strong>下一较低级别要素或特性如何未能实现其功能，并直接诱发关注要素的失效模式。</li></ul></li><li><strong>步骤五 风险分析（PC / DC / AP）：</strong><ul><li><strong>预防控制 (PC)：</strong>针对失效起因（FC），记录初始状态、过去经过验证的控制或将要采用的预防控制（打分 O: 1-10）。</li><li><strong>探测控制 (DC)：</strong>针对失效起因（FC）或失效模式（FM），记录过去已验证或将要采用的探测手段（打分 D: 1-10），根据 S/O/D 组合查表确定行动优先级（AP: H / M / L）。</li></ul></li><li><strong>步骤六 优化：</strong>明确区分预防措施（降低频度 O）与探测措施（改善探测 D）。责任人必须填写<strong>“姓名”而非职称或部门</strong>；状态包括：尚未确定、尚未决策（可选）、尚未执行（可选）、已完成、不执行；并必须记录“采取基于证据的措施”（包括文档编号、报告名称和日期）。</li><li><strong>步骤七 结果文件化：</strong>手册明确规定<strong>“DFMEA 步骤七由各组织单独管理，不在 DFMEA 表格中记录”</strong>（B1.7）。</li></ul></div><div class="highlight-blue"><strong>2. 软件视图（Software View）与层级联动机制（B1.8 案例）</strong><br>手册 B1.8 展示了专业 FMEA 软件视图中的完整贯通案例（车窗升降电机）：<br><ul><li><strong>结构与功能网联动：</strong>上一级“车窗升降电机”（将电能转换为机械能）← 关注要素“换向系统”（在电磁转换系统的线圈对之间传输电流）← 下一级“电刷盒基座”（传输力，为碳刷弹簧提供 X/Y/Z 方向支撑）。</li><li><strong>失效网联动：</strong>FE“车窗升降电机扭矩和转速过低 / 车窗未能降下 (S=6)” ← FM“换向系统角度偏差导致间歇性错误连接线圈(L1, L3和L2)” ← FC“电刷盒的碳刷接触部位弯曲”。</li><li><strong>风险控制与优化闭环：</strong>当前 PC 为“根据 FEM 6370 标准进行电刷盒动态受力模拟 (O=2)”，当前 DC 为“抽样测试依据 MRJ 82/60 测量弹性和塑性变形 (D=2)”，初始 AP 为 L。步骤六优化追加探测措施：“最终产品测试：根据测试规范 MRJ 1140 在最苛刻条件下测量电流”，责任人指定为“测试工程师 Max Mueller 先生”，状态“已计划”，重新评估后 D 降为 1，AP 维持 L。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以折叠屏手机铰链及侧键 FMEA 为例）</strong><br>在传音中高端折叠机研发中，采用附件 B1 表格/软件视图的标准映射：<br><ul><li><strong>关注要素：</strong>侧键 FPC 密封支架组件。上一级：整机侧边物理按键系统；下一级：密封注塑胶圈与限位卡槽。</li><li><strong>失效链映射：</strong>FE 整机防尘防水失效，受潮短路（S=8）← FM 侧键按压时微隙密封失效（侧键结构开合漏水）← FC 密封注塑胶圈注塑过薄/公差干涉导致永久压缩形变。</li><li><strong>步骤五至步骤六落地规范：</strong>PC 填写“依据 TECNO-Q-802 规范进行三维公差叠加分析及胶料形变仿真 (O=2)”；DC 填写“依据 Q/TY-T058 抽样进行 10 万次按压疲劳后气密性测试 (D=3)”。优化措施栏坚决避免填写“结构部负责”，而必须落实为“资深结构工程师 张三，202X-11-20，完成 1.5 米 IPX8 强化浸水验证报告（编号 TR-202X-9821）”，确保证据闭环。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 PC 与 DC 的控制对象。</strong>手册明确 PC 仅针对失效起因（FC），而 DC 可针对失效起因（FC）或失效模式（FM）。若在 PC 栏填写“产线外观检查”或“可靠性抽检”，属于严重范畴错误。</li><li><strong>误区二：负责人填写“部门”或“职务”。</strong>B1.6 明确强调负责人栏填写“姓名，不是职称或部门”，必须具体到自然人，确保落地责任不落空。</li><li><strong>误区三：误以为步骤七必须做成表格的后续列。</strong>原书 B1.7 明确指出“步骤七由各组织单独管理，不在 DFMEA 表格中记录”，它通常作为总结报告、高管汇报评审或知识库沉淀存在，而非表单中的列。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 B1.4 - B1.8（原书 P171-174）（PDF 第 171-174 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 B1.7，关于“DFMEA 步骤七（结果文件化）”的记录形式，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 必须在 DFMEA 表格的最右侧增加 3 列进行详细记录</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. DFMEA 步骤七由各组织单独管理，不在 DFMEA 表格中记录</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 必须合并在步骤六的“采取基于证据的措施”栏中记录</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 只能在软件视图的失效网导出报告中强制体现，不允许线下归档</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 B1.7（P172）明确规范：“DFMEA 步骤七由各组织单独管理，不在 DFMEA 表格中记录”。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在附件 B1.6 步骤六“DFMEA 优化”表格填写提示中，对于“负责人”列的要求是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 填写具体的责任部门名称，例如“整机研发部”</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 填写职能团队代号，例如“CFT 核心小组 2”</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 填写负责人的职务或职称，例如“结构高级经理”</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 填写负责人姓名，不是职称或部门</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 B1.6 图 B1.6-1（P172）明确注明：负责人填写“姓名，不是职称或部门”，确保执行责任落实到具体个人。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在设计某潜望式长焦马达时，正在填写 DFMEA 步骤五表格。以下针对 PC（预防控制）和 DC（探测控制）的控制对象描述，符合附件 B1.5 规范的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. PC 是对失效起因（FC）的预防控制；DC 是对失效起因（FC）或失效模式（FM）的探测控制</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. PC 是对失效模式（FM）的控制；DC 是对失效影响（FE）的控制</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. PC 既可以针对 FC 也可以针对 FM；DC 只能针对 FM 进行控制</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. PC 和 DC 都必须同时且仅针对失效起因（FC）进行控制</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据手册 B1.5 图 B1.5-1（P171）表头提示：“对失效起因的当前预防控制(PC)”；“对失效起因或失效模式的当前探测控制(DC)”。因此 PC 针对 FC，DC 针对 FC 或 FM。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据附件 B1.6 表格提示，在步骤六“DFMEA 优化”中，“状态”列的标准选项包括以下哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 尚未确定</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 尚未决策（可选）或尚未执行（可选）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 已完成</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 不执行</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 B1.6 图 B1.6-1（P172）“状态”列明确给出的状态选项包括：尚未确定、尚未决策（可选）、尚未执行（可选）、已完成、不执行。全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据附件 B1.8 给出的换向系统与电刷盒软件视图示例（图 B1.8-1 至 B1.8-3），以下关于三步分析法逻辑映射正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 上一较高级别要素为“车窗升降电机”，其失效影响为“扭矩和转动速度过低 / 车窗未能降下”</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 关注要素为“换向系统”，其失效模式为“间歇性错误连接线圈(L1, L3和L2, 而不是L1, L2和L3)”</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 下一较低级别要素为“电刷盒基座”，其失效起因是“电刷盒的碳刷接触部位弯曲”</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 优化措施记录中，采取的预防措施是将 FEM 模拟更改为产线全检</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据手册 B1.8 图 B1.8-1 及 B1.8-3（P173-174）：A、B、C 描述与原书层级完全吻合。D 选项错误：在图 B1.8-3 中，优化措施栏填写的预防措施为“无”，新增的是探测措施“最终产品测试：根据测试规范 MRJ 1140 在最苛刻条件下测量电流”，并非修改 FEM 预防措施。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

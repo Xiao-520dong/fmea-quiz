@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 059：FMEA-MSR 步骤三（功能分析）：操作条件下功能与诊断监视功能</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 059：FMEA-MSR 步骤三（功能分析）：操作条件下功能与诊断监视功能</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（MSR经典三层结构）：</strong>FMEA-MSR 的结构分析聚焦于机电一体化系统闭环，严格按照“传感器（输入/采集）- 控制单元（算法/决策）- 执行器（输出/执行）”及其相互连接的物理/电气接口建立结构树。</li><li><strong>上期核心2（边界与接口界定）：</strong>当外部传感器或执行器未纳入本组织系统开发范围时，需通过安全接口要素（如ECU引脚、连接器网络）承接外部输入输出，为后续功能分配奠定边界基础。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>在传统 DFMEA 中，功能分析主要聚焦于产品在无故障状态下“预期应执行的操作”。而 <strong>FMEA-MSR 步骤三（功能分析）最革命性的转变在于：将“失效探测（监视）”与“失效响应（保护）”本身提升并建模为系统的显式正向功能</strong>。<br>• <strong>功能载体明确化：</strong>控制单元（ECU/MCU）及具有本地算力的智能传感器/执行器是这些监视与响应功能的物理载体。<br>• <strong>双重功能维度：</strong>在 MSR 中，必须同时分析“操作条件下的主功能（正常交付功能）”与“维持安全/合规状态的监视与响应功能（安全机制功能）”。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br>根据手册 4.3.1 节规范，MSR 功能分析遵循以下核心规则与拆解框架：<br>• <strong>功能分析四大目标：</strong>① 实现各层级功能及其网络关系的可视化（功能树/参数图/P-Diagram）；② 关联内外部顾客功能与产品技术要求；③ 推动系统、安全、软件、硬件各专业工程团队的高效协同；④ 为步骤四（失效链推导）提供基准。<br>• <strong>监视与探测功能（Monitoring & Fault Detection）：</strong>属于输入端及逻辑处理端的保护功能，典型机制包括：<br>&nbsp;&nbsp;1) <strong>超出范围探测（Out-of-range Detection）：</strong>如 ADC 采样电压低于下限或高于上限；<br>&nbsp;&nbsp;2) <strong>循环冗余校验（CRC Check）：</strong>总线通讯（如 CAN/I2C/SPI）报文完整性防篡改与检错；<br>&nbsp;&nbsp;3) <strong>真实性检查（Plausibility Check）：</strong>交叉比对逻辑合理性（如车速为零但轮速传感器显示高速）；<br>&nbsp;&nbsp;4) <strong>序列计数器检查（Sequence/Alive Counter）：</strong>监测通信帧丢失、死锁或重放故障。<br>• <strong>失效响应功能（Failure Response）：</strong>属于系统在故障确证后采取的主动安全行为，典型包括：<br>&nbsp;&nbsp;1) <strong>提供预设默认值：</strong>如传感器开路时采用保守的默认温度值；<br>&nbsp;&nbsp;2) <strong>切换至跛行模式（Limp-home Mode）：</strong>降额、降速或限制功率运行；<br>&nbsp;&nbsp;3) <strong>安全关闭功能：</strong>彻底断开驱动回路或切断供电；<br>&nbsp;&nbsp;4) <strong>发出告警提示：</strong>在仪表或屏幕点亮报警指示灯，通知用户进行干预。<br>• <strong>接口功能定义：</strong>对于线束、连接器和引脚，其功能明确分配为“传递传感器模拟/数字信号”与“传输工作电源/驱动电流”。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>以传音 Infinix/TECNO 高端机型 <strong>180W/260W 极速全场景快充系统</strong> 为例，说明 MSR 步骤三的落地方法：<br>• <strong>上一较高级别功能（手机整机系统）：</strong>在极速充电全过程中保障设备及人身绝对安全，防止过热起火并合规控制机身表面触感温度。<br>• <strong>关注要素功能（PMIC / 专用充电MCU）：</strong><br>&nbsp;&nbsp;① <em>主控制功能：</em>根据电池荷电状态（SOC）动态调节 Charge Pump 芯片的充电倍率与输入电压；<br>&nbsp;&nbsp;② <em>监视探测功能：</em>对电池与主板 NTC 采样值执行<strong>超出范围探测（ADC断路/短路判定）</strong>；对电量计 I2C 交互数据执行 <strong>CRC 校验</strong>；对温升斜率执行<strong>真实性校验（1秒内骤升20℃判定为物理异常）</strong>；<br>&nbsp;&nbsp;③ <em>失效响应功能：</em>一旦监视功能确证故障，立即触发系统响应——将输入电流瞬间降至 0.5A 涓流（<strong>跛行模式</strong>），严重异常时关断双向保护 MOSFET（<strong>安全关闭功能</strong>），并在手机屏幕显示“检测到充电异常，已停止快充”并震动提醒（<strong>告警功能</strong>）。<br>• <strong>下一较低级别功能（接口与元器件）：</strong>NTC 热敏电阻准确采集温度模拟量；Type-C 接口引脚无失真传输 CC 握手通信逻辑。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：只写正常业务功能，遗漏诊断与监视逻辑。</strong>工程团队常在功能栏写“控制电机转动”、“调节充电电流”，完全遗漏软件看门狗、CRC、过流保护中断等安全功能，导致步骤四无法建立有效的 MSR 监视响应链路。<br>• <strong>误区二：将“监视”与“响应”混为一谈。</strong>探测故障是“监视功能”（如判定信号开路），采取动作是“响应功能”（如切断输出）。两者在系统状态转换中处于先后节点，必须分别描述其载体与性能要求。<br>• <strong>误区三：越界分析非本团队定义的要素。</strong>如果外购的执行器内部芯片不由本团队开发，应将信号功能分配到“连接器引脚/通讯协议接口”，严格恪守结构分析划定的分析范围。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.3.1 节（PDF 第 127-128 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》针对 FMEA-MSR 步骤三（功能分析）的阐述中，以下哪项被明确定义为具有计算能力的要素（如控制器或智能传感器）必须建模具有的“功能”？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 仅包括在无故障条件下的主控输出功能</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 失效探测（监视控制状态）与失效响应（安全应对行为）功能</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 生产线末端下线检测（EOL）的测试工步功能</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 售后维修服务站的故障代码读取功能</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据手册 4.3.1 节规定，在监视及系统响应的补充 FMEA（FMEA-MSR）中，对失效探测和失效响应的监视被直接视为其具有的正向功能，硬件和软件功能必须包括监视控制状态与响应故障的功能。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">手册 4.3.1 节明确列举了典型的故障/失效监视和探测功能机制。以下哪一项不属于手册列出的典型监视探测功能？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 循环冗余校验（CRC）与序列计数器检查（Sequence Counter）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 超出范围的探测（Out-of-range Detection）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 真实性检查（Plausibility Check）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 8D 根本原因追溯分析（Root Cause Analysis）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 4.3.1 明确列举故障/失效监视和探测功能包括：超出范围的探测、循环冗余校验（CRC）、真实性检查和序列计数器检查。D选项是质量管理改善方法，不属于车载/嵌入式软硬件运行中的实时监视探测功能。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机的大功率快充保护开发中，充电管理芯片实时检测到主板温度传感器反馈异常，立刻自动降低充电电流至安全小电流以防止过热扩散，同时在屏幕 UI 上弹出高温警示弹窗。在此场景中，“将充电功率降低至小电流状态”在 FMEA-MSR 中属于哪种典型功能类别？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 切换到跛行模式（Limp-home Mode）的失效响应功能</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 循环冗余校验（CRC）的监视功能</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 超出范围探测的失效起因</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 连接器引脚的信号传递功能</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 4.3.1 指出，针对失效响应的功能可能包括提供默认值、切换到跛行模式（降低性能维持部分功能）、关闭相应功能和/或显示警告等。将快充降额至小电流运行属于典型的“跛行模式”响应功能。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，FMEA-MSR 步骤三（功能分析）的主要目标包括以下哪些项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 功能及各功能之间关系的可视化（如功能树、网络或参数图）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 顾客（外部和内部）功能与相关要求的关联</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 促进工程团队（系统、安全和组件）之间的协作</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 作为后续失效分析步骤（步骤四）的基础</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 4.3.1 节明确列出了 FMEA-MSR 功能分析的五大目标：功能及各功能之间关系的可视化（功能树/网络/P图）；顾客功能与相关要求的关联；要求或特性与功能的关联；工程团队（系统、安全、组件）之间的协作；失效分析步骤的基础。因此 A、B、C、D 全部正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 FMEA-MSR 中，当控制单元或系统检测到硬件或软件故障时，手册指出的典型“失效响应功能（Failure Response）”形式包括哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 提供默认值（Default Values）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 切换到跛行模式（Limp-home Mode）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 关闭相应功能（Shut Down Function）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 显示警告（Display Warning）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 4.3.1 节原文明确指出：“针对失效响应的功能可能包括提供默认值、切换到跛行模式、关闭相应功能和/或显示警告等功能”。因此 A、B、C、D 全选。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

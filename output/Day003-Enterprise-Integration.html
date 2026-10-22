@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 003：企业 FMEA 整合：高管承诺、知识保护与顾客协议</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 003：企业 FMEA 整合：高管承诺、知识保护与顾客协议</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（应用场景）：</strong>FMEA 的三大典型实施场景为：全新设计/新技术/新过程（全分析）、现有设计在新环境/新应用下的修改（聚焦环境差异与接口）、工程或过程变更（聚焦变更及其连锁影响）。</li><li><strong>上期核心2（局限性与互补工具）：</strong>FMEA 是定性、单点失效分析工具，极度依赖团队知识水平与文字表达记录能力，不可替代会议记录；针对多点失效分析与定量硬件可靠性指标，需结合 FTA（故障树分析）和 FMEDA（失效模式影响及诊断分析）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>• <strong>企业 FMEA 整合（Enterprise Integration）：</strong>FMEA 绝非填表走过场的单点工具，而是一项跨学科活动，贯穿并影响整个产品实现过程。它是产品与过程开发的必要基石，为综合规范、测试验证计划（DVP）以及控制计划（CP）提供输入，根本目的是在源头减少设计返工与重复试错成本。<br>• <strong>高层管理者的最终承诺与责任：</strong>FMEA 需要跨部门多学科资源的持续深度投入。手册明确规定：<strong>高层管理者负责 FMEA 的全面应用，并对最终接受 FMEA 中确定的技术风险以及风险最小化措施负最终责任。</strong></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（实施四大规范与协议界定）</strong><br>实施 FMEA 时必须严格遵守以下四大规范准则：<br>① <strong>明确（Clear）：</strong>采用严格准确的技术术语界定潜在失效模式，确保工程专家能够评估起因与影响。<strong>严禁使用误导性或情绪化词语</strong>（如“危险的”、“不可容忍的”、“不负责任的差错”等），必须还原为客观物理/电气/机械现象。<br>② <strong>真实（True）：</strong>客观、真实地描述失效后果及影响，不夸大也不隐瞒（例如准确描述为：冒烟、产生异味、局部起火、触控无响应等）。<br>③ <strong>合理（Reasonable）：</strong><br>&nbsp;&nbsp;• 失效起因必须合理，<strong>不考虑不可抗力或极端外部事件</strong>（如道路落石、制造厂全厂突发断电、大地震等）。<br>&nbsp;&nbsp;• <strong>可预见的不当使用（Foreseeable Misuse）：</strong>由用户感知、认知判断偏差或操作行为失误导致的不当使用，属于必须分析的范围（通过头脑风暴、现场投诉、Use Case 识别）；<br>&nbsp;&nbsp;• <strong>蓄意破坏（Intentional Misuse）：</strong>蓄意违规操作、恶意拆解、蓄意暴力破坏等导致的失效<strong>不予考虑</strong>。<br>④ <strong>完整（Complete）：</strong>被分析的产品或过程系统要素及功能必须具备完整性。<strong>担心泄露技术诀窍（Know-How）绝不能成为 FMEA 内容残缺不全的正当理由</strong>。分析的颗粒度应根据风险严重程度决定。<br>• <strong>知识产权保护与顾客协议：</strong>DFMEA/PFMEA 在供需双方之间的知识产权共享由双方商务/法律合同管辖（不在本手册规范内）。供需双方应在项目初期就 FMEA 专用协议达成一致，包括：<strong>系统边界、输入工作文件、分析方法以及评估评分表（Rating Tables）</strong>。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（研发 DFMEA·情绪化词汇与可预见误用）：</strong>在传音新平台智能手机 Type-C 接口开发中，某工程师在失效模式中写下“恶劣设计导致接口不可容忍地断裂”，在失效起因中写“用户恶意暴力摧毁插头”。<br><em>专家纠正：</em>失效模式应明确改为“Type-C 舌片机械断裂”，起因应区分合理与蓄意——用户在暗光下角度插偏、边充边剧烈拽拉手机属于“可预见的非故意不当使用”，必须纳入起因并评估防错设计；而使用铁钳恶意撬拔插孔属于“蓄意破坏”，不予录入分析。<br>• <strong>场景 B（制造 PFMEA·厂区断电与极端事件剥离）：</strong>传音重庆/海外制造基地在编写手机 SMT 贴片及回流焊 PFMEA 时，工艺组将“工业园区高压电网断电停机导致锡膏凝固卡板”列为失效起因。<br><em>专家纠正：</em>厂区外网突发断电属于极端不可控事件，回流焊 PFMEA 应聚焦炉温曲线偏移、轨道传动卡死、氮气压力不足等设备工艺合理起因。厂区断电属于厂务应急响应预案（BCP/EHS 范畴），不可污染 PFMEA 分析表。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：带情绪写失效。</strong>在失效描述中写“操作工极不负责任漏贴绝缘胶带”或“主板发热严重引起用户极度愤怒”。<strong>纠正：</strong>PFMEA 应写“绝缘胶带未贴附”，起因写“送料器缺料传感器失效”或“操作指引无视觉防错”；影响写“主板后盖表面温度超过 48℃”。<br>• <strong>误区 2：以“商业保密”为借口隐藏高风险失效。</strong>某些模块供应商拒绝分析摄像头马达跌落断裂起因，称其为“专有内部技术机密”。<strong>纠正：</strong>手册明确指出知识产权保密不能作为 FMEA 不完整的理由，可通过脱敏参数、签署保密协议规范共享，但技术风险项与控制措施必须闭环。<br>• <strong>误区 3：认为 FMEA 签署只需要项目经理或质量经理盖章。</strong><strong>纠正：</strong>手册 1.3.2 节白纸黑字强调，<strong>高层管理者必须对技术风险的最终接受承担最终责任</strong>。当严重度高、无法彻底消除的残余风险存在时，必须升级至高管签署确认接受。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.3.1 - 1.3.4 节（PDF 第 15-17 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于高层管理者（Top Management）在 FMEA 中的职责，以下表述最准确的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 高层管理者只需审批 FMEA 的编制预算，具体的风险接受由项目质量经理负最终责任</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 高层管理者负责 FMEA 的应用，并最终负责接受 FMEA 中确定的风险和风险最小化措施</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 高层管理者应亲自担任 FMEA 协调员并主导每场打分会议</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 若高层管理者未参与会议，FMEA 团队可自行决定豁免高风险项的改进措施</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.2 节（PDF 第 16 页）：“高层管理者负责 FMEA 的应用，并最终负责接受 FMEA 中确定的风险和风险最小化措施。”产品和过程所有者的积极参与和高管承诺是成功实施 FMEA 的必要条件。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在界定 FMEA 的潜在失效起因（Failure Cause）时，下列哪一项属于手册规范明确要求“不予考虑”的内容？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 用户因视线不良而反向盲插数据线导致的接口端子变形</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 组装工人在疲劳状态下漏装主板屏蔽罩螺丝</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 极端外部偶发事件（如制造厂突发全厂断电、公路上发生落石塌方）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 用户在高温高湿环境下长时间运行重载大型应用导致手机过热</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.1 节（PDF 第 15 页）：“失效起因应合理，不考虑极端事件（如道路上的落石、制造厂断电等）。”蓄意破坏也不予考虑。而盲插、疲劳漏装、高温重载属于“可预见的非故意不当使用”或“正常应考量的严苛运行条件”，必须纳入分析。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音某机型指纹识别模组供应商在提交 DFMEA 报告时，将多项芯片引脚虚焊与静电防护失效以“涉及核心知识产权与商业机密”为由涂黑抹除。依据手册 1.3.1 与 1.3.3 节规则，正确的处理方式是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 供应商做法合理，AIAG & VDA 手册规定知识产权保护优先于 FMEA 的完整性</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 不合理。手册明确规定担心泄露知识经验不能作为 FMEA 不完整的正当理由；知识产权共享应由供需双方合同管辖并协调边界</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 只要供应商在出厂测试时通过 100% 抽检，FMEA 中可以不分析芯片级失效起因</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 传音工程师应直接跳过该模块的分析，由供应商私下自行评估</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.1 节（PDF 第 16 页）：“不应对可预见的潜在失效进行隐瞒。担心创建一个准确有效的 FMEA 文件会透漏太多的知识经验，不能作为 FMEA 文件不完整的正当理由。”以及 1.3.3 节：“供应商和顾客之间的知识产权共享受合同协议管辖”。双方应通过商业协议保障机密，但不能提交残缺的 FMEA。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">实施 FMEA 时必须遵循的四大基本规范原则包括以下哪些项？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 明确（Clear）：用严格准确的技术术语描述，避免情绪化词语与误解</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 真实（True）：准确描述潜在失效对系统、整机或用户产生的客观影响</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 合理（Reasonable）：失效起因合理，剔除极端事件及蓄意恶意破坏，纳入可预见不当使用</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 完整（Complete）：不隐瞒可预见失效，保证被分析产品/过程要素及功能的整体性</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 快速（Fast）：为了追赶项目 SOP 节点，可简化严重度打分流程</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.1 节（PDF 第 15-16 页），实施 FMEA 的四大准则分别为：明确（避免危险、不可容忍等情绪化词汇）、真实（客观描述异味、起火等）、合理（不考虑落石断电等极端事件和蓄意破坏）、完整（整体性覆盖，不因泄密担忧而隐瞒）。E 选项违背 FMEA 原则。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》1.3.4 节关于“顾客和供应商之间的协议”，供需双方在执行 FMEA 前通常可就以下哪些项目进行协议协调？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 系统边界（System Boundaries）的划定</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 必要的工作文件与输入输出接口规范</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 采用的分析方法（如特定工具、软件或表格标准）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 评估评级表（Rating Tables，如严重度/频度/探测度评分细则）</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 发生召回时质量罚款的具体扣款比例</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 1.3.4 节（PDF 第 16 页）：“关于执行 FMEA 的协议可能包括但不限于以下项目：系统边界、必要的工作文件、分析方法和评估表。”E 选项属于商务惩罚条款，不属于 FMEA 技术协调协议内容。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

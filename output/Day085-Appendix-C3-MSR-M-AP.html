@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 085：附件 C3（二）：FMEA-MSR 监视度（表MSR3）与 MSR AP 优先级表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 085：附件 C3（二）：FMEA-MSR 监视度（表MSR3）与 MSR AP 优先级表</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（严重度 S 评级）：</strong>回顾了表 MSR1 的双重严重度评级体系，即监视前严重度（原有严重度）与监视响应切换至安全状态后的严重度（S=10/9涉及人身安全与合规法律，S=7/8为主功能丧失或降级，S=4/6为次功能丧失，S=2/3为可察觉的感官干扰）。</li><li><strong>上期核心2（频率 F 评级）：</strong>掌握了表 MSR2 结合“运行工况（OOC）与失效起因发生概率（OCC）”评估车辆或设备全生命周期失效起因预测频率的方法，F=10（起因频繁发生且工况极常见）至 F=1（不可见/不会出现）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》C3.3 及 C3.4，监视（M，Monitoring）指的是在顾客正常操作/使用过程中，系统用于探测失效起因、失效模式及失效影响，并在<strong>容错时段（Fault Tolerant Time Interval, FTTI）</strong>内做出正确系统响应或引导人机反应的控制机制。<br>M 值的评级核心在于<strong>“诊断覆盖率（Diagnostic Coverage, DC）”</strong>与<strong>“容错时段内的系统响应可靠性”</strong>。在评估监视或系统响应时，必须遵循<strong>“短板原则”——即在监视诊断控制与系统响应中，采用与最低效标准相关的评级</strong>。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 监视度（M）评级梯队（表 MSR3）：</strong><br>• <strong>M=10（无效）：</strong>容错时段内根本无法探测或未探测到故障；且容错时段内无反应。<br>• <strong>M=9（非常低）：</strong>相关工况下几乎从未探测到；监视控制极低效、变化性与不确定性极高；DC 低；无法可靠反应。<br>• <strong>M=8（低）：</strong>极少数工况下能探测到；DC 预计低于 60%；不能总是进行响应。<br>• <strong>M=7（较低）：</strong>容错时段内探测机率低；DC 预计高于 60%；反应机率低。<br>• <strong>M=6（中）：</strong>仅在上电（Power-on）状态下自动探测，探测时间变差中等；DC 高于 90%；多种工况下能响应。<br>• <strong>M=5（中）：</strong>容错时段内能自动探测，时间变差中等，或驾驶员/用户在多种工况下能探测；DC 预计在 90%~97% 之间；很多工况下可响应。<br>• <strong>M=4（较高）：</strong>容错时段内自动探测，时间变差一般，或用户大多工况可感知；DC 高于 97%；大多工况下能响应。<br>• <strong>M=3（高）：</strong>容错时段内自动探测，时间变差很小且机率高；DC 高于 99%；大多工况下系统自动响应且变差很小。<br>• <strong>M=2（非常高）：</strong>容错时段内自动探测，时间变差极小且机率极高；DC 高于 99.9%；容错时段内自动响应且变差极小。<br>• <strong>M=1（消除原失效影响，可靠且可接受）：</strong>系统总是可以自动探测，故障覆盖率大大高于 99.9%；容错时段内系统总是能够自动响应。<br><br><strong>(2) FMEA-MSR 措施优先级（AP）逻辑（表 C3.4）：</strong><br>• <strong>S、F、M 综合驱动：</strong>与 DFMEA（S, O, D）逻辑一致，AP 分为 High（高优先）、Medium（中优先）、Low（低优先）。高严重度（S=9-10）且高频率时，即使监视达到 M=2-3 仍可能为 H，只有当 F 极低且 M 高时才降为 L。<br>• <strong>关键注记规则（★手册强制规定）：</strong><br>① <strong>若 M=1：</strong>在确定 MSR 措施优先级（AP）时，<strong>应使用“监视及系统响应后的失效影响严重度评级（后 S）”</strong>！因为系统已 100% 可靠消除原严重危害并切换至安全状态。<br>② <strong>若 M ≠ 1（M 为 2~10）：</strong>在查 AP 表确定措施优先级时，<strong>必须强制使用“最初的失效影响严重度评级（前 S）”</strong>！即使 M=2 诊断覆盖率高达 99.9%，若系统未能达到完全消除原影响的绝对可靠，仍以原始最坏伤害界定初始 AP 风险。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>场景一：快充过温保护系统（电池起火风险，原始 S=10）：</strong><br>手机大功率超级快充模式下，PMIC/外置电荷泵发热导致 NTC 传感器采集端失效。原始失效影响为热失控起火（S=10），运行工况下起因发生预测频率 F=4（低）。<br>• 方案 A：系统引入硬件级独立过温比较器电路，在 FTTI（<50ms）内自动硬件切断充电回路并进入冷机状态。若该诊断覆盖率 >99.9% 且系统总能自动切断，评定 M=1。此时降级后影响仅为“充电中止并弹出警示”（后 S=4）。根据 AP 表注记规则，查 AP 时使用后 S=4，结合 F=4、M=1，查表得 AP 仅为 <strong>Low</strong>！无需启动整机架构级紧急变更。<br>• 方案 B：依赖软件轮询读取 NTC 阻值，若系统死机或高负荷卡顿可能错过 FTTI，DC 约 95%，系统评定为 M=5。根据注记规则，因 M≠1，必须使用前 S=10 查表：S=10, F=4, M=5 -> 查表对应“S=10, F=4, M=4-10”，AP 为 <strong>High</strong>！研发团队必须立即优化硬件设计。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 M 与 DFMEA 中的 D（探测度）：</strong>D 是产品投产前在研发阶段“发现设计缺陷/防止流出”的验证试验；而 MSR 中的 M 是产品在终端消费者手中运行时，机载/系统软硬件“实时探测故障并做出容错保护响应”的在线能力。<br>• <strong>误区二：无视响应短板：</strong>某个传感器硬件能 100% 捕获电压尖峰（诊断能力 M=1 级别），但后台保护中断服务程序（ISR）在 CPU 满载时响应延迟超过了器件击穿的容错时段（FTTI）（响应能力 M=8 级别）。工程师误将 M 打为 1。<strong>正解：</strong>表 MSR3 明确要求“在监视或系统响应中使用与最低效的标准相关的评级”，综合 M 必须评为 8。<br>• <strong>误区三：M 达到 2 或 3 时就直接用后 S 查 AP：</strong>工程师看到 M=2（诊断覆盖率 >99.9%），认为系统很安全，便使用降低后的 S 查 AP 表。<strong>正解：</strong>原书 P214 底部注记明确规定：<strong>只有 M=1 时才能用后 S；只要 M 不等于 1，一律用最初的 S 查表！</strong>这是很多功能安全审查中被开不符合项的重灾区。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C3.3 - C3.4（原书 P210-214）（PDF 第 210-214 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》表 C3.3 监视度（M）评级中，若系统只能在“打开电源（Power-on）状态下”才能自动探测到故障/失效，诊断覆盖率预计高于 90%，且在多种运行条件下能够对探测到的故障进行反应，其 M 评级应为：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. M = 4</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. M = 5</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. M = 6</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. M = 7</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书第 210 页表 C3.3（MSR-3），M=6 的诊断监视标准明确为：“只有在打开电源状态下，系统或驾驶员才能自动探测到故障/失效，探测时间的变化为中等程度。诊断覆盖率预计高于 90%。”系统反应标准为：“在多种运行条件下，自动化系统或驾驶员能够对探测到的故障/失效进行反应。”因此应评为 M=6。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于 FMEA-MSR 措施优先级（AP）判定逻辑，当初始失效严重度前 S = 10，经监视及系统响应切换至安全状态后的严重度后 S = 4 时，下列关于如何查 AP 表的描述，严格符合手册要求的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只要监视度 M ≤ 3（即诊断覆盖率高于 99%），均应使用后 S（S=4）确定措施优先级</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 无论 M 为何值，为了安全保守起见，一律强制使用前 S（S=10）确定措施优先级</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 只有当 M = 1 时，才使用监视及响应后的失效影响严重度（后 S=4）；如果 M ≠ 1，必须使用最初的失效影响严重度（前 S=10）确定 AP</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. AP 表只根据 M 与 F 查表，严重度 S 仅作为背景参考，不影响 AP 的直接查表</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第 214 页表 C3.4 底部的强制“注”明确指出：“如果 M=1，在确定 MSR 措施优先级时，应使用监视及系统响应后的失效影响严重度评级。如果 M 不等于 1，在确定 MSR 措施优先级时，应使用最初的失效影响严重度评级。”因此选项 C 完全正确。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机电源管理单元（PMIC）的 FMEA-MSR 分析中，原失效影响为主板芯片烧毁导致冒烟起火（前 S=10），失效起因发生频率 F=4（低）。软件团队开发了数字过流采样与切断响应机制，经评估，传感器检测精度极高（DC>99.9%），但系统响应需经由 CPU 软件调度，在极端负载卡顿下无法保证在 FTTI（容错时段）内 100% 快速切断，响应评估为“大多运行条件下能反应”（对应 M=4 级响应）。根据手册规则，综合 M 评级及最终查得的 AP 应为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 综合 M 应根据最低效原则评为 4；因 M≠1，使用前 S=10 查表，S=10, F=4, M=4 对应 AP 为 High</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 综合 M 应取平均值评为 3；因 DC>99.9%，可使用后 S=4 查表，对应 AP 为 Low</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 综合 M 应根据最高效率传感器评为 2；使用前 S=10 查表，对应 AP 为 Medium</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 综合 M 应评为 1；使用后 S=4 查表，S=4, F=4, M=1 对应 AP 为 Low</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书第 210-211 页表头明确规定：“在监视或系统响应中使用与最低效的标准相关的评级”。虽然诊断检测覆盖率高达 99.9%，但响应环节只能达到 M=4 水平，根据短板原则综合 M 必须评为 4。又根据原书第 214 页注记，因 M=4≠1，必须使用前 S（S=10）查表。对照原书第 212 页 AP 表，S=10, F=4（低）, M=4-10（较高-无效）时，措施优先级 AP 明确为 High（H）。故选项 A 正确。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 C3-3，下列关于监视控制及系统响应有效性（M）评级标准与诊断覆盖率（DC）对应关系的表述，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. M = 1 时，系统总是可以自动探测到故障/失效，故障覆盖率预计大大高于 99.9%，且在容错时段内系统总是能自动反应</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. M = 2 时，容错时段内自动探测且时间变差很小，诊断覆盖率预计高于 99.9%</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. M = 3 时，诊断覆盖率预计高于 99%，系统反应的时间变差很小且机率高</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. M = 5 时，诊断覆盖率预计在 90%~97% 之间，在很多种运行条件下自动化系统或驾驶员能对探测到的故障进行反应</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. M = 8 时，监视控制非常高效，诊断覆盖率预计高于 99%</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书第 210-211 页表 C3-3：M=1 要求故障覆盖率大大高于 99.9% 且总是自动反应（A 正确）；M=2 要求 DC 高于 99.9% 且变差极小（B 正确）；M=3 要求 DC 高于 99% 且变差很小（C 正确）；M=5 诊断覆盖率预计在 90-97% 之间（D 正确）。而 M=8 为“低”，诊断覆盖率预计低于 60%，监视控制非常低效，E 选项描述颠倒错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在进行 FMEA-MSR 风险评估与措施分析时，工程师团队关于表 C3.4 措施优先级（AP）的理解与执行，下列哪些做法是完全正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 当影响严重度 S 为 9（对产品影响度高），失效频率 F 为 2-3（极低-很低），监视度 M=1 时，措施优先级 AP 为 Low（L）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 只要失效模式的严重度 S 为 10 或 9，不论频率 F 和监视度 M 为何值，AP 一律无条件判定为 High（H）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 当影响严重度 S 为 7-8（影响度较高），失效频率 F 为 4（低），若监视有效性 M 为 1-3（可靠-高），措施优先级 AP 为 Low（L）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 当失效起因在产品使用寿命内预测“不会出现”（F=1）时，不论严重度 S 与监视有效性 M 是多少，措施优先级 AP 均为 Low（L）</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. FMEA-MSR 中的监视度 M 评级只考虑传感器硬件的诊断能力，不需要考虑系统软件或执行机构在容错时段（FTTI）内的响应时间变差</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>对照原书第 212-214 页表 C3.4：A 选项：查原书 P212 表，S=9, F=2-3, M=1 时 AP 对应为 Low，A 正确；B 选项错误，S=9 或 10 时，若 F=1（不会出现），AP 即为 Low，并非无条件全为 H；C 选项：查原书 P213 表，S=7-8, F=4, M=1-3 时 AP 为 Low，C 正确；D 选项：查原书 P212-214，在 S=10, 9, 7-8, 4-6, 2-3 下，当 F=1（不会出现）时，M 为 1-10 对应的 AP 全为 Low，D 正确；E 选项错误，M 评级必须同时评估“诊断监视标准”与“系统响应标准”，且按最低效标准评级，容错时段内的响应时间至关重要。因此正确答案为 A, C, D。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

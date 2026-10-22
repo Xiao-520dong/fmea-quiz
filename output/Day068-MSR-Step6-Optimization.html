@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 068：FMEA-MSR 步骤六（优化）：MSR 预防措施与诊断监视改进闭环</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 068：FMEA-MSR 步骤六（优化）：MSR 预防措施与诊断监视改进闭环</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（防夹车窗示例）：</strong>防夹车窗升降器在霍尔传感器损坏或导线短路时，可能导致无法探测夹持障碍物（S=8），若仅依赖热保护（M=10），AP 评级高达 High，必须采取系统级改进。</li><li><strong>上期核心2（系统响应与监视能力）：</strong>引入电机电流真实性核查（M=2）并配合安全响应（切换为降级的手动点动模式并禁用舒适自动关闭，S降为6），能将措施优先级从 H 成功降至 L。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与优化优先顺序（4.6.1）</strong><br>• <strong>优化的主要目的：</strong>为改进产品要求以及预防/探测控制提供技术基础。中（M）、高（H）措施优先级表明系统存在不可忽视的功能安全或法规风险，必须引入技术改进。<br>• <strong>改进路径：</strong><br>&nbsp;&nbsp;1) 引入更可靠的元器件，降低现场运行中失效起因（FC）的潜在发生频度（降低 F）；<br>&nbsp;&nbsp;2) 引入额外的监视机制，提高系统在故障发生后的探测能力与诊断覆盖率（提高监视 M 等级，即数值变小）；<br>&nbsp;&nbsp;3) 引入冗余或设计安全响应，消除或减轻失效影响（降低 S）；<br>&nbsp;&nbsp;4) 注意：单纯增加“诊断监视”类似于增加设计控制，<strong>不会改变失效起因本身在物理上的发生频度（F 不会因增加监视而改变）</strong>。<br>• <strong>最有效的优化顺序：</strong><br>&nbsp;&nbsp;① 修改组件设计，减少失效起因（FC）的频度（O/F）；<br>&nbsp;&nbsp;② 提高探测失效起因（FC）或失效模式（FM）的能力（即增强诊断监视 M）；<br>&nbsp;&nbsp;③ 发生设计修改时，所有受影响要素重新评估；发生<strong>概念变更</strong>时，FMEA 所有步骤均须针对受影响部分进行评审，因为初始分析基于旧概念已失效。<br>• <strong>无需进一步措施：</strong>若团队评估后决定不采取措施，需在备注中明确注明“无需进一步措施”，表明风险分析已完成并接受。</div><div class="highlight-blue"><strong>2. 责任分配、状态流转与有效性闭环（4.6.2 - 4.6.4）</strong><br>• <strong>责任与日期：</strong>每项优化措施必须明确指定具体负责人（单人负责制）及目标完成日期（如与项目节点 SOP、过程确认相匹配）。实际完成日期与实施记录必须完整归档。<br>• <strong>措施状态的标准五分类（4.6.3）：</strong><br>&nbsp;&nbsp;1) <strong>尚未确定（Initial）：</strong>尚无明确的行动计划；<br>&nbsp;&nbsp;2) <strong>尚未决策（To be decided，可选）：</strong>已提出方案但正在编制决策文件，尚未最终拍板；<br>&nbsp;&nbsp;3) <strong>尚未执行（Not implemented，可选）：</strong>方案已批准确定，但实际设计/软硬件尚未落实或未完成有效性验证；<br>&nbsp;&nbsp;4) <strong>已完成（Completed）：</strong>措施已完全执行，其有效性已被测试证明并记录归档，完成了最终闭环评估；<br>&nbsp;&nbsp;5) <strong>不执行（Not implemented/Rejected）：</strong>因技术限制或实践条件超出当前能力而决定放弃，此时 AP 无法降低，残留风险须由团队正式接受并记录。<br>• <strong>有效性评估与 AP 闭环机制（4.6.4）：</strong><br>&nbsp;&nbsp;制定新措施时，团队给出“初步预测评级”；在通过实车/实机测试验证前，措施状态<strong>必须保持为“尚未执行”</strong>；唯有测试完成且证据确凿后，方可调整/确认 F 与 M 评级，将状态改为“已完成”，重新计算措施优先级（AP）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机大功率快充热失控监视优化</strong><br>• <strong>初始状态：</strong>传音 120W/160W 超级快充场景下，主板充电 IC 内部短路导致过热起火（S=9），初始设计仅靠电池端单颗 NTC 采样（发生频度 F=3，诊断监视 M=7：单点采样且响应慢），AP 判定为 High。<br>• <strong>优化闭环执行：</strong><br>&nbsp;&nbsp;1) <strong>预防措施改进：</strong>选用车规级高耐压低 RDS(on) 的充电管理芯片与对称双电荷泵架构，降低元件过应力击穿概率（F 预测降至 2）；<br>&nbsp;&nbsp;2) <strong>诊断监视与系统响应（MSR 核心）：</strong>在快充固件中增加“主板多点 NTC 差分温升率核查 + 接口阻抗在线自检”双重监视（诊断监视 M 优化为 2：多条件真实性检查并在 10ms 内切断充电协议，转入 5W 涓流安全模式，S 降至 4）；<br>&nbsp;&nbsp;3) <strong>状态流转控制：</strong>由硬件架构师负责，在热仿真和整机过充注入测试完成前，状态保持“尚未执行”；测试通过、生成热失控抑制测试报告后，正式转为“已完成”，AP 顺利从 H 降至 L。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南（4.6.5）</strong><br>• <strong>误区 1：篡改初始分析记录。</strong>很多工程师在落实措施后，直接把步骤五的原始 S、F、M 改掉。<strong>纠正：</strong>原书 4.6.5 明确强调，FMEA-MSR 是设计的历史证据库，一旦采取措施，初始 S、F、M 绝对不允许被修改覆盖，所有优化必须记录在步骤六对应的“优化后评级”列中。<br>• <strong>误区 2：以为增加诊断算法能降低失效起因的发生频度（F）。</strong><strong>纠正：</strong>在软件中加入对电容短路或传感器掉线的诊断监视，纯属提升探测与容错能力（降低 M），物理硬件的寿命或击穿频度（F）分毫未变！<br>• <strong>误区 3：方案讨论通过就直接将状态标记为“已完成”。</strong><strong>纠正：</strong>只要没有经过工程验证测试并出具证据，状态只能是“尚未执行”，绝不能提前勾选“已完成”。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.6.1 - 4.6.5 节（PDF 第 147-149 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》4.6.1 节，在进行 FMEA-MSR 优化时，以下关于“引入监视（Monitoring）”的描述中，正确的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 引入诊断监视能够显著降低失效起因（FC）的物理发生频度（F）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 监视的引入类似于设计变更，但失效起因的发生频度（F）不会因此而改变</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 引入监视后，无需再对受影响的设计要素进行重新评估</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 优化优先顺序中，应首先提高监视能力，最后再考虑修改组件设计以降低发生频度</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 4.6.1 节（PDF 第 147 页）：“监视的引入类似于设计变更。失效起因的频率不会改变。”优化的最有效顺序首选是修改设计以减少失效起因的发生频度，其次才是提高探测/监视能力。因此 B 正确，A、D 错误。发生设计修改时所有受影响要素均需重新评估，C 错误。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">依据手册 4.6.3 与 4.6.4 节关于措施状态的规定，当一项 MSR 诊断措施方案已确定并写入软件代码，但尚未完成台架测试与有效性验证时，该措施应处于何种状态？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 尚未确定</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 尚未决策</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 尚未执行</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 已完成</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书 4.6.4 节（PDF 第 148 页）：“新的措施将获得初步措施优先级评估，作为对有效性的预测。然而，该措施将一直保持‘尚未执行’的状态，直到其有效性得到测试为止。测试完成后……状态从‘尚未执行’改为‘已完成’。”因此正确答案为 C。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机摄像头马达驱动电路的 FMEA-MSR 优化中，如果团队因当前结构空间极度受限且成本超标，经正式评估后决定放弃增加额外的霍尔位置冗余传感器，根据标准要求，应如何处理？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 将措施状态标记为“不执行”，团队评估并正式接受残留风险水平，措施优先级（AP）维持不变</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 将该失效分析行直接从 FMEA 表格中删除，以免在 SOP 审核时被开具不符合项</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 强行将诊断监视 M 评级下调为较好数值，并将状态标记为“已完成”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 在备注栏填写“已优化”，直接将措施优先级由 High 改为 Low</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据原书 4.6.3 节（PDF 第 148 页）：“当决定不执行某项措施时，就会分配‘不执行’的状态。如果实践和技术限制超出当前能力，就会发生这种情况……如果‘不采取措施’，那么‘措施优先级’就不会降低，失效风险就会继续进入产品设计。只有当 FMEA 团队评估了每个项目的措施优先级，并接受风险水平或记录所有措施关闭时，FMEA 工作才算完成。”因此 A 正确；B、C、D 均违反 FMEA 规范与诚信原则。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 4.6 节，关于 FMEA-MSR 步骤六持续改进与版本维护的原则，下列哪些说法是正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. FMEA-MSR 是设计的历史记录，一旦采取措施，初始的 S、F、M 评分不得被修改覆盖</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 优化完成后将形成一个存储库，能够记录设计决策和设计改进的历史进展</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 对于基础（Baseline）、系列（Family）或一般 DFMEA，初始 S、F、M 评级可以根据通用共性基线进行修改，因为它们是特定衍生项目分析的起点</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 在发生概念变更（Concept Change）时，只需更新措施列表即可，无需重新评审前序步骤</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 4.6.1 与 4.6.5 节（PDF 第 147、149 页）：FMEA-MSR 作为历史记录，初始 S、F、M 不会被修改（A、B 正确）；对于基础/系列/一般 FMEA，初始评级可修改作为新分析起点（C 正确）。而根据 4.6.1 节，“在概念变更的情况下，FMEA 的所有步骤都要针对受影响的部分进行评审”，因此 D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 FMEA-MSR 优化（步骤六）的表格记录中，下列属于必须明确记录的关键要素有哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. MSR 预防措施与诊断监视措施的具体内容</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 明确的负责人姓名与切合实际的目标完成日期</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 措施的当前状态（如尚未确定、尚未决策、尚未执行、已完成、不执行）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 基于验证证据的重新评估评级（S、F、M）及新的措施优先级（AP）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 4.6.2 - 4.6.5 节及图 4.6-1（PDF 第 147-149 页），优化步骤记录必须完整包含：预防/诊断监视措施内容、系统响应及响应后最严重的失效影响、负责人姓名、目标完成日期、措施状态、基于证据的完成日期以及重新评估后的 S、F、M 与新 AP。因此 A、B、C、D 全选。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

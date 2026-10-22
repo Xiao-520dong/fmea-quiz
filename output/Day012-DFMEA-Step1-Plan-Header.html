@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 012：DFMEA 步骤一：项目计划、基准确定与表头填写规范</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 012：DFMEA 步骤一：项目计划、基准确定与表头填写规范</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（步骤一目的）：</strong>DFMEA 步骤一（规划和准备）的核心目的是界定分析范围，明确分析边界，收集内外部顾客需求、规范图纸及历史失效数据，为后续技术风险分析奠定基础。</li><li><strong>上期核心2（项目边界确定）：</strong>边界界定需结合技术新颖性、复杂性、安全性、法律合规等要素，利用边界图（Boundary Diagram）等可视化工具明确系统要素的纳入与排除。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>DFMEA 项目计划（2.1.3）：</strong>确定设计 FMEA 项目后，应立即制定执行计划。手册建议采用 <strong>5T 方法</strong>（InTent 目的、Timing 时间安排、Team 团队、Task 任务、Tool 工具）进行系统规划，确保 DFMEA 七步法活动无缝嵌入企业总体产品开发项目计划（如传音 IPD 流程）中，杜绝事后补做。</li><li><strong>基准 DFMEA（2.1.4）：</strong>团队应在启动时识别可重用的工程知识，主要包括：<ul><li><strong>基础 DFMEA（Foundation DFMEA）：</strong>包含跨项目共享的高阶通用知识、历史失效模式与行业共性要求的知识库。</li><li><strong>系列 DFMEA（Family DFMEA）：</strong>基础 DFMEA 的具体化衍生，专门用于包含共同或一致产品边界、相似架构和相关功能的产品族。</li></ul>若新产品属于同一系列，则将新增的项目特定组件与功能增量补充至系列 DFMEA；若无任何可用基准，团队才从零开发全新 DFMEA。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>DFMEA 表头规范要素（2.1.5）：</strong>在步骤一阶段必须完整填写表头信息，作为风险评估的基准受控记录，核心字段包括：<ol><li><strong>公司名称：</strong>负责 DFMEA 的组织名称（如传音控股/特定产品事业部）。</li><li><strong>工程地点：</strong>研发团队所在的地理位置（如深圳、上海、重庆等研发中心）。</li><li><strong>顾客名称：</strong>外部客户或内部下游品牌/产品线（如 TECNO、Infinix、itel 或运营商）。</li><li><strong>年型/项目：</strong>具体机型项目代号、应用年份或产品风格平台。</li><li><strong>项目（系统/子系统/组件）：</strong>明确本份 DFMEA 所聚焦的具体层级与对象名称。</li><li><strong>开始与修订日期：</strong>DFMEA 启动初始日期及当前版本最新修订日期。</li><li><strong>跨职能团队：</strong>明确记录参与评估的团队成员清单（包含结构、硬件、测试、工艺等）。</li><li><strong>DFMEA ID 编号与设计责任人：</strong>企业内部受控编号及该设计模块的所有者（Owner）。</li><li><strong>保密级别：</strong>专有、商业使用或保密等级标识。</li></ol></li><li><strong>承上启下关系（2.1.6）：</strong>步骤一“规划与准备”收集的技术规范、5T 计划与边界定义，直接为步骤二“结构分析”构建系统/子系统/组件的层级分解提供基础输入。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>场景一（系列基准的高效复用）：</strong>传音研发某款中端 5G 智能手机的“潜望式长焦马达模组”时，不需要从零编写 DFMEA。团队检索并调取上一代旗舰平台的 <em>Family DFMEA（音圈马达与潜望防抖系列）</em> 作为基准，仅重点识别本次针对“非洲高热高湿环境胶水老化”以及“跌落抗震结构微调”的变更点与特定组件，大幅提升评估效率与历史失效预防覆盖率。</li><li><strong>场景二（5T 与表头在 IPD 节点的落地）：</strong>在概念立项（Concept 阶段），硬件与结构系统工程师即创建 DFMEA 表头，填入项目代号、团队名单，并明确“DFMEA 开始日期”在 TR1（概念评审）之前；将“DFMEA 修订日期”与 TR2（方案评审）、TR3（工程样机评审）对齐，确保 DFMEA 成为真正的预防性设计工具而非试产归档时的“补卡表”。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：表头沦为项目结束后的“补丁”。</strong>许多工程师在项目样机甚至试产后才临时填写表头，导致“开始日期”晚于设计冻结节点，彻底违背了预防原则。<br><strong>正确做法：</strong>在步骤一启动时立即建档受控，锁定跨职能团队核心人员与 ID 编号。</li><li><strong>误区二：盲目全盘照抄或彻底另起炉灶。</strong>要么直接复制旧项目 DFMEA 一字不改（导致特定新风险遗漏），要么完全不用既有的 Foundation/Family DFMEA（导致前人踩过的坑重复踩）。<br><strong>正确做法：</strong>继承基准 DFMEA 的共性逻辑，严格在新文件中增量分析本项目的特定差异项。</li><li><strong>误区三：项目责任人错位。</strong>表头中的“设计责任人（Design Responsibility）”填成了品质工程师（QE）或 FMEA 协调员。<br><strong>正确做法：</strong>DFMEA 的绝对责任人必须是负责该模块开发的设计主管/研发工程师（RD），QE 仅承担协助与流程促进职责。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.1.3 - 2.1.6 节（PDF 第 30-32 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》2.1.3 节，在确定 DFMEA 项目后，手册推荐采用何种系统化方法来制定 DFMEA 执行计划，以确保其纳入总体项目日程？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. PDCA 循环法</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 5T 方法（目的、时间安排、团队、任务、工具）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 5W2H 分析法</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. APQP 阶段门径法</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 2.1.3 节明确指出：“建议使用本手册第 1.5 节所述的 5T 方法（目的 InTent、时间安排 Timing、团队 Team、任务 Task、工具 Tool）。DFMEA 活动（七步法过程）应纳入总体项目计划。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于 2.1.4 节中的“系列 DFMEA（Family DFMEA）”，以下哪项陈述最符合手册的定义？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 系列 DFMEA 是一份通用的行业指导规范，不可针对具体产品做修改</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 系列 DFMEA 是用于完全不相关零部件间交叉对比的工具</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 系列 DFMEA 是基础 DFMEA 的具体化，用于包含共同或一致产品边界和相关功能的产品族</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 系列 DFMEA 必须在项目完全量产后由制造部门牵头编制</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 2.1.4 节规定：“系列 DFMEA 是一个基础设计 FMEA 的具体化，用于那些包含共同或一致产品边界和相关功能的产品。对于同一个产品系列中的新产品，为完成该新产品 DFMEA 所需的新项目特定组件和功能将添加到家族/系列 FMEA 中。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队启动某款全新折叠屏铰链模块的 DFMEA 时，关于步骤一表头填写的规范，下列做法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. “设计责任人”应填写推动 FMEA 会议的质量保证部（QA）工程师</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 表头属于形式文本，可以等到开模完成进入试产（T0）后再统一录入</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 在“规划和准备”阶段即建立受控表头，明确铰链设计主管为设计责任人，并填入跨职能团队名单及开始日期</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 因为折叠屏结构保密性强，表头中严禁出现任何“项目名称”和“DFMEA ID 编号”</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 2.1.5 节明确要求：“在规划和准备阶段，DFMEA 文件的表头应该填写。”表头需包含项目名称、开始日期、团队名单、受控 ID、保密级别等，设计责任人必须是研发设计的所有者，而不是 QA。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 2.1.5 节与图 2.1-1，DFMEA 表头通常应包含哪些基本范围与管理信息？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 公司名称与工程地点</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 顾客名称与年型/项目</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. DFMEA 开始日期与最新修订日期</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 零件采购价格与供应链成本指标</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 跨职能团队名单与设计责任人</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据 2.1.5 节及表头示例图 2.1-1，表头信息包括：公司名称、工程地点、顾客名称、年型/项目、项目名称、开始/修订日期、跨职能团队、DFMEA ID 编号、设计责任人、保密级别。零件采购价格不属于 DFMEA 表头及工程风险分析范畴。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 DFMEA 步骤一（规划和准备）中，跨职能团队可以借助和参考哪些信息基准来支持新项目的分析？（多选）</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 基础 DFMEA（Foundation DFMEA）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 同一产品系列以往积累的系列 DFMEA（Family DFMEA）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 质量与可靠性历史（内部、现场失效、类似产品的保修与索赔数据）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 竞品在公开市场的宣发广告用语</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据手册第 30 页及 2.1.4 节，DFMEA 范围界定与准备工作可利用的信息包括：基础 DFMEA、系列 DFMEA、质量/可靠性历史（内部、零公里、现场失效、保修索赔）、类似产品曾用 FMEA、DFM/DFA 等。竞品广告宣传用语不属于工程技术分析基准。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C,E"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

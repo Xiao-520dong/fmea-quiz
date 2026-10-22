@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 111：特殊工艺 FMEA 与控制策略</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 111：特殊工艺 FMEA 与控制策略</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>FMEA 评审要点：</strong>重点看跨职能参与、8D闭环证据、控制计划(CP)与SOP的一致性。</li>
+<li><strong>高风险应对：</strong>对AP为高的风险，严禁仅依靠“加强人员培训”应对，必须部署工程防错。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 什么是特殊工艺？</strong><br>
+特殊工艺是指其加工结果不能通过后续的非破坏性检验或测试完全验证的工序（如：焊接、热处理、电镀、注塑等）。因为无法 100% 全检拦截不良，一旦发生问题，通常是批量的隐患。
+</div>
+<div class="highlight-blue">
+<strong>2. 特殊工艺在 PFMEA 中的重点</strong><br>
+因为探测控制 (DC) 在特殊工艺中往往效率很低（只能做少量抽检和破坏性测试，无法拦截未抽检到的不良品），所以特殊工艺的 PFMEA 必须极其依赖 <strong>预防控制 (PC)</strong>。
+</div>
+<div class="highlight-green">
+<strong>3. 特殊工艺的防错互锁</strong><br>
+对于特殊工艺，控制的核心是<strong>参数监控</strong>。在设备中建立闭环控制（如：点焊机的电流、压力、时间），当任何一个参数超出设定公差时，设备自动报警停机，这才是最可靠的预防控制手段。
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">📚 内容来源：AIAG CQI 系列特殊过程评估（CQI-9, 11, 15等）及 PFMEA 运用</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">关于特殊工艺（如焊接），为什么说探测控制（DC）通常效果很差？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 因为操作工视力不好</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 因为内部结构无法通过外观检验完全确认，需破坏性测试，无法做到 100% 拦截</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 因为质检员不喜欢做破坏性测试</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 机器会自动检测</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>特殊工艺的定义就是无法通过后续的常规无损检验100%验证其质量，所以探测度(D)往往偏高。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">对于注塑、热处理等特殊工艺，PFMEA 团队应该把最大的精力放在哪里？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 增加末端的外观检验人员</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 建立极其可靠的设备参数预防控制 (PC) 和参数互锁</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 降低严重度 (S) 评分</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 雇佣更便宜的工人</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>既然探测不住，就必须防止它发生，用参数联锁来降低频度(O)是特殊工艺控制的铁律。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">在电镀工艺的 PFMEA 中，失效模式“镀层厚度不足”的最根本起因(FC)通常是？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 客户使用不当</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 质检员没发现</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 电镀液浓度或电流密度等过程参数异常</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 包装盒破损</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>电镀的工艺结果取决于4M，尤其是过程参数（机与法/环），因此参数异常是导致厚度不足的起因。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">以下哪些工艺属于典型的“特殊工艺”？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 超声波焊接</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 螺丝锁付</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 表面喷涂</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 标签张贴</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>焊接、喷涂、热处理等内部金相/附着力无法通过非破坏手段100%检测的属于特殊工艺。打螺丝和贴标签通常可以目视或通过扭矩轻松验证。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">特殊工艺的控制计划 (CP) 中，通常会包含哪些要素？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 关键设备参数的连续监控要求（如 PLC 记录）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 定期的破坏性抽样测试要求</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 设备参数超差时的自动停机互锁验证</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 靠肉眼判断产品内部质量的指导</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>肉眼无法判断内部质量，这是特殊工艺的定义，必须靠设备监控和抽样测试来保证。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

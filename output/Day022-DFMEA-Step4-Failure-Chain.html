@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 022：DFMEA 步骤四：理论失效链模型（FE-FM-FC 三级逻辑）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 022：DFMEA 步骤四：理论失效链模型（FE-FM-FC 三级逻辑）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>DFMEA 失效模式（FM）定义为一个项目可能无法满足或交付预期功能的方式，通常包含完全丧失、部分丧失、功能退化、间歇、功能过高、意外动作或延迟等典型表现。</li><li><strong>上期核心2：</strong>P-图（参数图）是失效分析的重要输入工具，系统在噪音因素（Z）与错误输入（X）干扰下偏离预期输出（Y），产生错误输出或无法容忍的附带影响，进而衍生失效分析。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义（理论失效链模型）</strong><br>根据《AIAG & VDA FMEA 手册》第 2.4.3 节，FMEA 中对失效的分析必须围绕三个不同维度展开，构成<strong>理论失效链模型（Theoretical Failure Chain Model）</strong>：<br>① <strong>失效影响（Failure Effect, FE）</strong>：定义为失效模式产生的后果，描述对上一级集成、最终用户及法规的影响；<br>② <strong>失效模式（Failure Mode, FM）</strong>：定义为一个项目可能无法满足或交付预期功能的方式（关注焦点元素的物理/功能偏差）；<br>③ <strong>失效起因（Failure Cause, FC）</strong>：定义为导致失效模式发生的潜在设计缺陷或物理机理（下一级要素的偏差）。<br>三者通过因果链条（FC → FM → FE）紧密咬合，形成结构化的失效传导网络。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（失效影响 FE 的多维度覆盖）</strong><br>原书 2.4.4 节明确规定，失效影响（FE）必须从以下三个维度进行全面描述与评估：<br>① <strong>下一级产品集成（内部或外部）</strong>：如组件装配到整机、上级系统时的影响（装配卡滞、电性不通、配合公差超差）；<br>② <strong>最终用户的影响（外部体验与安全）</strong>：用户可直接察觉或体验到的后果，如无可察觉、外观不良（褪色/腐蚀）、异味/粗糙/操作费力、噪音（嘎嘎声/摩擦声）、性能下降（间歇/无法操作/泄漏）、功能彻底丧失（如手机无法开机/死机）、安全隐患等；<br>③ <strong>政府规章（法规符合性）</strong>：是否违反法律法规（如无线电辐射 SAR 超标、电池热失控阻燃法规不达标等）。<br><strong>注（关于目录零件/标准件的特例规则）：</strong>分析团队若不清楚最终用户场景（如通用目录零件、现货成品 Off-the-shelf、第3级基础元器件），应<strong>按照零件自身的功能和规格</strong>来定义影响。系统集成人员（OEM/整机研发）负责确保在具体应用场景中正确选型。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机影像模组失效链）</strong><br>以传音手机摄像头马达（VCM）DFMEA 分析为例：<br>• <strong>失效起因 (FC - 组件级/工艺级)</strong>：VCM 内部弹片疲劳屈服 / 驱动 IC 固件电流脉冲过载（下一级要素的设计缺陷）；<br>• <strong>失效模式 (FM - 关注焦点项目)</strong>：摄像头对焦马达卡滞或行程不足（焦点项 VCM 未交付预期对焦行程）；<br>• <strong>失效影响 (FE - 系统级/用户级/制造级)</strong>：<br>  - <i>内部集成影响</i>：模组在整机 SMT/组装产线自动化调焦测试站（Calibration）报通讯超时或行程超差，导致整机组装良率下降；<br>  - <i>最终用户影响</i>：用户在拍照时画面模糊、自动对焦（AF）失效或间歇性无法合焦，伴随微弱机械杂音；<br>  - <i>法规影响</i>：若发热严重可能涉及温升安全规范合规风险。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆三者层级，颠倒因果关系。</strong>例如将“马达卡滞”写成失效起因，“弹片断裂”写成失效模式。<strong>正确做法：</strong>牢记“焦点项目的功能偏离是 FM，引发它的底层机制是 FC，向上引发的后果是 FE”。<br>• <strong>误区二：失效影响（FE）只写内部制造不良，忽略最终用户和法规。</strong><strong>正确做法：</strong>必须全面覆盖“下一级系统集成”、“最终用户体验”与“法规合规性”三个维度。严重度（S）评分必须基于最严重的 FE 进行评定。<br>• <strong>误区三：标准元器件硬猜最终整机故障。</strong>采购的通用电容电阻工程师直接写“手机在尼日利亚高温下黑屏”。<strong>正确做法：</strong>对手册 2.4.4 节注释放宽理解——通用标准件/现货元器件若不知整机上下文，应按元器件功能及技术规格（如输出容值漂移 >20%、耐压击穿）定义其影响，系统级集成方负责结合整机场景评定 FE。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.4.3 节（PDF 第 48-49 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，理论失效链模型（Failure Chain）由哪三个要素构成？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 失效输入、失效过程、失效输出</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 失效影响（FE）、失效模式（FM）、失效起因（FC）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 预防措施（PC）、探测措施（DC）、风险顺序数（RPN）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 噪音因素（Z）、控制因素（X）、响应指标（Y）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 2.4.3 节明确指出，FMEA 中对失效的分析包括三个不同方面：失效影响（FE）、失效模式（FM）、失效起因（FC），即图 2.4-3 理论失效链模型。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于失效影响（FE）的描述范围，以下哪项不属于手册 2.4.4 节规定的三大维度？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 对下一级产品集成的影响（内部或外部）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 对操作整机/产品的最终用户的影响（外部）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 对相关适用的政府规章的影响（法规）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 对产品设计方案研发成本与开模周期的影响（商业经济性）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 2.4.4 节规定，失效影响描述的是对下一级产品集成的影响、对最终用户的影响以及对适用的政府规章的影响。商业研发成本与开模周期不属于 FMEA 技术失效影响的定义范围。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机快充充电器研发中，若分析团队评估的是外购标准的二级现货电容（第 3 级通用目录零件），在不了解最终搭载机型具体应用场景的情况下，根据手册 2.4.4 节注释，团队应如何定义失效影响？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 按照电容自身的零件功能和规格来定义其失效影响</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 必须强制要求整机团队提供非洲某具体机型的所有软件使用场景，否则暂停分析</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 直接将失效影响一律定义为“手机起火爆炸，严重度直接赋 10 分”</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 目录零件不需要进行步骤四失效分析，直接跳到步骤六</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 2.4.4 节特别注释：当分析团队不知道最终用户影响时（如目录零件、现货成品、第 3 级组件），应按照零件功能和规格来定义影响，由系统集成人员负责确保正确选型与整机级影响评估。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册第 49 页内容，以下哪些属于“对最终用户的失效影响”的典型表现？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 外观不良（如近观难看、褪色、表面腐蚀）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 噪音（如吱吱声、摩擦声、嘎嘎声）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 操作受损、间歇、无法操作、电磁不兼容</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 不符合政府规定、安全功能丧失</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第 49 页明确给出了最终用户失效影响的典型示例，包括：无可察觉的影响、外观不良（褪色/腐蚀）、噪音（摩擦/吱吱/嘎嘎声）、异味/粗糙/更费劲、操作受损/间歇/无法操作/电磁不兼容、外部泄漏、无法驾驶（步行回家）、不符合政府规定、功能损失等。故全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在构建传音智能手机侧键（Volume Key）的理论失效链（FE-FM-FC）时，下列逻辑对应关系合理的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 失效起因（FC）：侧键锅仔片（Dome）触点表面镀层微裂纹氧化</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 失效模式（FM）：按键下压电气导通阻抗过大 / 功能退化</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 失效影响（FE）：用户音量调节失灵或出现间歇性响应，按压体验受损</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 失效影响（FE）：冲压模具冲针磨损导致毛刺过大</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A 选项属于底层设计/材料层面的物理起因（FC）；B 选项属于侧键焦点项目的预期功能偏差（FM）；C 选项属于最终用户体验到的后果（FE）。D 选项中模具冲针磨损是 PFMEA 中的制造起因，而非产品失效影响（FE），因此排除 D。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 005：产品与过程 FMEA 定位及跨团队协作相关性</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 005：产品与过程 FMEA 定位及跨团队协作相关性</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（过渡策略与时机）：</strong>企业已有旧项目可继续沿用 AIAG 第4版或 VDA 4 指南，但对于启动的新项目（或客户明确要求的新平台），应采用 AIAG & VDA 新版七步法；企业应在质量体系中清晰定义过渡边界。</li><li><strong>上期核心2（基础与家族 FMEA）：</strong>基础 FMEA（Baseline）是跨项目通用的组织级知识资产，不针对单一项目；家族 FMEA（Family）是基于通用边界图针对同类产品/工艺集合的专项沉淀；项目 FMEA 必须由二者派生，聚焦于新应用、新环境及工程变更带来的差异。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与应用情形（1.4 节）</strong><br>手册明确界定了 FMEA 实施的<strong>三种基本情形</strong>：<br>• <strong>情形 1（新设计、新技术或新过程）：</strong>分析范围包括完整的设计、技术或制造过程。<br>• <strong>情形 2（现有设计或过程的新应用）：</strong>设计/过程本身未变，但在<strong>新环境、新场地、新使用概况（包括工作周期、极端工况、法规变更等）</strong>下使用，范围应重点关注新条件对现有设计或过程的影响。<br>• <strong>情形 3（对现有设计或过程的工程变更）：</strong>因新技术开发、现场客诉、召回等引发设计或过程更改，必须对 FMEA 进行审查或修订。<br><strong>生产开始后（SOP 后）修订 FMEA 的 8 项触发条件：</strong>设计或过程变更、运行条件变更、法律/法规/客户规范变更、现场质量问题（工厂经验、0公里、市场投诉）、危害分析和风险评估变更、威胁分析（网络安全等）变更、产品监视中发现问题、经验教训输入。</div><div class="highlight-blue"><strong>2. DFMEA、PFMEA 定位与跨团队协同逻辑（1.4.1 - 1.4.3 节）</strong><br>• <strong>设计 FMEA（DFMEA）：</strong>由设计责任工程师主导，在交付生产之前，基于块/边界图分析系统、子系统及组件的功能与接口关系，将潜在<strong>设计缺陷</strong>风险降至最低。<br>• <strong>过程 FMEA（PFMEA）：</strong>分析<strong>制造、装配和物流过程</strong>中的潜在失效，通过分析<strong>过程变差（Process Variation）</strong>导致的失效模式，确保生产出的产品完全符合设计意图。过程中的失效起因（如工装磨损、装配干涉）与 DFMEA 的起因本质不同。<br>• <strong>跨团队协同与严重度一致性（核心法则）：</strong><br>① <strong>严重度（S）继承原则：</strong>制造商建立协同的基石是——<strong>当产品失效对最终用户的影响相同时，DFMEA 与 PFMEA 中的严重度（Severity）评级必须保持一致</strong>！<br>② <strong>特征级联传递：</strong>如果产品失效对最终用户（整机/整车）的影响未纳入 PFMEA，两者的关联性就不成立。必须将 DFMEA 中特定失效影响对应的<strong>设计失效特征（产品特性/特殊特性 SC/CC）</strong>输入到 PFMEA 中，以便制造团队识别制造变差对其产生的影响。<br>③ <strong>供应链共识：</strong>OEM 与各层级供应商（Tier 1/2/3）需对影响及严重度评审达成共识，确保全链条风险透明。</div><div class="highlight-green"><strong>3. 传音研发与智能制造实战场景</strong><br>• <strong>情形 2 实战：</strong>传音成熟手机平台进入非洲撒哈拉以南超干旱多沙尘地区或沿海高湿热地区时，硬件架构虽沿用老方案，但属于典型的“现有设计的新应用”。DFMEA 必须重构环境分析，评估沙尘侵入受话器防尘网及汗液腐蚀 Type-C 接口的失效风险。<br>• <strong>跨团队接口协同实战（点胶密封）：</strong><br>在某防水机型开发中，结构 DFMEA 定义：“中框与后盖点胶密封失效 → 最终用户水汽浸入导致整机主板短路黑屏”，严重度评级确定为 <strong>S = 8</strong>，并输出关键产品特性“点胶线宽 0.8±0.1mm、无气泡断胶”。<br>南昌/重庆制造工程团队在编制 PFMEA 时，过程步骤“后盖自动点胶”分析失效模式“胶水断胶/气泡”，由于其导致相同的整机进水失效影响，<strong>PFMEA 中的严重度必须强制继承 S = 8</strong>，绝不能因为“产线气密机可以拦截报废”而误将严重度打为 3 或 4（产线拦截能力反映在探测度 D，不能调低严重度 S）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 DFMEA 与 PFMEA 的失效起因。</strong>在 DFMEA 的失效起因栏中填写“产线工人漏装密封圈”或“贴片温度过高”（这是过程变差，属于 PFMEA 范围）；或者在 PFMEA 中将失效起因写为“元器件耐压值设计不足”（这是设计缺陷，属于 DFMEA 范围）。<br>• <strong>误区二：PFMEA 严重度脱离最终用户孤立打分。</strong>制造工程师只关注“产线是否造成设备停机或产品报废”，随意将用户功能失效的严重度降级，切断了与 DFMEA 的血缘追溯关系。<br>• <strong>误区三：把 FMEA 当作事后合规文档。</strong>手册 1.5.2 明确指出，FMEA 是<strong>“事前行为（Before-the-event）”</strong>而非“事后记录”。开模后或试产（T0/EVT）结束后补写 FMEA，无法起到早期消除设计与制造风险的作用。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.4.1 - 1.4.3 节（PDF 第 18-21 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">传音某款智能手机沿用了上一代已量产的指纹识别模组硬件设计，但该机型首次计划出货至高海拔、高紫外线及极端干燥的拉美高地市场。根据手册 1.4 节，该项目的 FMEA 分析属于以下哪种情形？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 情形 1：新设计、新技术或新过程</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 情形 2：现有设计或过程的新应用</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 情形 3：对现有设计或过程的工程变更</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 不属于 FMEA 应用范畴，无需进行 FMEA 分析</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 1.4 明确定义：情形 2 为“现有设计或过程的新应用”，其 FMEA 范围包含新环境、新场地、新应用或使用概况（包括工作周期、法规要求等）下的现有设计或过程，重点分析新环境对现有设计的影响。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于设计 FMEA（DFMEA）与过程 FMEA（PFMEA）的协作及严重度（S）评估，手册 1.4.3 节给出的明确原则是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. PFMEA 的严重度应完全独立评估，仅反映车间内部返工与报废成本，无需与 DFMEA 对齐</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 当失效影响相同时，DFMEA 和 PFMEA 中的严重度（Severity）评级必须保持相同</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 若生产线配备了 100% 自动光学检测（AOI），PFMEA 的严重度可比 DFMEA 降低 2 个等级</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. PFMEA 只需分析制造工装寿命，无需捕获 DFMEA 中传递的产品特性（SC/CC）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 1.4.3 节明确指出：“对于制造商而言，一个好的开始是确保当失效影响相同时，设计 FMEA 和过程 FMEA 中的严重度也相同。如果产品失效对最终用户的影响不包括在过程 FMEA 中，那么设计 FMEA 和过程 FMEA 之间的相关性便不可能。”检测能力只能影响探测度（D），不能改变严重度（S）。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能硬件产品的 FMEA 协同开发中，下列哪项跨团队工作方式是符合手册规范的正确做法？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 结构设计团队在 DFMEA 中识别电池仓公差过紧会导致电芯受挤压起火风险，将电池仓关键尺寸作为特殊特性（SC）传递至制造团队，制造团队在 PFMEA 中承接该特性并分析注塑/组装变差对该特性的影响</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 硬件设计团队在做主板 DFMEA 时，将“SMT 贴片机吸嘴气压不足导致虚焊”作为电路失效的根本起因进行详细评分</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 制造工程部为了提升项目进度，直接将 DFMEA 表格的表头改为 PFMEA，原封不动作为试产控制依据</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 为降低产线风险优先度，工艺工程师将流出到最终用户的“按键彻底失效”严重度定为 3，理由是工厂入库检验有抽检</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>选项 A 正确建立了 DFMEA 与 PFMEA 之间的特性级联传递（将设计失效特征/产品特性传递到 PFMEA 中捕获变差）。选项 B 错误地将制造过程变差写进了 DFMEA；选项 C 混淆了两者完全不同的失效分析对象；选项 D 错误地将探测手段与严重度挂钩并脱离了最终用户影响。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 1.4 节，当产品已经开始正式批量生产（SOP 之后），在下列哪些情况下可以或必须触发对现有 FMEA 的审查与修订？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 发生产品设计工程变更或制造工艺路线变更</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 目标市场出台了关于电池安全或射频辐射的全新强制性法律法规</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 售后市场（0公里或使用现场）出现批次性客诉与失效问题</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 组织在类似产品线上总结获得了新的工程经验教训（Lessons Learned）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 1.4 节列出了 8 种在生产开始后触发 FMEA 修订的条件，选项 A（设计/过程变更）、选项 B（要求/法律法规变更）、选项 C（质量问题/现场投诉）、选项 D（经验教训）全部在原书清单中。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 DFMEA 和 PFMEA 的定位及其时间节点属性，符合手册 1.4.1、1.4.2 及 1.5.2 节观点的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. DFMEA 是一种主要由设计责任团队使用的分析技术，用于在交付生产前尽可能解决潜在设计失效及机理</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. PFMEA 分析的是制造、装配和物流过程中的潜在失效，其核心目标是避免与制造装配有关的不必要缺陷及后果</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. FMEA 是一种“事发前（Before-the-event）”的预防性行为，最好在产品开发过程早期启动，而非试产后的“补救记录”</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. PFMEA 只分析工厂车间内部装配，完全不需要考虑仓储和物流过程中的变差影响</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>选项 A 符合 1.4.1 节 DFMEA 定义；选项 B 符合 1.4.2 节 PFMEA 定义；选项 C 符合 1.5.2 节对 FMEA 实施时间“事发前行为”的明确要求；选项 D 错误，1.4.2 节明确指出 PFMEA 分析的是“制造、装配和物流过程中的潜在失效”。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 027：DFMEA 步骤五（风险分析）：设计控制与当前预防控制（PC）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 027：DFMEA 步骤五（风险分析）：设计控制与当前预防控制（PC）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：三级结构与三级失效映射关系：</strong>结构分析的三层（关注要素、上一级、下一级）与失效分析的三层（失效模式、失效影响、失效起因）形成严谨的 1:1 对齐与级联映射，在表格转换中必须避免错行或漏项。</li><li><strong>上期核心2：顾客与供应商协作机制：</strong>顾客掌握整车/系统级失效影响（FE），供应商深谙部件级失效起因（FC），跨供应链的失效链评审是确保严重度（S）定级准确、避免认知脱节的关键输入。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 步骤五（风险分析）的核心目标与设计控制（Design Controls）定义</strong><br>• <strong>风险分析的整体目标：</strong>通过评估严重度（S）、频度（O）和探测度（D）来估计风险，并对需要采取的改善措施进行优先排序（确定 AP 等级）。其核心任务包括：对现有/计划的控制措施进行分配；针对<strong>失效起因（FC）</strong>分配<strong>预防控制（PC）</strong>；针对<strong>失效起因（FC）和/或失效模式（FM）</strong>分配<strong>探测控制（DC）</strong>；对每个失效链进行 S、O、D 评级；开展顾客与供应商协作；为步骤六（优化）提供基础输入。<br>• <strong>设计控制的本质：</strong>设计控制是针对以往类似设计建立的、其有效性已获得验证的规范与流程。预防控制（PC）提供指导信息作为<strong>设计输入</strong>，用于消除或降低失效起因发生的可能性；探测控制（DC）则描述已建立的<strong>验证和确认（V&V）程序</strong>。若某种必要的控制方法尚未纳入当前程序库，则必须作为“后续优化措施”写入 DFMEA，而不能直接作为“当前控制”。</div><div class="highlight-blue"><strong>2. 当前预防控制（PC, Prevention Control）的内涵与典型范畴</strong><br>• <strong>定义与作用：</strong>当前预防控制描述了如何使用现有的和计划中的行为来<strong>减轻导致失效模式的潜在起因</strong>，它是确定<strong>频度（O）评级的基础</strong>。预防控制通常与性能要求直接相关。<br>• <strong>成熟借用与目录件规则：</strong>对于成熟继承或外购目录项（COTS），预防控制应明确说明其如何满足规格标准（如引用目录规范表）。<strong>关键规则：</strong>如果借用设计的<strong>工作周期或运行条件发生变化</strong>，借用项必须重新验证，不能盲目继承原有的频度等级。<br>• <strong>设计安全边际（Design Margin）：</strong>DFMEA 团队必须将安全裕度作为预防控制的重要内容进行考量（如热降额、结构应力安全系数）。<br>• <strong>标准 PC 示例库：</strong>① EMC 法规/标准遵守；② 系统设计分析（如公差分析、跌落/热仿真计算）；③ 螺纹类设计标准、图纸热处理规范、传感器规格；④ 机械冗余与 Fail-Safe 机制；⑤ 可测试性设计（DFT）；⑥ 内部/外部材料与设计标准；⑦ 防错设计（Poka-Yoke，如非对称物理防呆）；⑧ 物理屏蔽/防护（防磨损、隔热、EMI 屏蔽罩）；⑨ 类似设计的最佳实践（Lessons Learned）与设计指南。</div><div class="highlight-green"><strong>3. 传音研发实战场景：手机硬件与结构开发中的 PC 落地</strong><br>• <strong>场景 A（手机结构跌落失效）：</strong>针对“跌落导致摄像头模组支架变形（FC）”，当前预防控制（PC）不能写“跌落测试”（跌落测试是事后探测 DC），而应是<strong>“跌落 CAE 仿真应力分析、支架壁厚满足《传音整机结构强度设计规范_V3.2》、镁合金支架加强筋安全系数 ≥ 1.5”</strong>。<br>• <strong>场景 B（非洲高温高湿环境主板腐蚀）：</strong>针对“高温高湿度环境下 PCB 铜皮发生电化学迁移短路（FC）”，预防控制应为<strong>“元器件间距符合《高温高湿环境电气间隙设计标准》、点胶/三防漆涂覆工艺规范、PCB 表面处理采用沉金（ENIG）工艺”</strong>。<br>• <strong>场景 C（电池防呆）：</strong>针对“产线组装或售后维修时电池连接器反插导致短路（FC）”，预防控制应为<strong>“连接器采用非对称物理防呆凹凸槽结构设计（Poka-Yoke）”</strong>，从源头杜绝反插发生。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 PC（预防）与 DC（探测）：</strong>将“高低温循环测试”、“整机跌落试验”、“X-Ray 检查”等验证/确认活动填写在 PC 栏。<strong>纠偏：</strong>测试与检查属于探测控制（DC），用于评估失效是否暴露；预防控制（PC）必须是<strong>图纸发布与开模前的设计准则、计算、仿真、材料选择与防呆设计</strong>，用于阻止失效起因产生。<br>• <strong>误区二：泛泛而谈，无具体标准依据：</strong>填写“参考优秀设计经验”或“良好散热设计”。<strong>纠偏：</strong>手册明确要求 PC 必须具备具体性，应具体标注文档编号、规范条款或参数，如“遵循传音射频走线阻抗设计规范 RF-STD-005”。<br>• <strong>误区三：盲目照搬借用件历史数据：</strong>认为“上代机型量产过，频度 O 直接给 1 分”。<strong>纠偏：</strong>若新项目的热负荷增加、非洲目标市场环境温度升高或整机厚度压缩，运行工况改变后必须重新评估 PC 适用性并重新验证。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.1 - 2.5.3 节（PDF 第 55-57 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于“当前预防控制（PC）”与“当前探测控制（DC）”的关联对象，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 预防控制（PC）针对失效影响（FE），探测控制（DC）针对失效起因（FC）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 预防控制（PC）针对失效起因（FC），探测控制（DC）针对失效起因（FC）和/或失效模式（FM）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 预防控制（PC）和探测控制（DC）都只能针对失效模式（FM）进行定义</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 预防控制（PC）针对失效起因（FC），探测控制（DC）只能针对失效影响（FE）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 2.5.1 节明确规定设计风险分析的主要目标包括：针对失效起因（FC）分配预防控制；针对失效起因（FC）和/或失效模式（FM）分配探测控制。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 DFMEA 步骤五中，关于成熟借用件（Carry-over）的预防控制，手册提出的关键约束是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 只要之前有量产历史，频度等级 O 必须自动评定为 1，无需任何分析</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 外购成熟件无需填写预防控制，仅需在探测控制中填入供应商出厂检验报告</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 若工作周期或运行条件发生变化，借用的项目必须重新验证，以确认其与相关控制的有效性</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 借用件的所有参数必须在 DFMEA 中作为全新设计重新计算公差</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 2.5.3 节指出：与以前应用中经过验证并具有性能历史记录的设计完全相同可作为预防控制，然而“如果工作周期或运行条件发生变化，则借用的项目需要重新验证，以便探测控制与此相关”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机快充发热的 DFMEA 分析中，失效起因为“快充芯片持续大功率工作导致结温超过硅片耐受极限（FC）”。下列工程师填写的控制措施中，属于真正合规的“当前预防控制（PC）”的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 热成像仪温升测试实验（测试规程 TE-THERMAL-04）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 软件温控策略：芯片表面贴附热敏电阻，结温达 85℃ 时启动降频算法；硬件预留 25% 热设计功耗安全边际</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 整机量产老化测试（ORT）抽检</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 研发样机阶段进行 2 小时快充满载烧机测试</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>选项 A、C、D 均是在物理样机制造出来后评估失效是否存在的验证/测试手段，属于探测控制（DC）；选项 B 从设计算法、硬件降额安全边际（Safety Margin）和机制上防止芯片超温起因的发生，属于标准的预防控制（PC）。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》2.5.3 节，下列各项中属于典型“当前预防控制（PC）”范畴的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 零件的几何物理防呆结构设计（Poka-Yoke）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 基于系统设计的公差计算与计算机辅助仿真（CAE/FEA）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 遵从内部发布的布线标准、材料规范或热处理规范</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 实验室爆裂压力破坏性测试（Burst Pressure Testing）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 2.5.3 节明确列出了当前预防控制的示例，包括：防错法（几何结构防错）、公差计算与模拟仿真、设计/材料标准与规范、EMC 指令遵守、机械冗余等。而选项 D“爆裂测试”属于手册 2.5.4 节明确定义的探测控制（DC）。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在评审 DFMEA 的“当前预防控制”一栏时，专家讲师要求团队整改。下列哪些情况属于常见的 PC 编制缺陷？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 预防控制栏空白，仅在探测控制栏填写了严格的实验室测试计划</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 填写的预防控制内容为“依据经验设计”或“良好散热”，未引用具体设计准则或计算</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 将尚未验证且目前尚未建立的新型 AI 拓扑优化算法直接作为当前的预防控制</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 明确引用了《传音智能手机天线净空区设计规范_V2.0》第 4.2 条</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>选项 A 错在忽视了预防控制是评估频度（O）的基础，不能缺省；选项 B 错在缺乏明确的规范和数据支持，无法证实有效性；选项 C 错在“当前控制”必须是现有的或计划中已建立的受控方法，未确定的新方法必须作为“步骤六措施”而不能直接列为当前控制；选项 D 属于非常标准规范的 PC 填写方式。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

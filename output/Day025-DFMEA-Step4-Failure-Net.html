@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 025：DFMEA 步骤四：不同级别失效结构与失效网构建</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 025：DFMEA 步骤四：不同级别失效结构与失效网构建</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>失效起因（FC）的七大设计根因维度（功能设计不充分、系统交互、时间劣化、外部环境、用户误操作、制造可行性设计缺陷、软件问题）。</li><li><strong>上期核心2：</strong>FC 必须穿透宏观表象，深入挖掘并落实到具体可控的设计特性缺陷（如尺寸配合、材料规格、公差裕量、表面处理定义等）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><strong>失效的相对性与级别依存（Relativity of Failures）：</strong>《AIAG & VDA FMEA 手册》第 2.4.7 节明确指出，根据分析是在系统、子系统还是组件级别进行，同一个失效现象可能被视为<strong>失效影响（FE）</strong>、<strong>失效模式（FM）</strong>或<strong>失效起因（FC）</strong>。<br><strong>失效级联（Failure Cascading）：</strong>如图 2.4-4 所示，整车或系统级别的失效起因，在下一层级（如一级供应商 Tier 1 或部件设计）中往往直接转化为该级别的失效模式。关注要素（FM）、起因（FC）和影响（FE）随设计集成级别的升降而动态变换。<br><strong>失效网（Failure Network）：</strong>通过清晰的因果链条（Cause-and-Effect Chain），将“下一较低级别的失效起因”通过逻辑判定关联到“当前关注要素的失效模式”，进而连接到“上一较高级别要素或最终用户的失效影响”的网状逻辑结构。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 双向追问逻辑（构建失效链的核心抓手）：</strong><br>• <strong>向上推导 FE：</strong>将失效影响与失效模式联系起来，追问：<strong>“当该失效模式出现时，会发生什么？”</strong>（例如：电机扭矩转速过低 → 车窗升降速度过低 → 用户感知超出舒适关闭时间）。<br>• <strong>向下挖掘 FC：</strong>将失效起因与失效模式联系起来，追问：<strong>“什么失效模式会发生？”</strong>（例如：电刷盒接触部位弯曲/硬度过低 → 导致换向系统错接线圈 → 导致电机扭矩转速过低）。<br><strong>(2) FMEA 表格对应法则（三级对齐，表头 1-2-3）：</strong><br>• <strong>1. 失效影响 (FE)：</strong>对应上一较高级要素和/或最终用户的功能丧失或体验降额。<br>• <strong>2. 失效模式 (FM)：</strong>对应当前分析关注要素（Focus Element）未满足规定的功能与要求。<br>• <strong>3. 失效起因 (FC)：</strong>对应下一较低级别要素或其微观设计特性（如几何、材料、间隙等）的设计不充分。<br><strong>(3) 跨层级沟通规则：</strong>整车/整机层面最终用户可感知的失效影响，<strong>“应在已知时予以记录，但不应假定”</strong>。跨层级团队应通过双向沟通接口，由上一级系统工程师将 FE 明确传达给子系统或部件团队。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><strong>以传音智能手机“外放破音/免提失真”失效网构建为例：</strong><br>• <strong>上一较高级要素（整机系统/声学系统 - FE）：</strong>最终用户在通话免提或外放音乐时感知到破音、杂音，或输出声压级在特定频段衰减 >6dB，通话清晰度劣化（MOS 分下降）。<br>• <strong>当前关注要素（SPK 扬声器模组 - FM）：</strong>扬声器振膜动态振幅偏摆超标，导致音圈与磁路系统内壁发生机械碰擦（擦圈）。<br>• <strong>下一较低级要素/特性（音圈与弹波设计 - FC）：</strong>音圈骨架胶水固化后玻璃化转变温度（Tg）选型过低（Tg < 85℃），在整机重载发热工况下胶层软化蠕变，导致音圈中心轴线偏移。<br><strong>层级流转机制：</strong>整机声学架构团队在整机 DFMEA 中把“SPK 模组擦圈”列为起因（FC）；但交由声学器件团队做模组 DFMEA 时，“擦圈”即为当前关注要素的失效模式（FM），胶水 Tg 点设计不足才是其下级特性起因（FC）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：跳步越级（Jump Linkage）：</strong>直接把底层材料公差或涂胶不足跨过模组层，直接挂接在“用户整机无法开机”上。<strong>避坑法则：</strong>必须遵循逐级传递的物理机理，中间不能缺失关注要素自身的物理失效表征，否则后续预防（PC）和探测（DC）措施将失去落脚点。<br>• <strong>误区二：脱离输入、主观臆测 FE：</strong>底层元器件工程师在没有上级系统输入的情况下，盲目假定整机灾难性后果（如将电容容值微偏直接臆测为整机爆炸）。<strong>避坑法则：</strong>手册明令“已知时记录，但不应假定”。未知时应主动向整机系统工程师发起接口评审确认。<br>• <strong>误区三：混淆角色与边界：</strong>把属于上一层整机的系统表现误写为当前部件的 FM，或把供应商零件的失效模式直接错当成当前关注要素的 FM。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.4.7 节（PDF 第 51-53 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》第 2.4.7 节，关于失效在不同级别结构中的角色流转规律，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 无论处于整车、子系统还是零部件级别，失效模式（FM）的命名和范围都必须完全固定不变</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 上一级别（如整车/OEM）分析中的失效起因（FC），在下一级别（如一级供应商 Tier 1）分析中可能成为失效模式（FM）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 零部件层级的工程师应当充分发挥想象力，随意主观推测并假定整车层面的最终用户失效影响（FE）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 失效影响（FE）仅与当前零部件本身相关，与上一较高级要素或最终用户无关</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 51 页明确指出：“根据分析是在系统、子系统还是组件级别进行的，失效可以视为失效影响、失效模式、或失效起因……因此，OEM 级别的失效起因在下一个（一级供应商）级别上可能成为失效模式。然而，在整车层面上的失效影响（如最终用户所感知的）应在已知时予以记录，但不应假定。”因此 B 正确，A、C、D 均与手册相悖。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">手册图 2.4-4 明确指出了构建失效网时连接不同要素的核心提问方式。在将“失效起因（FC）”与“失效模式（FM）”联系起来时，工程师应当提出的关键问题是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. “失效模式出现时，会发生什么？”</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. “什么失效模式会发生？”</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. “该失效起因的发生频度（O）有多高？”</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. “客户能接受该失效模式的发生吗？”</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 52 页下方明确规定：“将失效起因与失效模式联系起来，应该问‘什么失效模式会发生？’；将失效影响与失效模式联系起来，应该问‘失效模式出现时，会发生什么？’”。因此将 FC 与 FM 联系起来应选择 B。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队正在对“侧键按键模组（Focus Element）”进行 DFMEA 分析。识别出的失效模式（FM）为“按键下压手感卡滞、行程达不到设计位移”。按照失效网的因果传递逻辑，以下层级匹配最合理的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. [FE] 用户无法开机且屏幕黑屏；[FC] 充电 IC 固件寄存器配置错误</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. [FE] 用户感知按压无段落手感、整机无法按预期唤醒屏幕；[FC] 按键硅胶套支撑壁厚度尺寸设计超差（偏大 0.15mm）导致压缩变形阻力过大</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. [FE] 模具注塑压力波动过大；[FC] 包装跌落导致按键脱落</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. [FE] 锅仔片金属疲劳断裂；[FC] 用户感知整机外观接缝不平整</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>B 选项严格符合三级因果逻辑：Focus Element 是侧键模组，FM 为下压卡滞/行程不足；上一级整机/用户端 FE 为“无段落手感、整机无法唤醒屏幕”；下一级部件设计特性 FC 为“硅胶套壁厚尺寸设计超差导致压缩变形阻力过大”。A 项起因与机械卡滞风马牛不相及；C 项混入了制造工艺参数与外部物流；D 项因果倒置且层级错乱。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于 DFMEA 表格中失效分析（步骤四）与三级失效链结构的对应关系，以下表述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 表头编号 1 的“失效影响（FE）”对应功能分析中上一较高级要素和/或最终用户相关的影响</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 表头编号 2 的“失效模式（FM）”对应功能分析中当前关注要素（Focus Element）相关的失效模式</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 表头编号 3 的“失效起因（FC）”对应下一较低级别要素或特性的设计不充分</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 整机/系统级别的失效影响（FE）若已被上一级明确定义，下级设计组织应予以记录，但不应凭空臆断</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 51-53 页图 2.4-5 与图 2.4-6 明确标注了 1-2-3 逻辑：1. 失效影响（FE）：上一较高级要素和/或最终用户；2. 失效模式（FM）：关注要素相关的失效；3. 失效起因（FC）：下一较低级别要素或特性的失效起因；且强调“在整车层面上的失效影响（如最终用户所感知的）应在已知时予以记录，但不应假定”。四个选项均准确无误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在手机或电子产品研发的 DFMEA 实操中，以下哪些行为属于违背《AIAG & VDA FMEA 手册》失效网构建规则的典型错误？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 越级跨链（Jump Linkage）：将摄像头马达弹片材料屈服强度不足（FC）直接跨级连接到“整机相册无法打开闪退（FE）”，遗漏了“马达倾斜卡死（FM）”的物理中间态</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 凭空捏造（Assume Effects）：在部件级分析中脱离整机输入与物理逻辑，自行脑补捏造极为严重但不切实际的整车/整机灾难性后果</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 闭环关联：通过向上追问“FM出现时会发生什么”确认 FE，向下追问“什么失效模式会发生”检验 FC</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 边界混淆：将上一级整机系统的整体功能丧失（如手机无法充电）直接当成本级某个电阻元件关注要素的失效模式（FM）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A 属于典型的跨级断链；B 违背了手册“在已知时予以记录，但不应假定”的原则；D 混淆了分析边界，把整机系统 FE 当成了元件 FM。C 是手册推荐的标准追问逻辑，符合规范，因此违背规则的错误做法是 A、B、D。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

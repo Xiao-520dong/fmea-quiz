@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 089：附件 F1.1（上）：从 AIAG 第四版到新版 DFMEA 的变更点（步骤一至四）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 089：附件 F1.1（上）：从 AIAG 第四版到新版 DFMEA 的变更点（步骤一至四）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（软件 FMEA 检验目标）：</strong>明确了软件范围 FMEA 聚焦于软件架构、模块接口、时序交互与异常处理机制，避免将软件失效简单归咎于“代码 Bug”，必须深入到指针越界、死锁、内存泄漏等微观机理。</li><li><strong>上期核心2（开发流程与 V 模型集成）：</strong>软件 FMEA 必须嵌入软件工程生命周期（SWE.1 至 SWE.6），在需求分析、架构设计、单元设计等关键门禁节点与正向开发无缝同步，并与硬件/系统 FMEA 形成双向追溯。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与总体架构变更</strong><br>新版《AIAG & VDA FMEA 手册》相较于 AIAG 第四版，最核心的结构性变更是将传统的表格填报升维为严谨的“七步法”结构化工程分析流程：<br>① <strong>先决条件与流程整合：</strong>在第四版中被列为“先决条件”的方块图/边界图（Block/Boundary Diagram），在新版中被正式吸纳为“步骤二：结构分析”的核心交付物，强化了从图纸/系统边界到结构树的逻辑连续性。<br>② <strong>特殊特性的 DFMEA 解耦：</strong>新版在 DFMEA 层面删除了原有的“特殊特性（Classification）”必选列，将其弱化/转移为可选的“筛选器代码（Filter Code）”，而将特殊特性的严格管控与符号标注保留在 PFMEA 中（详见附录 D1）。<br>③ <strong>变更授权与全生命周期管理：</strong>表格新增了“历史/变更授权”列，便于设计变更（ECN/ECO）和平台沿用时进行版本追溯；同时全面阐述了 DFMEA 与 PFMEA 的层级映射，以及“整机/顾客 — 模块/第 n 级 — 元器件/第 n+1 级”供应链协同逻辑。</div><div class="highlight-blue"><strong>2. 步骤一至四具体变更拆解</strong><br><strong>【步骤一：规划和准备】</strong><br>• <strong>5T 方法论植入：</strong>全面引入目的（In-scope/Purpose）、时间安排（Timing）、团队（Team）、任务（Tasks）与工具（Tools），并在开案前明确基准 DFMEA（Baseline/Family FMEA）。<br>• <strong>表头关键字段大换血：</strong><br>&nbsp;&nbsp;- <em>新增：</em>公司名称、工程地点、顾客名称、项目名称、修订日期、保密级别（Confidentiality Level）。<br>&nbsp;&nbsp;- <em>删除：</em>系统/子系统/组件复选标记、关键日期（Key Date）、页码/总页数。<br>&nbsp;&nbsp;- <em>更名术语：</em>“年型/项目”变更为“年型/平台”；“FMEA 编号”变更为“DFMEA ID 编号”；“编制人”变更为“设计责任人”；“FMEA 日期（初始日期）”变更为“开始日期”；“核心团队”变更为“跨职能团队”。<br>• <em>变更目的：</em>统一通用行业术语，强化项目保密合规与数字化资产记录管理。<br><br><strong>【步骤二：结构分析】</strong><br>• <strong>三层级树状结构化：</strong>将第四版扁平的项目描述系统化扩展为三层级：上一较高级别（系统级）→ 关注要素（系统要素/子系统级）→ 下一较低级别或特性类型（组件要素级）。<br>• <strong>协同接口标准化：</strong>清晰界定了主机厂/整机研发与各级元器件供应商之间的接口职责，为步骤三功能自上而下的分配奠定载体。<br><br><strong>【步骤三：功能分析】</strong><br>• <strong>项目与要求拆解：</strong>第四版表格 A/C 将“项目/功能和要求”混在一起；新版将“项目”留在步骤一/二，在步骤三中专设对应三层结构的“功能和要求”列，完整展示“底层组件如何贡献于关注要素功能，进而满足上一级系统功能”。<br>• <strong>工程工具规范化：</strong>深度规范了参数图（P-图，P-Diagram）的输入/输出信号、控制因素与噪声因素分析法，强化了工程团队协同。<br><br><strong>【步骤四：失效分析】</strong><br>• <strong>术语重构与失效链锁定：</strong><br>&nbsp;&nbsp;- 潜在失效模式（FM）→ 明确定义为“关注要素的失效模式”；<br>&nbsp;&nbsp;- 潜在失效影响（FE）→ 明确定义为“对上一较高级别要素和/或最终用户的失效影响”；<br>&nbsp;&nbsp;- 潜在失效起因（FC）→ 明确定义为“下一较低级别要素或特性的失效起因”。<br>• <strong>表格视觉顺序重大调整：</strong>表格呈现顺序从第四版的“FM → FE → FC”调整为因果顺畅的“FE → FM → FC”。<br>• <em>【极重要工程规则】：</em>虽然表格视界顺序是 FE-FM-FC，但<strong>团队在开展电子表格分析时的思考构建顺序保持不变——依然必须首先定义关注要素的失效模式（FM），然后再由团队向左推导失效影响（FE）、向右推导失效起因（FC）</strong>！专业 FMEA 软件则支持构建失效网/失效链后灵活多视图呈现。</div><div class="highlight-green"><strong>3. 传音研发实战场景：以折叠屏手机铰链与内屏模组为例</strong><br>传音硬件研发在将老旧 DFMEA 模板切换至 AIAG & VDA 新版时，针对折叠屏铰链展开四步分析：<br>① <strong>步骤一（表头与 5T）：</strong>DFMEA ID 设为 `TY-RD-FOLD-HNG-01`，团队变更为包含结构、材料、仿真、可靠性及供应链专家的“跨职能团队”，保密级别设为“核心商业机密（Strictly Confidential）”。<br>② <strong>步骤二（三级结构建立）：</strong>上一级：整机系统（折叠屏手机）；关注要素：铰链运动子系统（Hinge Subsystem）；下一级：扭力阻尼凸轮、M1.2 紧固微螺钉、超薄液态金属支撑翼板。<br>③ <strong>步骤三（三级功能分析）：</strong><br>&nbsp;&nbsp;- 系统级：提供平整展开界面与多角度悬停交互体验；<br>&nbsp;&nbsp;- 关注要素：提供 0.8~1.2 N·m 恒定开合阻尼力矩，开合寿命 ≥ 20 万次；<br>&nbsp;&nbsp;- 组件级（阻尼凸轮）：凸轮表面耐磨镀层硬度 ≥ HV800，配合间隙公差 ±0.015mm。<br>④ <strong>步骤四（失效链推导与顺序）：</strong><br>&nbsp;&nbsp;- <em>第一步（思考起点/FM）：</em>铰链悬停阻尼力矩衰减超标（关注要素失效）；<br>&nbsp;&nbsp;- <em>第二步（向左推导/FE）：</em>用户在 45°~120° 角度无法实现立式免手持自拍与观影（最终用户影响）；<br>&nbsp;&nbsp;- <em>第三步（向右推导/FC）：</em>阻尼凸轮表面涂层在高温高湿环境下磨损撕裂，凸轮副配合过盈量丢失（较低级别组件特性失效）；<br>&nbsp;&nbsp;- <em>表格填报呈现：</em>按“FE（无法悬停自拍） | FM（阻尼力矩衰减） | FC（凸轮涂层耐磨性不足）”的顺序标准输出。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“表格呈现顺序”与“工程思考顺序”。</strong>许多工程师看到新版表格各列变成了“FE → FM → FC”，便以为要先头脑风暴失效影响。<em>纠偏：</em>必须牢记原书重要注释，思考的核心锚点始终是关注要素本身的失效模式（FM），先抓住“自身怎么坏了”，再去评判“给上位系统/用户带来什么后果（FE）”和“下位哪个零件参数偏差导致的（FC）”。<br>• <strong>误区二：在 DFMEA 中强行保留第四版的“特殊特性分类”列并死抠打标。</strong><em>纠偏：</em>新版 DFMEA 已删除分类列，代之以可选的“筛选器代码（Filter Code）”，特殊特性的锁定被严谨移交到了 PFMEA 与制造工程的控制计划中。<br>• <strong>误区三：将边界图/P-图当作 FMEA 之外的“附加作业”。</strong><em>纠偏：</em>第四版中图纸往往由结构工程师单独画完存档，FMEA 会议重新天马行空填表。新版要求图纸分析直接作为步骤二（结构分析）与步骤三（功能分析）的基石，边界图上的物理连接直接转化为三级结构树。<br>• <strong>误区四：表头信息敷衍，遗漏保密级别与平台标识。</strong><em>纠偏：</em>传音海外新机型多平台共用架构，表头必须明确“年型/平台”，且必须标注保密等级，禁止使用“核心团队/编制人”等第四版旧称谓。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.1（原书 P219-221）（PDF 第 219-221 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在新版《AIAG & VDA FMEA 手册》DFMEA 中，关于“步骤四：失效分析”的表格列显示顺序与工程师使用电子表格创建分析时的实际思考顺序，下列描述完全正确的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 表格显示顺序为 FM → FE → FC，思考顺序也是先确定 FM，再确定 FE 和 FC</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 表格显示顺序为 FE → FM → FC，思考顺序也调整为必须先识别最终用户影响 FE，再推导 FM 和 FC</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 表格显示顺序调整为 FE → FM → FC，但使用电子表格分析时的顺序保持不变，依然首先需要确定 FM，再由团队确定 FE 或 FC</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 表格显示顺序与思考顺序在新版中均已取消固定要求，团队必须使用专业 FMEA 软件从 FC 开始正向推导</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 P221 步骤四及“重要注释”：各列顺序从 FM、FE、FC 变更为 FE、FM、FC；但重要注释特别强调：“虽然各列顺序已发生变更，但使用电子表格创建分析的顺序保持不变。首先需要确定关注要素的失效模式（FM），然后由团队确定失效影响（FE）或失效起因（FC）。”因此 C 选项完全正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">从 AIAG 第四版升级至 AIAG & VDA 新版 DFMEA 时，关于表格表头（Header）及宏观结构的变化，下列说法错误的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 删除了“系统、子系统或组件标记”复选框，删除了“页码/页数”和“关键日期”</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 将“编制人”变更为“设计责任人”，“核心团队”变更为“跨职能团队”</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 在表头中新增了“公司名称”、“工程地点”、“客户名称”、“修订日期”以及“保密级别”</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 强化了设计阶段的特殊特性管控，在 DFMEA 表格步骤四中新增了强制性的“特殊特性符号标识”列</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 P219 明确指出：“在 DFMEA 中删除了特殊特性，但在 PFMEA 中，却保留了特殊特性（见附录 D1 特殊特性）”。DFMEA 中原“分类”列被可选的“筛选器代码”替代，并不存在强制性的特殊特性符号标识列。A、B、C 均为原书 P219 表头变更的准确描述。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队正在开发一款针对非洲高温高湿环境的 68W 超快充充电器。在开展新版 DFMEA“步骤四：失效分析”时，针对变压器初级绕组漆包线绝缘击穿导致的风险，以下失效链（FE、FM、FC）三层逻辑映射及表格呈现定义最为准确规范的是哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. FE（系统/用户影响）：充电器无法输出且外壳带电，造成用户触电伤亡；FM（关注要素失效）：初级与次级绕组之间绝缘耐压击穿短路；FC（底层组件起因）：漆包线耐温等级选型裕量不足，在持续高温下绝缘漆层热老化开裂</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. FE（关注要素失效）：初级绕组漆包线热老化开裂；FM（系统影响）：充电器无输出电压；FC（底层起因）：用户使用不当</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. FE（底层起因）：漆包线绝缘层变薄；FM（系统影响）：用户无法充电；FC（关注要素失效）：初级绕组击穿</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. FE（用户影响）：充电效率降低 5%；FM（底层起因）：变压器骨架变形；FC（关注要素失效）：充电器指示灯不亮</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据新版 DFMEA 步骤四因果链定义：关注要素是变压器，其失效模式（FM）是自身功能的丧失（初次级绝缘耐压击穿短路）；对上一级/最终用户的影响（FE）是最严重的后果（充电器无输出、外壳漏电引发触电，危害安全 S=10）；底层特性失效起因（FC）是下一较低级别要素的设计参数缺陷（漆包线耐温裕量不足导致热老化破损）。A 选项层级分明，逻辑完全契合新版 FE-FM-FC 定义。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 AIAG 第四版到 AIAG & VDA 新版 DFMEA 在“步骤二（结构分析）”与“步骤三（功能分析）”的演进，下列说法正确的有哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 第四版中作为先决条件的方块图/边界图（Block/Boundary Diagram），在新版中被正式吸纳为步骤二结构分析的过程交付物</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 步骤二将分析项目系统化扩展为“上一较高级别（系统）”、“关注要素（系统要素）”和“下一较低级别（组件要素）”三个层级</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 步骤三中对参数图（P-图）的要求、特性和用法进行了更加详尽的定义和规范说明</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 第四版表格中“项目/功能和要求”是合在一列的，新版中“项目”已移至步骤一和步骤二，“功能和要求”则分别针对步骤二确定的三个层级进行展开</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 步骤三中为了简化流程，删除了所有下级组件对上级系统功能贡献关系的分析</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 P219-220：方块图/边界图整合为步骤二交付物（A 正确）；步骤二将项目扩展为系统、系统要素、组件要素三层级（B 正确）；步骤三详细定义了 P-图的用法与要求（C 正确）；第四版表格 A/C 项目与功能混在一起，新版中项目纳入步骤 1/2，功能和要求在步骤 3 分别对三层级展开（D 正确）；E 选项与手册宗旨完全相反，步骤三的核心目的正是展示“各级别是如何贡献给上一更高级别的功能”，故 E 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 AIAG & VDA FMEA 手册附件 F1.1 中，关于新版 DFMEA 变更原因与协作机制的阐述，下列哪些表述是符合手册原文主旨的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 步骤一表头变更的原因是使用一般术语并载入记录管理所需的信息</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 步骤二结构分析变更的原因是正确识别与关注元件相关的系统、子系统、组件和/或特性，为步骤三功能分析提供载体</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 步骤四失效分析变更的原因是根据一系列潜在事件进行因果分析，通过三层级别模式形成严密的失效链（FE - FM - FC）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 新版强化了工程团队之间、顾客与各级供应商之间（顾客 — 第 n 级 — 第 n+1 级）的 FMEA 协同机制</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 新版彻底废除了 Excel 等电子表格的使用，强制所有企业必须采购专用的 FMEA 数据库软件</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 P219-221 变更总结：步骤一变更原因明确记载为“使用一般术语并载入记录管理所需的信息”（A 正确）；步骤二变更原因“正确识别与项目相关的系统、子系统、组件和/或特性，步骤 3 需要此信息”（B 正确）；步骤四变更原因“根据一系列潜在事件进行因果分析，形成失效链（FE、FM、FC）三级别模式”（C 正确）；手册贯穿强调顾客、第 n 级到第 n+1 级供应商之间的协作（D 正确）；手册 P221 明确说明了“虽然各列顺序已变更，但使用电子表格创建分析的顺序保持不变...当使用 FMEA 专用软件时...”，说明手册兼容电子表格与专用软件，并未强制废除电子表格，E 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "D"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

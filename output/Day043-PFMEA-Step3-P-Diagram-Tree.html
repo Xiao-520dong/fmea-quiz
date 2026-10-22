@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 043：PFMEA 步骤三：压入轴承 P-图、功能关系可视化与跨团队协作</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 043：PFMEA 步骤三：压入轴承 P-图、功能关系可视化与跨团队协作</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（过程功能与特性分类）：</strong>过程功能采用“动作动词+名词短语”结构化描述；产品特性（What）是制造后赋予产品的几何尺寸或材料属性，过程特性（How）是产线设备、工装及工艺的控制变量。</li><li><strong>上期核心2（三层级功能映射）：</strong>功能分析严格承接结构分析的三层架构，从“过程项（成品/工位）功能”到“过程步骤（工序）功能”，再分解到“过程工作要素（4M）功能”。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br><ul><li><strong>PFMEA 参数图（P-Diagram）：</strong>参数图用于界定工序的物理与能量转化关系。其输入包括产品要求与设计接口，外部干扰包含 4M 维度的过程噪声因素，核心受控部分为核心过程参数与工装控制，最终输出受影响或改变的产品特性。</li><li><strong>功能关系可视化：</strong>根据分析深度与软件工具，过程项、过程步骤与过程工作要素之间的功能交互可通过“功能网（Function Net）”、“功能树（Function Tree）”、“功能矩阵（Function Matrix）”或“功能分析表”进行直观呈现。</li><li><strong>功能层级逻辑链：</strong>在标准功能分析表中，跨层级逻辑遵循从左至右的实现路径，即通过回答<strong>“高级别功能是如何通过低级别功能实现的？”</strong>构建完整的功能传递链。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><ul><li><strong>步骤一：应用 P-图识别过程边界与参数交互</strong><br>明确受控核心过程（如压装位移、保压压力、速度）、外界噪声因素（如来料公差波动、设备热漂移、工人工装磨损）及关键输出特性（如压装后的端面间隙、孔径同心度）。</li><li><strong>步骤二：构建三级功能分析结构树/表格</strong><br>① 过程项功能：关注本厂交付总成、发运客户及终端用户的宏观功能；<br>② 过程步骤功能与产品特性：界定当前工序的核心装配目标与所创造的产品物理状态；<br>③ 过程工作要素功能与过程特性：明确具体的人员、机器、夹治具等 4M 要素具体履行的操作功能与运行参数。</li><li><strong>步骤三：跨工程团队协作（系统、安全、组件）</strong><br>PFMEA 团队不能孤岛作业，必须与系统、硬件、结构和安全团队对接，通过项目评审会议或设计交底文档，直接引用 DFMEA 中的产品功能与特性要求，确保制造过程对产品设计意图的理解完全一致。</li><li><strong>步骤四：正向功能定义奠定失效分析（步骤四）基石</strong><br>步骤三中所有功能必须严格使用“正面、肯定、规范”的词汇进行完整定义。因为步骤四中的潜在失效模式，本质上就是“正面功能无法实现或发生偏离（反面词汇描述）”。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br><ul><li><strong>中框精密压装与点胶工序（如手机中框与屏幕模组组装）：</strong><br>① <strong>P-图输入与输出：</strong>产品要求为屏幕贴合后缝隙公差 ≤0.08mm 且保压后保水防尘等级达标；过程噪声为点胶针头温变粘度波动、背板平整度批次差异；核心过程参数为保压压力曲线、保压时长、保压气缸垂直度；<br>② <strong>功能树分解：</strong>高级别功能“保证屏幕模组与中框粘接密封”由当前工序功能“工位气缸在保压时间内将屏幕以额定压力均匀压入中框中”实现，而该工序功能进一步由工作要素机器功能“气缸以指定推力和行程下压”与人员功能“作业员完成屏幕精准预定位并按下双启动按钮”共同保障；<br>③ <strong>DFMEA 与 PFMEA 协同：</strong>手机结构设计团队将中框公差带及热熔胶物理剪切强度指标导入制造工程团队，确保工艺参数窗口严格覆盖结构设计安全裕量。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：功能层级推导逻辑倒置。</strong>在功能表中分析各层级关系时，混淆了“Why（为什么做）”与“How（怎么做）”的方向。正确规则：从高级别向低级别（从左到右）是问“How”（通过什么手段实现），从低级别向高级别（从右到左）是问“Why”（目的是什么）。</li><li><strong>误区二：在步骤三直接引入“不应、避免”等失效语态。</strong>部分工程师在功能分析中书写“不要压坏屏线”或“防止胶水溢出”。正确做法：功能分析必须全量采用肯定句式（如“保持屏线无压迫间隙”、“精准涂覆胶水于指定轨迹”），负面状态留待步骤四失效分析中提炼为失效模式。</li><li><strong>误区三：PFMEA 脱离 DFMEA 单独编写。</strong>制造团队在没有获取产品组件图纸公差分配、安全件清单及 DFMEA 关键产品特性的情况下闭门造车，导致过程工作要素定义的过程参数无法真正闭环设计要求。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.3.4 - 3.3.6 节（PDF 第 89-91 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在功能分析表格中从左到右查看结构项与功能层级对应关系时，回答的核心逻辑问题是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 为什么需要低级别功能？（Why）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 高级别功能是如何通过低级别功能实现的？（How）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 低级别功能可能导致什么样的高级别严重后果？</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 导致高级别失效的根本起因是什么？</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 3.3.4 节明确指出，在功能分析表格中从左到右（从过程项功能到过程步骤功能，再到过程工作要素功能）需要回答的问题是：“高级别功能是如何通过低级别功能实现的？”（从右到左则是回答为什么需要该功能）。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在手册 3.3.4 节图 3.3-1 压入烧结轴承的参数图（P-图）中，下列哪项属于“受影响或改变的产品特性”？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 压装设备的保压时间与推力设定值</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 操作人员的人体工效学与锐边安全防护</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 烧结轴承内径以及机壳内的轴承座表面状态</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 零件抓取时外界环境温湿度的变化</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据手册图 3.3-1 示例，P-图中输出的“受影响或改变的产品特性”明确标明为：烧结轴承内径、机壳内的轴承座表面；A 项属于核心过程参数；B 项属于产品要求/安全接口；D 项属于过程噪声因素（4M）。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机摄像头模组压合工序的 PFMEA 编制中，制造团队对于“跨工程团队协作（3.3.5 节）”的最佳实践是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 制造工艺工程师依靠过往机型量产经验独立拟定过程特性，无需结构与光学团队介入</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 结构设计与安全工程团队提供产品设计信息与公差边界，帮助 PFMEA 团队清晰掌握模组功能与设计接口要求</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. PFMEA 团队完成全部失效分析后，再将报告交由设计团队签字归档，过程中不进行信息沟通</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 制造团队直接将供应商的治具说明书作为功能分析的唯一输入，忽略整机 DFMEA</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 3.3.5 节指出，公司内部工程团队（系统、安全、组件）需要相互协作，设计团队提供的信息可直接帮助 PFMEA 团队理解被制造产品的功能与接口，保障全流程技术风险分析信息的一致性。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据手册 3.3.4 节，过程项、过程步骤与过程工作要素之间的功能交互关系，可以借助下列哪些形式进行可视化？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 功能网（Function Net）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 功能树（Function Tree）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 功能矩阵（Function Matrix）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 功能分析表（Functional Analysis Form）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 3.3.4 节明确指出，功能交互可根据所使用的软件工具可视化为：功能网、功能结构、功能树、功能矩阵和/或功能分析表格。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 PFMEA 步骤三（功能分析）与步骤四（失效分析）的承接关系，下列描述符合手册 3.3.6 与 3.4.1 节的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 对过程功能使用正面、肯定的词汇进行完整定义，是展开步骤四失效分析的必要基础</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 潜在失效模式本质上是已定义功能的无法满足、未完全满足或发生偏移（反面词汇描述）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 过程失效起因通常可以利用 4M 鱼骨图或失效网进行系统性识别</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 步骤四失效分析仅针对过程步骤开展，不需要将过程工作要素（4M）纳入失效分析中</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A、B、C 均符合 3.3.6 及 3.4 节的原书陈述。D 选项错误，手册 3.4.1 明确规定：“每个过程要素/步骤（结构分析/步骤二和功能分析/步骤三）都会执行失效分析”，过程工作要素（4M）是分析失效起因的关键载体。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

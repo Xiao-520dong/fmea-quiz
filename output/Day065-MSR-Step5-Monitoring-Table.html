@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 065：FMEA-MSR 步骤五：监视度（M）1-10 级评分标准详解（表MSR3）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 065：FMEA-MSR 步骤五：监视度（M）1-10 级评分标准详解（表MSR3）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（三种故障监视与响应情境）：</strong>掌握了未探测故障（直接导致首要失效影响）、探测到且安全响应（转为减轻的次要失效影响）、探测到但响应失败（导致首要失效影响）的三种动态路径。</li><li><strong>上期核心2（监视度 M 的双重构成）：</strong>理解了监视度（M）并非单纯的传感器感知，而是由“诊断监视/感知”与“系统响应/人体反应”在容错时段（FTTI）内的联合闭环能力共同决定。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与评分准则（表 MSR3 总则）</strong><br>监视度（M）评级用于衡量产品在终端顾客操作运行过程中，实时发现失效起因/失效模式并执行安全状态响应的能力。表 MSR3 明确规定了核心评估逻辑：<br>① <strong>双维度评估与“短板判定原则”</strong>：监视度包含两项核心指标——<strong>“诊断监视/感知标准”</strong>与<strong>“系统响应/人体反应标准”</strong>。在评定最终 M 值时，<strong>必须使用与最低效的标准相关的评级</strong>（即：若诊断监视达到 M=2，但系统响应仅能达到 M=5，则整体 M 值判定为 5）。<br>② <strong>核心量化支柱——诊断覆盖率（Diagnostic Coverage, DC）</strong>：标准基于功能安全（如 ISO 26262/IEC 61508）给出了明确的量化阈值（&lt;60%、&gt;60%、90-97%、&gt;97%、&gt;99%、&gt;99.9%、&gt;&gt;99.9%）。<br>③ <strong>时效基准——容错时段（FTTI）</strong>：系统从感知到响应的全过程，必须在危险事件发生前的容错时段内彻底闭环。</div><div class="highlight-blue"><strong>2. 方法步骤与 M 1~8 级评分梯度拆解</strong><br>根据表 MSR3 原书规范，监视度由高到低拆解如下：<br>• <strong>M=1（消除原有影响，极其可靠）</strong>：系统<strong>总是</strong>能自动探测到故障，故障覆盖率 &gt;&gt;99.9%；在容错时段内，系统<strong>总是</strong>能够对故障自动反应（无缝进入安全状态）。<br>• <strong>M=2（非常高）</strong>：在容错时段内自动探测，时间变差很小、机率极高，覆盖率 &gt;99.9%；容错时段内自动反应变差很小、机率极高。<br>• <strong>M=3（高）</strong>：在容错时段内自动探测，机率高，覆盖率 &gt;99%；容错时段内大多条件下自动探测并反应。<br>• <strong>M=4（较高）</strong>：容错时段内自动探测或驾驶员/用户在大多条件下感知，覆盖率 &gt;97%；自动化系统或用户在大多条件下能够反应。<br>• <strong>M=5（中）</strong>：容错时段内自动探测（时间变差中等）或用户在多种条件下感知，覆盖率 90%~97%；很多条件下能够反应。<br>• <strong>M=6（中/仅上电检测）</strong>：<strong>仅在开机/通电状态下（Power-on）</strong>自动探测，覆盖率 &gt;90%；多种条件下能够反应。<br>• <strong>M=7（较低）</strong>：容错时段内探测机率低，控制高效性差、变化性高，覆盖率 &gt;60%；容错时段内反应机率低。<br>• <strong>M=8（低）</strong>：仅在极少数运行条件下被探测，覆盖率 &lt;60%；容错时段内<strong>不能总是</strong>做出反应。</div><div class="highlight-green"><strong>3. 传音研发实战场景：智能手机超快充电池过温保护（BMS）</strong><br>在传音旗舰机 160W/240W 超级闪充设计中，电池过温（起因/模式）可能导致热失控（严重度 S=9）：<br>• <strong>场景 A（混合评级陷阱）</strong>：硬件 NTC 配合 Fuel Gauge 芯片具备高频毫秒级采样，软件与硬件双重诊断覆盖率计算得出 DC = 99.5%（符合 M=3 的监视标准）；但是，过温切断充电的执行链路完全依赖 AP 侧的 Android 操作系统 Daemon 进程。一旦手机处于极高负载导致 CPU 严重卡顿死机，系统在容错时段内无法发出切断充电指令（响应机率受限，对应 M=5 甚至 M=8）。根据<strong>“最低效标准评级原则”</strong>，整体 M 必须定为 <strong>5（或8）</strong>，无法判定为高等级。<br>• <strong>场景 B（高可靠 MSR 优化设计）</strong>：传音充电硬件团队引入 PMIC 硬件级过温比较器电路，当温度超过硬门限阈值时，纯硬件逻辑<strong>无需经过 AP 软件调度</strong>，在 10ms 容错时段内直接断开 Charging FET 并拉低握手信号，响应覆盖率 &gt;99.9%，且时间变差极小。此时诊断监视与系统响应均达到 &gt;99.9% 且在 FTTI 内闭环，最终监视度 M 成功评定为 <strong>M=2</strong>。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：只看“传感器能不能测到”，忽视“执行机构能不能反应”</strong>。很多工程师认为安装了高精度传感器就给 M 评 2~3 级，完全未分析控制执行器（如切断开关、降频机制）在极值工况下的响应延迟与失败率。<br>• <strong>误区二：混淆 M=6（上电检测）与动态运行监视</strong>。智能手机某些外设自检（如开机 POST 阶段检测摄像头通讯）仅在 Power-On 时执行，设备运行中一旦通讯失效则无法再次捕获。此类机制即使覆盖率高达 95%，根据表 MSR3 也只能评为 <strong>M=6</strong>，不可评为 M=4 或 M=5。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.7 节（下）（PDF 第 140-141 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 MSR3，当工程师分别评估了“诊断监视/感知标准”与“系统响应/人体反应标准”后，最终的监视度（M）评级应当如何确定？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 取两者的算术平均值作为最终评级</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在监视或系统响应中使用与最低效的标准相关的评级</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只要诊断监视覆盖率高，以诊断监视标准为准</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 以系统响应标准为准，因为最终动作更为关键</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>表 MSR3 表头明确规定：“在监视或系统响应中使用与最低效的标准相关的评级”。这体现了木桶原理，只要感知或响应有一方薄弱，系统就无法有效避免首要失效影响。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在表 MSR3 的监视控制分级中，关于 M=6 级别的诊断监视特征，下列描述最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 诊断覆盖率预计在 60%~90% 之间，且在极少数条件下探测</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 只能通过人工（驾驶员/操作员）在多种运行条件下被动感知</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 只有在打开电源状态下（Power-on），系统或驾驶员才能自动探测到故障/失效，诊断覆盖率预计高于 90%</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 在容错时段内，系统总是能够对故障/失效进行自动反应，覆盖率大于 99.9%</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第 140 页表 MSR3 明确说明：M=6 级别的特征是“只有在打开电源状态下，系统或驾驶员才能自动探测到故障／失效，探测时间的变化为中等程度。诊断覆盖率预计高于90%”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音影像硬件团队在评估手机屏下指纹模组时，方案设计为：传感器供电掉电故障的动态诊断覆盖率为 98%（符合 M=4 的监视标准），但该故障的系统响应需要用户在指纹多次解锁失败后手动切换为密码解锁（人体反应，且在很多运行条件下反应）。此时该控制机制的监视度（M）评级应判定为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. M=4，因为诊断覆盖率高于 97%</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. M=5（或更低效评级），因为依赖人体在多种条件下反应，系统响应是性能短板，必须取最低效评级</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. M=1，因为最终可以通过密码成功解锁手机</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. M=2，因为屏下指纹属于非核心安全部件</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据表 MSR3 规则，监视评级必须采用监视感知与系统/人体反应中的“最低效标准”。虽然诊断覆盖率 >97% 符合 M=4，但系统未能自动切入安全状态，而是依赖人体在多种条件下反应（对应 M=5 或更低效），因此最终综合 M 评级应受限于响应端，评为 M=5。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">下列关于表 MSR3 中监视度（M）评级与诊断覆盖率（DC）阈值对应关系的描述中，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. M=8 级的诊断覆盖率预计低于 60%</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. M=5 级的诊断覆盖率预计在 90%~97% 之间</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. M=3 级的诊断覆盖率预计高于 99%</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. M=2 级的诊断覆盖率预计高于 99.9%</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书第 140-141 页表 MSR3 规定：M=8 覆盖率 <60%；M=7 覆盖率 >60%；M=5 覆盖率在 90-97% 之间；M=4 覆盖率 >97%；M=3 覆盖率 >99%；M=2 覆盖率 >99.9%；M=1 大大高于 99.9%。四个选项均正确。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在将系统监视度评定为高可靠级别（M=1、M=2 或 M=3）时，系统必须同时满足哪些关键要素？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 整个监视探测与系统响应必须在“容错时段（FTTI）”内完成</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 必须具备极高的诊断覆盖率（如 M=3 时 DC>99%，M=2 时 DC>99.9%）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 必须依赖经过专业培训的最终用户或驾驶员进行快速手动切断</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 探测时间与系统反应时间的变化（变差）必须很小，且反应机率很高</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书表 MSR3 中，M=1~3 均要求在容错时段内由系统自动探测并自动响应，且时间变差很小、机率极高，覆盖率均在 99% 以上。M=1~3 均强调自动化闭环，依赖人体反应是 M=4 及以下级别的特征，故 C 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

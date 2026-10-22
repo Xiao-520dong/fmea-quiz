@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 072：附件 A3：标准 FMEA-MSR 表格布局（视图 H/I）与实战填写规范</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 072：附件 A3：标准 FMEA-MSR 表格布局（视图 H/I）与实战填写规范</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（PFMEA 表格家族差异）：</strong>回顾了附录 A2 中表格 C（标准视图）、表格 D（过程步骤集中）、表格 E（工作要素集中）、表格 F/G（控制计划/P-Diagram 衍生）在结构分析与功能分析排布上的差异及各自适用场景。</li><li><strong>上期核心2（表头与七步法映射逻辑）：</strong>无论是哪种 PFMEA 变体表格，表头规划准备（步骤一）与七步法各步骤的对应关系必须保持逻辑自洽，特别是失效分析三要素与措施/评估栏的因果闭环。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与 FMEA-MSR 表格定位</strong><br>根据《AIAG & VDA FMEA 手册》附件 A3（原书 P166-168）：<br>• <strong>FMEA-MSR（监测与系统响应补充分析）定位：</strong>MSR 不是取代 DFMEA，而是作为 DFMEA 的补充。表格 H（标准 FMEA-MSR 表格）在传统 DFMEA 的七步法框架下，扩展了<strong>“补充的 FMEA-MSR 分析”</strong>双轨结构（包含补充 FMEA-MSR 风险分析与优化）。<br>• <strong>表格布局结构（表格 H 与软件视图 C/视图 I）：</strong><br>  - <strong>表头（步骤一：规划和准备）：</strong>公司名称、工厂地点、顾客名称、车型/平台、项目、DFMEA 开始/修改日期、DFMEA ID 编号、设计职责、跨职能团队、保密级别等。<br>  - <strong>基础层（步骤二至步骤四）：</strong>结构分析（上一较高级别、关注要素、下一较低级别或特性类型）、功能分析（上一高级别功能要求、关注要素功能要求、下一低级别功能要求）、失效分析（上一高级别失效影响 FE、关注要素失效模式 FM、下一低级别失效原因 FC）。<br>  - <strong>常规 DFMEA 栏目（步骤五 & 六）：</strong>记录设计当前的预防措施（PC）、探测措施（DC）、严重度（S）、发生度（O）、探测度（D）及措施优先级（AP），并执行基础优化闭环。<br>  - <strong>补充 FMEA-MSR 栏目（步骤五 & 六核心扩展）：</strong>增加了在客户运行状态下的<strong>监测与系统响应机制</strong>评价。不再使用传统制造与研发阶段的 D 探测度，而是引入<strong>频度度（F）与监测度（M）</strong>，进而评估运行状态下的措施优先级（AP），并定义基于证据的措施、状态、完成日期与验证结果。</div><div class="highlight-blue"><strong>2. 方法步骤与 MSR 表格栏目拆解规范</strong><br>• <strong>双轨并行风险评估（步骤五）：</strong><br>  1. <strong>DFMEA 轨道：</strong>关注零件/系统在出厂前的设计固有失效概率（O）和研发验证阶段的探测措施（D）。<br>  2. <strong>FMEA-MSR 轨道：</strong>当系统出现传感器漂移、硬件单点失效或软件异常时，关注系统在用户实际运行条件下的失效频度（Frequency, F），以及<strong>诊断监测控制（Monitoring Controls, MC）与系统响应（System Response, SR）</strong>能力，评估监测度（M）。根据 S、F、M 的组合在专用的 MSR AP 矩阵中确定风险等级。<br>• <strong>优化闭环追踪（步骤六）：</strong><br>  在补充 FMEA-MSR 优化栏中，包含：预防/监测改进措施、负责人、目标完成日期、状态（如 Open/Decision Pending/Implemented/Completed）、采取基于证据的措施（Action with evidence taken）、完成日期、重新评估后的 S、F、M 及新 AP。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（以传音手机电池过温安全监控系统为例）</strong><br>• <strong>应用背景：</strong>传音中高端机型搭载 120W/180W 超级快充，充电安全监控（MSR）至关重要。<br>• <strong>表格 H 填写实战映射：</strong><br>  - <strong>结构分析：</strong>整机电源管理系统（高级别）→ 充电安全控制单元/PMIC（关注要素）→ 电池 NTC 热敏电阻采集电路（下一级别）。<br>  - <strong>失效分析：</strong>FE 为电池过热起火/冒烟（S=10）；FM 为大功率充电中未及时降额；FC 为 NTC 引脚虚焊或阻值漂移。<br>  - <strong>DFMEA 常规栏：</strong>PC 为降额保护设计规范；DC 为充电台架过应力老化测试；计算出研发出厂阶段的 O/D/AP。<br>  - <strong>补充 FMEA-MSR 栏（关键！）：</strong><br>    * <strong>监测与系统响应机制（MC/SR）：</strong>手机固件实时检测充电回路阻抗与温度上升斜率（dT/dt）；一旦判定异常，系统在 100ms 内强制切断快充 MOS 管并弹出安全警告（系统安全状态响应）。<br>    * <strong>频度（F）与监测（M）打分：</strong>评估现场用户使用时 NTC 失效的频度等级 F，以及算法在故障发生前成功切断充电的监测能力等级 M。若 M 达到最高可靠监测级别，即使 S=10，最终 MSR AP 也可有效降至 L（低风险）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆 DFMEA 探测度（D）与 MSR 监测度（M）。</strong>错误地在 MSR 栏中填入实验室的“高低温循环试验”、“跌落测试”等研发验证手段。<em>正解：</em>MSR 的 M 栏只评估<strong>产品在终端用户手中运行时</strong>，嵌入式软件、传感器、控制器执行自身诊断、降级或安全切断的实时能力。<br>• <strong>误区二：在 FMEA-MSR 中丢失 DFMEA 基础因果链。</strong>有些工程师为了省事只填 MSR 栏，把表格 H 拆碎。<em>正解：</em>表格 H 强调 MSR 必须建立在 DFMEA 结构、功能与失效因果链完全继承的基础之上，不可孤立存在。<br>• <strong>误区三：状态与“基于证据的措施”填写流于形式。</strong>在步骤六优化跟踪时，只填“已完成”，未在“采取基于证据的措施”栏附上诊断算法故障注入测试报告编号或实验数据。<em>正解：</em>手册明确要求必须记录具有闭环证据的技术依据。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 A3（原书 P166-168）（PDF 第 166-168 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 A3，关于标准 FMEA-MSR 表格 H 的结构特征，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 表格 H 彻底移除了 DFMEA 的步骤五和步骤六，完全由 MSR 风险分析取代</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 表格 H 在 DFMEA 步骤一至步骤四基础上，同时包含了常规 DFMEA 风险分析/优化栏与补充的 FMEA-MSR 风险分析/优化栏</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 表格 H 仅适用于纯软件开发，不能包含硬件结构分析</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 表格 H 中不再评估失效影响的严重度（S）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据手册附件 A3（原书 P167 表格 H 结构）：标准 FMEA-MSR 表格完整保留了 DFMEA 的步骤一至步骤四基础链条，在步骤五和步骤六中采用双轨布局，既包含常规 DFMEA 的 PC/DC/O/D/AP 评估，也包含了补充的 FMEA-MSR 分析（频度 F、监测度 M 及 MSR 优化栏），故 B 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 FMEA-MSR 表格中的步骤五风险分析栏，用于确定运行阶段优先级的核心指标是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 严重度（S）、发生度（O）、探测度（D）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 严重度（S）、频度（F）、监测度（M）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 严重度（S）、探测度（D）、成本优先级（CP）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 发生度（O）、监测度（M）、可维修度（R）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>根据 AIAG & VDA FMEA-MSR 规范，在补充 MSR 风险分析中，评估的是终端用户使用过程中的失效频度（Frequency, F）和实时故障诊断/响应的监测度（Monitoring, M），结合严重度（Severity, S）在专用 MSR AP 表中评定措施优先级，因此核心指标是 S、F、M。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音中高端机型在开发大功率快充安全机制时，若在表格 H 的“补充 FMEA-MSR 当前控制措施”中填写以下内容，哪一项属于正确的 MSR 监测/响应措施（MC/SR）？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 研发阶段在可靠性实验室执行 1000 次插拔充电循环测试</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 固件算法实时监测充电温升斜率，当突变超过阈值时在 50ms 内切断充电电流并进入保护模式</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 产线功能测试（FCT）阶段增加对快充协议芯片的开短路检测</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 采用车规级元器件替代消费级芯片以降低出厂硬件失效率</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>MSR（Monitoring and System Response）的核心在于系统在用户实际运行条件下的自我监测、诊断与安全响应机制。选项 A 属于常规 DFMEA 探测措施（DC）；选项 C 属于 PFMEA 探测措施；选项 D 属于 DFMEA 预防措施（PC）；只有选项 B 是运行态的实时监测控制与安全响应措施（MC/SR）。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 P167-168 视图内容，标准 FMEA-MSR 表格（表格 H / 软件视图 C）中的表头（规划和准备-步骤一）通常包含哪些关键字段？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 公司名称、工厂地点、顾客名称</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 项目、车型/平台、DFMEA ID 编号</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. DFMEA 开始日期与修改日期</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 设计职责、跨职能团队、保密级别</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 P167-168 明确展示了规划和准备（步骤一）表头区域，包含公司名称、工厂地点、顾客名称、车型/平台、项目、DFMEA 开始/修改日期、DFMEA ID 编号、设计职责、跨职能团队、保密级别等，所有选项均属于标准表头要素。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">工程师在填写 FMEA-MSR 优化（步骤六）栏目时，下列哪些做法符合 AIAG & VDA 规范？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 在“采取基于证据的措施”栏中，清晰记录算法修改代码版本及故障注入实测验证报告编号</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 只要项目按时发版，优化栏中的“状态”可直接标注为 Completed，无需确认证据</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 优化措施实施后，必须重新评估严重度 S、频度 F、监测度 M，并获得新的措施优先级（AP）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 明确记录各项措施的责任人、计划完成日期与实际完成日期</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据规范，步骤六要求明确负责人、计划/实际完成日期，并在采取基于证据的措施后重新评估 S/F/M/AP 等级（A、C、D 正确）；选项 B 违背了“基于证据关闭”的铁律，不能在缺少验证证据的情况下直接标记为已完成。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 120：结业篇——FMEA 的底层逻辑与持续成功</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 120：结业篇——FMEA 的底层逻辑与持续成功</h1>
+                <p style="color: #718096;">FMEA 实战进阶与拓展</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">温故知新</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>避坑指南：</strong>切忌单打独斗、填表应付、文件锁死、软性管理应对高风险、以及自欺欺人的造假评分。</li>
+<li><strong>回归本质：</strong>FMEA 是一项寻找风险并消灭风险的工程防错活动。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">今日知识点</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight">
+<strong>1. 核心底层逻辑再总结</strong><br>
+FMEA 的全部奥义在于：“在事情变得无可挽回之前，找出系统最薄弱的环节，并用工程的手段给它加上保险”。它建立在清晰的结构(系统/子系统/部件)和功能分析(要达到什么要求)之上。<br>
+逻辑链：功能达不到(FE影响) -> 表面现象(FM模式) -> 底层病灶(FC起因)。
+</div>
+<div class="highlight-blue">
+<strong>2. 成功的铁三角：团队、现场、闭环</strong><br>
+- <strong>团队：</strong>集结设计、工艺、制造、质量的集体智慧，不漏掉任何一个刁钻的可能。<br>
+- <strong>现场：</strong>脱离现场的 FMEA 是空中楼阁。去车间！去验证！去实施逆向 FMEA！<br>
+- <strong>闭环：</strong>任何高风险都必须有对策，对策必须落实到 CP 和 SOP，效果必须被证实（形成文件化信息）。
+</div>
+<div class="highlight-green">
+<strong>3. 给 FMEA 实践者的寄语</strong><br>
+不要被庞杂的软件和手册束缚了手脚。遇到质量难题时，问自己三个问题：<br>
+“最坏的情况是什么(S)？”<br>
+“是什么引发了它(O/PC)？”<br>
+“我们能在交出去之前拦住它吗(D/DC)？”<br>
+带着这份警畏之心，你就是合格的 FMEA 专家。<strong>Do It Now!</strong>
+</div>
+                    <p style="font-size: 14px; color: #a0aec0; margin-top: 20px; font-style: italic;">📚 内容来源：《AIAG & VDA FMEA 手册》核心逻辑与全生命周期闭环总结</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">知识自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">Q1</span><span class="question-type">单选</span></div><div class="question-text">经过这 45 天的学习，你认为 FMEA 最终交付的核心价值是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 一份供客户和审核员欣赏的精美 Excel 表格</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 识别并控制了隐患，将其转化为现场受控的设备参数、防错工装和标准作业指导，最终实现零缺陷量产</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 掌握了一套复杂的打分数学公式</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 找出了可以推卸责任的借口</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>FMEA的终极价值不在于表格本身，而在于表格驱动下建立起来的铜墙铁壁般的现场防错体系。</div></div><div class="question" id="q2"><div><span class="question-num">Q2</span><span class="question-type">单选</span></div><div class="question-text">当你面对一项复杂的新工艺需要做 PFMEA 时，首先应该做什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 直接开始填写失效模式</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 组建跨职能团队，并详细理清工艺流程图、结构网和功能网</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 抄一份最相似的老文件，改个标题直接发布</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 先定好各种控制分数</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>兵马未动，粮草先行。建团队、理清结构和功能(七步法前三步)，是找准病灶的前提。</div></div><div class="question" id="q3"><div><span class="question-num">Q3</span><span class="question-type">单选</span></div><div class="question-text">贯穿 FMEA 全生命周期的“闭环”思想，最典型地体现在哪里？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 只要填完了优化措施那一栏就算闭环</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. FMEA 的措施必须向下传递至 CP 和 SOP，并对客诉和工程变更(MOC)进行动态更新响应</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 把文件存进电脑里</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 所有人都在封面上签了字</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>向下落地指导生产(CP/SOP)，向上响应客诉和变更，这是FMEA保持生命力的核心闭环。</div></div><div class="question" id="q4"><div><span class="question-num">Q4</span><span class="question-type multi">多选</span></div><div class="question-text">一个优秀的 FMEA 主导者 (Moderator) 应该具备哪些特质？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 能够引导跨部门团队聚焦讨论，防止偏题</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 能够敏锐识别团队主观降分或逻辑混淆的行为并予以纠正</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 必须一个人把所有技术细节包揽下来自己写</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 推动高层管理人员关注并支持需要巨额投资的硬防错措施</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>主导者是催化剂和裁判员，负责组织讨论、把控逻辑标准、争取资源，而不是独自代笔。</div></div><div class="question" id="q5"><div><span class="question-num">Q5</span><span class="question-type multi">多选</span></div><div class="question-text">完成 45 天学习后，回到工作岗位，你可以立刻着手执行哪些“Quick Win(速赢)”行动？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 找一份过往的高频客诉 8D 报告，检查其是否已更新到现有 PFMEA 中</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 选取产线上的一个关键工位，带着目前的 PFMEA 和 CP，去现场做一次小型的“逆向 FMEA”比对</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 审视现有的 FMEA，将所有“加强培训/员工注意”的软管理措施挑出来，探讨硬件防错的可行性</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 把旧 FMEA 全部删掉重写</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>查漏补缺(8D核对)、现场走访(逆向FMEA)、梳理弱控制(消灭软管理)都是能立竿见影提升现场质量的行动。全面重写则工程浩大，建议稳扎稳打。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "B"}, "4": {"correct": "A,B,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

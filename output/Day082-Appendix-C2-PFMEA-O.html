@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 082：附件 C2（二）：PFMEA 标准频度表、备选频度表与时间预测法</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 082：附件 C2（二）：PFMEA 标准频度表、备选频度表与时间预测法</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：PFMEA 严重度（表 P1）三大影响维度：</strong>原书将失效后果的影响拆解为“对最终用户的影响”、“对后续制造/装配的影响（工厂）”以及“对交付给下一工厂的影响（转运/接收）”，评分时遵循“取最高严重度等级（取大原则）”。</li><li><strong>上期核心2：工厂内部与转运维度的安全与停线分级：</strong>严重度 9-10 涉及人员安全或法规不合规（10分通常无预警）；8-7 涉及产线长时间停线（如停线超过一班或多小时）或大批量返工；4-6 涉及部分产品返工或脱线返工；2-3 涉及微小缺陷或工位内返工。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》附件 C2.2 及 C2.3（P201-203）：<br>• <strong>PFMEA 频度（O, Occurrence）定义：</strong>是根据标准评级准则对<strong>潜在失效起因（Failure Cause, FC）</strong>进行的评级。频度是在评估时进行的<strong>预估定性评级</strong>，可能不能反映真实的频度。频度评级得分是在 FMEA 范围（正在评估的过程）内进行的<strong>相对评级数值</strong>。<br>• <strong>预防控制（PC）的核心角色：</strong>在确定最佳预估频度时，<strong>必须考虑预防控制</strong>。如果针对某一失效起因存在多个预防控制评级，可以使用<strong>最能反映控制有效性的评级</strong>。<br>• <strong>控制类型与分级递进：</strong>手册将预防控制分为三种层级：<strong>技术控制</strong>（依靠机械设备、模具/夹具设计、工具材料与寿命物理防错）、<strong>最佳实践：行为或技术控制</strong>（夹具/工装设计、校准程序、防错确认/验证、定期检修、工作说明、SPC 流程图、过程监视等）、<strong>行为控制</strong>（依靠持有或未持有证书的操作人员、技术工人、团队领导等培训/操作说明）。技术控制的防错有效性最高，纯行为控制的有效性最低。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：三大频度评估维度</strong><br>原书提供了三种 PFMEA 频度评价表，分别适用于定性评估、基于故障率的数据评估和基于时间维度的经验评估：<br><strong>(1) 表 C2.2 标准频度表（定性预测）：</strong><br>• <strong>O=10（极高）：</strong>无预防控制。<br>• <strong>O=9/8（非常高）：</strong>纯行为控制。预防控制在防止失效起因出现方面起到的作用很小。<br>• <strong>O=7/6（高）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到一定的作用。<br>• <strong>O=5/4（中）：</strong>行为或技术控制。预防控制在防止失效起因出现方面可以起到有效的作用。<br>• <strong>O=3/2（低/非常低）：</strong>最佳实践（行为或技术控制）。预防控制在防止失效起因出现方面起到高度/非常有效的作用。<br>• <strong>O=1（极低）：</strong>技术控制。通过预防控制（如零件形状设计、防错夹具/模具物理定位）从设计或工艺物理上避免失效起因发生，失效模式不会因该失效起因而实际发生。<br><br><strong>(2) 表 C2.3.1 备选频度表（每千件产品故障率 / 不良率）：</strong><br>• <strong>O=10：</strong>≥ 100/千（≥ 1/10）；无控制。<br>• <strong>O=9：</strong>50/千（1/20）；行为控制，作用很小。<br>• <strong>O=8：</strong>20/千（1/50）；行为控制，作用很小。<br>• <strong>O=7：</strong>10/千（1/100）；行为或技术控制，一定作用。<br>• <strong>O=6：</strong>2/千（1/500）；行为或技术控制，一定作用。<br>• <strong>O=5：</strong>0.5/千（1/2000）；行为或技术控制，有效作用。<br>• <strong>O=4：</strong>0.1/千（1/10000）；行为或技术控制，有效作用。<br>• <strong>O=3：</strong>0.01/千（1/100000）；最佳实践，非常有效。<br>• <strong>O=2：</strong>&lt; 0.001/千（1/1000000）；最佳实践，非常有效。<br>• <strong>O=1：</strong>通过物理技术控制避免失效（失效率理论为0）。<br><br><strong>(3) 表 C2.3.2 备选频度表（基于时间的失效预测值）：</strong><br>• <strong>O=10：</strong>每次（每次作业都发生）。<br>• <strong>O=9：</strong>几乎每次。<br>• <strong>O=8：</strong>每班超过一次（&gt; 1次/班）。<br>• <strong>O=7：</strong>每日超过一次（&gt; 1次/天）。<br>• <strong>O=6：</strong>每周超过一次（&gt; 1次/周）。<br>• <strong>O=5：</strong>每月超过一次（&gt; 1次/月）。<br>• <strong>O=4：</strong>每年超过一次（&gt; 1次/年）。<br>• <strong>O=3：</strong>每年一次（1次/年）。<br>• <strong>O=2：</strong>每年少于一次（&lt; 1次/年）。<br>• <strong>O=1：</strong>从未发生（技术控制完全防错）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（手机主板 SMT 印刷锡膏偏位/少锡 - 选用表 C2.3.1 不良率法）：</strong><br>失效起因：钢网开孔堵孔。若仅靠作业员每2小时目视检查钢网，属于纯行为控制，历史统计每千板故障率为 20/千，则 O 评为 8；若导入 SPI 闭环反馈 + 印刷机自动干/湿/真空擦网程序（技术控制+最佳实践），故障率降至万分之一（0.1/千），O 值可降至 4。<br>• <strong>场景 B（手机整机组装流水线人工装配螺钉 - 选用表 C2.3.2 时间预测法）：</strong><br>失效起因：装配工人漏锁螺丝或滑牙。若纯依靠员工自我复检（行为控制），产线运行统计该失效起因“每班超过一次（&gt; 1次/班）”，按表 C2.3.2 判定频度 O 为 8；若改用智能电批（带扭力达标信号反馈、螺钉计数与流水线治具放行互锁系统），属于强技术控制，漏锁失效起因降至“每年少于一次”或“从未发生”，O 值可评定为 2 或 1。<br>• <strong>场景 C（电池连接器 BTB 扣合反向/错位 - 结构防错判定 O=1）：</strong><br>失效起因：组装工位人工反向扣合 BTB。若 BTB 外壳设计有非对称防呆倒角（Poka-Yoke），物理结构上反向无法装入，该设计/夹具物理技术措施使失效起因无法物理发生，依据手册要求 O 级应直接评定为 1。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：混淆“预防控制（PC）”与“探测控制（DC）”对频度的影响。</strong><br><em>纠正：</em>频度（O）只评价<strong>失效起因（FC）</strong>发生的可能性，且<strong>只能通过预防控制（PC）来降低</strong>！生产线后端的 AOI、功能测试（FT）、出货检验（OBA）均属于探测控制（DC），它们只能降低探测度（D），绝不能用来调低频度（O）！<br>• <strong>误区 2：盲目将“有操作指导书（SOP）和培训”评为中低频度（如 O=4 或 5）。</strong><br><em>纠正：</em>手册明确将仅依靠有/无证书的操作员、SOP 归为“行为控制”。若没有硬件/软件/设备技术防错，行为控制在阻止起因方面的作用非常有限，频度评级通常在 8-9 分。<br>• <strong>误区 3：频度评为 1 的条件被随意滥用。</strong><br><em>纠正：</em>评定 O=1 的前提是<strong>技术控制完全避免了失效起因</strong>（如机械非对称防呆导致反向根本无法装配），失效模式物理上不会因该起因发生。若仍依靠传感器电气检测或报警停机（这属于探测控制），不可打 O=1。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C2.2 - C2.3（原书 P201-203）（PDF 第 201-203 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 C2.2，关于 PFMEA 频度（O）的评级对象与依据，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 频度（O）是对失效后果（FE）发生概率的评估，评级时应考虑探测控制（DC）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 频度（O）是对潜在失效起因（FC）进行的预估定性评级，在确定评级时应考虑预防控制（PC）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 频度（O）反映的是绝对精确的真实失效率，不能作为相对数值使用</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 若针对某一失效起因有多个预防控制，必须取这些控制有效性评级中最高（最差）的分数</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P201（C2.2）：“根据以下标准对潜在失效起因进行的评级。在确定最佳预估频度时应考虑预防控制。频度是在评估时进行的预估定性评级，可能不能反映真实的频度。频度评级得分是在 FMEA 范围内进行的相对评级数值。针对多个频度评级中的预防控制而言，可以使用最能反映控制有效性的评级。”因此 B 正确，A、C、D 错误。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 频度评级中，将频度评定为 O = 1 的充要条件是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 产线后端配置了 100% 自动光学检测（AOI）并且误报率极低</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 过程设置了每班首件检验并由持有高级证书的班组长严格复核</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 采用技术控制（如零件形状或夹具/模具设计），从物理上避免了失效起因发生，失效模式不会因该起因实际发生</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 历史不良率统计达到千分之 0.01（十万分之一）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P201/P202/P203 表 C2.2 规定，O=1 对应控制类型为“技术控制”，标准描述为：“预防控制在预防失效起因设计（例如零件形状）或过程（如夹具或模具设计）而发生的失效起因方面极其有效。预防控制的目的－失效模式不会因失效起因而实际发生。”AOI 属于探测控制；作业员检查属于行为控制；十万分之一失效率在表中对应 O=3。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音某智能手机组装线在进行“电池盖压合”工序 PFMEA 分析时，失效起因为“操作工未按标准双手操作导致压合偏位”。现场无机械防错，仅依靠操作员培训和作业指导书（SOP），历史统计该违规操作或偏位起因在产线上“每班超过一次（> 1次/班）”。依据手册表 C2.3.2（基于时间的失效预测值），该起因的频度 O 级应评定为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 8</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 7</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 6</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 5</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P203 表 C2.3.2《备选 PFMEA 频度 (O), 基于时间的失效预测值》：频度 8 的基于时间预测为“每班超过一次”；频度 7 为“每日超过一次”；频度 6 为“每周超过一次”；频度 5 为“每月超过一次”。因此每班超过一次对应 O = 8。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，在确定预防控制的有效性及频度等级时，手册将预防控制的措施类型划分为哪些层次？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 技术措施（依靠机械设备、工具寿命、工具材料等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 最佳实践（夹具/工装设计、校准程序、防错确认、定期检修、工作说明、统计流程控制表、过程监视等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 行为措施（依靠持有证书或未持有证书的操作人员、技术工人、团队领导等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 探测措施（依靠下道工序测试机、实验室破坏性抽检、成品出货检验等）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P201、P202、P203 底部关于“预防控制的有效性”的统一说明：“在确定预防控制的有效性时，应考虑预防控制是否为技术措施（依靠机械设备、工具寿命、工具材料等），或应用最佳实践（夹具、工装设计、校准程序、防错确认/验证、定期检修、工作说明、统计流程控制表、过程监视、产品设计等），或行为措施（依靠持有证书或未持有证书的操作人员、技术工人、团队领导等）”。选项 D 属于探测控制（Detection Control），不属于预防控制的分类范畴。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 C2.3.1《每千件产品/车辆的故障率备选频度表》，下列故障率与频度 O 评分的对应关系中，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. ≥ 100/千（≥ 1/10）对应 O = 10</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 10/千（1/100）对应 O = 7</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 0.1/千（1/10000）对应 O = 4</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. < 0.001/千（1/1000000）对应 O = 1</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P202 表 C2.3.1：
+O=10 对应 ≥ 100/千（≥ 1/10），A 正确；
+O=7 对应 10/千（1/100），B 正确；
+O=4 对应 0.1/千（1/10000），C 正确；
+对于 D 选项：< 0.001/千（1/1000000）对应的是 O = 2，而 O = 1 的要求是“通过预防控制避免失效（技术控制，失效模式不会因失效起因而实际发生）”，因此 D 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

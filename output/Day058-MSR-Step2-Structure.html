@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 058：FMEA-MSR 步骤二（结构分析）：传感器-控制单元-执行器结构树</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 058：FMEA-MSR 步骤二（结构分析）：传感器-控制单元-执行器结构树</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>FMEA-MSR 步骤一（规划和准备）确立了分析边界，其核心在于评估在客户日常运行条件下系统维持安全或合规状态的能力，依赖于传感器、ECU、执行器及软件的协同响应。</li><li><strong>上期核心2：</strong>FMEA-MSR 的输入来源于基准 DFMEA 中严重度 S 为 9-10（安全与法规）或 5-8（主要功能丧失）的失效起因，并结合 5T 规划确定跨学科团队与交付物里程碑。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与目标（原书 4.2.1 节）</strong><br>FMEA-MSR 结构分析的主要目标包括：①分析范围的可视化（通过方块图、边界图、结构树、数字模型或实体零件等实现）；②确定设计接口与交互作用；③促进顾客与供应商工程团队之间的接口职责协作；④作为后续功能分析步骤的基础。<br><strong>范围限定原则：</strong>FMEA-MSR 的分析范围仅限于系统中的特定要素——即根据基准 DFMEA 识别出的、存在可能导致危险或不合规影响的失效起因的要素，而非无限制泛化整个系统。根据范围定义，结构可同时包含硬件要素和软件要素。</div><div class="highlight-blue"><strong>2. 结构树与接口要素建模规则（原书 4.2.2 节）</strong><br>在 FMEA-MSR 中，结构树层级可以根据组织在供应链中的角色灵活定义：<br>• <strong>根要素层级：</strong>整车层面（系统整体验证/OEM视角）或系统层面（子系统/独立组件供应商视角，如智能传感器）。<br>• <strong>三层结构定义（表单映射）：</strong><br>1. 上一较高级别（如：车窗升降系统 / 手机快充供电系统）；<br>2. 关注要素（如：ECU 车窗升降器 / 手机充电管理芯片 PMIC）；<br>3. 下一较低级别或特性类型（如：ECU 车窗升降器用连接器 / PMIC 输入引脚与内部接口）。<br>• <strong>黑盒/接口要素建模关键规则：</strong><br>① <em>若分析范围内未包含物理传感器</em>：必须使用<strong>接口要素</strong>（Interface Elements）来描述控制单元（ECU）接收的数据/电流/电压。ECU 的核心功能之一是通过连接件接收信号，信号可能丢失、错误，在缺乏监视机制时会导致错误输出。<br>② <em>若分析范围内未包含物理执行器</em>：必须使用<strong>接口要素</strong>来描述控制单元发送的数据/电流/电压。信号可能丢失、错误，或表现为“无输出”/“失效信息”。<br>③ <strong>责任外部原因纳入原则：</strong>错误信号虽然可能是由工程师或组织责任范围之外的组件（如外部传感器供电抖动或第三方雷达信号失真）引起的，但由于这些错误信号会直接影响本组织责任范围内组件的功能表现，因此必须在 FMEA-MSR 结构与后续分析中明确涵盖！同时，确保该结构与系统安全概念（Safety Concept）保持一致。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机超级快充与电池安全系统结构树</strong><br>以传音 Infinix/TECNO 智能手机 180W/260W 超级闪充架构为例构建 FMEA-MSR 结构树：<br>• <strong>上一较高级别（System）：</strong>整机充放电安全防护系统（整机/消费者感知层级）。<br>• <strong>关注要素（Focus Element）：</strong>主板电荷泵充电控制单元（Charge Pump IC + 嵌入式 Charger FW）。<br>• <strong>下一较低级别（Next Lower Element）及接口要素：</strong><br>  - <em>输入接口要素：</em>外部 USB-C 接口 CC/VBUS 通讯引脚（接收来自外置充电器的功率协商协议报文与输入电压/电流）。即使外置适配器由第三方供应商提供，协议信号畸变或电压纹波（责任范围外）也必须纳入接口建模；<br>  - <em>传感器要素/智能传感器：</em>电芯内嵌 NTC 热敏电阻及模数转换器（ADC）；<br>  - <em>输出接口要素：</em>向外部锂电保护执行开关（Dual-Gate MOSFET）发送的断开驱动信号。如果驱动信号丢失或误拉高，将直接影响过温保护响应。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把责任边界之外的组件完全剔除出结构。</strong> 很多工程师认为“外置适配器不是我画的板子，传感器也是外购件，不用建在结构里”。<em>纠正：</em>原书明确要求，未包含传感器/执行器时必须用“接口要素”描述信号/电流/电压输入与输出，外部引发的错误信号必须纳入 FMEA-MSR。<br>• <strong>误区二：完全复制基准 DFMEA 的庞大机械/物理结构。</strong> <em>纠正：</em>FMEA-MSR 只关注能够导致危险/法规不合规影响的要素以及负责“监视与系统响应”的传感器、ECU、执行器及其软硬件接口，结构树应高度精简且聚焦于机电信号链与诊断通道。<br>• <strong>误区三：忽略软件要素的结构层级。</strong> <em>纠正：</em>现代 ECU/智能传感器高度集成数据处理单元，原书图 4.2-2 明确将“数据处理单元”作为子要素，结构建模必须体现软硬件协同的数据处理与算法逻辑。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.2.1 - 4.2.2 节（PDF 第 125-126 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于 FMEA-MSR 步骤二（结构分析）的范围界定，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 必须完整复制基准 DFMEA 中的全部零部件与机械物理特征</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 范围仅限于系统的要素，其中根据基准 DFMEA 所示，存在可能导致危险或不合规影响的失效起因</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只能包含纯硬件电路和物理连接器，软件算法与数据处理单元需单独在软件专案中分析</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 凡是供应商组织职责范围以外的外部零件和输入信号，一律严禁纳入结构分析</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 4.2.1 节明确规定：“FMEA-MSR 的范围仅限于系统的要素，其中根据该系统的基准 DFMEA 所示，存在可能导致危险或不合规影响的失效起因。”结构可包含硬件和软件要素，且责任范围外的错误信号亦需涵盖。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 FMEA-MSR 结构分析中，如果分析范围内未直接提供传感器或执行器（例如仅针对独立控制单元 ECU 进行分析），手册规定的标准处理方法是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 将传感器和执行器视为系统不存在，完全略过其功能与输入输出分析</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 强制由整车厂/终端客户提供完整的硬件原理图并补齐所有外围物理模型</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 使用“接口要素”（Interface Elements）来描述 ECU 接收或发送的数据/电流/电压信号</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 终止 FMEA-MSR 分析，转回执行传统 DFMEA</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 4.2.2 节明确指出：“如果分析范围内未提供传感器，则使用接口要素来描述 ECU 接收的数据/电流/电压……如果分析范围内未提供执行器，则使用接口要素来描述 ECU 发送的数据/电流/电压。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机研发中，针对电荷泵快充管理芯片（Charger IC）开展 FMEA-MSR 分析时，外部充电器协议芯片偶发输出错误的握手电压报文（该芯片为外购配件且非本设计团队职责）。依据手册规则，团队应如何处理？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 将该输入报文作为接口要素纳入结构分析，因为外部错误信号会影响责任范围内组件的性能，必须分析监视及响应机制</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 不予纳入，因为该错误起因超出了工程师或组织的责任范围</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 直接判定该系统不可设计，要求配件供应商完成 DFMEA 后再启动整机分析</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 将该失效起因直接移至 PFMEA 过程控制中作为来料检验项目</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 4.2.2 节规定：“错误信号可能是由工程师或组织的责任范围之外的组件所致。这些错误信号可能对工程师或组织责任范围内组件的性能产生影响，因此 FMEA-MSR 分析中需要涵盖这些原因。”</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 4.2.1 节，FMEA-MSR 步骤二（结构分析）的主要目标包括以下哪些项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 分析范围的可视化（如通过结构树、方块图、边界图等）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 确定设计接口与交互作用</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 促进顾客和供应商工程团队之间的协作（明确接口职责）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 为后续的功能分析步骤奠定基础</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 评估当前的生产制造工序能力指数（Cpk）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 4.2.1 节列出了四大目标：①分析范围的可视化；②确定设计接口、交互作用；③顾客和供应商工程团队之间的协作（接口职责）；④功能分析步骤的基础。选项 E 属于制造工艺质量范畴，与 MSR 步骤二无关。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 FMEA-MSR 结构树及表格映射（表 4.2-3）中，下列关于层级关系的描述正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 结构树的根要素（上一较高级别）可以处在整车/整机层面，也可以处在系统层面（如针对智能传感器子系统）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 智能传感器的结构内部可同时包含感测元件、数据处理单元（含软硬件）以及输入/输出连接器</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 控制单元接收到的信号如果丢失或错误，在没有监视机制的情况下可能导致错误的输出</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 控制单元向执行器发送的信号异常在接口处通常表现为错误信号、无输出或失效信息</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 结构分析完成后，必须断开与安全概念（Safety Concept）的关联以避免评审混淆</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 4.2.2 节明确指出了 A、B、C、D 均符合手册描述；关于选项 E，手册原文特别注明：“注：确保该结构与安全概念（如适用）保持一致”，因此 E 项错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

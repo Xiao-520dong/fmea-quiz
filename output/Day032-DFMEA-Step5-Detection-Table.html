@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 032：DFMEA 步骤五：探测度（D）评估三要素与 1-10 级评分表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 032：DFMEA 步骤五：探测度（D）评估三要素与 1-10 级评分表</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（频度 O 评估逻辑）：</strong>DFMEA 的频度（O）评级是对预防控制有效性的估计，表 D2 依据两大约束轴评级——产品成熟度/创新程度（全新、新、更新、几乎相同）与预防控制的严谨度/成熟度。</li><li><strong>上期核心2（O评级的两面性）：</strong>频度预测最初基于假设，后续在开发过程中需通过测试结果进行调整验证；探测控制（如耐久性/失效测试）的实际完成或取消，也会反向直接影响对频度 O 的最终估计。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与探测度（D）评估三要素</strong><br>根据《AIAG & VDA FMEA 手册》2.5.9 节，<strong>探测度评级（D）</strong>是对<strong>探测控制有效性</strong>的估计，其核心目标是：在项目交付生产前，可靠地证明（探测出）失效起因或失效模式。关于 D 评级的核心规则如下：<br><ul><li><strong>独立性与相对性：</strong>探测度是一个相对评级，且在单个 FMEA 范围内评级，它的确定<strong>绝不考虑严重度（S）或频度（O）</strong>。</li><li><strong>最有效控制原则：</strong>当存在多项探测控制措施时，探测度评级与<strong>最有效的那项探测控制</strong>相关。</li><li><strong>评估四连问：</strong>确定该估计时，团队必须思考并回答：①探测失效起因或失效模式的最有效测试是什么？②探测失效所需的使用记录/工作周期是什么？③探测失效需要多少样品？④探测该起因/失效模式的测试程序是否已得到证明？</li><li><strong>动态更新：</strong>D 评级最初是对尚未被证实的控制有效性的预测；在测试完成后，必须对其有效性进行验证和重新评估。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与表 D3 探测度 1-10 级评分体系拆解</strong><br>表 D3 将探测控制的能力划分为两大维度的交叉判定：<strong>探测方法成熟度</strong>与<strong>探测机会（测试类型及节点）</strong>：<br><table style="width:100%; border-collapse:collapse; margin-top:8px; font-size:12px;" border="1"><thead><tr style="background-color:#f2f2f2;"><th style="width:8%;">评级 D</th><th style="width:14%;">探测能力</th><th style="width:38%;">探测方法成熟度</th><th style="width:40%;">探测机会（测试方法 / 时间节点）</th></tr></thead><tbody><tr><td align="center"><strong>10</strong></td><td rowspan="2" align="center">非常低</td><td>尚未确定测试方法。</td><td>尚未制定测试过程。</td></tr><tr><td align="center"><strong>9</strong></td><td>没有为探测失效模式或失效起因而特别地设计测试方法。</td><td>通过/不通过测试、失效测试、老化测试（泛用无针对性测试）。</td></tr><tr><td align="center"><strong>8</strong></td><td rowspan="2" align="center">低</td><td rowspan="2">新测试方法，尚未经过验证。</td><td>通过/不通过测试、失效测试、老化测试（早期新方法未验证）。</td></tr><tr><td align="center"><strong>7</strong></td><td>新测试方法，处于验证初期。</td></tr><tr><td align="center"><strong>6</strong></td><td rowspan="3" align="center">中</td><td rowspan="3">已经验证的测试方法，用于功能性验证或性能、质量、可靠性及耐久性确认。<strong>但测试计划时间在产品开发周期内较迟</strong>，若失败将导致重新设计、重新开模甚至生产延迟。</td><td>通过/不通过测试（开发后期，成本风险极高）</td></tr><tr><td align="center"><strong>5</strong></td><td>失效测试（开发后期，测至失效）</td></tr><tr><td align="center"><strong>4</strong></td><td>老化测试（开发后期，长期可靠性验证）</td></tr><tr><td align="center"><strong>3</strong></td><td rowspan="3" align="center">高</td><td rowspan="3">已经验证的测试方法，用于功能验证或性能、质量、可靠性及耐久性确认；<strong>计划时间充分，可以在开始生产之前修改生产工装</strong>。</td><td>通过/不通过测试（开发早期充足时间窗口）</td></tr><tr><td align="center"><strong>2</strong></td><td>失效测试 / 老化测试（开发早期且充足时间修改模具与工装）</td></tr><tr><td align="center"><strong>1</strong></td><td align="center">非常高</td><td colspan="2">之前测试证明<strong>不会出现</strong>失效模式或失效起因，或者探测方法经过实践验证<strong>总是能够探测到</strong>失效模式或失效起因。</td></tr></tbody></table></div><div class="highlight-green"><strong>3. 传音研发实战场景映射</strong><br>以传音某新兴市场三防/长续航手机「电池盖卡扣在跌落测试中脆断（失效起因：应力集中）」为例：<br><ul><li><strong>情境 A（评为 D=9/10）：</strong>研发团队仅计划在整机装配后做通电点亮检查，完全未制定针对卡扣结构抗跌落冲击的力学测试方法（D=10）或仅靠普通搬运晃动测试充数（D=9）。</li><li><strong>情境 B（评为 D=8）：</strong>团队引入了一套全新的高速光学应变测试夹具，但由于该治具属于首创开发、未经校准与行业验证，此时即便安排在样机期，D 仍必须评为 8。</li><li><strong>情境 C（评为 D=5）：</strong>在量产前试产阶段（PVT/量产磨合期较迟节点）进行 1.5 米微跌测试至卡扣断裂（失效测试）。虽然测试方法高度成熟，但由于时间太晚，一旦断裂需修改模具钢件导致量产延迟，故评分定为 D=5。</li><li><strong>情境 D（评为 D=2/3）：</strong>在产品开发早期（如 EVT 结构手板或软模阶段），使用行业公认的跌落台进行跌落至破损破坏性试验（失效测试）。此时预留了充足的修模和改结构周期，此时可评为 D=2。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>❌ 误区 1：把“容易被用户发现”当成探测度好（打低分）。</strong><br><em>正解：</em>DFMEA 的探测度<strong>只针对“项目交付生产前（研发设计验证阶段）被工程测试探测到的能力”</strong>。绝不能因为“手机外壳开裂用户一眼就能看到”而给 D 打 1 分！用户拿到时已是交付之后，那是严重度 S 的范畴。</li><li><strong>❌ 误区 2：忽视“测试时间节点（探测机会）”对 D 评级的决定性作用。</strong><br><em>正解：</em>AIAG & VDA 新版标准中，D=4~6 与 D=2~3 采用完全相同的“成熟已验证测试方法”，唯一的断代分水岭是<strong>“测试发生的时间节点是否充分留有修改工装/模具的余量”</strong>。太迟的测试即使百发百中，也是 D=4~6。</li><li><strong>❌ 误区 3：多个测试控制措施时，取平均分或最差分。</strong><br><em>正解：</em>原书明确规定，当一个失效起因有多个探测控制（如仿真分析、手板测试、可靠性测试）时，探测评级<strong>与最有效的那项探测控制相关</strong>。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.9 节（表D3）（PDF 第 65-67 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于 DFMEA 中探测度（D）评级规则，以下描述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 探测度评估应同时结合严重度（S）和频度（O）进行综合加权打分</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 探测度是对探测控制有效性的估计，且评级与最有效的探测控制相关</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 当存在多个探测控制时，应该对各项控制的探测度取算术平均值</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 只要用户在使用手机时很容易肉眼察觉故障，探测度 D 就可以评为 1 级</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 2.5.9 节明确指出：“探测度评级 (D) 是对探测控制有效性的估计，用于在项目交付生产前，可靠地证明失效起因或失效模式。探测评级与最有效的探测控制相关。探测度是一个相对的评级，它的确定不考虑严重度或频度。”选项 A、C、D 均违背手册原意。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 DFMEA 探测度表 D3 中，评估成熟且已验证的测试方法时，区分 D 评级处于 4~6 级还是 2~3 级的关键分界点是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 测试样品的数量是否超过 100 台</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 测试是在国家级实验室还是在供应商内部实验室完成</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 测试计划时间是在产品开发周期内较迟（若失败将导致改模延迟生产），还是时间充分（可在投产前修改工装）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 测试是由软件自动化执行还是由测试工程师人工操作</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据表 D3：D=6, 5, 4 与 D=3, 2 的探测方法成熟度完全相同（均为已经验证的测试方法），其核心差异在于探测机会与节点：4~6 级是“测试计划时间在产品开发周期内较迟，如果测试失败将导致重新设计、重新开模导致生产延迟”；而 2~3 级是“计划时间充分，可以在开始生产之前修改生产工装”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音硬件研发团队在评估“充电芯片引脚过温烧毁”起因时，计划在 EVT（早阶设计验证）阶段采用成熟的红外热成像测温程序（已验证的测试标准），测试时间充足，发现过温可随时调整 PCB 走线与散热铜箔。依据表 D3，该项探测控制最适宜评定为多少分？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 2~3 级（高探测能力）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 5~6 级（中探测能力）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 8 级（低探测能力）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 10 级（非常低探测能力）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>测试方法成熟已验证，且计划时间充分，可在投产前充分修改设计与生产工装，符合表 D3 中“高探测能力”（D=2 或 3）的定义。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，工程团队在确定探测度（D）估计时，应考虑以下哪些核心问题？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 探测失效起因或失效模式的最有效测试是什么？</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 探测失效所需要的使用记录 / 工作周期是什么？</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 探测失效需要多少样品？</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 探测该起因 / 失效模式的测试程序是否已得到证明？</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 2.5.9 节 PDF 第 65 页明确列出确定该估计时应考虑的四个问题：1. 探测失效起因或失效模式的最有效测试是什么？2. 探测失效所需要的使用记录/工作周期是什么？3. 探测失效需要多少样品？4. 探测该起因/失效模式的测试程序是否已得到证明？四项全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在 DFMEA 探测度表 D3 中，以下哪些情形会导致探测度评级处于“低（7~8 级）”或“非常低（9~10 级）”区间？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 尚未确定测试方法，尚未制定测试过程（D=10）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 没有为探测该失效模式或失效起因而特别设计测试方法，仅依赖通用的合格/不合格测试（D=9）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 采用了全新的测试方法，但该方法尚未经过验证（D=7~8）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 使用行业公认且经过多年量产验证的老化测试方法，但在量产前 3 天才执行该测试</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据表 D3：选项 A 对应 D=10，选项 B 对应 D=9，选项 C 对应 D=7~8。选项 D 使用了“已经验证的测试方法”，虽然时间很迟导致生产延迟风险，但其成熟度属于“已验证测试方法”，对应评级为 D=4~6（中探测能力），不属于 7~10 级区间。因此正确选项为 A, B, C。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

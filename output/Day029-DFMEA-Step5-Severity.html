@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 029：DFMEA 步骤五：严重度（S）评估准则与 1-10 分打分逻辑</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 029：DFMEA 步骤五：严重度（S）评估准则与 1-10 分打分逻辑</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：当前探测控制（DC）定义：</strong>探测控制描述了在产品发布用于生产之前，通过分析、模拟或测试等物理/计算手段，确定失效起因或失效模式是否存在的活动。</li><li><strong>上期核心2：控制确认与路线图：</strong>所有预防和探测控制必须经过设计确认，且需列入明确的设计路线图或测试计划（如 DVP&R），明确其状态、完成度及验证时间节点。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》第 2.5.6 与 2.5.7 节：<br>• <strong>严重度（Severity, S）的定义：</strong>严重度评级是一种度量，它关系到被评估功能的既定失效模式的<strong>最严重失效影响（Failure Effect）程度</strong>。严重度评级用于确定某个 FMEA 范围的优先级，并在<strong>完全不考虑频度（O）和探测度（D）</strong>的情况下独立确定。<br>• <strong>评估尺度：</strong>S、O、D 均采用 1-10 分制打分，其中 10 代表最高风险级别，1 代表最低影响。<br>• <strong>主观性与不可直接比较性：</strong>即使产品或过程看起来相同，将一个团队的 FMEA 评级与另一个团队的 FMEA 评级进行横向比较是不合适的。因为每个团队的具体环境、应用场景不同，其评级是独一无二的（具有主观性）。<br>• <strong>严重度的传递性：</strong>如果需要，失效影响的严重度评估应该由顾客（OEM/整机厂）转移并传递给供应商。</div><div class="highlight-blue"><strong>2. 方法步骤与表 D1 规则拆解</strong><br>严重度必须严格对照<strong>表 D1 - DFMEA 严重度（S）评估标准</strong>进行估计（表 D1 可根据特定产品扩充具体示例，团队必须就评估标准和评级体系达成一致）：<br>• <strong>10分（非常高）：</strong>影响到操作安全，威胁到驾驶员、乘客、道路使用者、行人或使用者的健康安全状况；<br>• <strong>9分（非常高）：</strong>不符合法规要求（非合规风险）；<br>• <strong>8分（高）：</strong>在预期使用寿命内，<strong>失去</strong>正常使用所必需的<strong>主要功能</strong>；<br>• <strong>7分（高）：</strong>在预期使用寿命内，<strong>降低</strong>正常使用所必需的<strong>主要功能</strong>；<br>• <strong>6分（中）：</strong><strong>失去次要功能</strong>；<br>• <strong>5分（中）：</strong><strong>降低次要功能</strong>；<br>• <strong>4分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>非常不舒服</strong>；<br>• <strong>3分（低）：</strong>外观、声音、振动、粗糙度或触感令用户感觉<strong>中度的不舒服</strong>；<br>• <strong>2分（低）：</strong>外观、声音、振动、粗糙度或触感令用户<strong>略微感觉不舒服</strong>；<br>• <strong>1分（非常低）：</strong>没有可觉察到的影响（No discernible effect）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及智能穿戴产品研发中，表 D1 的打分逻辑具体映射如下：<br>• <strong>S=10（安全威胁）：</strong>锂电池起火、爆炸，充电器击穿漏电电击用户，手机背壳异常高热烫伤用户健康。<br>• <strong>S=9（合规违规）：</strong>整机 SAR（电磁辐射比吸收率）超出国标或非洲当地准入法规；CTA、CE、FCC 等合规认证强制性项不达标。<br>• <strong>S=8（失去主要功能）：</strong>手机黑屏无法开机、无法识 SIM 卡导致无法通话与上网、射频完全无网络服务。<br>• <strong>S=7（降低主要功能）：</strong>手机通话严重杂音但勉强可听、4G/5G 数据传输降速、弱网下频繁掉线。<br>• <strong>S=6（失去次要功能）：</strong>手电筒功能无法开启、指纹解锁完全失效（但仍可输密码解锁）、蓝牙无法连接耳机。<br>• <strong>S=5（降低次要功能）：</strong>指纹识别成功率低（需多次重按）、按键行程手感发硬但功能响应正常。<br>• <strong>S=4~2（感官舒适度递减）：</strong>后壳配合间隙段差引起刮手（S=4 非常不舒服）；马达振动偏弱或伴有轻微共振异响（S=3 中度不舒服）；丝印轻微色差或边缘微小毛刺（S=2 略微不舒服）。<br>• <strong>S=1：</strong>完全不影响外观与任何电气体验，用户完全无法觉察。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：严重度与频度/探测度混淆。</strong>工程师常说“这个结构开裂概率极低，所以严重度打低点”，或者“我们在产线100%全检，所以严重度定为3分”。<br><em>纠偏：</em>根据手册 2.5.7 节明确规定，严重度<strong>仅仅针对失效影响</strong>打分，<strong>绝对不可考虑频度和探测度</strong>，哪怕发生率为百万分之一，只要导致起火，严重度必须是 10。<br>• <strong>误区二：多个失效影响时取平均分。</strong>同一个失效模式若对应多个不同影响，不可取平均值。<br><em>纠偏：</em>手册明确规定，严重度评级是“被评估功能的既定失效模式的<strong>最严重失效影响程度</strong>”，必须取最高分（Worst-case）。<br>• <strong>误区三：设计措施试图降低严重度。</strong>以为增加保护电路或强化设计能让严重度从 10 降到 2。<br><em>纠偏：</em>严重度是由物理失效影响本身的危害性决定的。只有通过<strong>修改设计架构或功能定义（例如消除危害源本身）</strong>才能改变严重度，单纯增加预防或测试控制完全不能降低 S 值。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第二章 2.5.6 - 2.5.7 节（PDF 第 59-61 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》2.5.7 节，关于严重度（S）评估的基本原则，以下表述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 评估严重度时，若当前预防控制非常到位，应适度下调 S 的分值</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 严重度评级关系到最严重失效影响程度，并在不考虑频度和探测度的情况下独立确定</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 若产品结构相同，不同团队的 FMEA 严重度评级应当完全一致且可直接对标比较</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 当一个失效模式产生多个失效影响时，应计算所有失效影响严重度的平均值作为最终 S 分</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 2.5.7 节明确指出：“严重度评级是一种度量，它关系到被评估功能的既定失效模式的最严重失效影响程度。严重度评级用于确定某个FMEA范围的优先级，并在不考虑频度和探测度的情况下确定。”同时手册指出将不同团队的 FMEA 进行评级比较是不合适的，评级具有主观性。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">根据手册表 D1-DFMEA 严重度评估标准，当潜在失效影响导致“在预期使用寿命内，失去正常驾驶/使用所必需的主要功能”时，其严重度（S）应评为多少分？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 10 分</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 9 分</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 8 分</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 7 分</label></div><div class="option"><label><input type="radio" name="q2" value="E"> E. 6 分</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>对照原书表 D1 严重度标准：S=10 为影响操作安全/健康；S=9 为不符合法规；S=8 为失去主要功能；S=7 为降低主要功能；S=6 为失去次要功能；S=5 为降低次要功能。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音某款智能手机在做 DFMEA 分析时，评估以下失效模式：“电池保护板 MOS 管击穿”。若该失效模式引发的最严重后果是“过度充电引起电池起火燃烧，导致用户烧伤”，但在整机测试（DV）中该问题发生概率极低（小于十万分之一）。该失效影响的严重度（S）应评定为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 10 分</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 8 分</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 4 分（因为发生率极低）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 1 分（因为 DV 测试可以发现）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>严重度评级严格根据表 D1 的失效影响后果判定，电池起火烫伤用户属于“影响到操作安全、使用者健康状况”，符合 S=10 评估准则。评定严重度时绝对不能考虑频度（发生概率）和探测度（DV测试能力），故必须评为 10 分。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》原书第 2.5.6 与 2.5.7 节，关于严重度及 FMEA 评估体系的说法，以下哪些是正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. S、O 和 D 的评估分别采用 1-10 分制，10 代表最高风险</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 即使产品或过程看起来相同，将一个团队的 FMEA 和另一个团队的 FMEA 评级进行比较是不合适的</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 严重度表 D1 可以进行扩充，以包括特定产品的示例</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. FMEA 项目团队应就评估标准和评级体系达成一致</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 如果需要，失效影响的严重度评估应该由供应商制定后反向转移给最终顾客</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>选项 A、B 见手册 2.5.6 节；选项 C、D 见手册 2.5.7 节。选项 E 错误，手册 2.5.7 节明确规定：“如果需要，失效影响的严重度评估应该由顾客转移给供应商（Customer transfers to supplier）”，而不是由供应商反向转移。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据表 D1-DFMEA 严重度（S）准则，以下失效影响与 S 分值对应关系正确的有哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 不符合国家强制安全或电磁兼容法规 —— 评定为 9 分</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 手机无法使用指纹解锁（但仍可正常输入数字密码解锁，属于失去次要功能） —— 评定为 6 分</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 手机通话时有轻微杂音、主要功能下降 —— 评定为 7 分</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 手机外壳按键行程手感稍硬，属于降低次要功能 —— 评定为 5 分</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 手机外壳中框存在轻微毛刺感，令人略微感觉不舒服 —— 评定为 1 分</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>选项 A（不符合法规=9分）、选项 B（失去次要功能=6分）、选项 C（降低主要功能=7分）、选项 D（降低次要功能=5分）均完全符合表 D1 标准。选项 E 错误，外观/触感“略微感觉不舒服”在表 D1 中对应 S=2；S=1 对应的是“没有可觉察到的影响（No discernible effect）”。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

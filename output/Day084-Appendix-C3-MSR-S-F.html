@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 084：附件 C3（一）：FMEA-MSR 严重度（表MSR1）与频率（表MSR2）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 084：附件 C3（一）：FMEA-MSR 严重度（表MSR1）与频率（表MSR2）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>完成了 PFMEA 探测度表（表 P3）的学习，明确了针对失效起因（FC）或失效模式（FM）在产线不同工位（首件、过程监控、下线测试等）的探测成熟度等级划分规则（1-10分）。</li><li><strong>上期核心2：</strong>掌握了过程行动优先级（Process AP）查表逻辑，当严重度（S）为 9-10 时优先触发高优先级（H），结合频度（O）与探测度（P）决定整改的紧迫度，强调防错（消除起因）优于检验探测。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>本节正式进入《AIAG & VDA FMEA 手册》附件 C3「补充 FMEA-MSR SFM 表和 AP 表」的第一部分：严重度（S）与频率（F）。<br><ul><li><strong>严重度（S - Severity）：</strong>用于对潜在失效影响（FE）的严重程度进行评估。原书明确说明：<strong>表 C3-1「补充 FMEA-MSR 严重度表」与表 D1「DFMEA 严重度表」完全相同</strong>。S分级同样聚焦于安全（S=10）、法规（S=9）、主要功能丧失/降低（S=8/7）、次要功能丧失/降低（S=6/5）以及舒适度/感知缺陷（S=4/3/2）和无可察觉影响（S=1）。</li><li><strong>频率（F - Frequency）：</strong>在 FMEA-MSR 中取代了传统 DFMEA 中的发生度（O）。它专指<strong>在产品/车辆预期使用寿命周期内，与特定运行状况相关的失效起因（FC）的估计出现频度</strong>。其估计参考基准通常为<strong>一百万台（1,000,000）</strong>使用中的设备或系统。</li></ul></div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 严重度评级准则（表 C3-1）：</strong><br><ul><li><strong>S=10（非常高）：</strong>影响到操作安全性，或驾驶员、乘客、交通参与者/行人的健康状况。</li><li><strong>S=9：</strong>不符合法规。</li><li><strong>S=8 / 7（高）：</strong>在预期寿命内失去/降低正常操作所必需的主要功能。</li><li><strong>S=6 / 5（中）：</strong>失去/降低次要功能。</li><li><strong>S=4 / 3 / 2（低）：</strong>外观、声音、振动、粗糙度或触感令人感觉非常/一般/略微不舒服。</li><li><strong>S=1（非常低）：</strong>没有可觉察到的失效影响。</li></ul><strong>(2) 频率评级准则（表 C3-2）：</strong><br>评估在预期使用寿命周期内（以百万台为基准）失效起因发生的估计频度：<br><ul><li><strong>F=10（极高或不能确定）：</strong>失效起因的发生频率未知，或已知很高而无法接受。</li><li><strong>F=9 / 8 / 7（高）：</strong>在寿命周期内可能出现（F=9）；在使用中经常出现（F=8）；频繁出现（F=7）。</li><li><strong>F=6 / 5（中）：</strong>略微频繁地出现（F=6）；偶尔出现（F=5）。</li><li><strong>F=4（低）：</strong>预计极少出现，在使用中预计<strong>至少发生 10 次</strong>（基于百万台基准）。</li><li><strong>F=3（非常低）：</strong>预计在孤立事例中会出现，在使用中预计<strong>至少发生 1 次</strong>。</li><li><strong>F=2（极低）：</strong>在应用预防与探测控制措施及相似零件现场经验基础上，预计在使用中不会出现。不能排除孤立事例，但尚无证明表明不会发生。</li><li><strong>F=1（不会出现）：</strong>在预期寿命内不会出现，或几乎排除这种可能。有充分证据证明不会出现，且理由已进行记录。</li></ul><strong>(3) 关键修正规则：相关运行条件时间占比降级规则</strong><br>原书表格底部明确给出了极其关键的折减规则：<strong>根据失效起因发生所依赖的相关运行条件占总运行时间的比例，F 等级可以相应降低：</strong><br><ul><li>当相关运行条件占总运行时间的比例 <strong>&lt; 10%</strong> 时，F 值可以<strong>降低 1 档（F = F_原始 - 1）</strong>；</li><li>当相关运行条件占总运行时间的比例 <strong>&lt; 1%</strong> 时，F 值可以<strong>降低 2 档（F = F_原始 - 2）</strong>。</li><li><em>注：随着设备/车辆数量的增加，失效出现的可能性也随之增加。</em></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及智能穿戴（如电池管理系统 BMS、快充保护芯片、操作系统内核守护机制）的 MSR 分析中：<br><ul><li><strong>严重度评估（S）：</strong>若高压快充控制协议跑飞且硬件保护失效，导致电池热失控起火，直接威胁用户人身安全，严重度严格评定为 <strong>S=10</strong>；若由于快充握手协议异常导致充电被系统限制为 5V/1A 普通慢充，属于主要充电性能降级，评为 <strong>S=7</strong>。</li><li><strong>频率评估（F）与运行条件占比折减：</strong>某非洲高湿热环境下的特定失效起因「快充芯片在主板环境温度 &gt; 65℃ 且持续重载快充（9V/3A）时发生寄存器位翻转」。<br>① 若根据半导体失效率模型，该芯片在极限高温重载下，每百万台设备预计发生大于 10 次，初始频度定为 <strong>F=4</strong>；<br>② 但根据传音大数据实验室统计，非洲用户实际使用中「环境温度超过 65℃ 且进行持续大功率快充」的极限工况占整机运行总时长的比例<strong>远低于 1%（&lt; 1%）</strong>；<br>③ 依据 MSR 规则，F 值可以<strong>降低 2 档</strong>，最终评估定为 <strong>F = 4 - 2 = 2</strong>。这既科学体现了极限应力的破坏力，又避免了因脱离实际运行场景占比而过度高估风险。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 MSR 的 F（频率）与普通 DFMEA 的 O（发生度）。</strong>DFMEA 的 O 是基于研发设计成熟度、预防控制措施来评估起因的发生概率；而 FMEA-MSR 的 F 是<strong>客户在整车/整机运行工况下、特定运行生命周期内失效起因暴露的频度</strong>，必须考虑运行环境的实际暴露几率。</li><li><strong>误区二：无依据随意降低 F 等级。</strong>工程师往往为了降低 AP 优先级，主观认为“用户很少这么用”就直接给 F 降级。原书规则非常严格：只有当能够证明该运行条件占总运行时间 <strong>&lt; 10%（降1分）</strong> 或 <strong>&lt; 1%（降2分）</strong> 且有实际统计或测试数据支撑时，才允许扣减。</li><li><strong>误区三：认为 MSR 的 S 表与 DFMEA 不同。</strong>原书在表 C3-1 底部专门加注：该表格与表 D1 完全相同。这意味着系统/整车级别的安全、法规及功能丧失评级标准在 DFMEA 与 FMEA-MSR 中是保持完全连续统一的。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C3.1 - C3.2（原书 P208-209）（PDF 第 208-209 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 C3-1，关于补充 FMEA-MSR 严重度（S）表的描述，下列哪项是正确的？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. FMEA-MSR 的严重度表根据监控机制的响应时间重新定义了 1-10 分的标准</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. FMEA-MSR 严重度表与表 D1（DFMEA 严重度表）完全相同</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. FMEA-MSR 严重度最高分为 10 分，仅代表不符合法律法规要求</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 在 FMEA-MSR 中，次要功能丧失评定为 S=8，主要功能丧失评定为 S=6</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 P208 表 C3-1 底部明确注明：“注：该表格与 D1 DFMEA 严重度(S) 表格相同”。A 项错误，严重度评估的是失效影响（FE），与监控机制无关；C 项错误，S=10 对应影响安全性/健康状况，S=9 对应不符合法规；D 项颠倒了主次功能的等级划分。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在补充 FMEA-MSR 频率（F）表（表 C3-2）中，对 F=4 与 F=3 的数量界限定义是怎样的（基于一百万台使用车辆/设备的估计参考值）？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. F=4 为预计至少发生 100 次；F=3 为预计至少发生 10 次</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. F=4 为预计至少发生 10 次；F=3 为预计在孤立事例中出现（预计至少发生 1 次）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. F=4 为失效率小于 0.01%；F=3 为失效率小于 0.001%</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. F=4 为每千台发生 1 次；F=3 为每万台发生 1 次</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>根据原书 P209 表 C3-2：F=4 对应的标准为“预计失效起因在车辆使用中极少出现。预计在使用中至少发生十次”；F=3 对应的标准为“预计失效起因在孤立事例的车辆使用中会出现。预计在使用中至少发生一次”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音研发团队在对某款手机的智能快充系统进行 FMEA-MSR 分析时，某硬件失效起因在持续极限超载工况下的初始估计频率为 F=6（略微频繁出现）。经用户画像和实际大数据统计，该特定超载运行条件占手机总运行时间的比例为 0.3%（< 1%）。根据手册规则，最终评定的 F 值应为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. F = 6（运行时间占比不影响 F 评分）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. F = 5（因占比 < 10% 降低 1 档）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. F = 4（因占比 < 1% 降低 2 档）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. F = 1（直接降至不会出现）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 P209 表 C3-2 底部规则明确规定：相关运行条件占总运行时间的比例“< 10%”时，F 可降低 1 档；“< 1%”时，F 可降低 2 档。本案例中运行占比为 0.3%（< 1%），因此 F 值应降低 2 档，即 6 - 2 = 4。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 FMEA-MSR 中的频率（F）评估及其规则，下列哪些说法是符合手册规定的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 频率（F）用于在产品/车辆预期使用寿命周期内与运行状况相关失效起因的估计频度</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 频率估算的参考基准值通常为一百万台使用中的产品/车辆</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 若证据表明失效起因在预期寿命内不会出现且理由已记录，可评定为 F=1</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 无论运行条件占总运行时间的比例有多小，都绝对不能对 F 的初始评级进行折减</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>A、B、C 三项均严格符合原书 P209 表 C3-2 的定义与标准描述。D 项错误，原书表格底部专门提供了根据运行条件时间占比（<10% 降 1 档，<1% 降 2 档）进行扣减的降级机制。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在智能手机研发的 FMEA-MSR 实践中，针对严重度（S）与频率（F）的判定，下列哪些属于工程师应避免的典型误区？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 认为既然系统设计了软件监控保护程序，严重度（S）就可以从 10 降为 4</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 将 DFMEA 中评估设计成熟度的发生度（O）准则直接完全等同于 MSR 的客户使用工况频率（F）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 在缺乏实际运行数据统计支撑的情况下，主观以“用户极少进入此工况”为由随意降低 2 档 F 值</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 在计算 AP 优先级时，将 S=10、F=2 的严重安全隐患直接忽略不采取优化措施</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A 项错误（属于误区）：严重度 S 仅取决于失效影响本身，监控机制影响的是 M（监测/探测），绝不能因为有安全机制就降低 S；B 项错误（属于误区）：DFMEA 的 O 是评估设计/制造能力的发生度，而 MSR 的 F 是整车/整机运行寿命内的工况暴露频率；C 项错误（属于误区）：降低 F 值必须有客观运行时间比例证明；D 项错误（属于误区）：S=10 涉及安全健康风险，即使 F 较低，在后续结合 M 查 AP 时依然会触发高或中优先级，绝不能直接忽略。因此四项全为典型误区。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

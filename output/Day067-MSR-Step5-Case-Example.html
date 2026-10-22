@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 067：FMEA-MSR 步骤五：防夹车窗升降器 MSR 风险分析完整示例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 067：FMEA-MSR 步骤五：防夹车窗升降器 MSR 风险分析完整示例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>MSR 的措施优先级（AP）基于严重度（S）、频度（F）及监视评级（M）的综合逻辑确定，分为高（H）、中（M）、低（L）三个等级，取代了传统的 RPN 计算。</li><li><strong>上期核心2：</strong>AP 表判定遵循“S优先、次看F、再看M”的层次过滤原则；对于低影响度产品（S=2-3），即使发生频度极低-低（F=2-4），无论监视有效性如何，AP 均为 L。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>本节给出了《AIAG & VDA FMEA 手册》中贯穿全书的经典案例——<strong>“防夹车窗升降器”在 FMEA-MSR 步骤五（风险分析）中的完整评级与表单呈现</strong>。<br>在 FMEA-MSR 表格中，步骤五的风险分析评估重点包含七大核心要素：<br>① <strong>频率评级的理由</strong>（Rationale for F-Rating）；<br>② <strong>频度 F</strong>；<br>③ <strong>当前的诊断监视</strong>（Current Diagnostic Monitoring）；<br>④ <strong>当前的系统响应</strong>（Current System Response）；<br>⑤ <strong>监视 M</strong>（考虑诊断与响应后的综合有效性）；<br>⑥ <strong>在系统响应后最严重失效影响</strong>（Worst Potential Failure Effect after System Response）；<br>⑦ <strong>严重度 S</strong> 与最终的 <strong>措施优先级 AP</strong>。</div><div class="highlight-blue"><strong>2. 方法步骤与防夹车窗升降器实战案例拆解</strong><br>根据手册图 4.5-4 示例，防夹车窗系统的当前风险评估表逻辑如下：<br>• <strong>失效应力/起因与频度理由</strong>：根据 xyz 标准将霍尔效应传感器和 ECU 进行连接的原理设计。评估得出的失效起因发生预测频度 <strong>F = 2</strong>（极低频度）。<br>• <strong>当前的诊断监视</strong>：<strong>“无”</strong>（即当前设计中，系统完全没有对传感器断开或信号丢失进行诊断监视，或诊断覆盖率不可靠）。<br>• <strong>当前的系统响应</strong>：<strong>“车窗将在最大夹持力状态下关闭”</strong>（因为没有诊断出信号异常，电机继续以全功率驱动车窗上升）。<br>• <strong>监视评级（M）</strong>：由于诊断监视为“无”，且系统响应直接恶化，监视有效性为完全无效，评级 <strong>M = 10</strong>。<br>• <strong>在系统响应后最严重的失效影响</strong>：<strong>“在玻璃和车窗框架之间可能会出现夹手或夹颈现象”</strong>。这直接导致人员生命危险/不可逆重伤。<br>• <strong>严重度评级（S）</strong>：评级 <strong>S = 10</strong>（违反法规安全要求，危及生命）。<br>• <strong>措施优先级判定（AP）</strong>：查阅 MSR-AP 表，当 <strong>S = 10（高-极高 7-10），F = 2（极低-低 2-4），M = 10（较低-无效 7-10）</strong> 时，对应的措施优先级确定为 <strong>M（中等优先级）</strong>。<br><em>注：原书虽然判定为 M，但因 S=10 且系统毫无诊断防护（M=10），团队在后续步骤六（优化）中必须优先审视并实施改进。</em></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（手机 120W 快充温度保护失效分析）</strong><br>在传音 Infinix/TECNO 高端旗舰机 120W 超级闪充主板开发中，引入 MSR 分析电池与快充 IC 的过热防护：<br>• <strong>失效起因</strong>：快充母座 NTC 热敏电阻焊点受跌落应力开裂虚焊（F理由：依据传音跌落标准规范布局焊盘，发生频度 F=2）。<br>• <strong>诊断监视与响应（初始方案）</strong>：若充电固件中<strong>“无”</strong>针对 NTC 开路（阻值突变到无穷大）的异常校验算法，系统响应为<strong>“维持 120W 满功率大电流灌充”</strong>。<br>• <strong>监视 M 与失效影响</strong>：监视评级 <strong>M = 10</strong>（无效监视与危险响应）。系统响应后最严重失效影响：<strong>“电池热失控起火燃烧”</strong>，严重度 <strong>S = 10</strong>。<br>• <strong>AP 判定与优化推导</strong>：查 MSR-AP 表得 [S=10, F=2, M=10] → <strong>AP = M</strong>。传音硬件安全委员会立即要求进入步骤六优化：增加充电 IC 双重内部温度阈值比较与硬件 Watchdog，将诊断监视提升至 M=2（可靠检测并在 100ms 内主动切断充电通路降至 5W 安全状态），将失效影响降至“仅充电缓慢（S=4）”，彻底规避安全隐患。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆“故障前的原始影响”与“系统响应后的最终影响”</strong>。在 MSR 步骤五中，严重度 S 必须基于<strong>系统响应（System Response）之后的最终失效状态</strong>来评判。防夹案例中由于没有监视机制，系统在最大夹持力下关闭，导致严重的夹伤（S=10）。<br>• <strong>误区二：误以为 S=10 的故障在 AP 表中一定是 H</strong>。手册原书明确展示：当 F=2（极低）、M=10（无效监视）时，S=10 的 AP 评级为 <strong>M</strong> 而非 H。工程师不能凭直觉认定 S=10 就必然是 H，必须严格查表；但同时要明白，AP=M 绝不代表可以放任不管，在满足客户或法规安全目标时依然需要优先评估优化。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.8 节（下）（PDF 第 145-146 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》图 4.5-4 防夹车窗升降器的 MSR 风险分析示例中，当前系统状态被评定为措施优先级 AP = M，其 S、F、M 的评级组合是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. S = 8, F = 3, M = 8</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. S = 10, F = 2, M = 10</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. S = 10, F = 5, M = 2</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. S = 9, F = 1, M = 10</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 146 页图 4.5-4 示例表格：霍尔传感器连接原理导致夹颈失效的当前评估值为：F = 2（极低预测），当前诊断监视为“无”，系统响应为在最大夹持力下关闭，因此监视有效性 M = 10，系统响应后最严重失效影响为夹手/夹颈，严重度 S = 10。综合查表判定 AP = M。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在防夹车窗示例中，导致监视评级为 M = 10 的直接原因是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 传感器发生故障的物理概率太高</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 车窗升降机械导轨发生卡滞变形</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 当前设计中完全没有针对霍尔传感器故障的诊断监视，且系统响应为最大夹持力关闭</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 驾驶员忽略了仪表盘上的防夹故障警示灯</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 146 页图 4.5-4，在风险分析中，“当前的诊断监视”填为“无”，“当前的系统响应”为“车窗将在最大夹持力状态下关闭”，这意味着系统完全没有检测到故障，并采取了极其危险的动作，诊断与响应完全无效，因此监视有效性评为最高危险值 M = 10。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机跌落安全与折叠屏驱动 MSR 分析中，某升降摄像头马达驱动电路开路概率极低（F=2），当前驱动芯片无电流开路检测（当前诊断监视为“无”，M=10），由于未检测到开路，软件死循环下发升压脉冲导致驱动芯片严重过热烧蚀（S=10）。根据本节手册 AP 表规则，该失效的初始措施优先级（AP）应判定为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. M（中等优先级）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. H（高优先级）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. L（低优先级）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 无法判定，必须重新测试</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据原书 PDF 第 145 页 AP 表及第 146 页图 4.5-4，严重度 S 处于 7-10（此处S=10），发生频度 F 处于 2-4（此处F=2），监视评级 M 处于 7-10（此处M=10）时，对应的措施优先级 AP 准确判定为 M。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》步骤五（风险分析）表单要求，评估 FMEA-MSR 风险时必须记录的要素包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 频率评级的理由（Rationale for F-Rating）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 当前的诊断监视与当前的系统响应</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 在系统响应后最严重的失效影响</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 风险顺序数（RPN）的乘积计算值</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 146 页图 4.5-4 表头字段，MSR 步骤五必须清晰记录：频率评级的理由、频度F、当前的诊断监视、当前的系统响应、监视M、系统响应后最严重的失效影响、严重度S及措施优先级AP。新版手册已全面废除 RPN（风险顺序数）计算，选项 D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据手册 PDF 第 146 页关于“4.6 FMEA-MSR 步骤六：优化”的预备描述，优化的主要目标包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 确认降低风险和提高安全性的必要措施</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 为措施实施分配职责和目标完成日期</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 实施措施并将其形成文件，包括确认有效性及采取措施后的风险评估</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 促进 FMEA 团队、管理层、顾客和供应商在潜在失效方面的协作</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据原书 PDF 第 146 页“4.6.1 目的”正文，优化的主要目标完全包含 A、B、C、D 四个要点：确认降低风险措施、分配职责与截止日期、实施并文件化/验证有效性/重新评估风险，以及促进跨部门和供应商的沟通协作。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

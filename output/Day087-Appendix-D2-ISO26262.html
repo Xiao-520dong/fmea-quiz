@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 087：附件 D2：FMEA-MSR 与功能安全（ISO 26262）的关联及频率/暴露时间对比</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 087：附件 D2：FMEA-MSR 与功能安全（ISO 26262）的关联及频率/暴露时间对比</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>特殊特性（SC）由DFMEA筛选识别后传递至PFMEA分类列与控制计划，用于强化对变差敏感特性的制造过程控制。</li><li><strong>上期核心2：</strong>DFMEA表格中以“筛选器代码（可选）”替代了原有的“分类”列，强调DFMEA无需直接标注特殊特性符号，而是作为特殊特性的输入源。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与体系关联（D2.1 - D2.2）</strong><br>• <strong>ISO 26262 体系输入：</strong>ISO 26262-3:2018 第 6.4 条中，危害分析和风险评估（HARA）负责确定与安全功能相关的“安全目标”（Safety Goal），并分配汽车安全完整性等级（ASIL）。功能安全概念（FSC）进一步确定警告、降级策略及测试用例。<br>• <strong>FMEA-MSR 的补充定位：</strong>ISO 26262 将 FMEA、STPA 和 FTA 作为确定故障潜在起因的定性方法。FMEA-MSR 的核心价值在于<strong>通过分析诊断与系统响应的有效性，补充 DFMEA 在维持功能安全方面的监控与系统响应能力</strong>。除安全领域外，FMEA-MSR 亦可用于法规符合性（如排放、车载诊断 OBD）分析。<br>• <strong>频率（F）vs 暴露时间（Exposure）：</strong>在 ISO 26262 中，暴露时间（Exposure, E）是指“某种特定运行工况/运行场景发生的持续时间或频次”；而在 FMEA-MSR 中，频率（F）是指“运行期间失效起因/故障发生的频次定性估算”。二者存在业务关联，但概念<strong>绝非等同</strong>。</div><div class="highlight-blue"><strong>2. 核心映射对比与边界定义（D2.3 - D2.6）</strong><br>• <strong>频率（F）与 FIT 率（D2.3）：</strong>FMEA-MSR 中的 F 是对运行期间失效起因可能性的定性等级估算；而 FIT（Failure In Time）比率是基于特定测试与暴露时间对 E/E 硬件元器件失效率的定量物理测算（1 FIT = $10^{-9}$ 次/小时）。二者相关但不可混为一谈。<br>• <strong>监视（M）与诊断覆盖率 DC（D2.4）：</strong>FMEA-MSR 中的 M 评估的是系统及驾驶员/人员在容错时间间隔（FTTI）内探测到<strong>特定起因/失效</strong>并执行系统安全响应的能力；ISO 26262 中的诊断覆盖率（DC）则是指硬件架构能够检测到<strong>所有可能硬件故障模式</strong>的统计百分比。FMEA-MSR 针对特定失效起因，而 DC 是对宏观失效率覆盖的统计指标。<br>• <strong>术语链条对齐（D2.5）：</strong><br>  - FMEA-MSR 失效起因（FC） ⟷ ISO 26262 故障（Fault，可能为随机硬件故障或系统性故障）；<br>  - FMEA-MSR 失效模式（FM） ⟷ ISO 26262 错误（Error）；<br>  - FMEA-MSR 失效影响（FE） ⟷ ISO 26262 失效（Failure，违背安全目标）。<br>• <strong>重要范围边界：</strong>FMEA-MSR 的分析聚焦于单点故障与残余故障；<strong>多点失效（Multi-point Failures）明确不在 FMEA-MSR 的分析范围之内</strong>。<br>• <strong>微控制器（MCU）适用性（D2.6）：</strong>对于 MCU 芯片级制造商，FMEDA（失效模式影响与诊断分析）是推荐的标准分析方法；FMEA-MSR 虽可用于定性分析，但对芯片级并不会产生额外附加值。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景（智能手机安全与高压快充）</strong><br>• <strong>传音 160W/240W 极速快充安全系统：</strong>在电池快充协议与双电荷泵架构中，虽然手机不严格适用车载 ISO 26262，但 FMEA-MSR 与功能安全思想完全相通：<br>  - <strong>失效起因（FC/Fault）：</strong>检流电阻阻值温漂裂损或 ADC 采样通道短路；<br>  - <strong>失效模式（FM/Error）：</strong>充电 IC 采集到虚假的电池端电压（读数偏低 0.4V）；<br>  - <strong>失效影响（FE/Failure）：</strong>电池过充引起热失控起火（严重度 S=10）；<br>  - <strong>监视与响应（M）：</strong>MCU 固件必须在 20ms（相当于手机的 FTTI）内比对主从电荷泵电压并检测到失配，立即切断高压输入回路，降级至 5V/1A 安全待机，防止单点故障酿成灾难。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：把 ISO 26262 的 E 等级直接抄入 FMEA-MSR 的 F 列。</strong>ISO 26262 的 E 是工况暴露度（如高速公路行驶的概率），而 FMEA-MSR 的 F 是故障起因发生的频次等级。路况暴露率高并不代表电控失效概率高，混用会导致风险优先级（AP）严重失真。<br>• <strong>误区二：认为 FMEA-MSR 可以完全取代 FMEDA。</strong>FMEA-MSR 是自底向上但偏工程逻辑的定性/半定量分析；MCU 或 ASIC 的单点故障度量（SPFM）、潜伏故障度量（LFM）必须由 FMEDA 进行精确的 FIT 分配与数学计算。<br>• <strong>误区三：在 FMEA-MSR 中试图分析多点潜伏故障。</strong>原书明确规范，多点失效不在 FMEA-MSR 范围之内。多点故障的潜伏与双重故障组合应通过 FTA 或 ISO 26262 专属的潜伏故障分析工具来闭环。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 D2.1 - D2.2（原书 P215-216）（PDF 第 215-216 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 D2.2，关于 FMEA-MSR 中的“频率（F）”与 ISO 26262 中的“暴露时间（Exposure）”的关系，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 两者定义完全相同，FMEA-MSR 直接沿用了 ISO 26262 的暴露时间评级标准</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. ISO 26262 中的暴露时间指某种运行工况的持续时间或频率，而 FMEA-MSR 中的频率指运行期间故障发生的频次，两者相关但并非等同</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. FMEA-MSR 中的频率等同于硬件失效率（FIT 比率），而暴露时间仅指测试验证耗时</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 暴露时间用于衡量系统探测故障的概率，频率用于衡量故障修复的平均时间（MTTR）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书第 216 页 D2.2 明确指出：“ISO 26262 中的暴露时间系指某种运行况的持续时间或频率。但 FMEA-MSR 中的频率系指运行期间故障发生的频次。因此这两个指标相关，但并非等同的。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》附件 D2.5 中，明确界定了 FMEA-MSR 术语与 ISO 26262 概念的对应关系，下列映射完全正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 失效起因 ⟷ 错误；失效模式 ⟷ 故障；失效影响 ⟷ 失效</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 失效起因 ⟷ 危险；失效模式 ⟷ 风险；失效影响 ⟷ 暴露</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 失效起因 ⟷ 故障（Fault）；失效模式 ⟷ 错误（Error）；失效影响 ⟷ 失效（Failure）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 失效起因 ⟷ 潜伏故障；失效模式 ⟷ 残余故障；失效影响 ⟷ 单点故障</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第 216 页 D2.5 指出：“FMEA-MSR 中的失效起因等同于 ISO 26262 中的故障。FMEA-MSR 中的失效模式等同于 ISO 26262 中的‘错误’。FMEA-MSR 中的失效影响等同于 ISO 26262 中的‘失效’。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音移动终端电池管理系统（BMS）开发团队在评估快充安全架构时，拟参考 FMEA-MSR 进行安全机制建模。针对微控制器（MCU）及系统失效范围的分析边界，下列工程理解符合原书 D2.5 和 D2.6 规范的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 多点失效（例如两个独立监控元件同时先后失效）明确不在 FMEA-MSR 的分析范围之内</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. FMEA-MSR 是微控制器芯片内部硬件定性分析首选的最佳方案，相比 FMEDA 具有更高附加值</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. FMEA-MSR 中的“监视（M）”评级等同于 ISO 26262 中针对所有潜在故障总和的硬件诊断覆盖率（DC）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 只有当容错时间段（FTTI）大于 10 秒时，才能在 FMEA-MSR 中将安全响应认定为有效</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书第 216 页图 D2-1 下方明确标注：“注：多点失效不在 FMEA-MSR 的范围之内”；D2.6 说明 FMEDA 是微控制器定性分析的推荐方法，FMEA-MSR 可能不会产生附加值；D2.4 指出 M 仅涉及特定原因，不能等同于宏观的 DC。因此 A 选项正确。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书附件 D2 章节，关于 FMEA-MSR 与 ISO 26262 关联的以下表述中，正确的有哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. ISO 26262 将 FMEA、STPA 和 FTA 作为确定故障行为潜在起因的方法</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. FMEA-MSR 不仅可用于功能安全考虑，还可以用于分析法规符合性主题（如车载诊断/排放法规）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 监视（M）考虑人员或系统探测特定起因并在容错时段（FTTI）内作出反应的能力</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. ISO 26262 中的诊断覆盖率（DC）与 FMEA-MSR 的监视（M）完全等同，二者数值可以直接相互转换</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据原书 D2.1、D2.4：A、B、C 均为原书原文明确叙述；而 D2.4 明确指出诊断覆盖率是指探测所有可能故障的百分比，而 M 仅涉及特定原因，两者并不等同，故 D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 D2.3 及相关段落，关于“FIT 比率”与“频率（F）”的异同，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 频率（F）是指运行期间所考虑到的失效起因可能发生频率的定性估算</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. FIT 比率系指测量 E/E 组件可靠性的定量估计（基于特定测试条件下的暴露时间）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. FIT 比率与 FMEA-MSR 的频率指标存在关联性，但并非等同概念</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 在 FMEA-MSR 分析中，若获得元器件的 FIT 比率，必须通过查表直接取代频度 F 的 1-10 评分准则</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书第 216 页 D2.3 指出：“频率系指运行期间所考虑到的失效起因可能发生频率的定性估算。根据组件在特定测试条件下的暴露时间，FIT 比率系指测量 E/E 组件可靠性的定量估计。因此这两个指标相关，但并非等同的。”手册并未规定 FIT 直接取代 F 评分表，两者不可生硬替换，D 选项错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

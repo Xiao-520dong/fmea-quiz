@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 053：PFMEA 步骤五：PFMEA 措施优先级（AP）查表与实战案例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 053：PFMEA 步骤五：PFMEA 措施优先级（AP）查表与实战案例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（探测度 D 评级逻辑）：</strong>过程探测度评估的是当前探测控制（DC）在零件离开制造工位或发运给下一工序前，探测失效起因（FC）或失效模式（FM）的能力，主要由探测方法成熟度（检验测试体系是否经过统计验证）、探测机会（检验时机与位置，越早越靠前越好）以及防止缺陷流出的能力综合决定。</li><li><strong>上期核心2（表P3探测等级特征）：</strong>D=1 对应工位内防错且不可越过；D=2-4 对应工位内/后自动化探测结合自动停线或统计过程控制；D=5-6 对应基于规范的下游检验；D=7-8 对应间歇或离线的人工感官检验；D=9-10 对应无探测控制或纯随机抽样，几乎无法阻止缺陷流向客户。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义：告别 RPN 阈值，全面拥抱措施优先级（AP）</strong><br>传统 FMEA 采用风险顺序数 RPN（Severity × Occurrence × Detection），取值范围为 1-1000。新版手册明确指出：<strong>不推荐使用风险顺序数（RPN）阈值来确定所需要的措施</strong>。因为 RPN 对 S、O、D 赋予同等权重，不同组合会产生相同的数值（例如 S=8, O=2, D=2 得 RPN=32；而 S=2, O=4, D=4 同样得 RPN=32，但前者关乎高严重度风险，后者危害极低），导致团队资源错配。<br><strong>措施优先级（Action Priority, AP）</strong>以 S、O、D 的综合逻辑为基础，明确界定其本质：<strong>“这不是对高、中、低风险的优先排序，而是对降低风险的措施的优先级排序”</strong>。AP 优先强调严重度（S），其次是频度（O），最后是探测度（D），系统性引导资源优先投入到高危害、高发生率的环节。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：AP 等级定义与查表逻辑（S-O-D）</strong><br>AP 等级分为高（H）、中（M）、低（L）三级：<br>• <strong>优先级高（H，High）：</strong>评审和措施的最高优先级。团队<strong>必须</strong>确定适当的措施来改进预防和/或探测控制，或证明并记录为何当前的控制足够有效。<br>• <strong>优先级中（M，Medium）：</strong>评审和措施的中等优先级。团队<strong>应当</strong>确定适当的措施来改进预防和/或探测控制，或由公司自行决定，证明并记录当前的控制足够有效。<br>• <strong>优先级低（L，Low）：</strong>评审和措施的低优先级。团队<strong>可以</strong>确定措施来改进预防或探测控制。<br>• <strong>高严重度管理层评审底线：</strong>对于潜在的严重度 S 为 9-10 且措施优先级为 H 或 M 的失效影响，<strong>建议至少应由管理层评审</strong>，包括所采取的任何建议措施。<br>• <strong>查表关键规则：</strong>当 S=9-10 时，只要 O≥4，无论探测能力 D 多高，AP 绝大多数为 H（仅当 O=4-5 且 D=1 时降为 M）；当 S=7-8 时，若 O=5（中等）且 D=2（全检/自动探测），查表落在 S(7-8)-O(4-5)-D(2-4)，AP 评为 <strong>M</strong>；若组织无需采取进一步措施，应在备注栏清晰注明“无需采取进一步措施”。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：主板贴片与整机组装 AP 查表实战</strong><br><strong>场景 A（主板 SMT 印刷锡膏厚度）：</strong><br>• 失效影响（FE）：手机主板射频功放芯片虚焊，导致驻网掉话甚至无信号（S=8）。<br>• 失效模式（FM）：射频芯片焊盘锡膏印刷厚度偏薄。<br>• 失效起因（FC）：刮刀磨损变形导致局部下压力不足。<br>• 当前预防控制（PC）：根据设备维护规程定期点检刮刀磨损度（O=5）。<br>• 当前探测控制（DC）：3D-SPI 在线全检锡膏高度与体积，异常超限自动停机（D=2）。<br>• <strong>查表过程：</strong>S=8 处于“7-8”行，O=5 处于“4-5”子行，D=2 处于“2-4（高）”探测能力区间，交叉匹配得到 <strong>AP = M</strong>。团队应当评审优化，但在 SPI 100% 自动闭环控制下，可在备注栏中论证并记录为何当前控制充分有效，报项目质量负责人批准。<br><strong>场景 B（电池仓点胶密封）：</strong><br>• FE：整机 IP68 气密失效进水损坏（S=7）；FC：点胶阀喷嘴堵塞；PC：人工换班清洁（O=6）；DC：离线抽测保压测试（D=5）。<br>• 查表：S=7，O=6-7，D=5-6，AP = <strong>H</strong>。团队必须采取纠正措施（如导入带压力监控的自动点胶阀及 100% 在线保压检漏机）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：误将 AP 等同于产品风险高低。</strong>例如认为“AP 为 L 就是产品没有风险”。错！AP 是“采取改进措施的紧迫性与优先级”。一个 S=10 的致命安全项，如果已经实施了成熟的一级防错（O=1, D=1），查表得到的 AP 是 L，表示当前控制已极度完善，无需再投入措施过度设计，而非该失效后果不严重。<br>• <strong>误区二：仍然保留“RPN 超过 100 必须整改”的内部红线。</strong>手册已明确废弃 RPN 阈值。若审核员或内部继续设立单一 RPN 阈值作为整改门槛，属于对新标准的严重偏离。<br>• <strong>误区三：S=9-10 且 AP 为 M/H 时未向管理层汇报。</strong>新版明确指出，针对 S=9-10 的高危影响，只要 AP 为 H 或 M，必须呈报管理层进行专项评审与备案，严禁工程团队私自关闭。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.5.9 - 3.5.11 节（PDF 第 112-116 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">关于《AIAG & VDA FMEA 手册》中对“措施优先级（AP）”的定义和属性，下列说法最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. AP 是对产品或工序高、中、低技术风险等级的优先排序</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. AP 不是对高、中、低风险的优先排序，而是对降低风险的措施的优先级排序</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 当 RPN 小于 100 时，手册允许自动将 AP 等级判定为低（L）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. AP 表针对 DFMEA 与 PFMEA 采用了完全不同的严重度-频度-探测度评价逻辑</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 112-113 页明确指出：“这不是对高、中、低风险的优先排序，而是对降低风险的措施的优先级排序。”同时手册明确不推荐使用 RPN 阈值，且 DFMEA 和 PFMEA 的措施优先级评级表是完全相同的。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 风险分析中，对于失效影响严重度 S 为 9-10 且措施优先级评定为高（H）或中（M）的项目，手册提出的明确要求是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 必须在 24 小时内修改图纸并更换设备供应商</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 只要团队一致同意，可直接在备注中填写“无需进一步措施”并关闭</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 建议至少应由管理层评审，包括所采取的任何建议措施</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 只能通过降低严重度 S 的方式将其降为低优先级（L）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 112 页明确规定：“对于潜在的严重度为9-10 且措施优先级为高和中的失效影响，建议至少应由管理层评审，包括所采取的任何建议措施。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音智能制造工厂在整机烧录工位进行 PFMEA 分析：失效影响为“客户开机卡死，舒适模式关闭时间过长”（S=8），失效起因为“设备在达到最终位置前停止”，预防控制评分为 O=5，当前探测控制为“根据电机/整机性能曲线进行完全检测（100%在线测试）”，探测度评分为 D=2。请根据 AP 表查表判定该项的措施优先级（AP）为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 优先级高（H）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 优先级中（M）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 优先级低（L）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 无需评级，属于受控状态</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 113 页 AP 表及第 115 页图 3.5-3 示例：当 S=8（处于 7-8 行），O=5（处于中 4-5 子行），D=2（处于高 2-4 列）时，交叉对应的措施优先级为 M（中优先级）。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">新版手册不推荐继续使用传统“风险顺序数（RPN）阈值”来确定改进措施，其主要原因包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. RPN 是 S × O × D 的乘积，对 S、O 和 D 赋予了相等的权重</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. RPN 可能会对 S、O 和 D 的不同组合产生完全相同的数值，导致无法确定优先级</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 仅凭 RPN 并不能确定是否需要采取更多措施，容易掩盖高严重度的潜在致命缺陷</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. RPN 的计算范围为 1-1000，计算过程过于繁琐，工程师容易出现算术错误</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 112 页指出：仅 RPN 并不能确定是否需要采取更多措施，因为 RPN 对 S、O 和 D 的权重相等。RPN 可能会对 S、O 和 D 的不同组合产生类似的风险数，使团队无法确定如何进行优先级排序。因此不推荐使用 RPN 阈值。D 选项并非标准废弃 RPN 阈值的原因。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，下列关于优先级评级处置与步骤六（优化）衔接的描述中，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 对于优先级高（H）的项目，团队必须确定措施来改进控制，或证明并记录为何当前控制足够有效</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 对于优先级低（L）的项目，团队可以确定措施来改进预防或探测控制</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 措施不适用于已经在预防或探测控制文件中记录且已在步骤五分析过的既有活动</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 若团队评审后决定不需要采取进一步措施，应在“备注”栏中填写“无需采取进一步措施”以表明风险分析完成</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 PDF 第 112 页明确了 H（必须/应当改进或证明有效）和 L（可以确定措施）的定义；第 116 页明确指出：“措施不适用于已经计划的活动，因为它们已经记录在预防或探测控制文件中，且已经在初步风险分析中得到分析”、“若团队决定不需要采取进一步措施，则应在‘备注’栏中填写‘无需采取进一步措施’，以表明风险分析已经完成”。四个选项全部正确。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

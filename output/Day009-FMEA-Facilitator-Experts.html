@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 009：协调员（推进者）能力要求与扩展团队专家职责</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 009：协调员（推进者）能力要求与扩展团队专家职责</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：5T 之团队架构（Team）：</strong>FMEA 是多功能团队协作成果，明确划分为全流程参与的核心团队（Core Team）与视议题按需介入的扩展团队（Extended Team），坚决杜绝个人单兵作战。</li><li><strong>上期核心2：管理者与技术主管职责：</strong>管理者（如项目经理）拥有风险接受最终决定权并负责资源与预算支持；设计主管/工艺工程师作为技术主管，对 FMEA 的技术内容负最终责任并主导商业案例与要素功能定义。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定位：协调员（推进者 Facilitator）与扩展团队（Extended Team）</strong><br>根据《AIAG & VDA FMEA 手册》1.5.3.3 节定义：<br>• <strong>FMEA 推进者（Facilitator）：</strong>是 FMEA 七步法执行的管理组织者、方法论导师与跨职能沟通调解人。手册特别注明（Note）：<strong>任何具备相关能力和培训经验的团队成员都可以担任推进者</strong>，其职责核心在于流程管控、方法把关与冲突化解，而非替代工程师编写技术内容。<br>• <strong>扩展团队成员／专家（Extended Team Members / Experts）：</strong>不参与全部例行研讨，而是在特定技术环节或特殊分析议题时按需被邀请介入（由推进者或会议组织人协调）。包含设计工程师、特定技术专家、维护工程师、现场工作人员、采购、供应商等。主要负责输入专项技术资料、支持功能/失效分析及商业案例编写。</div><div class="highlight-blue"><strong>2. 方法步骤与能力职责拆解</strong><br><strong>(1) FMEA 推进者（Facilitator）的具体职责与能力模型（1.5.3.3.3）：</strong><br>• <strong>流程与时间管理：</strong>协调与组织 FMEA 工作流程，参与编制粗略时间表，发出分析阶段第一次团队会议邀请，全面管理 FMEA 7 步法的执行，负责会议的会前准备与会后总结。<br>• <strong>团队建设与标准制定：</strong>参与组建 FMEA 团队，参与拟定决策准则/评价标准，在技术主管支持下协助开发企业或产线的专属评分表示例（可选）。<br>• <strong>专业方法与软件能力：</strong>具备深厚的 FMEA 方法论能力，负责对参会人员进行 FMEA 方法赋能；具备 FMEA 专业软件文件化能力（必要时熟练操作结构树、功能网、失效网）。<br>• <strong>软技能（社交与引导）：</strong>具备高度的社交能力、团队协作精神，以及调解争议、说服引导、组织协调与清晰表达的主持人（Facilitator）能力，有效缓解技术分歧与部门冲突。<br><strong>(2) 扩展团队成员／专家的工作边界与职责（1.5.3.3.5 & 1.5.3.3）：</strong><br>• <strong>按需介入机制：</strong>仅在涉及其专业领域（如声学腔体、跌落失效仿真、贴片机工艺公差、电芯电化学安全等）时受邀出席会议。<br>• <strong>专项资料输入：</strong>提供关于特殊项目的补充数据与测试报告，输入关注产品/过程的关键技术信息。<br>• <strong>商业与改进支持：</strong>参与编写技术改进的商业案例（Business Case），协助评估纠正措施的技术与财务可行性。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>• <strong>场景 A（影像模组潜望长焦防抖 OIS 攻坚 - 推进者能力发挥）：</strong>在某新平台机型的超薄潜望式长焦摄像头 DFMEA 研讨中，结构工程师坚持缩小弹片间隙以保证轻薄，而光学与驱动算法工程师则认为跌落时弹片极易塑性变形导致对焦卡死。此时，FMEA 推进者迅速发挥<strong>冲突缓解与决策准则拟定能力</strong>，停止无休止的口头争论，引导团队回归第 3 步“功能网与运动公差分析”，并引入仿真专家进行应力应变推演，使技术争议在七步法结构化逻辑中达成共识。<br>• <strong>场景 B（重庆/制造基地手机主板 SMT 锡膏印刷虚焊 - 扩展团队专家介入）：</strong>在进行 SMT 印刷过程 PFMEA 时，核心工艺工程师对于 01005 超微阻容件在海外高湿环境下的空洞率成因存在认知盲区。推进者与工艺主管临时调入<strong>扩展团队成员：锡膏供应商化学专家与钢网激光微雕维护工程师</strong>。扩展专家提供了锡膏高温挥发曲线与纳米涂层钢网孔壁粗糙度关键数据，完善了失效网，并联合编写了“引入 3D-SPI 闭环控制系统”的商业回报案例（Business Case）。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：把推进者（Facilitator）当成“专职记录员”或“替罪羊”。</strong>许多项目团队把推进者当成在会议上打字录入表格的文员，甚至要求推进者独立完成整份 FMEA。<strong>纠偏：</strong>手册明确规定，技术内容责任由设计/工艺主管承担；推进者的核心价值是组织流程引导、缓解冲突、保障方法合规（Method Competency）。<br>• <strong>误区 2：扩展团队“全员全勤陪坐”或“完全不叫专家”。</strong>前者导致多位资深专家耗费数十小时听无关内容，引发项目抵触；后者导致关键技术黑匣子无法攻克。<strong>纠偏：</strong>建立扩展团队的“按需召唤机制”。核心团队在步骤 1-3 梳理出特定接口盲区时，由推进者定向发出会议邀请，专家仅针对特定要素/失效链输入数据并参与论证后即可离会。<br>• <strong>误区 3：忽视推进者的软技能要求。</strong>认为只要懂表格填写的工程师就能当推进者。<strong>纠偏：</strong>手册 1.5.3.3.3 节特别强调推进者必须具备“缓解冲突、社交能力、说服调解与表达能力”。缺乏引导技巧的推进者容易导致研讨沦为部门指责或冷场流于形式。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.5.3.3 节（PDF 第 25-27 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》1.5.3.3.3 节关于“FMEA 推进者（Facilitator）”的人选要求，以下说法完全正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 必须由企业专职且具备黑带认证的质量经理担任</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 任何具有相关能力和培训经验的团队成员都可以担任推进者</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 必须由负责该项目最终技术决策的设计主管或工艺主管直接兼任</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 只能由外部经过 AIAG & VDA 认证的第三方注册审核员担任</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册第 26 页 1.5.3.3.3 节注（Note）中明确规定：“任何具有相关能力和培训经验的团队成员都可以担任推进者（Any team member with relevant competency and training experience can act as a facilitator）”。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 FMEA 团队中，关于“扩展团队成员/专家（Extended Team Members / Experts）”的参与机制，下列描述符合手册规定的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 扩展团队成员必须从第 1 步到第 7 步全程参加所有 FMEA 研讨会议</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 扩展团队成员不属于研发或制造组织内部人员，特指外部顾客审核员</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 扩展团队成员根据需要参与（由 FMEA 推进者或会议组织人协调），提供特殊项目的补充资料等</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 扩展团队成员对 FMEA 分析出的所有失效风险及其控制措施负最终技术责任</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册第 25 页及第 27 页明确指出：核心团队成员准备系统分析并参加会议，扩展团队成员根据需要参与（由 FMEA 推进者或会议组织人协调），其职责包括提供有关特殊项目的补充资料、提供关注产品和过程的必要信息及参与编写商业案例；技术责任归设计主管/工艺工程师所有。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机新机型电池跌落起火风险分析中，结构设计与电芯采购工程师对“异形电池点胶固化间隙”发生争执、僵持不下。此时，作为合格的 FMEA 推进者，其应当履行的手册核心职责是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 运用调解、说服与缓解冲突的社交与主持人能力，依据决策准则引导团队回归七步法逻辑达成共识</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 立即行使技术裁决权，直接更改 FMEA 表格中的失效起因与频度评分</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 强行终止电池安全分析，将该风险项完全转移给电芯供应商自行处理</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 代替项目经理做出是否接受该高严重度起火风险的最终决定并签署预算</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据手册 1.5.3.3.3 节，推进者职责包括“缓解冲突”、“具备调解、说服、组织和表达能力的主持人”、“管理 FMEA 7 步法的执行”及“参与拟定决策准则/标准”。技术责任属于技术主管，风险接受决定权属于管理者，推进者不具有技术裁决或风险接受最终决定权。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，下列各项中属于 FMEA 推进者（Facilitator）明确职责的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. FMEA 工作流程的协调和组织，参与组建团队并编制粗略时间表</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 方法能力（FMEA）以及使参与者熟悉 FMEA 方法，管理 FMEA 7 步法的执行</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 对识别风险和执行措施是否可接受拥有最终决定权，并负责项目预算</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 准备或总结 FMEA 会议，掌握 FMEA 软件文件化能力（必要时）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册第 26 页 1.5.3.3.3 节详细列举了 FMEA 推进者职责：流程协调组织、参与组建团队、编制时间表、方法赋能培训、管理 7 步法执行、会议准备与总结、软件文件化能力等。选项 C 是管理者（如项目经理）的职责（见手册 1.5.3.3.1 节），故不选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在开展整机或关键模块（如摄像头模组、主板贴片）FMEA 时，根据手册规定，属于“扩展团队成员/专家”角色的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 维修人员（Maintenance personnel）与现场工作人员（Field staff）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 采购人员（Purchasing）与供应商（Suppliers）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 负责过程开发的工艺主管（Technical lead）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 维护工程师（Maintenance engineers）与技术专家（Technical experts）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>手册第 25 页明确列出扩展团队成员包括：设计工程师、技术专家、维护工程师、项目经理、维修人员、现场工作人员、采购、供应商、其他（视需要）。而选项 C“负责过程开发的工艺主管/设计主管”属于核心团队角色及技术主管（1.5.3.3.2 节），对内容负技术责任，不属于按需调用的扩展专家。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,D"}, "5": {"correct": "A,B,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

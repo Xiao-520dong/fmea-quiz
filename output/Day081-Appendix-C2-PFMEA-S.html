@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 081：附件 C2（一）：PFMEA 严重度（表P1）三大影响维度深度拆解</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 081：附件 C2（一）：PFMEA 严重度（表P1）三大影响维度深度拆解</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（DFMEA 探测度表D3）：</strong>D3 将探测评估维度明确划分为“探测成熟度（基于测试方法的有效性/公认度）”与“探测机会（基于产品验证阶段/测试时机）”，强调在设计确认（DV）之前尽早完成设计验证（A/B样件阶段）探测。</li><li><strong>上期核心2（AP 措施优先级逻辑）：</strong>措施优先级的决策矩阵由 S、O、D 综合驱动，且 S 享有绝对否决权（S=9-10 时极度敏感），严禁以传统 RPN 绝对值高低掩盖高严重度的安全与法规风险。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与评级原则</strong><br>在《AIAG & VDA FMEA 手册》附件 C2.1（表 C2-1 / 表 P1）中，PFMEA 严重度（S）被定义为对过程潜在失效影响（Failure Effects, FE）的评估级别。与 DFMEA 聚焦于功能丧失不同，PFMEA 的严重度评估必须同时横向审视<strong>三大影响维度</strong>：<br>① <strong>对您的工厂的影响（Your Plant）：</strong>本制造工厂内的停线、报废、返工（线上/线下）以及操作工人的人身健康与安全风险。<br>② <strong>对发运至工厂的影响（Ship-to Plant）：</strong>下游客户工厂（如手机组装代工厂、整机装配厂、下游模块厂）的停线时间、批次分拣、现场返修更换及发货中断情况。<br>③ <strong>对最终用户的影响（End User）：</strong>售出后对消费者或终端操作者造成的安全危害、法规违背、主要功能丧失/降低、次要功能丧失/降低及感官不适（舒适性/触感/外观等）。<br><strong>核心评定规则（取最高原则）：</strong>当某个过程失效在三个维度中引发不同程度的影响时，最终的严重度等级 <strong>S 必须取三者评估中的最高分</strong>。</div><div class="highlight-blue"><strong>2. PFMEA 严重度（S）1-10 级评分标准深度拆解</strong><br>根据原书表 C2-1（P199-200），分级判定基准如下：<br><ul><li><strong>S=9~10（非常高 - 安全与法规风险）：</strong><br>- <em>您的工厂：</em>失效可能导致从事生产或组装作业的工人面临严重的健康和/或安全风险；或导致厂内不符合法规。<br>- <em>发运至工厂：</em>同样导致工位工人面临严重健康/安全风险；或导致客户工厂不符合法规。<br>- <em>最终用户：</em>影响到操作安全性，危及驾驶员/用户/公众健康安全；或产品不符合法规。</li><li><strong>S=8（很高 - 报废/严重停线/主要功能丧失）：</strong><br>- <em>您的工厂：</em>生产运行 100% 受到影响，产品不得不报废；导致厂内不符合法规；或导致工人面临慢性健康/安全风险。<br>- <em>发运至工厂：</em>生产线停工超过一个完整的班次；可能停止发货；需要现场返修或更换；面临慢性健康/安全风险。<br>- <em>最终用户：</em>在预期使用寿命内，失去正常操作所必需的主要功能。</li><li><strong>S=7（高 - 部分报废/中度停线/主要功能降低）：</strong><br>- <em>您的工厂：</em>产品需分拣且部分（<100%）报废；主要过程偏差；生产降速或增加劳动力。<br>- <em>发运至工厂：</em>停线从 1 小时起到一个完整班次；可能停止发货；需要现场返修。<br>- <em>最终用户：</em>在预期寿命内，降低正常操作所必需的主要功能。</li><li><strong>S=5~6（中等 - 返工/次要功能）：</strong><br>- <em>S=6：</em>您的工厂 100% 产品需线下返工（Off-station）；发运工厂停线不超过 1 小时；最终用户失去次要功能。<br>- <em>S=5：</em>您的工厂部分（<100%）产品需线下返工；发运工厂需要分拣、无停线；最终用户降低次要功能。</li><li><strong>S=3~4（低 - 工位内返工/严重到一般感官不舒服）：</strong><br>- <em>S=4：</em>您的工厂 100% 产品需工位上返工（In-station）；发运工厂触发重大应对计划（无额外瑕疵/无需分拣）；最终用户感官（外观、声音、振动、触感）感觉非常不舒服。<br>- <em>S=3：</em>您的工厂部分产品工位上返工；发运工厂触发次要应对计划；最终用户感官感觉一般性不舒服。</li><li><strong>S=2（非常低 - 产线不便/轻微感官不舒服）：</strong><br>- 导致过程、操作或人员不方便；发运工厂不触发应对计划、需向供应商反馈；最终用户感官略微感觉不舒服。</li><li><strong>S=1（无影响）：</strong>三个维度均没有可觉察到的影响。</li></ul></div><div class="highlight-green"><strong>3. 传音智能制造实战场景落地</strong><br>以传音手机重庆/深圳制造基地及海外 KD 组装厂为例：<br>① <strong>电池点胶与压合工位（安全维度 S=9/10）：</strong>若压合机导柱卡死导致锂电芯被锐角挤压破损，在产线发生起火冒烟甚至电芯爆燃，直接导致组装工人面临严重人身安全伤害，该影响对应“您的工厂”S=10，无论后续是否被拦截，该失效模式影响的 S 定为 10。<br>② <strong>主板 SMT 焊接工位（发货与主要功能 S=8）：</strong>主板 PMIC 虚焊导致整机无法开机（失去主要功能），流到终端用户则 S=8；如果在主板 SMT 厂发往重庆整机组装厂后大面积暴露，导致整机组装线停工停产超过 1 个整班次（发运工厂 S=8），综合评定严重度为 S=8。<br>③ <strong>中框贴合与后盖装配工位（工位返工 vs 线下返工）：</strong>后壳卡扣未卡紧，若产线工人可在<strong>工位上直接徒手重新按压卡紧（部分产品工位返工）</strong>，对本工厂影响评为 S=3；但若需要退回线下拆卸站，拆解后重新贴胶组装（线下返工），若波及 100% 批次，则对本工厂影响升至 S=6。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>× <strong>误区一：只看最终用户，忽略工厂制造影响。</strong>部分工程师认为“反正最终在厂内全检拦截报废了，没流到非洲消费者手里，严重度打低一点给 S=3”。<strong>纠偏：</strong>严重度评价必须看三端。如果产线直接 100% 报废，根据“对您的工厂的影响”，S 直接定为 8，不可擅自降级。<br>× <strong>误区二：混淆“工位内返工（In-station）”与“线下返工（Off-station）”。</strong>把拆机离线返修当作普通工位操作。<strong>纠偏：</strong>原书有明确界限：工位内返工为 S=3~4，线下返工属于工艺流程中断，需要额外工装与人员，严重度跳升至 S=5~6。<br>× <strong>误区三：将内部控制措施混入严重度评估。</strong>认为“我们有 AOI 100% 拦截，所以严重度降低”。<strong>纠偏：</strong>严重度是对失效后果本身的固有定级，AOI 拦截能力仅影响探测度（D），绝不能折抵或降低严重度（S）。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C2.1（原书 P199-200）（PDF 第 199-200 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 C2.1（表 C2-1），在对 PFMEA 潜在失效影响进行严重度（S）评级时，其评估涵盖的三个维度是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 对设计部门的影响、对制造工艺的影响、对售后维修的影响</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 对您的工厂的影响、对发运至工厂的影响、对最终用户的影响</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 对供应商的影响、对直接客户的影响、对次级客户的影响</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 对设备寿命的影响、对产品合格率的影响、对企业利润的影响</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 P199 明确标明 PFMEA 严重度（S）的评估包含三大影响栏目：'对您的工厂的影响'、'对发运至工厂的影响（在已知情况下）'以及'对最终用户的影响（在已知情况下）'。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 严重度标准中，如果一个失效模式对“最终用户”没有造成主要功能丧失，但导致“您的工厂”发生生产运行 100% 受到影响且产品不得不报废，或者导致发运工厂停线超过一个完整班次，该失效影响的严重度（S）应评为：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. S = 6</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. S = 7</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. S = 8</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. S = 9</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据原书表 C2-1（P199）：S=8 对应'对您的工厂的影响'为'生产运行100%会受到影响，产品不得不报废'，或导致'生产线停工超过一个完整的班次'，以及最终用户'在预期使用寿命内，失去正常驾驶/操作所必需的车辆/产品主要功能'。取最高原则应评为 8 分。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机屏幕贴合工位，若出现贴片偏位缺陷，该批次（100%产品）必须被移出自动化主流水线，送至专门的离线维修间进行加热剥离并重新清洗贴合（线下返工），此失效对“您的工厂”的影响对应的严重度（S）等级为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. S = 4（100%工位上返工）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. S = 5（少于100%线下返工）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. S = 6（100%的产品可能需要线下返工后才能被接受）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. S = 7（部分产品报废）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据原书表 C2-1（P200）：S=6 明确对应'对您的工厂的影响'中'100% 的产品可能需要线下返工后才能被接受'；而工位上返工对应 S=4，少于 100% 线下返工对应 S=5。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 P199-200 表 C2-1，下列关于严重度评级 S=9 与 S=10 的判定描述，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 失效可能会导致从事生产或组装作业的工人面临严重的健康和/或安全风险</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 失效可能会导致厂内不符合法规，或发运至工厂不符合法规</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 最终用户层面影响到操作安全性，危及驾驶员、乘客、交通参与者或行人的健康安全</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 只要本工厂有完善的安全隔离罩防止事故扩散，严重度就可以直接降至 S=4</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 P199 表明，S=9-10 均涉及严重的健康/安全风险以及不符合法规（无论是本厂、发运厂还是最终用户）。选项 D 错误，防护罩属于控制/探测措施，不可降低严重度固有分值。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于 PFMEA 严重度（S）评级规则与评估实践，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 当潜在失效影响在“您的工厂”、“发运至工厂”和“最终用户”三个维度评级不一致时，应采取“取最高者（Worst-case）”原则定级</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 如果某失效模式对最终用户仅造成外观划痕微小瑕疵（S=2），但在制造厂内导致 100% 报废，则该失效影响的综合 S 仍应定为 8</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 若缺陷能够在工位上即时完成返工（In-station），其严重度评级（S=3或4）通常低于需要线下返工（Off-station，S=5或6）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 若工厂内部配备了高精度的 AI 视觉检测设备，能够 100% 拦截缺陷不流出，则本失效模式的严重度（S）可以打为 1</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A 符合 FMEA 三维度取高评级原则；B 符合 S=8 内部 100% 报废的取高规则；C 符合表 C2-1 中工位返工（S=3/4）与线下返工（S=5/6）的分级标准；D 严重混淆了严重度（S）与探测度（D），AI 视觉检测是探测控制手段，绝不能用来折扣严重度，故 D 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

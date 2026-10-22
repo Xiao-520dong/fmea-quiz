@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 040：PFMEA 步骤二（结构分析）：目的与过程流程图输入</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 040：PFMEA 步骤二（结构分析）：目的与过程流程图输入</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（表头与项目定义）：</strong>步骤一规划与准备中，表头需清晰明确公司名称、制造地址、客户名称、项目编号、跨职能团队成员及过程职责所有者，确保分析边界和权责闭环。</li><li><strong>上期核心2（基准与边界缩小）：</strong>通过基准FMEA复用和清晰界定分析边界，有效聚焦新工艺、新设备或变更点，为后续步骤奠定扎实基础。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据《AIAG & VDA FMEA 手册》3.2.1 节，过程结构分析（步骤二）的核心目的在于识别制造系统，并将其系统化分解为三个层级：<strong>过程项（系统/子系统/装配线）</strong>、<strong>过程步骤（工站/工位）</strong>以及<strong>过程工作要素（4M 要素：人、机、料、环等）</strong>。<br>其主要目标包括：<br>① 分析范围的可视化；<br>② 通过结构树或过程流程图明确过程层级；<br>③ 确定具体的过程步骤和子步骤；<br>④ 促进顾客与供应商工程团队之间的接口协作与职责划分；<br>⑤ 为后续的功能分析（步骤三）奠定坚实结构基础。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解</strong><br><strong>(1) 过程流程图的作用与要素：</strong>过程流程图（Process Flow Diagram）是结构分析的关键输入工具。它完整映射从组件来料检验、仓库搬运、各操作工位（如装配、润滑、压装）、检验工步直至最终成品存储/发运的全过程。流程图通过标准符号（如操作○、检验◇、搬运/运输⇨、存储△等）使物理流和操作流清晰可见。<br><strong>(2) “走流程（Walk the Process）”原则：</strong>手册明确指出，过程FMEA必须反映工程师在现场“走流程”时实际存在的过程路线，而非脱离现场的理想化设想。<br><strong>(3) 严格的时序门禁规则：</strong>手册明文规定，<strong>“在结构分析（步骤二）结束前，不得开始进行功能分析（步骤三）”</strong>。必须先厘清系统与要素的结构依赖关系，才能准确定义各级功能与失效传播路径。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机制造中心（如重庆制造基地或海外组装工厂）：<br>• <strong>顶层过程项：</strong>以“智能手机整机总装线（Final Assembly Line）”作为PFMEA的最高级别过程项。<br>• <strong>过程流程图输入：</strong>梳理从SMT主板出库、扫码上线、[OP10 摄像头模组装配]、[OP20 主板装入中框]、[OP30 螺钉拧紧工位]、运输缓冲位、到[OP40 屏幕贴合压合]及整机功能FT测试与包装发运。<br>• <strong>现场走流程校验：</strong>ME（制造工程）与PQE（过程质量）必须到产线实地核对：现场中框静电去除工步、治具转运过程是否存在，确保流程图与现场实际作业（SOP）完全吻合，避免漏掉微小搬运或中间检验步骤。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：跳过结构分析直接做功能/失效分析。</strong>部分工程师在流程图尚未细化、4M要素未明确前，就凭经验直接写失效模式。手册严格规定：结构分析未结束，严禁进入功能分析。<br>• <strong>误区二：流程图只画“增值加工工位”，忽略辅助与物流环节。</strong>原书示例明确包含“组件来料检验”、“物料运输”、“存储待发运”等环节。忽略周转、压装前的润滑或临时暂存，往往导致遗漏因转运磕碰、静电击穿或物料混淆引发的过程缺陷。<br>• <strong>误区三：照搬设计图纸而非“走流程”。</strong>PFMEA是制造现场特性的镜像，脱离现场实际工装工步的流程图，会导致分析结果形同虚设。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第三章 3.2.1 - 3.2.2 节（PDF 第 81-83 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于过程FMEA步骤二（结构分析）与步骤三（功能分析）的时序关系，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 为缩短项目周期，功能分析可与结构分析同步开展并相互补充</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 在结构分析（步骤二）结束前，不得开始进行功能分析（步骤三）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 只要确定了顶层过程项，即可提前启动工作要素的功能分析</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 功能分析完成后，可返回倒推调整结构分析的树状图</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>《AIAG & VDA FMEA 手册》3.2.1 节明确规定：“在结构分析（步骤二）结束前不得开始进行功能分析（步骤三）。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">过程结构分析的主要目标不包括下列哪一项？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 分析范围的可视化</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 确定过程步骤和子步骤，并作为功能分析的基础</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 评估各失效模式的严重度（S）、频度（O）与探测度（D）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 促进顾客和供应商工程团队之间的协作（明确接口职责）</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>S、O、D 的评估属于步骤四（失效分析）和步骤五（风险分析）的任务，不属于步骤二（结构分析）的目标。结构分析的目标是可视化范围、确定步骤、促进接口协作以及为功能分析提供基础。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机装配产线的PFMEA结构分析中，QE工程师在绘制过程流程图作为输入时，下列哪种做法最符合手册中“走流程”的原则？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 实地跟随手机物料流，不仅记录主板螺钉锁附工位，还将中框物料转运、主板扫码进站及包装暂存区完整纳入流程图</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 仅依据产品研发提供的2D/3D装配爆炸图来提取加工工站，忽略产线物流与检验</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 直接套用上一代相似机型的流程图，无需进入新产线现场核对工装夹具的变化</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 为精简PFMEA表格，将物料搬运、进货检验及压合检验等非增值工步全部剔除</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书3.2.1与3.2.2节强调过程FMEA旨在展示“走流程”时实际存在的过程流程，图3.2-1展示了完整的搬运、存储、检验与操作全过程，因此必须实地核对并纳入完整物料流与辅助步骤。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据原书 3.2.1 与 3.2.2 节，下列关于“过程流程图”在结构分析中作用与特征的表述，正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 过程流程图是一种可被用作结构分析输入的工具</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 过程流程图描述了整个产品过程的流程，反映实际现场过程</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 流程图的具体表现形式因公司而异，可使用不同的符号体系及含义</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 过程流程图只能包含加工装配工位，严禁出现检验与运输符号</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书 3.2.1 和 3.2.2 节：过程流程图是结构分析的输入工具（A对）；描述整个产品过程流并展示走流程的实际状况（B对）；具体形式因公司而异，包括使用的符号类型及含义（C对）；图3.2-1明确包含了运输、存储、检验特性等符号，故D错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在PFMEA结构分析中，制造系统被系统性地分解为哪三个层次？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 过程项（Process Item）</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 过程步骤（Process Step）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 过程工作要素（Process Work Element）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 失效影响项（Failure Impact Item）</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书 3.2.1 节首句：“过程结构分析旨在确定制造系统并将其分解为过程项、过程步骤和过程工作要素。”D属于失效分析范畴。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

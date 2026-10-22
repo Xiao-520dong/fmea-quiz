@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 092：附件 F1.2（下）：从 AIAG 第四版到新版 PFMEA 的变更点（步骤五至七）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 092：附件 F1.2（下）：从 AIAG 第四版到新版 PFMEA 的变更点（步骤五至七）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>步骤一至三变更回顾：</strong>结构分析明确为“过程项-过程步骤-过程工作要素（4M）”的三层层级，功能分析精准关联至特性（产品特性与过程特性），摆脱了旧版孤立罗列工序的缺陷。</li><li><strong>步骤四失效链对齐：</strong>原AIAG第四版的潜在失效模式、失效起因和失效影响，严格对齐为三层逻辑链：FE（上一级别/最终用户影响）← FM（关注要素/过程步骤失效模式）← FC（工作要素/4M失效起因）。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义：步骤五至步骤七的结构演进</strong><br>原AIAG第四版PFMEA在风险评价与优化跟进上存在模糊性与主观性。AIAG & VDA新版通过附件F1.2明确了步骤五（风险分析）、步骤六（优化）及步骤七（结果文件化）的核心变更：<br>• <strong>控制与评级精准锚定：</strong>预防控制（PC）直接锚定失效起因（FC），频度（O）反映FC的发生预测；探测控制（DC）与探测度（D）则针对FC或FM（探测起因或探测模式）。<br>• <strong>风险评估范式转移：</strong>彻底弃用基于简单数学相乘且缺乏逻辑的RPN（1~1000），升级为同时严谨权衡S、O、D逻辑关系的措施优先级（AP：High/Medium/Low）。<br>• <strong>优化闭环落实证据：</strong>将模糊的“建议措施”拆分为可视化管理的“预防措施”与“探测措施”；责任人由部门落实为具体姓名；新增“状态”跟踪完成百分比；措施完成由“列出动作”升级为“采取基于证据的措施”。<br>• <strong>结果文件化独立成步：</strong>步骤七总结DFMEA/PFMEA的范围与结果向管理层汇报，正式将技术风险与项目里程碑、开发计划挂钩，填补了第四版缺乏团队风险管理落地指导的空白。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（步骤五至七详细对比）</strong><br><strong>【步骤五：风险分析变更点】</strong><br>1. <strong>PC & O 评级依据变更：</strong>AIAG第四版的频度表主要基于“失效可能性”和“事故项目/车辆”；新版O表基于“失效起因发生的预测”、“控制类型”和“预防控制的稳健性”，摆脱了对历史失效率统计的绝对依赖，适用于任何新型制造技术。<br>2. <strong>DC & D 评级依据变更：</strong>第四版基于“探测机会/探测可能性”；新版D表严格基于“探测方法成熟度”、“探测概率”和“探测能力”，标准更加客观透明。<br>3. <strong>RPN 变更为 AP：</strong>原RPN计算（S×O×D）可能导致高严重度（S=9/10）但因低频度或高探测率计算出低RPN而被忽略；新版AP逻辑将严重度S置于最高权重，杜绝掩盖高危缺陷。<br>4. <strong>新增/调整字段：</strong>原“分类”变更为“特殊特性”（Special Characteristics）；新增可选的“筛选器代码”（Filter Code），便于多维度检索与过滤高风险项。<br><strong>【步骤六：优化变更点】</strong><br>1. <strong>措施分流：</strong>由“建议措施”拆分为独立的“预防措施”和“探测措施”，驱动团队从根本上降低O（防错化），其次提升D（探测手段）。<br>2. <strong>责任与状态跟踪：</strong>必须填写具体的“负责人姓名”而非“工艺部/ME部”等模糊组织；新增“状态”（如规划中、实施中、已完成、已放弃），以便精确统计执行百分比。<br>3. <strong>基于证据的措施：</strong>不仅填写采取了什么行动，更要求提交测试报告、MSA报告、CPK提升验证数据等“证据（Evidence）”。<br>4. <strong>结果再评价：</strong>由复核RPN改为复核S/O/D及新AP等级，且优化后表格明确支持重新确认特殊特性与备注。<br><strong>【步骤七：结果文件化变更点】</strong><br>第四版仅在章节叙述中提及管理层责任，无执行细节；新版将“结果文件化”作为独立终步，形成正式技术报告，明确向管理层呈现制造残留技术风险，与量产放行节点（如OTS、PPAP、SOP）深度绑定。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：主板SMT贴片与整机组装迁移案例</strong><br>以传音重庆/海外制造中心手机主板SMT贴片“01005超微型电容虚焊”为例：<br>• <strong>旧版AIAG-4做法：</strong>失效起因填“钢网堵孔”，预防控制填“产线作业员目检”，S=7, O=3, D=4, RPN=84（因RPN未超阈值100通常被忽略关闭）；措施栏填“建议工艺部加强钢网清洗”，责任人写“SMT工艺组”，关闭时仅写“已通知产线”。<br>• <strong>新版AIAG & VDA标准做法：</strong><br>1. <strong>步骤五风险分析：</strong>FC为“钢网微孔锡膏残留干燥（工作要素：机器/治具）”；当前预防控制（PC）为“全自动钢网擦拭机设定每5板擦拭一次（湿擦+真空）”，评估O=3（预防控制成熟稳健）；当前探测控制（DC）为“炉前3D-SPI在线锡膏检测仪”，评估D=2（全自动探测能力高成熟）；根据AP逻辑表判定措施优先级为L。<br>2. <strong>步骤六优化闭环（若针对高危跌落虚焊FE, S=8, O=5, D=4, AP=H）：</strong>措施栏分别拆分为：【预防措施】引入超声波纳米涂层钢网；【探测措施】增加炉后3D-AOI针对微间隙引脚的虚焊算法。负责人填写“李某某（SMT高级工艺工程师）”，状态更新为“实施中（80%）”。闭环栏填写“采取基于证据的措施：已完成10000板测试验证，CPK由1.12提升至1.67，附验证报告TR-2023-xxxx”，复核S=8, O=2, D=2, AP=L。<br>3. <strong>步骤七报告：</strong>生成SMT关键工序风险总结报告，提交制造质量评审委员会，作为手机试产（MP前）放行审批的依据。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆预防控制（PC）与探测控制（DC）的针对对象。</strong>新版明确PC必须针对FC（防止起因发生），DC针对FC或FM（起因或模式发生后被捕获）。很多工程师习惯把炉后AOI、终检测试填入预防控制，这是完全错误的。<br>• <strong>误区二：措施责任人继续填写部门名称。</strong>如填写“ME工程部”或“PE组”，在新版审核中直接判不符合项，必须细化落实到自然人全名，明确单点责任制。<br>• <strong>误区三：优化栏仅凭口头描述或签名关闭措施。</strong>未附带任何验证报告编号、量测数据或更改后的作业指导书/CP编号，违反“基于证据的措施（Action Taken with Pointer to Evidence）”基本规则。<br>• <strong>误区四：依然执迷于设定RPN阈值（如RPN<100即合格）。</strong>新版完全废除RPN乘法机制，必须根据新版AP表（S/O/D组合逻辑）排定高（H）、中（M）、低（L）优先级，且AP为H时必须采取措施或说明管理层理由。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.2（原书 P225-226）（PDF 第 225-226 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》附件 F1.2 步骤五中，关于频度（O）的变更，新版与 AIAG 第四版的核心差异是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 第四版基于简单数学相乘，新版基于正态分布概率计算</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 第四版频度表基于“失效可能性”和“事故项目/车辆”，而新版基于“失效起因发生的预测”、“控制类型”和“预防控制”</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 第四版频度针对失效模式（FM），新版频度针对失效影响（FE）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 第四版采用十分制量表，新版变更为百分制量表</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书第225页步骤五第ii条注及变更原因：AIAG频度表基于“失效可能性”和“事故项目/车辆”，而AIAG & VDA表基于“失效起因发生的预测”、“控制类型”和“预防控制”的稳健性，可应用于任何生产方式。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于从 AIAG 第四版升级至新版 PFMEA 中 RPN 变更为 AP 的原因，下列说法最准确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. RPN 只能计算硬件失效，无法计算软件及人为失误失效</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. RPN 是基于 S、O 和 D 的简单乘法（1到1000之间），无法体现逻辑优先级；而 AP（措施优先级）分为 L、M、H 级别，同时考虑 S、O、D 的评级并应用严谨逻辑来确定措施优先级</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. AP 彻底取消了严重度（S）的考量，只关注频度和探测度</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. RPN 无法与 ERP/MES 制造执行系统实现数字化联动</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书第225页明确说明变更原因：“基于S、O和D的简单乘法，RPN量表范围在1到1,000之间，并且应用逻辑。AP（措施优先级）量表分为L（低）、M（中）和H（高）级别，并且同时考虑S、O和D的评级并且应用逻辑来确定措施优先级。”（注：原书中文译本排版有漏字病句，核心逻辑即RPN缺乏逻辑优先级，而AP应用严密逻辑矩阵并赋予S最高权重）。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音制造工程师在对海外工厂智能手机主板点胶工序进行新版 PFMEA 步骤六（优化）编制时，下列哪项操作符合新版手册规定？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 责任人栏填写“深圳研发结构组与海外工程部”，以便多部门协同推进</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 优化措施合并为一栏填写“加强点胶机日常点检与设备保养”</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 措施结果仅填写“点胶机参数已调优，胶量正常”，无需提供支撑材料</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 将建议措施拆分为“预防措施”（如加装点胶阀恒温加热套）和“探测措施”（如加装点胶后视觉在线检测），明确责任人具体姓名，并填写“采取基于证据的措施及完成日期”</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书第226页步骤六指出：①建议措施变更为“预防措施和探测措施”；②责任及目标完成日期变更为“负责人姓名及目标完成日期”（需要姓名而非部门）；③采取的措施变更为“采取基于证据的措施和完成日期”。故选项D完全符合要求。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F1.2，在步骤五（风险分析）中，相比 AIAG 第四版，新版发生的主要变更包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 当前过程控制-预防已变更为失效起因（FC）的当前预防控制（PC）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 当前探测过程控制/原因和当前探测过程控制/失效模式变更为 FC 或 FM 的当前探测控制（DC）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 探测度量表依据变更为“探测方法成熟度”、“探测概率”和“探测能力”</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 原“分类”变更为“特殊特性”，并新增了可选的“筛选器代码（Filter Code）”</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书第225页步骤五内容全部涵盖上述要点：①当前预防变更为FC的PC；②当前探测变更为FC或FM的DC；③探测度由探测机会变更为探测方法成熟度、探测概率和探测能力；④分类变更为特殊特性，并新增筛选器代码（可选）；⑤RPN变更为AP。故全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于步骤六（优化）与步骤七（结果文件化）在新版手册中的要求，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 步骤六新增了“状态（Status）”栏，便于跟踪措施完成的百分比</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 步骤六中“采取基于证据的措施”要求不仅要列出行动，还需要对应证据支持</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 步骤七总结了 FMEA 的范围和结果，向内部管理层和/或顾客汇报，将失效发生的技术风险视作开发计划和里程碑的一部分</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. AIAG 第四版对手册团队如何在 DFMEA/PFMEA 团队中进行管理和结果文件化提供了详尽的模板和表格指导，新版对此进行了删减</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据原书第226页：步骤六新增“状态”，原因是可以跟踪完成的百分比（A正确）；采取的措施变更为采取基于证据的措施（B正确）；步骤七总结范围和结果，指出技术风险并视作项目里程碑一部分（C正确）；而原书明确指出“第四版并没有就如何在DFMEA团队中进行管理提供额外的指导”，新版是补充并独立了步骤七，而非删减，D项与原书事实完全相反。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "D"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 086：附件 D1：特殊特性（Special Characteristics）在 FMEA 中的传递与标识</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 086：附件 D1：特殊特性（Special Characteristics）在 FMEA 中的传递与标识</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（监视度评级原则）：</strong>FMEA-MSR 监视度（M）评级综合考虑故障发生时系统与人员在容错时间间隔（FTTI）内探测故障并执行缓解响应的能力，分为 M1 至 M10 共 10 个等级。</li><li><strong>上期核心2（MSR 措施优先级逻辑）：</strong>FMEA-MSR AP 判定表以严重度（S）为最高驱动力，结合频度（F）与监视度（M）的组合矩阵，系统性划分 H（高）、M（中）、L（低）风险改进优先等级。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与特殊特性定义（Special Characteristics）</strong><br>依据《AIAG & VDA FMEA 手册》附件 D1：<br><ul><li><strong>定义目的：</strong>特殊特性旨在提供需要<strong>特别注意过程控制</strong>的设计特性的有关信息。</li><li><strong>识别准则：</strong>凡是直接导致产品功能在<strong>安全、配合、组装、性能、产品的进一步加工或符合政府法规和行业标准</strong>方面失效的特性，均可视为特殊特性。</li><li><strong>根本目标：</strong>确定特殊特性旨在有效<strong>减少报废、返工、不合格零件和装配错误</strong>。通过规定特殊特性并确保实施有效的过程控制，最大程度降低顾客投诉、产品保修索赔和政府召回的风险。</li><li><strong>标注与闭环证据：</strong>特殊特性必须使用公司/顾客规定的缩写或特定符号（如规范符号、安全符号等）标注在产品文件（图纸/规范）、过程 FMEA（“分类/特殊特性”列）以及控制计划（Control Plan）中。组织必须对特殊特性的过程控制进行<strong>监视、记录并保留执行证据</strong>（如 SPC 统计过程控制、过程能力 Cpk/Ppk 监控）。</li></ul></div><div class="highlight-blue"><strong>2. DFMEA 与 PFMEA 中特殊特性的传递与定位差异</strong><br>新版手册明确厘清了设计与制造在特殊特性管理上的关键边界：<br><ul><li><strong>DFMEA 中的“筛选器代码”列：</strong>手册明确指出，在设计 FMEA 中，之所以使用<strong>“筛选器代码（Filter Code）”</strong>列替换原有的“分类（Classification）”列，是因为<strong>不需要在 DFMEA 中直接显示最终的特殊特性</strong>。</li><li><strong>DFMEA 的输入角色：</strong>DFMEA 是选择特殊特性的<strong>输入项之一</strong>，团队可使用“筛选器代码（可选）”列来强调何时可能需要制造过程控制来确保符合设计规范。</li><li><strong>PFMEA 中的“分类”列与制造变差敏感度：</strong>为了正确识别特殊特性，PFMEA 团队必须深入考虑<strong>制造过程中的变差如何影响产品的功能</strong>：<br>① <strong>特殊特性（对变差敏感）：</strong>特性对制造/装配变差高度敏感，变差波动会导致严重的功能失效或装配配合问题，必须施加额外过程控制（在 PFMEA“分类”列标注至关重要的、关键的、主要的、显著的等等级）。<br>② <strong>标准特性（对变差不敏感）：</strong>特性对制造/装配变差不敏感，常规作业标准与通用工序控制即可满足要求。</li><li><strong>客户符号转换机制：</strong>特殊特性可以有组织自定义名称或客户特定名称。若客户有指定符号，组织应通过“符号对照表”等机制，合规转换为组织内部统一的特殊特性管控标识。</li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景应用</strong><br>以传音智能手机关键组件为例拆解特殊特性在 DFMEA ➔ PFMEA ➔ 控制计划中的闭环流动：<br><ul><li><strong>场景 1：锂电池仓双面胶贴合与电芯间隙（安全/配合/性能）</strong><br>在整机结构 DFMEA 中，电芯与中框间隙（如 0.3±0.05mm）直接影响跌落膨胀安全。设计团队在 DFMEA 中通过“筛选器代码”标记为需关注过程变差。转入中试制造 PFMEA 时，工艺团队分析点胶厚度与贴装偏位（制造变差敏感），在 PFMEA“分类”列正式定性为<strong>特殊特性（CC/关键特性）</strong>，并在控制计划（CP）中明确配置高精度 CCD 视觉测量系统与 SPC 实时管控。</li><li><strong>场景 2：Type-C USB 接口端子共面度与焊接拉拔力（组装/法规/售后）</strong><br>Type-C 接口引脚共面度超差将导致虚焊，引发充电异常甚至端口过热冒烟风险。PFMEA 评估该引脚焊接变差极易引发安全与法规失效，将其标识为特殊特性。控制计划中要求每批次执行 SMT AOI 100% 自动光学检测与焊点推拉力破坏性抽检并记录，形成闭环证据链。</li></ul></div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区 1：在 DFMEA 中盲目打上特殊特性符号（CC/SC）。</strong><br><em>纠正：</em>新版手册明确说明，DFMEA 不需要显示最终特殊特性，其分类列已被“筛选器代码”替代。DFMEA 只用于标记哪些设计要求对过程控制有依赖，真正的特殊特性分类落实于 PFMEA 及控制计划。</li><li><strong>误区 2：将所有公差要求严格的尺寸统统归为特殊特性。</strong><br><em>纠正：</em>特殊特性评定核心看<strong>功能失效严重性及对制造变差的敏感度</strong>。若某个关键尺寸在当前制造工艺（如高精模具冲压）下天然具备极高稳定性，工艺变差对其功能不敏感，则只需按标准特性管理，避免泛滥导致产线质量检测成本激增、重心失焦。</li><li><strong>误区 3：特殊特性在 PFMEA 中打了标，但在控制计划中无闭环。</strong><br><em>纠正：</em>手册严格要求“监视、记录并获取执行特殊特性过程控制的证据”。PFMEA 识别出特殊特性后，必须 100% 传递至控制计划（CP），并明确规定控制方法（如 100% 自动检测、SPC 监控 Ppk≥1.67）及失效应急反应计划。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 D1（原书 P215）（PDF 第 215-216 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">依据《AIAG & VDA FMEA 手册》附件 D1，新版手册在设计 FMEA（DFMEA）中使用“筛选器代码”列替换了原有的“分类”列，其主要原因是什么？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 因为 DFMEA 已经不需要再考虑制造过程的变差</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 因为不需要在 DFMEA 中显示特殊特性，DFMEA 仅作为选择特殊特性的输入项之一</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 因为新版手册已彻底取消特殊特性的概念，由 AP 等级完全替代</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 为了简化表格格式，将特殊特性的全部定义工作推迟至作业指导书（SOP）中</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 P215 明确指出：“在设计 FMEA 中，‘筛选器代码’列之所以替换了‘分类’列，原因在于不需要在 DFMEA 中显示特殊特性。设计 FMEA 是选择特殊特性的几个输入项之一。团队可使用设计 FMEA 来强调何时可能需要过程控制来确保符合规范。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在过程 FMEA（PFMEA）中，团队判断某项产品/过程特性是否应作为“特殊特性”的关键考量因素是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 该特性的设计公差是否小于 0.01mm</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 该工序的操作人员是否具备高级技师资格</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 制造过程中的变差如何影响产品的功能（即特性对制造/装配变差是否敏感）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 零件的外包采购单价是否高于基准线</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 P215 明确指出：“为了正确识别特殊特性，过程 FMEA 团队应考虑制造过程中的变差如何影响产品的功能。换句话说，特性可能对制造/装配变差敏感（特殊特性），也可能对制造/装配变差不敏感（标准特性）。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音某机型主板 SMT 产线在生产 Type-C 接口时，PFMEA 团队将“端子共面度及焊膏厚度”定义为特殊特性。根据附件 D1 的规范要求，下列哪项做法是必须且合规的？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 仅在 PFMEA 评审会议记录中口头强调，无需体现在控制计划中</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 只要客户没有驻厂抽查，就不需要保留该特性的过程控制记录与数据</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 该特殊特性必须标注在控制计划中，并对其实施过程控制、进行监视、记录并获取执行证据</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 直接在图纸上标注即可，制造现场不需要做特殊的防错或 SPC 管控</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 P215 明确指出：“特殊特性用缩写或符号标注在文件中，如产品文件（根据需要）、过程 FMEA（‘特殊特性’列）和控制计划。应监视、记录并获取执行特殊特性过程控制的证据。”</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 D1，直接导致产品功能在下列哪些方面失效的特性，可被视为特殊特性？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 安全（Safety）与配合（Fit）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 组装（Assembly）与性能（Performance）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 产品的进一步加工</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 符合政府法规和行业标准</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 P215 明确定义：“直接导致产品功能在安全、配合、组装、性能、产品的进一步加工或符合政府法规和行业标准方面失效的特性可视为特殊特性。”因此 A、B、C、D 全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于特殊特性的确定目的与管理要求，下列哪些说法符合原书 D1 的叙述？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 确定特殊特性，旨在减少报废、返工、不合格零件和装配错误的情况</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 规定特殊特性以确保有效的过程控制，从而降低顾客投诉、产品保修索赔和政府召回的可能性</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 过程 FMEA 中的“分类”列可用于规定需要额外过程控制的特殊特性（如：至关重要的、关键的、主要的、显著的）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 客户指定的特殊特性符号绝对禁止转换，企业内部不得编制对照表</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 P215 明确说明了特殊特性的目的在于减少报废返工及降低索赔召回风险（A、B 正确）；PFMEA“分类”列用于规定需要额外过程控制的特殊特性级别（C 正确）；而关于符号转换，原书明确指出：“可以把顾客指定的特殊特性符号转换为组织的特殊特性符号（例如：在对照表中）”，故 D 选项说法错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

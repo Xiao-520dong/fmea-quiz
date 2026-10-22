@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 076：附件 B2（下）：PFMEA 步骤五至步骤六填写提示与软件视图示例</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 076：附件 B2（下）：PFMEA 步骤五至步骤六填写提示与软件视图示例</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（PFMEA 步骤一至三）：</strong>步骤一策划确定边界与基础FMEA；步骤二结构分析按“过程项-过程步骤-过程工作要素4M”逐级展开；步骤三功能分析对应三级结构，过程步骤关注产品特性，工作要素关注过程特性。</li><li><strong>上期核心2（PFMEA 步骤四失效链）：</strong>失效分析遵循三级失效链，“上一较高级别/最终用户的影响（FE）- 关注要素的模式（FM）- 工作要素的起因（FC）”，严重度（S）由最高严重度的FE决定并继承。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. PFMEA 步骤五（风险分析）与步骤六（优化）表格填写规范（B2.5 - B2.6）</strong><br>根据《AIAG & VDA FMEA 手册》附件 B2.5 与 B2.6 提示：<br>• <strong>步骤五风险分析控制填写：</strong><br>&nbsp;&nbsp;- <strong>预防控制（PC）：</strong>记录针对失效起因（FC）的当前预防控制措施。包含初始状态、过去已验证有效的控制，以及当前工艺中将要采用的标准控制（如防呆定位销、作业指导书防错、参数锁定等）。频度（O）基于 PC 评估（1-10分）。<br>&nbsp;&nbsp;- <strong>探测控制（DC）：</strong>记录针对失效起因（FC）或失效模式（FM）的当前探测控制。包含在制造过程中或离开工位前的检测手段（如在线视觉检测、量规检测、下线功能测试等）。探测度（D）基于 DC 评估（1-10分）。<br>&nbsp;&nbsp;- <strong>AP 确定：</strong>根据 S、O、D 综合查表确定优先级（H、M、L）。<br>• <strong>步骤六优化表格填写规范：</strong><br>&nbsp;&nbsp;- <strong>预防/探测措施：</strong>分别填写为降低频度（O）所需的附加预防措施，以及为改善探测（D）所需的附加探测措施。<br>&nbsp;&nbsp;- <strong>负责人姓名：</strong>手册明确规定必须填写“姓名”，而不是仅写职称、岗位或部门名称，确保责任落实到具体个人。<br>&nbsp;&nbsp;- <strong>目标完成日期与实际完成日期：</strong>严格记录“年-月-日”。<br>&nbsp;&nbsp;- <strong>措施状态判定：</strong>标准状态枚举包括“尚未确定、尚未决策（可选）、尚未执行（可选）、已完成、不执行”。<br>&nbsp;&nbsp;- <strong>基于证据的措施描述：</strong>必须清晰记录已采取措施的详细描述，并关联证据文档（包括文档编号、测试/验证报告名称和日期等）。<br>&nbsp;&nbsp;- <strong>闭环评估：</strong>重新评定 S、O、D（1-10）并更新 AP 状态。</div><div class="highlight-blue"><strong>2. PFMEA 步骤七定位与软件视图示例拆解（B2.7 - B2.8）</strong><br>• <strong>B2.7 步骤七（结果文件化）：</strong>手册明确指出，PFMEA 步骤七由各组织根据内部管理体系单独管理与报告（如管理评审报告、AP关闭汇总表等），<strong>不在 PFMEA 表格内部记录</strong>。<br>• <strong>B2.8 典型软件树状视图结构（以电机壳压装烧结轴承为例）：</strong><br>&nbsp;&nbsp;- <strong>过程项：</strong>电机装配线 ➔ <strong>功能：</strong>发运至工厂（在无需停线、分拣或隔离情况下将电机安装至车门上）；最终用户（升起和降下车窗）。<br>&nbsp;&nbsp;- <strong>过程步骤：</strong>[OP 30] 烧结轴承压装过程 ➔ <strong>产品特性：</strong>压装烧结轴承，在每次压装时实现电机壳内的轴向定位保留最大间隙 ➔ <strong>失效模式（FM）：</strong>不能实现烧结轴承的轴向定位。<br>&nbsp;&nbsp;- <strong>过程工作要素：</strong>操作人员（4M） ➔ <strong>过程特性：</strong>完成装料后，按下机器按钮启动压装 ➔ <strong>失效起因（FC）：</strong>设备在达到最终位置前停止。<br>&nbsp;&nbsp;- <strong>失效影响（FE）：</strong>您的工厂（因为间隙太小无法安装轴，S=8）；发运至工厂（无）；最终用户（舒适模式关闭时间过长）。<br>&nbsp;&nbsp;- <strong>初始控制与评价：</strong>当前预防控制为“无”，导致 O=10；探测控制采用“批签发协议目标（100%）、操作员使用观测计（红绿区）探测间隙，并依据规范 MRKJ5038 探测电机性能曲线”，D=2；综合评定 AP=H。</div><div class="highlight-green"><strong>3. 传音制造实战场景：手机中框点胶与摄像头模组压合 PFMEA 实施</strong><br>• <strong>步骤五在传音产线的映射（以主摄镜头模组贴装 OP50 为例）：</strong><br>&nbsp;&nbsp;- <strong>FC：</strong>贴装吸嘴真空吸力衰减，导致贴装瞬时偏位。预防控制（PC）若仅依赖“作业员巡检检查气管”，在初始状态下历史无可靠防呆，频度 O 评分高达 7 或 8；探测控制（DC）采用“AOI 在线测量镜头同轴度公差（绿色/红色判定）”，探测度 D 评为 2 或 3；由于 FE 涉及“相机成像边缘模糊/虚焦（S=8）”，综合查表 AP 为 H，必须触发步骤六优化。<br>• <strong>步骤六在传音制造工程中的落地规范：</strong><br>&nbsp;&nbsp;- <strong>预防措施：</strong>设备工程部增设“吸嘴真空负压实时数字传感器，当压力阈值低于 -80kPa 时自动停机并声光报警”（降低 O 至 2）。<br>&nbsp;&nbsp;- <strong>责任人填写：</strong>严禁填写“ME部”或“设备科长”，必须填写“李工（工号 108321）”。<br>&nbsp;&nbsp;- <strong>状态与证据闭环：</strong>状态从“尚未执行”更新为“已完成”，并在“基于证据的措施”栏中注明《自动化防错改造验证报告_TR_ME_20231105.pdf》及 CPK 验证结果（CPK=1.67），随后将 O 降低为 2，AP 成功由 H 降至 L。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区 1：步骤六负责人栏填写“ME 团队”或“产线主管岗位”。</strong><br><em>正解：</em>手册 B2.6 明确强调，负责人必须是“个人姓名”，不可用职称或部门替代，防止跨部门推诿、无法追踪责任。<br>• <strong>误区 2：以为步骤七“结果文件化”必须在 Excel 主表中增加一列记录。</strong><br><em>正解：</em>原书 B2.7 明确指出，步骤七由组织单独管理，不在 PFMEA 表格中记录，通常体现在向管理层提交的总结报告、客户报告或控制计划更新交接单中。<br>• <strong>误区 3：在软件视图或表格中将“批签发、目测观测计”填入预防控制（PC）。</strong><br><em>正解：</em>操作员使用观测计（红/绿区）、批签发协议或成品测试，其本质均是在失效起因或缺陷发生后识别并挑出，属于典型的探测控制（DC），绝不能混淆为预防控制（PC）。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 B2.5 - B2.8（原书 P177-180）（PDF 第 177-180 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 B2.6 关于步骤六（优化）表格填写提示，对于“负责人”一列的填写要求，以下说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 可以填写负责推进该措施的部门名称（如“制造工程部”）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 可以填写负责人的职务或职称（如“产线工艺主管”）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 必须填写具体的负责人姓名，而不是职称或部门</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 只要有项目经理背书，该栏可以留空</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 B2.6 明确提示：“负责人姓名：姓名，不是职称或部门”。确保责任落实到个人，避免部门间扯皮推诿。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于 PFMEA 步骤七（结果文件化）在标准表格中的体现，下列描述符合手册 B2.7 说明的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 必须在 PFMEA 表格最右侧单设三列详细记录步骤七内容</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 步骤七由各组织单独管理，不在 PFMEA 表格中记录</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 步骤七必须通过 AP 状态的颜色填充直接在表格中体现</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 步骤七即为控制计划（CP），必须与 PFMEA 整合在同一张工作表中</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 B2.7 明确指出：“PFMEA 步骤七由各组织单独管理，不在 PFMEA 表格中记录”。通常以总结报告、管理评审简报等形式单独归档。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机产线的主板屏蔽罩焊接工位（OP40）进行 PFMEA 时，发现失效起因为“吸嘴积胶造成贴片偏移”。当前采用“操作员每两小时使用显微观测计比对刻度红绿区”，原书 B2.8 示例将该类控制归类并评价为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 属于当前探测控制（DC），用于在发生后探测起因或模式，不能降低频度 O</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 属于当前预防控制（PC），能够直接消除吸嘴积胶的发生概率</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 既是预防控制又是探测控制，可同时降低频度 O 和探测度 D</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 属于步骤六的优化措施，不能计入步骤五的当前初始状态</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 B2.8-2 明确展示，“操作员使用观测计探测间隙（好/不好，红/绿区）”属于“对失效起因或失效模式的当前探测控制（DC）”。其作用是拦截与检出缺陷，不能阻止积胶或停止的物理发生，因此不能作为 PC 降低 O。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据手册附件 B2.6，在 PFMEA 步骤六（优化）的表格中，“状态（Status）”列的标准推荐状态选项包括以下哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 尚未确定（Open / To be determined）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 尚未决策（可选，Decision pending）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 尚未执行（可选，Implementation pending）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 已完成（Completed）与不执行（Not implemented）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书 B2.6-1 图表提示，状态一列的提示内容包含：“尚未确定，尚未决策（可选），尚未执行（可选），已完成，不执行”。四个选项全部符合标准规定。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据手册附件 B2.5 至 B2.8，关于 PFMEA 风险分析与优化闭环评估的描述，以下哪些是正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 当前预防控制（PC）可以记录过去经过验证的控制，也可以记录将要采用的标准控制</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. “采取基于证据的措施”栏必须包含措施描述以及文档编号、报告名称和日期等佐证</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 软件视图中，过程工作要素（4M）的功能对应过程特性，过程步骤对应产品特性</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 只要步骤六预防措施执行完毕，严重度（S）必须下调至少 2 个等级</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A、B、C 均严格符合原书 B2.5、B2.6 及 B2.8 的图文规定。D 选项错误：严重度 S 是由产品失效影响（FE）决定的，PFMEA 中的工艺优化措施（如增加传感器或防错）只能降低频度 O 或改善探测度 D，除非发生产品设计变更（DFMEA 变更），否则制造过程优化通常不能降低 S。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "C"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

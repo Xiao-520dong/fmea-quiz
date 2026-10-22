@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 008：5T 法之团队（Team）：核心团队角色与职责</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 008：5T 法之团队（Team）：核心团队角色与职责</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>FMEA 实施必须紧密契合产品生命周期（如 APQP 与 VDA MLA 阶段），各阶段都有明确的交付节点，绝不可事后补写。</li><li><strong>上期核心2：</strong>概念阶段锁定系统/功能并启动 DFMEA，样件试制（A/B样）前需完成初步分析与优化，量产定型（SOP/批产）前必须关闭高风险措施并固化经验。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与多方论证（跨职能）团队构成</strong><br>根据手册 1.5.3 节，FMEA 的成功实施完全取决于<strong>跨职能（多方论证）团队</strong>的积极参与。团队划分为两层架构：<br>• <strong>核心团队（Core Team）：</strong>全程主导并执行分析，负责在会议前准备 FMEA 系统分析（步骤1-步骤3：范围定义、结构分析、功能分析），并组织、参加全部 FMEA 正式评审会议。<br>• <strong>扩展团队（Extended Team）：</strong>根据特定技术议题的需要，由推进者或组织者按需协调介入（例如特定算法、供应商工艺、功能安全等专项研讨），无需全程陪跑，以提升会议效率。</div><div class="highlight-blue"><strong>2. DFMEA 与 PFMEA 核心及扩展团队明细拆解</strong><br><strong>(1) DFMEA 团队构成：</strong><br>• <strong>核心团队：</strong>FMEA 推进者、设计工程师（结构/硬件）、系统工程师、零件工程师、测试/验证工程师、质量/可靠性工程师及其他研发关键人员。<br>• <strong>扩展团队：</strong>技术专家、工艺/制造工程师（实现 DFM 早期介入）、维修/售后工程师、项目经理、功能安全工程师、采购、部件供应商及客户代表。<br><strong>(2) PFMEA 团队构成：</strong><br>• <strong>核心团队：</strong>FMEA 推进者、过程/工艺制造工程师、人机工程学工程师、过程验证工程师、质量/可靠性工程师、负责过程开发的其他人员。<br>• <strong>扩展团队：</strong>产品设计工程师（确保工艺理解产品公差与特性）、设备维护工程师、现场作业员/组装领班、维修分析人员、采购、工装设备供应商等。</div><div class="highlight-green"><strong>3. 传音研发/制造实战角色对应场景</strong><br>• <strong>管理者（项目总监/PMT Leader）：</strong>作为 FMEA 开发与维护的<strong>最终所有者（Owner）</strong>，对手机跌落失效或发热风险的接受度拥有一票否决或决策权，负责统筹项目预算，并指定 DFMEA/PFMEA 技术责任人与推进者。<br>• <strong>设计/工艺主管（技术主管）：</strong>如传音结构/硬件主设计或制造工艺主管，对 FMEA 的<strong>工程技术内容负最终责任</strong>，负责定义手机整机与模块的接口、功能与指标，输出基础工程图纸与规范。<br>• <strong>FMEA 推进者（Facilitator）：</strong>通常由资深质量专家或精通 7 步法的工程师担任，负责主导 7 步法推行、中立主持会议、协调结构与热设计工程师的分歧、管控会议节奏与记录。<br>• <strong>核心团队成员实战准备：</strong>在召开“手机主板 SMT 焊接虚焊”PFMEA 研讨会前，工艺工程师与质量工程师已提前将步骤 1~3（工位划分、印刷/贴片/回流焊功能要求）输入软件，会议直奔失效分析，极大提高评审产出效率。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：“FMEA 是质量部/推进者一个人的事”：</strong>错。手册 1.5.3.3 明确指出，<strong>设计/工艺工程师对 FMEA 内容负技术责任</strong>，管理者是 FMEA 的所有者。推进者仅负责方法引导与流程协调，绝不能越俎代庖替工程团队代写技术内容。<br>• <strong>误区二：“把所有相关部门从头拉到尾开马拉松会议”：</strong>错。混淆了核心团队与扩展团队职责。系统分析（步骤1-3）应由核心团队前置准备，扩展团队（如采购、供应商、售后）应基于议题“按需切入”，避免无关人员陪会降低研讨质量。<br>• <strong>误区三：“角色一人一岗，不可变动”：</strong>错。手册注明，同一个人的角色可以兼任（如任何具备能力的工程师均可兼任推进者），也可以由多人分担，关键在于职责清晰定义并得到资源授权。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第一章 1.5.3.1 - 1.5.3.3 节（PDF 第 24-26 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，关于 FMEA 内容的“技术责任”以及 FMEA 开发与维护的“所有者（责任人）”，下列对应完全正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 推进者负技术责任；质量经理是所有者</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 设计主管/工艺工程师负技术责任；管理者（如项目经理）是所有者</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 核心团队成员集体负技术责任；推进者是所有者</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 质量/可靠性工程师负技术责任；设计主管是所有者</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>手册 1.5.3.3.1 和 1.5.3.3.2 明确规定：设计主管/工艺工程师（技术主管）“对 FMEA 内容负技术责任”；管理者（例如项目经理）是“FMEA 开发和维护的责任人和所有者”，并对识别风险和措施是否可接受拥有决定权。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">手册对于核心团队（Core Team）在 FMEA 分析推进过程中的职责分工做出了明确要求，核心团队在正式会议前应当准备哪一部分工作？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 步骤 1 至步骤 3（系统分析：范围定义、结构分析、功能分析）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 步骤 4 至步骤 5（失效分析与风险分析）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 直接制定步骤 6 的优化措施方案</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 撰写步骤 7 的管理层总结报告</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 1.5.3.1 和 1.5.3.2 均明确指出：“核心团队成员准备 FMEA 系统分析（步骤 1-3）并参加 FMEA 会议”，后续步骤再通过团队研讨共同深化完成。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音智能手机新项目的摄像模组（Camera Module）DFMEA 研讨中，关于 FMEA 推进者（Facilitator）的角色定位，下列做法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 推进者必须全权代笔填写马达失效模式、严重度评分及优化措施，工程师只负责签字</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 推进者必须由外部专职咨询顾问担任，企业内部研发人员不得担任推进者</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 推进者负责流程协调、7步法方法引导并缓解技术争议，任何具备相关能力和受训经验的团队成员均可担任</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 推进者负责对摄像模组的技术风险是否可以接受做最终商业决策并审批预算</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>手册 1.5.3.3.3 注明：“任何具有相关能力和培训经验的团队成员都可以担任推进者”，其核心职责是掌握方法能力、管理 7 步法执行、协调组织并缓解冲突。技术决策由管理者与技术主管负责，推进者不代写工程技术内容。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">在开展手机中框 CNC 加工与整机组装的 PFMEA 时，下列属于手册所界定的 PFMEA“核心团队（Core Team）”成员的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 过程/制造工程师</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 质量/可靠性工程师</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 人机工程学工程师与过程验证工程师</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 采购人员与现场维修作业员</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>手册 1.5.3.2 规定，PFMEA 核心团队包括：推进者、过程/制造工程师、人机工程学工程师、过程验证工程师、质量/可靠性工程师、负责过程开发的其他人员。采购人员与维修人员/现场工作人员属于扩展团队。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据手册 1.5.3.3.1 节，组织中的管理者（例如项目总监、项目经理）在 FMEA 项目中承担的关键职责包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 对识别风险和执行措施是否可接受拥有最终决定权</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 为技术与财务决策准备具体工程层面的商业案例（Business Case）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 负责选择和分配资源，确保在计划时间内实施有效的风险管理并负责预算</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 指定前期工作负责人、FMEA 推进者及执行措施的设计/过程工程师</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据手册 1.5.3.3.1 节，选项 A、C、D 均属于管理者的明确职责。选项 B“为技术/财务决策准备商业案例”是 1.5.3.3.2 节中设计主管/工艺工程师（技术主管）的职责。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "A"}, "3": {"correct": "C"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,C,D"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

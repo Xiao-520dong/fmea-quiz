@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 091：附件 F1.2（上）：从 AIAG 第四版到新版 PFMEA 的变更点（步骤一至四）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 091：附件 F1.2（上）：从 AIAG 第四版到新版 PFMEA 的变更点（步骤一至四）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>DFMEA 步骤五至七变更回顾：</strong>旧版基于 S×O×D 简单乘积的 RPN 被逻辑严谨的措施优先级（AP 表：H/M/L）取代；探测度评估逻辑转向成熟度与探测能力；步骤七正式将“结果文件化”标准化，要求以报告形式向管理层呈现残余技术风险并作为里程碑决策依据。</li><li><strong>系统分析方法论演进：</strong>新版全面采用统一的“七步法”，使设计 FMEA 与过程 FMEA 在结构、功能、失效网络与风险评估逻辑上实现完全对齐与衔接。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与总体演进背景（步骤一：规划和准备）</strong><br>在原 AIAG 第四版 PFMEA 中，分析起点往往直接落在填表式的“范围定义”上，缺乏结构化的项目管理前置规划。新版《AIAG & VDA FMEA 手册》将其全面升格为“步骤一：规划和准备（5T 方法）”，明确界定了分析的边界、团队、时间节点与目标基准，使 PFMEA 由被动的质量记录表转变为主动的制造工艺风险预防工具。</div><div class="highlight-blue"><strong>2. 方法步骤与结构/功能/失效变更拆解（步骤二至步骤四）</strong><br>从 AIAG 第四版到新版 PFMEA，前四个步骤发生了根本性的逻辑重构：<br><strong>① 步骤二：结构分析的深化（引入 4M 过程工作要素）</strong><br>• <strong>旧版：</strong>仅粗略记录项目与过程步骤。<br>• <strong>新版：</strong>重组为严格的三级层次结构：【过程项（系统、子系统、零件要素或过程名称）】→【过程步骤（工位编号和关注要素名称）】→【过程工作要素（4M 类型：人 Man、机 Machine、料/间接物料 Material、法/环 Method/Milieu）】。使用原因在于：强制分析团队在评审制造工序活动时全面剖析 4M 资源构成，消除潜在死角。<br><strong>② 步骤三：功能分析的结构化（正向功能对应与特性解耦）</strong><br>• <strong>旧版：</strong>仅在关注步骤处列出粗略要求，常常混淆产品特性与工艺参数。<br>• <strong>新版：</strong>新增【过程项的功能】，明确正向功能有助于推导负面失效（失效影响 FE）。同时，将功能与特性清晰拆分为：【过程步骤的功能和产品特性（Product Characteristic）】与【过程工作要素的功能和过程特性（Process Characteristic）】。表格可单列或合并展示，使“工序要实现什么产品状态”与“4M 工作要素需满足什么工艺控制参数”严格解耦。<br><strong>③ 步骤四：失效分析的网络化（FE-FM-FC 严格锚定）</strong><br>• <strong>失效影响（FE）：</strong>旧版“潜在失效影响”变更为“上一较高级别要素和/或车辆/最终用户的失效影响（FE）”。严重度（S）直接针对 FE 评定。注：AIAG 旧版将制造影响与客户混在一起，新版则明确将制造影响拆分为“对本工厂的影响”和“对发运至工厂的影响（已知悉时）”，更符合现代制造业分工。<br>• <strong>失效模式（FM）：</strong>旧版“潜在失效模式”严格锚定为“关注要素的失效模式（FM）”，即过程步骤/产品特性的不符合。<br>• <strong>失效起因（FC）：</strong>旧版“潜在失效起因”严格锚定为“工作要素的失效起因（FC）”，即具体的人、机、料、环/法偏差导致的过程特性失控。由此构建起完整的“FC（4M要素）→ FM（工位要素）→ FE（顶层/客户）”因果链条。</div><div class="highlight-green"><strong>3. 传音制造实战场景：手机中框点胶贴合工位（步骤一至四落地）</strong><br>以传音某智能手机组装厂“中框与屏幕点胶贴合工位”为例，对比新旧分析方式：<br>• <strong>结构分析（步骤二）：</strong>过程项为“整机整平贴合过程”；过程步骤为“工位 030：屏幕与中框自动点胶工位（关注要素）”；过程工作要素（4M）精准细化为“全自动点胶机（Machine）”、“热熔胶胶水及针头（Material）”、“作业员装载治具操作（Man）”。<br>• <strong>功能分析（步骤三）：</strong>过程步骤功能为“在中框点胶槽精准涂敷 PUR 热熔胶”，对应产品特性为“胶线宽度 0.6±0.05mm、连续无断胶”；工作要素功能为“点胶机气压及温控稳定”，对应过程特性为“点胶阀气压 0.45±0.02MPa、加热温度 110±5℃”。<br>• <strong>失效分析（步骤四）：</strong>工作要素失效起因（FC）为“胶阀加热温控失灵导致胶水温度不足 95℃（Machine）”；导致关注要素失效模式（FM）为“出胶流动性变差引起胶线间断/局部胶宽不足 0.5mm”；最终引发上一级及用户失效影响（FE）：“在本厂引起保压贴合后溢胶不均/间隙超标不良，发运至整机测试厂导致整机 IP54 气密性测试不合格，最终用户面临雨水渗入导致主板腐蚀失效”。严重度（S）直接针对整机 IP 等级失效及主板烧毁评定高分，并清晰区分了组装厂与终端客户的不同影响。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆产品特性与过程特性。</strong>在步骤三中，常将“保压压力 0.3MPa”写在过程步骤的产品特性列中。正确做法：产品特性是工件达到的状态（如“屏幕贴合间隙 ≤0.15mm”），过程特性是设备/环境的工艺参数（如“气缸设定压力”、“加热温度”），必须归属到 4M 工作要素下。<br>• <strong>误区二：失效起因（FC）未具体对应到 4M 要素。</strong>填写失效起因时只写“点胶不良”或“员工疏忽”，未分解到具体人、机、料、法。新版强制要求 FC 必须是 4M 过程工作要素的具体缺陷或失控。<br>• <strong>误区三：严重度（S）评定忽略工厂分工。</strong>海外制造场景中，CKD/SKD 本地组装涉及多个分工厂。旧版评估常遗漏跨工厂发运影响，新版明确要求将制造影响拆分为“内部工厂”与“发运至客户工厂/下级工厂”，需综合对比并取最严重级别评定 S。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F1.2（原书 P223-225）（PDF 第 223-225 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F1.2，新版 PFMEA 步骤二（结构分析）相比于 AIAG 第四版最显著的增加项是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 增加了零件物料编码及 CAD 图号</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 添加了过程工作要素 4M 类型（Man, Machine, Material, Method/Milieu）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 增加了生产节拍与线平衡率统计</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 增加了制造车间温湿度环境监控代码</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 P223 明确指出：步骤二结构分析中，“iii. 添加了过程工作要素 4M 类型。使用原因：此增加的步骤 (4M) 要求用户在评审该过程中发生的活动时，对 4M 加以考虑。”</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">新版 PFMEA 步骤三（功能分析）中，关于“过程工作要素的功能”与其对应特性的表述，正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 过程工作要素的功能对应的是产品特性（Product Characteristic）</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 过程工作要素的功能对应的是失效模式（Failure Mode）</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 过程工作要素的功能对应的是过程特性（Process Characteristic）</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 过程工作要素只需描述功能，不允许包含任何特性参数</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 P224 明确指出：“根据使用的表格，功能（一列）及其要求/过程（一列）更改为过程工作要素的功能和过程特性（单列）或过程工作要素（一列）功能和过程特性（一列）。”过程步骤对应产品特性，工作要素对应过程特性。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机 SMT 贴片工艺的 PFMEA 分析中，工程师正在对“回流焊工位（Reflow Oven）”进行步骤四（失效分析），下列哪项符合新版手册对因果链（FC → FM → FE）的定义规范？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 【FC】温区 3 发热丝断裂导致温度偏低 15℃（Machine 要素） → 【FM】焊膏熔融不充分造成虚焊/润湿不良 → 【FE】整机功能测试开机不良及终端使用中跌落断路</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 【FC】手机跌落黑屏 → 【FM】虚焊 → 【FE】回流焊温度失控</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 【FC】虚焊/润湿不良 → 【FM】温区发热丝断裂 → 【FE】产线停线 2 小时</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 【FC】作业员未佩戴静电手环 → 【FM】整机不开机 → 【FE】贴片元件偏位</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 P225 指出，失效起因（FC）锚定于工作要素（4M，如机器发热丝故障导致温度低）；失效模式（FM）锚定于关注要素/工序产品特性（焊点润湿不良/虚焊）；失效影响（FE）锚定于上一级别及最终用户（开机不良、终端断路）。B、C、D 均因果倒置或要素错位。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F1.2，新版 PFMEA 步骤四在评估严重度（S）时，相比 AIAG 第四版的主要变更及原因包括哪些？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 严重度已变更为失效影响（FE）的严重度（S）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 将对制造的影响细分为“对工厂的影响”和“对发运至工厂的影响（已知悉时）”两部分</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 变更原因在于制造业的分工要求用户同时考虑对制造业的内部影响和外部影响</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 严重度评分由原本的 10 分制全面改为了 5 分制</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 P225 明确说明：严重度已变更为 FE 的严重度 (S)；AIAG&VDA 严重度表将对制造的影响分为两部分：对工厂的影响和对发运至工厂的影响（已知悉时）；变更原因：制造业的分工要求用户考虑对制造业的内部影响和外部影响。严重度仍为十分制，D 选项错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在新版 PFMEA 步骤三（功能分析）中，关于表格列的设计与演进，下列说法符合原书规范的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 新增了“过程项的功能（系统、子系统、零件要素或过程的功能）”</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 列出该过程的正向功能有助于确定负面因素，即失效影响（FE）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 可以采用将“过程步骤的功能和产品特性”合并在单列或拆分为两列的替代表格</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 产品特性与过程特性的量值在表格中均为强制填写的必填项，不可作为选填项</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 P224 明确指出：添加了过程项的功能，使用原因在于“列出该过程的正向功能有助于确定负面因素，即失效影响”；表格展示方式支持单列或拆分列形式；在给出的表单结构中，产品特性和过程特性均标注了“（量值为可选项）”，并非强制项，因此 D 错误，A、B、C 正确。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

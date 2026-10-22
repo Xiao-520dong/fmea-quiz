@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 078：附件 C1（一）：DFMEA 严重度（表D1）与标准频度（表D2）逐级对照</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 078：附件 C1（一）：DFMEA 严重度（表D1）与标准频度（表D2）逐级对照</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>系统学习了 FMEA-MSR 步骤一到步骤六的填表逻辑与判定准则，明确了其专注于客户驾驶运行中的监视与系统响应（如故障检测、降级运行、警告提示）。</li><li><strong>上期核心2：</strong>深入剖析了 FMEA-MSR 标准软件视图在策划准备、功能分析、失效网构建、频度/监测度评估（O/M）及优先级降低验证闭环中的实战应用流程。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义</strong><br>根据新版手册附件 C1.1 与 C1.2，DFMEA 的严重度（S）与频度（O）评估标准建立了统一、严谨的客观分级基准：<br>• <strong>严重度（Severity, S，表 C1-1）：</strong>基于“对终端用户/系统的潜在失效影响”评级，从安全与法规违规（10-9）、主要功能丧失与降低（8-7）、次要功能丧失与降低（6-5）、感官与舒适度不适（4-2），到无感知影响（1）。严重度仅由失效影响决定，不可通过增加测试或预防手段来降低。<br>• <strong>频度（Occurrence, O，表 C1-2）：</strong>基于“失效起因的潜在发生可能性”进行的定性评级。其评级核心取决于两个关键维度：<strong>“产品经验”</strong>（技术成熟度、应用场景、历史暴露）与<strong>“预防控制”</strong>（设计规则、行业/企业标准、CAE仿真、公差叠加、安全边际等的有效性）。<br>• <strong>关键注记：</strong>标准特别指出，对于缺乏经验或预防手段导致的高频度等级（10、9、8、7），后续<strong>可根据产品验证活动有效降低</strong>。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解（逐级评级标准剖析）</strong><br><strong>(1) DFMEA 严重度 (S) 逐级判定基准：</strong><br>• <strong>S=10（非常高）：</strong>影响到车辆/设备的操作安全，直接危及驾驶员、乘客、参与者或公众的人身健康与生命安全。<br>• <strong>S=9（非常高）：</strong>不符合法律法规要求（如环保、射频辐射、准入强制认证合规性）。<br>• <strong>S=8（高）：</strong>在预期使用寿命内，失去正常运行所必需的<strong>主要功能</strong>（主功能完全丧失）。<br>• <strong>S=7（高）：</strong>在预期使用寿命内，降低正常运行所必需的<strong>主要功能</strong>（主功能性能降级）。<br>• <strong>S=6（中）：</strong>失去<strong>次要功能</strong>（辅助/便利性功能完全丧失）。<br>• <strong>S=5（中）：</strong>降低<strong>次要功能</strong>（辅助/便利性功能性能降级）。<br>• <strong>S=4（低）：</strong>外观、声音、振动、粗糙度或触感令人感觉<strong>非常不舒服</strong>。<br>• <strong>S=3（低）：</strong>感官指标令人感觉<strong>中度不舒服</strong>。<br>• <strong>S=2（非常低）：</strong>感官指标令人感觉<strong>略微不舒服</strong>。<br>• <strong>S=1（非常低）：</strong>完全没有可觉察到的影响。<br><br><strong>(2) DFMEA 频度 (O) 评级递进逻辑（产品经验 × 预防控制）：</strong><br>• <strong>O=10（极高）：</strong>全球范围新技术首次应用，无操作经验且运行条件不可控，无验证经验；无标准，预防控制无法预测或不存在。<br>• <strong>O=9（非常高）：</strong>公司内首次应用创新技术/材料，新工况或应用改变；无验证经验；预防控制非针对该特定要求。<br>• <strong>O=8（非常高）：</strong>新应用内首次使用创新技术/材料；极少存在标准与最佳实践且不能直接套用；预防控制不能可靠反映现场绩效。<br>• <strong>O=7（高）：</strong>相似技术/材料的新型设计，但工作周期/工况改变且无验证经验；基础设计规则存在但不适用于创新点；预防控制提供指标有限。<br>• <strong>O=6（高）：</strong>现有技术相似设计，工况有变，有历史测试或现场经验；标准规则不足以确保不出失效，预防控制具备部分能力。<br>• <strong>O=5（中）：</strong>成熟技术细节变化，工况类似，有相关测试经验；经验教训已再评估但未验证；预防控制能发现缺陷并提供部分指标。<br>• <strong>O=4（中）：</strong>与短期现场暴露几乎相同，规范完全符合，预防控制很可能反映设计符合性。<br>• <strong>O=3（低）：</strong>已知设计细微变化，成功完成测试程序，预计符合最佳实践，预防控制预测生产设计一致性。<br>• <strong>O=2（非常低）：</strong>与长期现场暴露几乎相同，高度信心符合标准，预防控制展现高度设计符合性。<br>• <strong>O=1（极低）：</strong>失效通过设计预防控制完全消除，在物理/逻辑上该起因<strong>不可能发生</strong>（如物理防呆设计彻底避免误插）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机与智能硬件研发中，表 C1-1 与 C1-2 的具体落地对标示例：<br>• <strong>S=10 典型案例：</strong>电池电芯在快充或跌落时内部微短路，引发热失控起火爆燃，危及非洲用户人身安全；标配高压充电器初次级爬电距离不足导致击穿漏电（电击致伤）。<br>• <strong>S=9 典型案例：</strong>天线 SAR 辐射值超标、传音整机进入欧洲市场 RoHS 有害物质超标、未通过当地通信委员会强制无线电认证导致禁售。<br>• <strong>S=8 典型案例（主要功能丧失）：</strong>主板 PMIC 虚焊导致整机无法开机（死机变砖）；射频 PA 击穿导致完全无法连接蜂窝网络；屏幕驱动断线导致彻底黑屏。<br>• <strong>S=7 典型案例（主要功能降低）：</strong>天线阻抗失配导致弱网下通话断续、频繁掉话；快充温升过高触发频繁降功率限流，充电速度极慢；摄像头马达迟缓导致对焦模糊。<br>• <strong>S=6 / S=5 典型案例（次要功能丧失/降低）：</strong>手电筒补光灯失效、线性马达无震动反馈（S=6）；蓝牙连接传输距离缩短、环境光传感器响应迟钝导致屏幕亮度调节变慢（S=5）。<br>• <strong>O 值的实战判定：</strong><br>传音针对东非干旱高温地区首次自主研发“微泵液冷散热架构”。因是公司内首创创新架构且工况极为苛刻，在未完成严苛的整机可靠性验证前，其密封失效起因的初始频度不能直接套用旧款手机的 O=2~3，必须如实定为 O=8 或 9；只有当热仿真公差分析闭环、且经高温高湿加速寿命试验验证合格后，方可根据验证结果将 O 下调至 3 或 4。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：混淆主要功能降低（S=7）与次要功能丧失（S=6）。</strong>工程师常认为“彻底坏掉”一定比“性能下降”严重。在 FMEA 中，手机无法上网或通话断续（主要功能受损，S=7）远比手电筒不亮或震动马达损坏（次要功能彻底丧失，S=6）对终端用户的危害与投诉率大得多。<br>• <strong>误区二：将严重度 S 作为优化改善的“降分项”。</strong>严重度完全取决于失效对整机系统及用户的影响。通过设计改进（如增加保险丝或强化结构）降低的是失效起因的发生频度（O）或提高探测度（D），失效影响本身的严重程度（S）绝不会因此改变，严禁在采取措施后私自调低 S。<br>• <strong>误区三：滥用 O=1。</strong>部分工程师认为“有成熟图纸”就评 O=1。手册明确规定 O=1 必须满足“失效起因在设计上物理不可能发生”（如非对称防呆卡槽从物理结构上消除反插起因）。若仅是失效率极低或有常规设计标准，应评为 O=2 或 O=3。<br>• <strong>误区四：新平台/新材料直接套用老机型低频度 O。</strong>开发新折叠屏铰链结构或新快充芯片时，套用传统直板成熟机型的 O=3，完全无视手册中“首次应用、无验证经验应从 O=8~10 起步”的铁律，导致高风险漏网。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C1.1 - C1.2（原书 P186-188）（PDF 第 186-188 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》DFMEA 严重度（S）评估标准（表 C1-1）中，以下关于失效影响与分值的对应关系，完全正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 失去产品主要功能评为 S=9；不符合法规评为 S=8</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 影响人身安全与健康评为 S=10；不符合法规评为 S=9</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 降低次要功能评为 S=6；失去次要功能评为 S=5</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 外观或声音感官令人非常不舒服评为 S=2；略微不舒服评为 S=4</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书第186页表 C1-1，S=10 为影响到操作安全及人身健康状况；S=9 为不符合法规；S=8 为失去主要功能；S=7 为降低主要功能；S=6 为失去次要功能；S=5 为降低次要功能；S=4/3/2 分别对应外观、声音等感官非常不舒服/中度不舒服/略微不舒服。因此选项 B 正确。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 DFMEA 频度（O）评估标准（表 C1-2）中，评定为最低等级 O=1（极低）的充要条件是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 该设计与长期现场暴露产品几乎相同，且以往售后返修率低于 10 ppm</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 设计已经过全面的 CAE 仿真模拟，未发现应力超标缺陷</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 失效通过预防控制消除，通过设计使得失效起因不可能发生</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 实验室可靠性测试已连续通过 3 个循环且无不良产生</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>根据原书第188页表 C1-2，频度 O=1（极低）的标准描述为：“失效通过预防控制消除，通过设计失效起因不可能发生”。选项 A 对应 O=2，选项 B 和 D 仅是预防与探测控制手段，不能作为 O=1 的判定准则。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音手机研发团队在开发某款面向新兴市场的旗舰机型时，首次在公司内部引入创新的“液态超导均热板材料与全新超薄密封架构”，运行环境为当地典型的高温高湿环境（工作工况改变），且目前团队尚无针对该新材料与新工况的验证与确认经验。在 DFMEA 初始分析时，该均热板密封失效起因的发生频度（O）最符合原书哪一级别的评级？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. O=9（非常高）：在公司内首次应用具备创新技术的设计产品或材料，新应用或工况改变，无验证确认经验</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. O=5（中）：应用成熟技术和材料，与之前设计相比有细节上的变化</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. O=3（低）：对已知设计的细微变化，预计符合标准和最佳实践</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. O=1（极低）：通过仿真确认无缺陷，设计上不可能发生失效</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>根据原书第187页表 C1-2，O=9 的标准为：“在公司内首次应用具备创新技术的设计产品或材料。新应用，或工作周期/运行条件有改变。没有对产品进行验证和/或确认的经验。预防控制不是针对确定特定要求的性能”。该案例完全符合 O=9 的典型特征。注：频度 10、9、8、7 后续可根据产品验证活动降低。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">在《AIAG & VDA FMEA 手册》附件 C1.2 中，评估 DFMEA 频度（O）时需要综合考量的两个核心维度是“产品经验”和“预防控制”。下列关于这两项内涵的理解，符合手册原文注释的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 产品经验是指在公司内使用产品的历史（新品设计、应用或使用案例）</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 已经完成的探测控制结果可以为产品经验提供输入</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 预防控制是指在产品设计中使用最佳实践、设计规则、公司标准、行业标准、经验教训及法规等</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 预防控制还包括以预防为导向的分析工具的有效性（如 CAE、数学建模、公差叠加和设计安全边际等）</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据原书第188页底部注释：1. “产品经验：在公司内使用产品的历史（新品设计、应用或使用案例）。已经完成的探测控制结果提供了设计经验”；2. “预防控制：在产品设计中使用最佳实践、设计规则、公司标准、经验教训、行业标准、材料规范、政府规定，以及以预防为导向的分析工具的有效性（分析工具包括计算机辅助工程、数学建模、模拟研究、公差叠加和设计安全边际）”。四个选项均准确契合原书描述。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">传音工程师在对智能硬件进行 DFMEA 严重度（S）评估时，下列分级打分与判定逻辑符合手册规范的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 智能手机电池热失控起火危及用户人身安全，属于破坏操作安全与健康，评定为 S=10</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 整机射频杂散辐射超标违反出口国强制准入法律法规，评定为 S=9</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 手机射频主天线开路导致完全无法拨打电话和上网（丧失主要功能），严重度必须评为 S=8，高于手电筒 LED 烧毁（丧失次要功能，S=6）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 若在后续设计优化中增加了过温保护芯片彻底防止电池过热，应将该失效影响的严重度 S 从 10 分直接降为 2 分</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>A、B、C 选项完全符合表 C1-1 的分级标准：安全=10、法规=9、主要功能丧失=8、次要功能丧失=6。D 选项属于典型误区：增加过温保护芯片是预防/探测控制措施，能够降低失效起因的发生频度（O）或提高探测度（D），但电池起火爆炸这一“失效影响”本身的危险程度依然是 S=10，严重度不可因增加了控制措施而调低，故 D 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

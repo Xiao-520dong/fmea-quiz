@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 075：附件 B2（上）：PFMEA 步骤一至步骤四表格逐列填写提示</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 075：附件 B2（上）：PFMEA 步骤一至步骤四表格逐列填写提示</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>DFMEA 步骤四至步骤六表格填报要点：明确了失效模式（FM，关注要素自身功能丧失）、失效影响（FE，上一级别/用户后果并评定 S）与失效起因（FC，下一级设计缺陷并制定 PC/DC）的对应逻辑，以及预防控制针对起因、探测控制针对起因或模式的填报要求。</li><li><strong>上期核心2：</strong>AP（操作优先级）由 S/O/D 组合查表确定，表格必须记录特殊特性符号、具体措施、负责人、目标完成日期及采取措施后的 S/O/D 重新评级状态。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与表头规范（步骤一：规划与准备）</strong><br>依据《AIAG & VDA FMEA 手册》附件 B2.1，PFMEA 表头必须规范记录基础管理信息，以确保可追溯性与职责清晰：<br><ul><li><strong>基础背景信息：</strong>包括负责 PFMEA 的公司名称、制造具体地理位置/地址、顾客名称或产品系列、年型/项目以及 DFMEA ID 编号（明确与设计源头的关联）。</li><li><strong>管控与权责信息：</strong>记录 PFMEA 开始日期与最新修订日期；列出所需跨职能团队成员（CFT）完整名单；明确过程职责所有人的姓名（Process Owner）；注明保密级别（如商业应用、专有、保密）。</li></ul></div><div class="highlight-blue"><strong>2. 结构分析（步骤二）与 4M 工作要素拆解</strong><br>附件 B2.2 对结构分析三列提供了清晰的填写指引：<br><ul><li><strong>1. 过程项（系统、子系统、零件要素或过程名称）：</strong>填写正在分析中的过程整体名称（例如：手机整机装配线、电机装配线）。它是已成功完成所有过程步骤的最终结果，也可以是间接的制造/辅助过程（例如：厂内周转与运送）。</li><li><strong>2. 过程步骤（工位编号和关注要素名称）：</strong>待分析过程项的具体操作或工位（例如：OP 30 烧结轴承压装过程、手机后置摄像头模组压合工位）。</li><li><strong>3. 过程工作要素（4M 类型）：</strong>使用 4M 类型找出对正在分析的操作或工位产生影响的管理要素。手册特别强调：<strong>4M 类型包括人员（Man）、设备（Machine）、材料（非直接）（Material-indirect）、环境（Environment）</strong>，并且<strong>“在每行列出一个 4M 项”</strong>。</li></ul></div><div class="highlight-green"><strong>3. 功能分析（步骤三）与失效分析（步骤四）的双向镜像映射</strong><br>手册 B2.3 与 B2.4 揭示了功能分析与失效分析之间极其严密的“正反镜像”逻辑：<br><ul><li><strong>过程项功能 &rarr; 失效影响（FE）：</strong>对过程项预期功能按细分类别描述，填写 FE 时直接关联这些预期，并必须同时评估三个维度的后果：<strong>您的工厂（本厂制造/组装）、发运至工厂（OEM/下游整机厂）、最终用户</strong>。手册明确建议在三者旁边分别标注严重度，并<strong>“使用最高的严重度评级”</strong>；手册特别提醒：<strong>最终用户的某个方面并不总是获得最高的严重度评级</strong>（例如产线设备爆炸危及员工生命或重大停线，本厂 S=9/10 高于用户端）。</li><li><strong>过程步骤功能和产品特性 &rarr; 失效模式（FM）：</strong>描述工位必须达到的功能（如压装后的轴向位置尺寸）。这些是正面的产品特性，<strong>产品生产出来后必须可以在产品（缺陷）中进行探测/测量</strong>。与正面产品特性相反的，即为一种或多种<strong>失效模式（FM）</strong>。</li><li><strong>工作要素功能和过程特性 &rarr; 失效起因（FC）：</strong>对如何完成工作的正面描述（如保压压力、机器温度、滴胶速度等过程特性量值，量值/规格为可选项）。<strong>在过程进行中必须可对过程特性进行测量</strong>。正面描述的相反面即为<strong>失效起因（FC）</strong>；在功能分析中描述越详细，识别出的失效起因就越全面。在过程（错误）中必须可以探测到失效起因，且 FC 必然导致 FM。</li></ul></div><div class="highlight-red"><strong>4. 传音制造实战场景与常见误区避坑指南</strong><br><ul><li><strong>传音智能终端制造实操映射（以中框后盖点胶压合为例）：</strong><br>① 过程项：手机整机总装线；② 过程步骤：OP50 后盖点胶保压工位；③ 工作要素：设备（点胶机/保压治具）、人员（治具放置操作工）、材料（PUR结构胶水）、环境（车间温湿度）。<br>④ 过程步骤功能与产品特性：后盖与中框粘接间隙&le;0.05mm、剥离拉力&ge;150N（相反面 FM：后盖浮翘、剥离强度不足）；<br>⑤ 工作要素功能与过程特性：点胶压力 0.4&plusmn;0.02MPa、保压时间 15s（相反面 FC：点胶气压过低、保压时间不足）。</li><li><strong>典型误区 1：工作要素未按 4M 独立成行：</strong>许多工程师将人、机、料混在一个单元格中，导致后续无法一对一推导过程特性及失效起因。<strong>正解：</strong>每行只能列出一个 4M 类别。</li><li><strong>典型误区 2：严重度 S 只看最终用户：</strong>误以为最终用户体验决定一切。手册明确指出必须综合评估本厂、下级工厂与最终用户，并取最高值。如果某项缺陷导致传音制造产线停线&gt;1小时或存在工伤风险，其严重度 S 分值可能远高于海外用户轻微异响的评分。</li><li><strong>典型误区 3：产品特性与过程特性混淆：</strong>把“机台点胶压力”填在过程步骤功能（产品特性）中。<strong>正解：</strong>留在产品上的才是产品特性（相反面为 FM 缺陷）；过程设备可调控的参数是过程特性（相反面为 FC 错误）。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 B2.1 - B2.4（原书 P175-176）（PDF 第 175-176 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 B2.2 对结构分析（步骤二）的指引，关于“过程工作要素（4M类型）”的填报要求，以下描述完全正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 4M 类型必须包含设计、设备、工艺、软件四个方面</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 4M 类型为人员、设备、材料（非直接）、环境，且在每行列出一个 4M 项</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 必须将 4M 要素全部合并到单个工位单元格中集中描述</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 间接过程（如物料厂内运送）严禁作为 PFMEA 的过程项进行分析</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>依据手册附件 B2.2 原文：“4M 类型：人员、设备、材料（非直接）、环境。在每行列出一个 4M 项。也可以是间接的制造过程，例如运送。”故 B 选项正确；A 选项类别错误；C 选项违背“每行列出一个 4M 项”的规则；D 选项与原书“也可以是间接的制造过程”相悖。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在 PFMEA 步骤三与步骤四中，手册明确指出了产品特性、过程特性与失效链的逻辑对应关系。下列关于正向功能与反向失效的映射，表述正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 与正面产品特性相反的是失效起因（FC），在过程中进行探测</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 与正面过程特性相反的是失效模式（FM），在产品中进行探测</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 与正面产品特性相反的是失效模式（FM），在产品（缺陷）中必须可以探测/测量</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 过程特性的量值/规格必须强制列在表头，不可引用过程文档</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>依据手册 B2.3 与 B2.4 原文：“与正面产品特性相反的是一种或多种失效模式。失效模式在产品（缺陷）中必须可以进行探测/测量。”与正面过程特性相反的则是失效起因（FC），在过程（错误）中探测。量值/规格为可选项，可参看过程文档。因此 C 正确，A、B 混淆了特性与失效类别，D 错误。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机装配产线的 PFMEA 失效分析（步骤四）中，团队在评估某工位缺陷的严重度（S）时，发现该缺陷会导致：① 本厂产线严重堵塞停线 2 小时（本厂 S=8）；② 最终用户感知为手机背盖轻微细缝（最终用户 S=4）。根据手册 B2.4 的严重度评级规则，该行最终采用的严重度 S 应为多少？为什么？</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 采用 S=8；因为手册建议在三个考虑方面（本厂、发运至工厂、最终用户）分别评估，并使用最高的严重度评级，最终用户不一定总是最高</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 采用 S=4；因为 PFMEA 必须始终以“以客户为中心”，最终用户的体验优先级高于制造厂内部停线</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 采用 S=6；按手册规则应取本厂与最终用户的算术平均值进行综合折中</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 必须拆分为两条独立的 PFMEA 行，分别录入 S=8 和 S=4，不可合并取值</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据手册 B2.4 原文：“建议在三个考虑方面（您的工厂、发运至工厂、过程项、最终用户）旁边列出严重度评级，并使用最高的严重度评级。例如，最终用户的某个方面可能并不总是获得最高的严重度评级。”因此应取最高者 S=8，A 正确，B、C、D 均不符合手册明确规则。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据《AIAG & VDA FMEA 手册》附件 B2.1 与 B2.3，关于步骤一（规划与准备）和步骤三（功能分析）表格填写的提示，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. PFMEA 表头需要明确过程职责所有人（PFMEA Owner）姓名及跨职能团队成员名单</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 表头中要求体现与设计源头的关联，需记录 DFMEA ID 编号（由公司确定）</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 过程项的功能可按几个细分类别分开描述，一些类别若未知可列为不适用（NA）</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 过程工作要素的功能中，正面描述越详细、越多，后续推导出的失效起因也会越多</label></div><div class="option"><label><input type="checkbox" name="q4" value="E"> E. 步骤三中过程特性（如压力、温度、速度）的量值规格是强制必填项，绝不允许引用外部作业指导书</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>依据手册 B2.1 与 B2.3 原文：A、B、C、D 均与原书完全一致。E 选项错误，手册原文明确说明：“量值/规格为可选项，请参看过程文档。例如：压力、机器温度、冲洗液浓度、速度等。”并非强制必填。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在传音制造工程部开展 PFMEA 步骤四（失效分析）实战研讨时，关于失效模式（FM）、失效起因（FC）与失效影响（FE）的界定标准，下列说法符合手册规范的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 失效模式（FM）反映的是产品特性的未达成，表现为产品中的“缺陷”</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 失效起因（FC）反映的是过程特性的偏差，表现为过程中的“制造错误”</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 失效起因必须会导致失效模式的发生，且在过程中必须可以探测到失效起因</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 失效影响（FE）只需考虑对最终手机消费者的影响，制造厂内部废品和返工不属于 FE 范畴</label></div><div class="option"><label><input type="checkbox" name="q5" value="E"> E. 失效起因（FC）是“工作要素功能和过程特性”中正面描述的反面</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>依据手册 B2.4 原文：“失效模式在产品（缺陷）中必须可以进行探测/测量”、“在过程（错误）中必须可以探测到失效起因，并且失效起因会导致失效模式”、“正面描述的反面为失效起因”，因此 A、B、C、E 正确。D 选项错误，手册明确指出 FE 必须综合考虑“您的工厂、发运至工厂、过程项、最终用户”三个维度。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C,E"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

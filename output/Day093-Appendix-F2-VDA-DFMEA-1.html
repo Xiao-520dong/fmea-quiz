@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 093：附件 F2.1（上）：从 VDA 第四卷到新版 DFMEA 的变更点（五步变七步）</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 093：附件 F2.1（上）：从 VDA 第四卷到新版 DFMEA 的变更点（五步变七步）</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1：</strong>AIAG 第四版到新版 PFMEA 步骤五至步骤七的演进，核心在于用 AP（高/中/低）替代 RPN 乘积阈值，强调预防优于探测。</li><li><strong>上期核心2：</strong>步骤六和七将优化闭环与结果文件化正式固化为标准流程，强化了向高层汇报与跨职能经验传递。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与总体架构变更（五步法到七步法）</strong><br>原 VDA 第四卷《产品和过程 FMEA》中采用经典的“五步法”（系统结构、功能分析、失效分析、风险评价、优化）。AIAG & VDA 新版手册将其全面重构升级为“七步法”：<br>① 将原“定义（D）”扩展固化为<strong>步骤一：项目规划和准备</strong>（明确项目范围、表头扩展、边界及 5T 规划）；<br>② 保留原步骤并深度规范化为<strong>步骤二：结构分析</strong>、<strong>步骤三：功能分析</strong>、<strong>步骤四：失效分析</strong>、<strong>步骤五：风险分析</strong>、<strong>步骤六：优化</strong>；<br>③ 正式增加<strong>步骤七：结果文件化</strong>作为闭环。<br>特别变更说明：在 DFMEA 中<strong>删除了特殊特性（SC）列</strong>（转而在 PFMEA 中保留，见附录 D1），并新增了“历史/变更授权”列用于持续改进追溯，系统阐述了 DFMEA 与 PFMEA 之间的逻辑传递以及顾客-各级供应商之间的协作。</div><div class="highlight-blue"><strong>2. 步骤一至步骤五的具体变更点拆解</strong><br><strong>步骤一（规划和准备）：</strong>替换原“定义”，表头重构。变更列包括：年型/项目、项目、开始和修订日期、跨职能团队、DFMEA ID 编号、设计职责；新增列包括：公司名称、工程地点、顾客名称、保密级别。<br><strong>步骤二（结构分析）：</strong>将项目明确分为三层级：“系统（上一较高级别）- 系统要素（关注要素）- 组件要素（下一较低级别或特性类型）”。阐明了过程流程/结构树与表格视图的关联，并强化了供应链协同。变更核心原因在于使团队精准聚焦于要素，建立系统间失效逻辑联系。<br><strong>步骤三（功能分析）：</strong>三层级对应扩展为“上一较高级别功能及要求 - 关注要素功能及要求 - 下一较低级别功能及要求或特性”。引入参数图（P-图）明确输入/输出/控制/噪声，强调唯有列清正向功能与要求，方能推导负向失效。<br><strong>步骤四（失效分析）：</strong>严格形成“关注要素失效模式（FM）- 上一级/最终用户失效影响（FE）- 下一级要素/特性失效起因（FC）”的失效链调整，阐明 DFMEA 到 PFMEA 的衔接与顾客-供应商协作。<br><strong>步骤五（风险分析）：</strong><br>• S（严重度）：全新十分制，安全评级为 10，法规为 9（与有无警告解耦，对应功能安全）；DFMEA/PFMEA/FMEA-MSR 统一量表。<br>• O（频度）：强调预防控制作为核心输入。<br>• D（探测度）：综合考虑探测能力与开发时间安排。<br>• 逻辑评估：彻底废除 RPN，DFMEA 与 PFMEA 统一采用措施优先级（AP：H/M/L）。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机新平台研发（如超薄折叠屏转轴模组设计）中：<br>• <strong>结构与功能三级展开：</strong>系统（整机整机开合与平整度要求）- 关注要素（转轴铰链机构：支撑并同步平稳开合 180°）- 下一级组件（MIM 凸轮轴及阻尼弹簧：表面硬度、弹性系数）。<br>• <strong>失效链建立与传递：</strong>凸轮磨损变平（FC）导致铰链开合阻尼感丧失或虚位（FM），最终导致整机屏幕折痕加剧或悬停失效（FE，S=7）。若转轴断裂刺穿柔性屏引发电池短路着火，则 S 评定为 10。<br>• <strong>从 VDA 惯性到新版 AP：</strong>传音老工程师习惯用 VDA 第四卷直接计算 RPN 排序，现必须严格基于 S/O/D 的逻辑组合评估 AP，避免因 RPN 未超标而忽略高严重度失效。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：在 DFMEA 表格中强行保留特殊特性（SC/CC）标记列。</strong><br>手册明确指出：新版 DFMEA 表格中已删除特殊特性列（保留在 PFMEA 中）。设计工程师应通过明确功能规范和公差要求来指导制造，而不在 DFMEA 栏目中堆砌符号。<br>• <strong>误区二：严重度 S=9 与 S=10 沿用老版“有无警告”的区分。</strong><br>原老版标准常将有无预警作为 S=10 或 9 的分界，新版严格统一为：安全危害评级为 10（无论是否有警示），法规合规性失效评级为 9。<br>• <strong>误区三：混淆三级层级的功能对应关系。</strong><br>常有工程师在关注要素栏填写组件级特性（如螺钉抗拉强度），导致失效链错位。正向三级结构必须精准对应“系统 - 关注要素 - 组件要素”。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 F2.1（原书 P227-229）（PDF 第 227-229 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》附件 F2.1，新版手册相比 VDA 第四卷 DFMEA 在整体结构与特殊特性上的核心变更，下列说法正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 将原五步法缩减为四步法，并在 DFMEA 中增加了特殊特性列</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 将原 VDA 五步法重构为七步法，且在 DFMEA 中删除了特殊特性列，但在 PFMEA 中保留</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 删除了原本步骤五的风险分析，直接根据经验采取优化措施</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 新增了 RPN 临界阈值计算，将步骤七定义为管理评审</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>原书 P227 明确指出：FMEA 方法按七步法说明，类似 VDA 第四卷中的五步法，“定义”变为步骤一，添加结果文件化作为步骤七；同时在 DFMEA 中删除了特殊特性，但在 PFMEA 中保留。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在步骤一（规划和准备）中，手册对表头进行了梳理与补充。下列哪一组信息属于本次新版手册中完全“新添加”的内容？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 年型/项目、跨职能团队</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. DFMEA ID 编号、设计职责</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 公司名称、工程地点、顾客名称、保密级别</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 开始日期和修订日期、项目名称</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书 P227 步骤一明确列出，添加内容包括：vii. 公司名称，viii. 工程地点，ix. 顾客名称，x. 保密级别。其他如年型、项目、日期、跨职能团队、ID 编号等属于“变更内容”。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">在传音手机快充发热防护设计 DFMEA 中，研发团队根据新版步骤五（风险分析）对电池过充着火风险进行 S 评级。下列评估符合新版标准的是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 只要手机系统能在着火前弹出高温警告弹窗，S 级即可从 10 降为 9</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 只要涉及安全风险，无论是否存在预先警告，严重度 S 评级均为 10；法规失效评定为 9</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 严重度 S=10 仅适用于有法规罚款的情况，安全事故评为 8</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. DFMEA 与 PFMEA 必须采用完全不同维度的 S 评分量表</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>原书 P229 步骤五明确指出：评级 10 和 9 与功能安全组对应，无论警告如何，安全评级为 10，而法规评级为 9。DFMEA、PFMEA 和 FMEA-MSR 使用相同的量表。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">关于新版手册中步骤二（结构分析）与步骤三（功能分析）的演进，下列说法正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 结构分析将项目明确扩展为“上一较高级别（系统）- 关注要素（系统要素）- 下一较低级别或特性类型（组件要素）”</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 功能分析详细定义了参数图（P-图）的要求/特性和用法</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 先考虑并列出产品的正向功能和要求，是为了更准确地推导负向因素、失效影响与失效起因</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 结构分析取消了顾客与供应商之间的协同分析要求</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>原书 P228 明确说明：项目扩展为系统、系统要素、组件要素（A对）；详细定义了 P-图的要求和用法（B对）；变更原因明确指出考虑并列出正向功能和要求后可列出负面因素、失效影响与起因（C对）；手册明确指出定义并增加了顾客与供应商之间的协作，故 D 错误。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据附件 F2.1 对步骤四（失效分析）和步骤五（风险分析）的说明，新版 DFMEA 的变化包括：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 建立了 FE（上一级/最终用户）、FM（关注要素）与 FC（下一级要素/特性）的严密对应调整</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 彻底废除了传统的风险顺序数（RPN），统一采用措施优先级（AP：高/中/低）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 频度（O）评级强调预防控制措施作为输入的十分制量表</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 探测度（D）评级只关注测试工具的精度，无需考虑开发时间安排</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>原书 P229 明确说明：失效分析对 FE、FM、FC 进行了调整对应（A对）；RPN 替换为措施优先级（AP），按高、中、低表示（B对）；O 强调预防控制措施作为输入（C对）；探测度（D）明确指出“探测能力和时间安排考虑在内”，故 D 错误。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

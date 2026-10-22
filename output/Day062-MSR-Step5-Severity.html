@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 062：FMEA-MSR 步骤五（风险分析）：风险评估目的与 MSR 严重度（S）表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 062：FMEA-MSR 步骤五（风险分析）：风险评估目的与 MSR 严重度（S）表</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（失效链构建）：</strong>FMEA-MSR 步骤四聚焦于功能安全与合规场景，围绕“失效起因（FC）- 失效模式（FM）- 减轻后的失效影响（FE）”建立因果关联网络。</li><li><strong>上期核心2（系统响应与影响减轻）：</strong>明确了诊断监视与系统切换（如进入跛行模式、切断功率或安全降级）在阻断恶性失效扩展中的关键作用，区分了原始严重影响与经系统响应后减轻的失效影响。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与风险分析目的</strong><br>根据《AIAG & VDA FMEA 手册》，FMEA-MSR 步骤五（风险分析）的核心目的在于通过系统化评估失效影响的<strong>严重度（S）</strong>、失效起因在运行场景下的<strong>发生频率（F）</strong>以及诊断监视功能的<strong>监视能力（M）</strong>，综合度量系统潜在风险，并为降低风险的改进措施确定优先级别（措施优先级 AP）。<br>与传统 DFMEA 采用 S（严重度）、O（频度）、D（探测度）不同，MSR 针对运行过程中的工况将评估维度重构为 <strong>S、F、M</strong>，评级范围均为 1 到 10 分，10 代表最高风险。</div><div class="highlight-blue"><strong>2. 步骤五的主要目标与严重度（S）评级规则</strong><br><ul><li><strong>风险分析的主要目标：</strong>分配现有和/或计划的控制措施并对失效进行评级；为频率（F）分配评定理由；分配诊断监视（M）控制措施；审查功能安全（如 ISO 26262）与法律法规合规性；推动客户与供应商之间在 S 与 F 维度上的协同输入；计算措施优先级（AP），为步骤六（优化）奠定基准。</li><li><strong>严重度（S）的通用性准则：</strong>严重度是与既定失效模式下<strong>最严重的失效影响</strong>相关联的度量。手册明确规定：<strong>DFMEA 与 FMEA-MSR 的严重度评级标准是完全相同且通用的</strong>。团队必须采用统一的基准，其评级需求需视情况由整车/终端客户传递至供应链。</li><li><strong>表 MSR1 严重度（S）梯队判定标准：</strong><ul><li><strong>10 ~ 9（非常高）：</strong>影响到车辆/设备或周边人员的操作安全与生命健康（10分），或违反法律法规（9分）。</li><li><strong>8 ~ 7（高）：</strong>在预期寿命内丧失产品主要功能（8分），或导致产品主要功能降级（7分）。</li><li><strong>6 ~ 5（中）：</strong>丧失产品次要功能（6分），或导致产品次要功能降级（5分）。</li><li><strong>4 ~ 2（低）：</strong>外观、声音、振动或触感令人感觉非常不适（4分）、一般性不适（3分）或略微不适（2分）。</li><li><strong>1（非常低）：</strong>无任何可觉察的影响。</li></ul></li></ul></div><div class="highlight-green"><strong>3. 传音研发/制造实战场景</strong><br>在传音智能手机及智能穿竭设备（如大功率快充架构、动力电池保护板 BMS、车载智能互联终端）的 MSR 风险分析中：<br><strong>实战案例（120W 超级快充协议与温度保护失效）：</strong><br>• <strong>失效模式（FM）：</strong>充电管理芯片 MOSFET 击穿直通且发热失控。<br>• <strong>最严重失效影响（FE）：</strong>若无保护机制，将引发电池热失控起火爆裂，直接威胁最终用户的生命安全，因此该失效链在表 MSR1 中的<strong>严重度 S = 10</strong>。<br>• <strong>设计协同考量：</strong>即使研发团队增加了二级 NTC 硬件切断和软件热保护（影响监视度 M），该底层物理危害对应的 S 评分依然必须如实定为 10 分，而不能主观调低 S 值。高严重度促使团队必须匹配最高等级的诊断覆盖率（M）与极低的起因失效率（F），以实现 AP 为 Low 的安全目标。</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br><ul><li><strong>误区一：混淆 DFMEA 与 MSR 的 S 评分表。</strong>部分工程师误以为 MSR 有一套独立的严重度打分规则。<strong>正解：</strong>手册明确规定 DFMEA 和 MSR 的 S 评级体系完全一致，确保整机系统分析与安全机制分析在同一标准语境下对话。</li><li><strong>误区二：误将“监视缓解后的效果”直接折算为初始严重度 S。</strong>例如认为系统具备降额充电功能，就直接将起火风险的 S 从 10 改为 5。<strong>正解：</strong>严重度 S 针对的是既定模式引发的后果严重程度，系统响应保护能力体现在监视评级（M）和减轻后影响评估中，切不可人为抹杀物理危害的 S 固有分值。</li><li><strong>误区三：供应商闭门自评 S 值。</strong>部件级供应商往往脱离整机使用场景打分，导致整机厂与供应商分值脱节。<strong>正解：</strong>手册要求严重度评估应通过客户与供应商充分协同，由客户将整车/整机层面的危害影响传递给供应商。</li></ul></div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》第四章 4.5.1 - 4.5.3 节（PDF 第 133-134 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》，FMEA-MSR 步骤五（风险分析）用于评估每个失效链风险大小的三项核心指标是：</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 严重度（S）、频度（O）、探测度（D）</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 严重度（S）、发生频率（F）、监视（M）</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 严重度（S）、暴露率（E）、可控性（C）</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 失效模式（FM）、失效率（FIT）、诊断覆盖率（DC）</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据手册 4.5.2 节规定，FMEA-MSR 通过三个标准评估因果关系：严重度（S）、频率（F）和监视（M），评估数值为 1 到 10，其中 10 代表最高风险。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">关于 FMEA-MSR 中的严重度（S）评级，下列哪项表述完全符合新版手册的规定？</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. FMEA-MSR 拥有一套不同于传统 DFMEA 的全新独立严重度评估表</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 严重度评分可以根据系统是否包含软件诊断机制而直接降低</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. DFMEA 和 FMEA-MSR 的严重度评级标准是相同的</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 严重度（S）仅代表元器件自身的物理损坏程度，与整车或人身安全无关</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>手册 4.5.3 节明确指出：“严重度评级（S）是一种与所评估功能在既定失效模式下的最严重失效影响相关联的度量，并且 DFMEA 和 FMEA-MSR 的严重度评级是相同的。”</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音智能终端硬件开发团队正在对某款旗舰手机的电容触控系统进行 FMEA-MSR 分析。若触控驱动 IC 异常导致“在预期使用寿命内，屏幕完全失去触控响应（丧失正常使用手机所必需的核心主要功能）”，且无安全危害与法规违规。根据表 MSR1，其失效影响的严重度（S）应评为：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 10 分</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 8 分</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 6 分</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 4 分</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>依据表 MSR1 严重度标准：丧失操作安全/危及健康为 10 分，不符合法规为 9 分；而在预期使用寿命内“失去正常驾驶/操作所必需的主要功能”评为 8 分；“降低主要功能”评为 7 分；丧失次要功能评为 6 分。智能手机完全失去触控输入属于丧失主要功能，对应 8 分。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》4.5.1 节，FMEA-MSR 风险分析的主要目标包括下列哪些项？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 分配现有和/或计划的控制措施、并对失效进行评级</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 对频率评级分配理由，并分配监视控制措施</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 分析功能安全和法规合规性的规定</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. 评估措施优先级（AP），作为产品优化步骤的基础</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>根据手册 4.5.1 节，FMEA-MSR 风险分析的主要目标包括：分配控制措施并评级、对频率分配理由、分配监视控制措施、分析功能安全和法规合规性、对每个失效链进行 S/F/M 评级、客户与供应商协作以及评估措施优先级作为产品优化基础。选项 A、B、C、D 全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">依据表 MSR1 严重度（S）评估基准，下列影响级别与严重度分值的对应关系正确的有：</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. 影响到操作安全，驾驶员/行人/用户的健康状况 —— 评级为 10</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 产品不符合强制性法律法规要求 —— 评级为 9</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 失去产品次要功能（如手机呼吸灯不亮、按键触感微弱） —— 评级为 6</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 外观、声音、振动或触感令人感觉非常不舒服 —— 评级为 2</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>根据表 MSR1 标准：10 分对应操作安全与人身健康危害；9 分对应不符合法规；8/7 分对应主要功能的丧失/降级；6/5 分对应次要功能的丧失/降级；4 分对应感官“非常不舒服”，3 分对应“一般性不舒服”，2 分对应“略微不舒服”，1 分为“无觉察影响”。因此选项 D 错误（非常不舒服应为 4 分），正确选项为 A、B、C。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "C"}, "3": {"correct": "B"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

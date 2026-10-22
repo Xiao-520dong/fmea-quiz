@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 080：附件 C1（三）：DFMEA 探测度（表D3）与 AP 措施优先级速查表</title>
+    <style>
+        body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #fff; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { margin: 0; color: #2d3748; font-size: 24px; }
+        .highlight { background-color: #fffaf0; border-left: 4px solid #ed8936; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-green { background-color: #f0fff4; border-left: 4px solid #48bb78; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-blue { background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .highlight-red { background-color: #fff5f5; border-left: 4px solid #f56565; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        .question-num { font-weight: bold; color: #4a5568; margin-right: 10px; }
+        .question-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #edf2f7; color: #718096; }
+        .question-type.multi { background: #e6fffa; color: #38a169; }
+        .question-text { margin: 15px 0; font-size: 16px; color: #2d3748; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option { padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 8px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; }
+        .option:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .option input { margin-right: 12px; }
+        .option label { flex: 1; cursor: pointer; margin: 0; }
+        .option.correct { background: #f0fff4; border-color: #48bb78; }
+        .option.wrong { background: #fff5f5; border-color: #f56565; }
+        .option.user-wrong { background: #fffaf0; border-color: #ed8936; }
+        .option-feedback { width: 100%; margin-top: 10px; font-size: 14px; display: none; }
+        .option-badge { font-weight: bold; margin-left: 10px; }
+        .correct .option-badge { color: #48bb78; }
+        .wrong .option-badge { color: #f56565; }
+        .user-wrong .option-badge { color: #ed8936; }
+        .btn { background: #4299e1; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; transition: background 0.2s; font-weight: 600; margin-top: 20px; }
+        .btn:hover { background: #3182ce; }
+        .result-box { display: none; margin-top: 30px; padding: 20px; border-radius: 8px; text-align: center; }
+        .result-box.show { display: block; }
+        .score { font-size: 32px; font-weight: bold; color: #2d3748; margin-bottom: 10px; }
+        .explanation { background: #ebf8ff; padding: 15px; border-radius: 8px; margin-top: 15px; font-size: 14px; color: #2c5282; display: none; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <div><a href="../index.html" style="color: #4299e1; text-decoration: none;">← 返回目录</a></div>
+                <h1>Day 080：附件 C1（三）：DFMEA 探测度（表D3）与 AP 措施优先级速查表</h1>
+                <p style="color: #718096;">AIAG & VDA FMEA 手册百日精讲</p>
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">🔄 温故知新：上期回顾</h3>
+                <ul style="color: #4a5568; line-height: 1.6;">
+                    <li><strong>上期核心1（表C1.3 时间维度）：</strong>备选 DFMEA 频度表通过引入“基于时间的失效预测”与零部件设计寿命/工作循环绑定，解决了传统仅依赖 PPM 导致时间跨度失真的评估难题。</li><li><strong>上期核心2（工况与寿命关联）：</strong>失效起因发生率评估必须结合目标市场的实际使用场景强度（如非洲高温高湿重度使用环境），将设计运行小时数与频度等级精准对齐。</li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📖 今日核心知识</h3>
+                <div style="line-height: 1.6; color: #4a5568;">
+                    <div class="highlight"><strong>1. 核心概念与定义：DFMEA 探测度（表 C1.4）的双维逻辑</strong><br>在《AIAG & VDA FMEA 手册》附件 C1.4 中，DFMEA 探测度（D）评价标准不再仅仅关注“能否测出”，而是从<strong>两个核心维度</strong>进行综合评定：<br>① <strong>探测方法成熟度（Detection Method Maturity）：</strong>测试方法是尚未定义（D=10）、未特别设计（D=9）、全新未经证实（D=8），还是已经过工程实践充分验证（D=1-7）。<br>② <strong>探测机会与时间窗口（Detection Opportunity & Timing）：</strong>区分了三种测试机会梯度（老化测试 > 失效测试 > 通过/不通过测试），并极其严厉地将<strong>测试节点在开发周期中的时机</strong>纳入打分机制——测试即使能查出缺陷，但若排期太晚导致改模延误生产，探测度等级将大幅恶化（从 2-4 劣化至 5-7）。</div><div class="highlight-blue"><strong>2. 方法步骤与规则拆解：表 C1.4 等级与表 C1.5 AP 矩阵结构</strong><br><strong>(1) 表 C1.4 探测度评分逐级分解：</strong><br>• <strong>非常低（10-9）：</strong>10分=测试程序未开发、方法未定义；9分=未专门针对失效模式或起因设计测试。<br>• <strong>低（8）：</strong>新测试方法，尚未经过验证（无论采用何种测试类型）。<br>• <strong>中（7-5，时机较晚）：</strong>已验证方法，但<strong>测试排期在开发周期较晚</strong>，一旦失败将导致重新开模与量产延迟：7分=通过/不通过测试（Pass/Fail）；6分=失效测试（Test to failure）；5分=老化测试（Degradation test）。<br>• <strong>高（4-2，时机充分）：</strong>已验证方法，且<strong>计划时间充分</strong>，量产前有足够时间修改工装模具：4分=通过/不通过测试；3分=失效测试；2分=老化测试。<br>• <strong>非常高（1）：</strong>历史测试证明绝不会出现，或经实践证明总是能够100%拦截。<br><br><strong>(2) 表 C1.5 措施优先级（AP）逻辑速查规律：</strong><br>AP 彻底取代 RPN 乘积计算，按 S（影响度）、O（发生预测）、D（探测能力）实行阶梯裁定：<br>• <strong>S=9-10（极其致命）：</strong>只要 O≥4，AP 全部为 <strong>H（高）</strong>；即使 O=2-3，只要 D≥5 也是 H；仅当 O=1 或 O=2-3 且 D=1 时才可降为 L。<br>• <strong>S=7-8（严重影响）：</strong>O=8-10 时全为 H；O=6-7 时除 D=1 为 M 外全为 <strong>H</strong>；O=4-5 时 D≥7 为 H，D≤6 为 M。<br>• <strong>S=4-6（中等影响）：</strong>O=8-10 且 D≥5 时为 H，D≤4 降为 M；O 适中时主要落在 M 与 L。<br>• <strong>S=2-3（轻微影响）：</strong>极少出现 H，最高为 M（仅在 O=8-10 且 D≥5 时为 M，其余全为 L）。<br>• <strong>S=1（无感知）：</strong>无论 O 和 D 为何值，AP 恒为 <strong>L（低）</strong>。</div><div class="highlight-green"><strong>3. 传音研发/制造实战场景：手机结构可靠性与 AP 判定落地</strong><br><strong>场景：传音折叠屏/大屏手机整机跌落铰链与中框开裂失效分析</strong><br>• <strong>失效链定义：</strong>失效模式为“中框连接筋断裂”，后果为“屏幕碎裂且无法点亮”（S=8，主要功能丧失）。失效起因为“铝合金压铸壁厚局部过薄，受冲击应力集中”（预测发生度 O=6，采用新型轻量化薄壁结构）。<br>• <strong>探测度评价对照：</strong><br>方案 A（量产前冲刺验证）：在试产 PVT 阶段进行 1.2 米多角度跌落测试（已验证的老化/疲劳跌落测试），但此时模具早已冻结，若断裂需修改压铸模导致首发上市推迟。根据表 C1.4，应评为 <strong>D=5</strong>（中等）。查 AP 表（S=7-8, O=6-7, D=5-6）👉 <strong>AP = H</strong>。<br>方案 B（早期仿真与小批量失效测试）：在 EVT（工程验证阶段）通过 CAE 跌落应力仿真，并在软模样机阶段做“失效极限测试”（逐步增加跌落高度至 1.8 米直至开裂，找出强度裕量极限）。时间充裕可调整壁厚。评为 <strong>D=3</strong>（高等）。<br>• <strong>AP 闭环决策：</strong>即便方案 B 将 D 优化至 3，查 AP 表（S=7-8, O=6-7, D=2-4），<strong>措施优先级依然为 H</strong>！这向传音研发团队传递了清晰的信号：对于高严重度、高发生倾向的硬件结构风险，单纯靠提前测试（降低 D）并不能免除改进责任，必须采取预防措施（如优化中框壁厚结构以降低 O）！</div><div class="highlight-red"><strong>4. 常见误区与避坑指南</strong><br>• <strong>误区一：只要测得出，就一律打 2 分或 3 分。</strong>忽视“测试时机”对探测度的惩罚。传音工程师常在 DVP 中将所有经过认证的可靠性实验直接评为 D=2~3，完全无视该测试是否安排在封模之后。若测试失败必定延误 SOP，手册强制要求降级评为 5~7 分。<br>• <strong>误区二：分不清 Pass/Fail（通过/不通过）与失效测试（Test to Failure）。</strong>Pass/Fail 仅验证在规格点（如常规 1.0 米跌落）样品是否完好，无法揭示设计裕量；而失效测试（如阶梯加压测试至破损）能探测失效边界。两者探测能力存在本质档次差距（D=4 vs D=3，或 D=7 vs D=6）。<br>• <strong>误区三：误以为 AP=L 就可以高枕无忧不看 S。</strong>当 S=9-10 时，哪怕 O=1, D=1 使得 AP=L，根据手册要求，跨功能团队也必须确认该设计的防错机制真实有效，防止在后续工程变更中失效起因被无意激活。</div>
+                    <p style="font-size: 14px; color: #4a5568; background: #f7fafc; border-left: 4px solid #a0aec0; padding: 12px 15px; border-radius: 0 8px 8px 0; margin-top: 20px;"><strong>📚 内容来源：</strong>《AIAG & VDA FMEA 手册》附件 C1.4 - C1.5（原书 P194-198）（PDF 第 194-198 页）</p>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">📝 巩固自测</h3>
+                <div id="quiz-container">
+                    <div class="question" id="q1"><div><span class="question-num">第 1 题</span><span class="question-type">单选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 C1.4，针对一项“已经过工程验证的整机加速老化测试方法”，如果在产品开发周期较晚才进行测试，一旦失败将导致重新开模与量产延迟，其探测度（D）应评为多少分？而在开发时间充分、生产前足以修改工装的阶段执行，又应评为多少分？</div><div class="options"><div class="option"><label><input type="radio" name="q1" value="A"> A. 7分与4分</label></div><div class="option"><label><input type="radio" name="q1" value="B"> B. 5分与2分</label></div><div class="option"><label><input type="radio" name="q1" value="C"> C. 6分与3分</label></div><div class="option"><label><input type="radio" name="q1" value="D"> D. 8分与1分</label></div></div><div class="explanation" id="exp-1"><strong style="color: #2b6cb0;">解析：</strong>根据原书表 C1.4（DFMEA 探测度表）：对于已经验证的老化测试（Degradation test），在测试计划时间较迟、导致重新开模和生产延迟时评为 5 分；计划时间充分、可在量产前修改生产工装时评为 2 分。故正确答案为 B。</div></div><div class="question" id="q2"><div><span class="question-num">第 2 题</span><span class="question-type">单选</span></div><div class="question-text">在测试方法成熟度与测试排期时间窗口完全一致的前提下，表 C1.4 将三种探测机会按照探测能力（评分从高到低，即有效性从强到弱）进行了排序。下列排序正确的是：</div><div class="options"><div class="option"><label><input type="radio" name="q2" value="A"> A. 通过/不通过测试 (Pass/Fail) > 失效测试 (Test to failure) > 老化测试 (Degradation test)</label></div><div class="option"><label><input type="radio" name="q2" value="B"> B. 老化测试 (Degradation test) > 失效测试 (Test to failure) > 通过/不通过测试 (Pass/Fail)</label></div><div class="option"><label><input type="radio" name="q2" value="C"> C. 失效测试 (Test to failure) > 老化测试 (Degradation test) > 通过/不通过测试 (Pass/Fail)</label></div><div class="option"><label><input type="radio" name="q2" value="D"> D. 通过/不通过测试 (Pass/Fail) > 老化测试 (Degradation test) > 失效测试 (Test to failure)</label></div></div><div class="explanation" id="exp-2"><strong style="color: #2b6cb0;">解析：</strong>原书表 C1.4 中，在同一时间窗口下（以计划充分为例）：老化测试评为 2 分（能力非常高/高），失效测试评为 3 分，通过/不通过测试评为 4 分（分值越低代表探测能力越强）。因此探测能力的强弱顺序为：老化测试 > 失效测试 > 通过/不通过测试，选 B。</div></div><div class="question" id="q3"><div><span class="question-num">第 3 题</span><span class="question-type">单选</span></div><div class="question-text">传音研发团队开发某款面向非洲高热环境的智能手机充电电路，经评估某电容过温失效导致手机冒烟起火的严重度为 S=9。设计团队通过电路选型将发生度控制在 O=4。在验证阶段，团队制定了极其充分的 EVT 阶梯极限破坏失效测试（时机充分且方法经验证，D=3）。查阅表 C1.5 DFMEA 措施优先级表，该失效链的 AP 评级是：</div><div class="options"><div class="option"><label><input type="radio" name="q3" value="A"> A. 高优先级（H）</label></div><div class="option"><label><input type="radio" name="q3" value="B"> B. 中优先级（M）</label></div><div class="option"><label><input type="radio" name="q3" value="C"> C. 低优先级（L）</label></div><div class="option"><label><input type="radio" name="q3" value="D"> D. 因探测度为 D=3（属于高探测能力），降为低优先级（L）</label></div></div><div class="explanation" id="exp-3"><strong style="color: #2b6cb0;">解析：</strong>查阅原书表 C1.5（PDF 第 195 页）：当影响度 S=9-10 时，若失效起因发生的预测 O=4-5：探测能力 D=7-10 为 H，D=5-6 为 H，D=2-4 为 H，D=1 时才为 M。本题中 D=3 处于 2-4 区间，措施优先级依然为高（H）。这体现了对手册核心思想的理解：涉及起火冒烟等重大安全后果（S=9-10），只要发生度不处于极低状态，哪怕测试能力很强，系统依然强制要求最高改进优先级（H）。</div></div><div class="question" id="q4"><div><span class="question-num">第 4 题</span><span class="question-type multi">多选</span></div><div class="question-text">根据《AIAG & VDA FMEA 手册》表 C1.4，关于 DFMEA 探测度（D）评价标准的叙述，下列哪些项是正确的？</div><div class="options"><div class="option"><label><input type="checkbox" name="q4" value="A"> A. 探测度评价由“探测方法成熟度”和“探测机会/时间窗口”两个维度综合决定</label></div><div class="option"><label><input type="checkbox" name="q4" value="B"> B. 如果测试方法是全新的且尚未经过工程验证，无论后续采取何种测试类型，D 统一评为 8 分</label></div><div class="option"><label><input type="checkbox" name="q4" value="C"> C. 如果测试程序尚未开发，测试方法尚未定义，其 D 评级为最高风险的 10 分</label></div><div class="option"><label><input type="checkbox" name="q4" value="D"> D. “通过/不通过测试”（Pass/Fail）在时间充分的情况下评为 4 分，在时间较迟导致改模延迟时评为 7 分</label></div></div><div class="explanation" id="exp-4"><strong style="color: #2b6cb0;">解析：</strong>解析：原书表 C1.4 明确规定：①探测度评价由成熟度与机会决定（A正确）；②全新测试方法尚未经过验证评为 8 分（B正确）；③测试程序未开发、方法未定义评为 10 分（C正确）；④已验证的通过/不通过测试，时间充分为 4 分，时间较迟为 7 分（D正确）。全选。</div></div><div class="question" id="q5"><div><span class="question-num">第 5 题</span><span class="question-type multi">多选</span></div><div class="question-text">在应用表 C1.5 判定 DFMEA 措施优先级（AP）时，下列哪些规则符合手册的逻辑原理？</div><div class="options"><div class="option"><label><input type="checkbox" name="q5" value="A"> A. AP 表绝不采用 S×O×D 乘积阈值法，而是基于 S、O、D 的风险逻辑矩阵进行分级</label></div><div class="option"><label><input type="checkbox" name="q5" value="B"> B. 当失效影响严重度 S=1 时，无论发生度 O 与探测度 D 处于何种等级，AP 优先级恒为低（L）</label></div><div class="option"><label><input type="checkbox" name="q5" value="C"> C. 严重度 S=7-8 且发生度 O=6-7 时，即便测试排期充分且采用老化测试使探测度达到 D=2，AP 依然为高（H）</label></div><div class="option"><label><input type="checkbox" name="q5" value="D"> D. 只要措施优先级被评估为低（L），工程团队便被禁止采取任何进一步的设计优化措施</label></div></div><div class="explanation" id="exp-5"><strong style="color: #2b6cb0;">解析：</strong>解析：A、B、C 均与原书表 C1.5 的矩阵逻辑完全一致（查表知 S=7-8, O=6-7, D=2-4 时 AP 为 H；S=1 时全为 L）。D 选项错误：AP 为 L 表示该失效模式根据当前评估处于低行动优先级，企业可自主决定是否采取进一步措施，但绝不是“禁止采取优化”，持续改进依然是被鼓励的。</div></div>
+                </div>
+                <button class="btn" id="submit-btn" onclick="checkAnswers()">提交答案查看解析</button>
+                <div class="result-box" id="result-box">
+                    <div class="score" id="score-text"></div>
+                    <p id="result-msg" style="color: #4a5568; margin-bottom: 20px;"></p>
+                    <button class="btn" onclick="location.reload()" style="background: #edf2f7; color: #4a5568; width: auto;">重新测试</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {"1": {"correct": "B"}, "2": {"correct": "B"}, "3": {"correct": "A"}, "4": {"correct": "A,B,C,D"}, "5": {"correct": "A,B,C"}};
+        
+        function checkAnswers() {
+            let score = 0;
+            const total = Object.keys(answers).length;
+            let allAnswered = true;
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                let answered = false;
+                inputs.forEach(input => { if (input.checked) answered = true; });
+                if (!answered) allAnswered = false;
+            }
+
+            if (!allAnswered) {
+                alert("请回答所有问题后再提交！");
+                return;
+            }
+
+            for (const [qId, ans] of Object.entries(answers)) {
+                const inputs = document.querySelectorAll(`input[name="q${qId}"]`);
+                const isMulti = inputs[0].type === 'checkbox';
+                let userAnswers = [];
+                
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    if (input.checked) userAnswers.push(input.value);
+                });
+
+                const correctAnswers = ans.correct.split(',');
+                let isCorrect = false;
+
+                if (isMulti) {
+                    isCorrect = userAnswers.length === correctAnswers.length && 
+                              userAnswers.every(val => correctAnswers.includes(val));
+                } else {
+                    isCorrect = userAnswers[0] === correctAnswers[0];
+                }
+
+                if (isCorrect) score++;
+
+                inputs.forEach(input => {
+                    const optionDiv = input.closest('.option');
+                    const isUserChecked = input.checked;
+                    const isActuallyCorrect = correctAnswers.includes(input.value);
+
+                    if (isActuallyCorrect) {
+                        optionDiv.classList.add('correct');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✓ 正确答案</span>';
+                        }
+                    } else if (isUserChecked && !isActuallyCorrect) {
+                        optionDiv.classList.add('user-wrong');
+                        if (!optionDiv.querySelector('.option-badge')) {
+                            optionDiv.innerHTML += '<span class="option-badge">✗ 您的选择</span>';
+                        }
+                    }
+                });
+
+                document.getElementById(`exp-${qId}`).style.display = 'block';
+            }
+
+            document.getElementById('submit-btn').style.display = 'none';
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('show');
+            document.getElementById('score-text').innerText = `得分：${score} / ${total}`;
+            
+            let msg = "";
+            if (score === total) msg = "太棒了！你已经完全掌握了今天的知识点！🎉";
+            else if (score >= total * 0.6) msg = "不错哦！继续加油，查看解析巩固一下吧！💪";
+            else msg = "还有进步空间，仔细看看解析，相信你下次会做得更好！📚";
+            
+            document.getElementById('result-msg').innerText = msg;
+            
+            localStorage.setItem(`fmea_${document.title}_completed`, 'true');
+            localStorage.setItem(`fmea_${document.title}_score`, score);
+        }
+    </script>
+</body>
+</html>

@@ -176,12 +176,13 @@
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>场景 B（高可靠 MSR 优化设计）</strong>：传音充电硬件团队引入 PMIC 硬件级过温比较器电路，当温度超过硬门限阈值时，纯硬件逻辑<strong>无需经过 AP 软件调度</strong>，在 10ms 容错时段内直接断开 Charging FET 并拉低握手信号，响应覆盖率 &gt;99.9%，且时间变差极小。此时诊断监视与系统响应均达到 &gt;99.9% 且在 FTTI 内闭环，最终监视度 M 成功评定为 <strong>M=2</strong>。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：只看“传感器能不能测到”，忽视“执行机构能不能反应”</strong>。很多工程师认为安装了高精度传感器就给 M 评 2~3 级，完全未分析控制执行器（如切断开关、降频机制）在极值工况下的响应延迟与失败率。
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：混淆 M=6（上电检测）与动态运行监视</strong>。智能手机某些外设自检（如开机 POST 阶段检测摄像头通讯）仅在 Power-On 时执行，设备运行中一旦通讯失效则无法再次捕获。此类机制即使覆盖率高达 95%，根据表 MSR3 也只能评为 <strong>M=6</strong>，不可评为 M=4 或 M=5。</div></div></div>
                     <div class="vector-diagram-card">
-            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📡 FMEA-MSR 监视及系统响应风险评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
             <div class="flow-grid">
-                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
-                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
-                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+                <div class="flow-box"><span class="fb-icon">⚡</span><div class="fb-title">运行频率 (F)</div><div class="fb-desc">评估客户实际使用工况与寿命周期内失效起因发生的频次</div></div>
+                <div class="flow-box"><span class="fb-icon">📡</span><div class="fb-title">诊断监视与响应 (M)</div><div class="fb-desc">在容错时间(FTTI)内探测故障并触发安全降级，减轻初始严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">MSR 措施优先级 (AP)</div><div class="fb-desc">综合 S × F × M 评定 H/M/L：检验是否需增加冗余、传感器或诊断逻辑</div></div>
             </div>
+        </div>
         </div>
 <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">

@@ -167,12 +167,13 @@
 <strong>失效分析：</strong>低压差稳压器击穿导致电池过压引发热失控起火，失效影响严重度评定为 <strong>S=10</strong>。
 <strong>情况对比：</strong><ul><li><strong>方案 A（传统方案）：</strong>硬件失效率评定 F=4（低）。软件端采用普通轮询电压检测，若通信卡死则响应超时（M=5，较高-无效区间）。查表：S=10, F=4, M=5 对应 <strong>AP = H</strong>。研发团队必须强制制定预防或监视改进措施，不可直接归档！</li><li><strong>方案 B（传音架构优化）：</strong>团队引入独立硬件级次级过压切断芯片（二级硬保护）且具备上电自检，实现故障后 10ms 内硬切断并使系统进入安全阻断状态，监视有效性达到极其可靠（M=1）。查表：S=10, F=4, M=1，措施优先级由 H 成功降为 <strong>M</strong>。团队编写合规安全技术文档，并提报研发管理层评审归档。</li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆 AP 与风险等级。</strong>工程师常误称“这个失效模式是 H 风险”。纠偏：AP 是 Action Priority（措施优先级），AP=H 代表“降低风险的措施具有最高优先级”，而不是系统整体风险等同于高。</li><li><strong>误区二：S=9/10 时，只要 AP 不为 H 就可以不管。</strong>纠偏：原书强制要求，对于潜在严重度 S 为 9-10 且 AP 为 H 或 M 的失效影响，<strong>建议至少应由管理层评审</strong>，必须有高级技术管理者签字确认其控制有效性。</li><li><strong>误区三：认为 MSR 的 AP 判定逻辑与 DFMEA 完全一样。</strong>纠偏：DFMEA 采用的是 SOD（严重度/发生度/探测度），探测度针对的是试产或验证中的设计缺陷发现能力；而 MSR 采用的是 SFM，监视度 M 评估的是车辆/设备运行寿命中系统实时监测及自愈响应能力。查表矩阵的具体分段和收敛点并不相同。</li><li><strong>误区四：AP=H 时未采取措施且在“备注”空白。</strong>纠偏：若团队评估现有控制已足够有效而不采取新措施，必须提供充分的工程证据并在“备注”栏中正式填入“无需进一步措施”，否则评审不予通过。</li></ul></div>
                     <div class="vector-diagram-card">
-            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📡 FMEA-MSR 监视及系统响应风险评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
             <div class="flow-grid">
-                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
-                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
-                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+                <div class="flow-box"><span class="fb-icon">⚡</span><div class="fb-title">运行频率 (F)</div><div class="fb-desc">评估客户实际使用工况与寿命周期内失效起因发生的频次</div></div>
+                <div class="flow-box"><span class="fb-icon">📡</span><div class="fb-title">诊断监视与响应 (M)</div><div class="fb-desc">在容错时间(FTTI)内探测故障并触发安全降级，减轻初始严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">MSR 措施优先级 (AP)</div><div class="fb-desc">综合 S × F × M 评定 H/M/L：检验是否需增加冗余、传感器或诊断逻辑</div></div>
             </div>
+        </div>
         </div>
 <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">

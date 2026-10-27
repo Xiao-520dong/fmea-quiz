@@ -183,12 +183,13 @@
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>AP 判定与优化推导</strong>：查 MSR-AP 表得 [S=10, F=2, M=10] → <strong>AP = M</strong>。传音硬件安全委员会立即要求进入步骤六优化：增加充电 IC 双重内部温度阈值比较与硬件 Watchdog，将诊断监视提升至 M=2（可靠检测并在 100ms 内主动切断充电通路降至 5W 安全状态），将失效影响降至“仅充电缓慢（S=4）”，彻底规避安全隐患。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div>• <strong>误区一：混淆“故障前的原始影响”与“系统响应后的最终影响”</strong>。在 MSR 步骤五中，严重度 S 必须基于<strong>系统响应（System Response）之后的最终失效状态</strong>来评判。防夹案例中由于没有监视机制，系统在最大夹持力下关闭，导致严重的夹伤（S=10）。
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>误区二：误以为 S=10 的故障在 AP 表中一定是 H</strong>。手册原书明确展示：当 F=2（极低）、M=10（无效监视）时，S=10 的 AP 评级为 <strong>M</strong> 而非 H。工程师不能凭直觉认定 S=10 就必然是 H，必须严格查表；但同时要明白，AP=M 绝不代表可以放任不管，在满足客户或法规安全目标时依然需要优先评估优化。</div></div></div>
                     <div class="vector-diagram-card">
-            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📡 FMEA-MSR 监视及系统响应风险评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
             <div class="flow-grid">
-                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
-                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
-                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+                <div class="flow-box"><span class="fb-icon">⚡</span><div class="fb-title">运行频率 (F)</div><div class="fb-desc">评估客户实际使用工况与寿命周期内失效起因发生的频次</div></div>
+                <div class="flow-box"><span class="fb-icon">📡</span><div class="fb-title">诊断监视与响应 (M)</div><div class="fb-desc">在容错时间(FTTI)内探测故障并触发安全降级，减轻初始严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">MSR 措施优先级 (AP)</div><div class="fb-desc">综合 S × F × M 评定 H/M/L：检验是否需增加冗余、传感器或诊断逻辑</div></div>
             </div>
+        </div>
         </div>
 <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">

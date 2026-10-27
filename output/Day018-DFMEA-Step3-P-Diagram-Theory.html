@@ -171,8 +171,7 @@
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>顾客使用：</em>边玩高负载大型游戏边进行快充、使用非标破损充电线；</div></div>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>组件间变化：</em>VC 均热板焊接平整度公差、快充 IC 导通内阻 Ron 的批次离散度；</div></div>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>随时间变化：</em>导热硅脂老化干涸、Type-C 母座插拔 5000 次后接触电阻上升；</div></div>
-<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>系统交互：</em>快充开关噪声对 5G 天线 N78 频段的电磁干扰（EMC）。</li></ul>通过此 P-图，研发工程师在做 DFMEA 时，能迅速锁定热失效链（热敏电阻离散度 + 高温环境 $
-ightarrow$ 充电降频），并在 DVP 中补充极端环境下的充放电测试。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆“控制因素”与“外部输入/噪音”</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>系统交互：</em>快充开关噪声对 5G 天线 N78 频段的电磁干扰（EMC）。</div></div></li></ul>通过此 P-图，研发工程师在做 DFMEA 时，能迅速锁定热失效链（热敏电阻离散度 + 高温环境 → 充电降频），并在 DVP 中补充极端环境下的充放电测试。</div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆“控制因素”与“外部输入/噪音”</strong>
 <em>错误做法：</em>把“用户按下开机键的力”、“环境温度”写在控制因素栏中。
 <em>正确做法：</em>控制因素必须是<strong>设计团队在图纸或代码中可以显式定义并调整的参数</strong>（如按键弹片行程、锅仔片反弹力、保护阈值温度设定）。</li><li><strong>误区二：将“非预期输出”等同于“DFMEA 失效模式”</strong>
 <em>错误做法：</em>直接把“手机发烫”当成功能失效草草收场。

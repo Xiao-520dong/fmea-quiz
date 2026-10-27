@@ -166,9 +166,9 @@
 <ul><li><strong>场景 1：手机后盖装配反向/混料（失效起因：作业员拿错料或方向放反）</strong>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 8：</em>仅在工位张贴彩色 SOP，依赖作业员肉眼识别与人工对位（纯行为控制，作用很小）。</div></div>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 4：</em>采用具有导向定位柱的标准托盘，配合作业员持证上岗与每班首件核对（最佳实践+行为控制，作用有效）。</div></div>
-<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 1~2：</em>结构设计采用<strong>非对称防呆卡槽与定位销</strong>，反向或混料在机械物理结构上完全无法扣入治具（纯技术控制，根本杜绝发生）。</li><li><strong>场景 2：整机主板螺钉打紧不良（失效起因：扭力超差或未打满圈数）</strong></div></div>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 1~2：</em>结构设计采用<strong>非对称防呆卡槽与定位销</strong>，反向或混料在机械物理结构上完全无法扣入治具（纯技术控制，根本杜绝发生）。</div></div></li><li><strong>场景 2：整机主板螺钉打紧不良（失效起因：扭力超差或未打满圈数）</strong>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 7：</em>操作工使用普通定扭批头，依靠人工按压手感判定（行为控制，易疲劳失效）。</div></div>
-<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 2~3：</em>采用智能电批（伺服扭力枪），集成扭矩传感器、角度编码器并与 PLC 联锁，未达到扭矩和圈数自动锁死下一步输送线（高等级技术预防控制）。</li></ul></div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆预防控制（PC）与探测控制（DC）。</strong>
+<div class="bullet-item"><span class="bullet-icon">🔹</span><div><em>O = 2~3：</em>采用智能电批（伺服扭力枪），集成扭矩传感器、角度编码器并与 PLC 联锁，未达到扭矩和圈数自动锁死下一步输送线（高等级技术预防控制）。</div></div></li></ul></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆预防控制（PC）与探测控制（DC）。</strong>
 <em>错误做法：</em>工程师在评估螺钉漏打时，认为产线末端有“AOI 视觉检测”或“人工目检”，因此将频度 O 打为 2 分。
 <em>正确纠正：</em>AOI 和目检属于事后“探测”，只能降低探测度 D，对失效起因（如电批滑牙、工人漏打）发生的可能性（O）没有任何阻拦作用。评估 O 时必须闭上眼睛忽略所有检测措施！</li><li><strong>误区二：只要有作业指导书（SOP）和培训就打低分（O ≤ 3）。</strong>
 <em>错误做法：</em>认为作业员经过培训且有 SOP，频度就不会高，打出 2~3 分。

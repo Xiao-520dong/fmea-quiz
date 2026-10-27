@@ -167,12 +167,13 @@
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>最严重失效影响（FE）：</strong>若无保护机制，将引发电池热失控起火爆裂，直接威胁最终用户的生命安全，因此该失效链在表 MSR1 中的<strong>严重度 S = 10</strong>。</div></div>
 <div class="bullet-item"><span class="bullet-icon">🔹</span><div><strong>设计协同考量：</strong>即使研发团队增加了二级 NTC 硬件切断和软件热保护（影响监视度 M），该底层物理危害对应的 S 评分依然必须如实定为 10 分，而不能主观调低 S 值。高严重度促使团队必须匹配最高等级的诊断覆盖率（M）与极低的起因失效率（F），以实现 AP 为 Low 的安全目标。</div></div></div><div class="highlight-red"><div class="card-title-bar"><span class="card-icon-badge">🚨</span><span class="card-title-text">4. 常见误区与避坑指南</span></div><ul><li><strong>误区一：混淆 DFMEA 与 MSR 的 S 评分表。</strong>部分工程师误以为 MSR 有一套独立的严重度打分规则。<strong>正解：</strong>手册明确规定 DFMEA 和 MSR 的 S 评级体系完全一致，确保整机系统分析与安全机制分析在同一标准语境下对话。</li><li><strong>误区二：误将“监视缓解后的效果”直接折算为初始严重度 S。</strong>例如认为系统具备降额充电功能，就直接将起火风险的 S 从 10 改为 5。<strong>正解：</strong>严重度 S 针对的是既定模式引发的后果严重程度，系统响应保护能力体现在监视评级（M）和减轻后影响评估中，切不可人为抹杀物理危害的 S 固有分值。</li><li><strong>误区三：供应商闭门自评 S 值。</strong>部件级供应商往往脱离整机使用场景打分，导致整机厂与供应商分值脱节。<strong>正解：</strong>手册要求严重度评估应通过客户与供应商充分协同，由客户将整车/整机层面的危害影响传递给供应商。</li></ul></div>
                     <div class="vector-diagram-card">
-            <div class="vector-diagram-header"><div class="vector-diagram-title">📊 风险分析与措施优先级（AP）评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
+            <div class="vector-diagram-header"><div class="vector-diagram-title">📡 FMEA-MSR 监视及系统响应风险评定图解</div><span class="vector-badge">SVG/HTML 矢量图卡</span></div>
             <div class="flow-grid">
-                <div class="flow-box"><span class="fb-icon">🛡️</span><div class="fb-title">预防控制 (PC) → 频度(O)</div><div class="fb-desc">事前防错、设计准则、仿真与点检（减轻起因发生概率）</div></div>
-                <div class="flow-box"><span class="fb-icon">🔬</span><div class="fb-title">探测控制 (DC) → 探测(D)</div><div class="fb-desc">设计冻结或发运前验证、测试、CCD视觉与在线监控能力</div></div>
-                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">措施优先级 (AP: H/M/L)</div><div class="fb-desc">权重 S > O > D：高(H)必须采取措施；中(M)应当采取；低(L)可选</div></div>
+                <div class="flow-box"><span class="fb-icon">⚡</span><div class="fb-title">运行频率 (F)</div><div class="fb-desc">评估客户实际使用工况与寿命周期内失效起因发生的频次</div></div>
+                <div class="flow-box"><span class="fb-icon">📡</span><div class="fb-title">诊断监视与响应 (M)</div><div class="fb-desc">在容错时间(FTTI)内探测故障并触发安全降级，减轻初始严重度(S)</div></div>
+                <div class="flow-box" style="border-color:#667eea; background:#ebf4ff;"><span class="fb-icon">🚦</span><div class="fb-title">MSR 措施优先级 (AP)</div><div class="fb-desc">综合 S × F × M 评定 H/M/L：检验是否需增加冗余、传感器或诊断逻辑</div></div>
             </div>
+        </div>
         </div>
 <div class="manual-figure-box" style="margin: 20px 0;">
         <div style="text-align:center; margin: 18px 0; background: #fff; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
